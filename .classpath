@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="sources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Linear/versions/linear-0.1.jar"/>
 	<classpathentry kind="lib" path="/WebServer/versions/webserver-0.1.jar"/>
+	<classpathentry kind="lib" path="/Mathematics/versions/mathematics-min-0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
