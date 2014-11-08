@@ -31,7 +31,7 @@ function WebGL_Environment(scene){
 	this.light1.absolute_direction.normalize();
 
 	// environment
-	this.environmentTexture = new WebGL_TextureCubeMap("lib/webgl/graphics/skycube/mountain/mountain", ".jpg");
+	this.environmentTexture = new WebGL_TextureCubeMap("/webgl/graphics/skycube/mountain/mountain", ".jpg");
 
 	// keep pointer to the view matrix
 	this.matrix_View = scene.view.matrix_View;

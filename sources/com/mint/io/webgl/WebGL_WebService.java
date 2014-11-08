@@ -26,7 +26,7 @@ public class WebGL_WebService implements WebService {
 
 	@Override
 	public void link(WebServer server) {
-		server.addRerouting("/lib", "lib");
+		//server.addRerouting("/lib", "lib");
 	}
 
 
@@ -81,7 +81,7 @@ public class WebGL_WebService implements WebService {
 
 			// <Style>
 		case GetStyle:
-			writeResource("lib/webgl/styles/"+id+".js", writer, "\n");
+			writeResource("apps/webgl/styles/"+id+".js", writer, "\n");
 			break;
 			// </Style>
 
@@ -90,16 +90,16 @@ public class WebGL_WebService implements WebService {
 
 			// write vertex shader source
 			writer.append("var vertex_shader_source = \"");
-			writeResource("lib/webgl/programs/"+id+"/vertex.vsh", writer, "");
+			writeResource("apps/webgl/programs/"+id+"/vertex.vsh", writer, "");
 			writer.append("\";\n");
 
 			// write fragment shader source
 			writer.append("var fragment_shader_source = \"");
-			writeResource("lib/webgl/programs/"+id+"/fragment.fsh", writer, "");
+			writeResource("apps/webgl/programs/"+id+"/fragment.fsh", writer, "");
 			writer.append("\";\n");
 
 			// write js code
-			writeResource("lib/webgl/programs/"+id+"/setup.js", writer, "\n");
+			writeResource("apps/webgl/programs/"+id+"/setup.js", writer, "\n");
 			break;
 			// </Program>
 		}
