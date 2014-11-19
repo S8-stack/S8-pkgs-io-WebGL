@@ -10,7 +10,7 @@ style.initialize = function(){
 	this.specular = [0.3, 0.2, 0.2, 0.0];
 	this.shininess = 20;
 
-	this.texture0 = new WebGL_Texture("webgl/graphics/texture2d/earth.jpg", gl.TEXTURE0);
+	this.texture0 = new WebGL_Texture("/webgl/graphics/texture2d/earth.jpg", gl.TEXTURE0);
 };
 
 
