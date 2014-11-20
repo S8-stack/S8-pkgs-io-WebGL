@@ -78,6 +78,15 @@ WebGL_Scene.prototype = {
 		setPickingCallback : function(callback){
 			this.picking.callback = callback;
 		},
+		
+		
+		/**
+		 * [WebGL_Scene API method]
+		 * clear scene
+		 */
+		setPickingCallback : function(callback){
+			this.picking.callback = callback;
+		},
 
 		
 
@@ -161,11 +170,13 @@ WebGL_Scene.prototype = {
 		 */
 		removeShape : function(id){	
 			i=0; n=this.shapes.length; index=-1;
-			while(index>-1 && i<n){
+			while(index==-1 && i<n){
 				if(this.shapes[i].id == id){
 					index = i;
 				}
-				i++;
+				else{
+					i++;	
+				}
 			}
 			this.shapes.splice(index, 1);
 			this.picking.updatePickingColors();
