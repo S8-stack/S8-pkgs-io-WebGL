@@ -13,14 +13,16 @@ import com.mint.web.WebRequest;
 import com.mint.web.WebServer;
 import com.mint.web.WebService;
 
-public class WebGL_DebugWebService implements WebService {
+public class WebGL_DebugWebService extends WebService {
 	
+	
+	public final static String KEYWORD = "WebGLDebug";
 	
 	private WebGL_WebService webGL_Service;
 	
 	@Override
 	public String getWebServiceKeyword() {
-		return "WebGLDebug";
+		return KEYWORD;
 	}
 
 	@Override

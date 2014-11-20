@@ -17,11 +17,14 @@ import com.mint.web.WebServer;
 import com.mint.web.WebService;
 import com.mint.web.utilities.IdentifierGenerator;
 
-public class WebGL_WebService implements WebService {
+public class WebGL_WebService extends WebService {
+
+	public final static String KEYWORD = "WebGL";
+	
 
 	@Override
 	public String getWebServiceKeyword() {
-		return "WebGL";
+		return KEYWORD;
 	}
 
 	@Override
