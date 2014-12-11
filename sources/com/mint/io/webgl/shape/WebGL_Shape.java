@@ -241,8 +241,8 @@ public class WebGL_Shape {
 	public void transform(Affine3d affine3d){
 		if(isVertexDefined()){ vertexArray.transform(affine3d); }
 		if(isNormalDefined()){ normalArray.transform(affine3d); }
-		if(isUTangentDefined()){ uTangentArray = new WebGL_UTangentArray(this); }
-		if(isVTangentDefined()){ vTangentArray = new WebGL_VTangentArray(this); }
+		if(isUTangentDefined()){ uTangentArray.transform(affine3d); }
+		if(isVTangentDefined()){ vTangentArray.transform(affine3d); }
 	}
 
 
