@@ -6,9 +6,8 @@ import com.mint.io.webgl.shape.mesh.WebGL_Triangle;
 import com.mint.io.webgl.shape.vertex.WebGL_NormalArray;
 import com.mint.io.webgl.shape.vertex.WebGL_TexCoordArray;
 import com.mint.io.webgl.shape.vertex.WebGL_VertexArray;
-import com.mint.mathematics.linear2d.Vector2d;
-import com.mint.mathematics.linear3d.Affine3d;
-import com.mint.mathematics.linear3d.Vector3d;
+import com.mint.mathematics.linear.Ad;
+import com.mint.mathematics.linear.Vd;
 
 
 public class Sphere {
@@ -33,7 +32,7 @@ public class Sphere {
 	}
 
 
-	public void draw(WebGL_Shape shape, Affine3d basis) {
+	public void draw(WebGL_Shape shape, Ad basis) {
 
 		double dTheta = (double) (Math.PI/(n-1));
 		double dPhi = (double) (2*Math.PI/(2*n-1));
@@ -48,7 +47,7 @@ public class Sphere {
 			WebGL_VertexArray vertices =shape.getVertexArray();
 			for(int i=0; i<n; i++){
 				for(int j=0; j<2*n; j++){
-					vertices.add(Vector3d.sphericalRadial(r, j*dPhi, i*dTheta));
+					vertices.add(Vd.sphericalRadial(r, j*dPhi, i*dTheta));
 				}
 			}
 		}
@@ -58,7 +57,7 @@ public class Sphere {
 			WebGL_NormalArray normals = shape.getNormalArray();
 			for(int i=0; i<n; i++){
 				for(int j=0; j<2*n; j++){
-					normals.add(Vector3d.sphericalRadial(1.0, j*dPhi, i*dTheta));
+					normals.add(Vd.sphericalRadial(1.0, j*dPhi, i*dTheta));
 				}
 			}
 		}
@@ -72,7 +71,7 @@ public class Sphere {
 
 			for(int i=0; i<n; i++){
 				for(int j=0; j<2*n; j++){
-					texCoords.add(new Vector2d(j*du, 1.0-i*dv));
+					texCoords.add(new Vd(j*du, 1.0-i*dv));
 				}
 			}
 		}

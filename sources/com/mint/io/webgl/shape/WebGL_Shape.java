@@ -13,9 +13,9 @@ import com.mint.io.webgl.shape.vertex.WebGL_TexCoordArray;
 import com.mint.io.webgl.shape.vertex.WebGL_UTangentArray;
 import com.mint.io.webgl.shape.vertex.WebGL_VTangentArray;
 import com.mint.io.webgl.shape.vertex.WebGL_VertexArray;
-import com.mint.mathematics.linear3d.Affine3d;
-import com.mint.mathematics.linear3d.BoundingBox3d;
-import com.mint.mathematics.linear3d.Matrix3d;
+import com.mint.mathematics.linear.Ad;
+import com.mint.mathematics.linear.BoundingBox;
+import com.mint.mathematics.linear.Md;
 
 /**
  * Can only be created with factory include in the class as inner class
@@ -57,10 +57,10 @@ public class WebGL_Shape {
 	/**
 	 * 
 	 */
-	private Affine3d currentTransformation;
+	private Ad currentTransformation;
 
 
-	public Affine3d getCurrentTransformation(){
+	public Ad getCurrentTransformation(){
 		return currentTransformation;
 	}
 
@@ -127,7 +127,7 @@ public class WebGL_Shape {
 		this.elementType = elementType;
 		
 		// transformation
-		currentTransformation = Affine3d.Std;
+		currentTransformation = Ad.STANDARD_3D;
 
 		// vertex attributes
 		if(attributeOptions.isVertexDefined){
@@ -212,7 +212,7 @@ public class WebGL_Shape {
 		return elementsArray;
 	}
 
-	public void update(BoundingBox3d boundingBox3d){
+	public void update(BoundingBox boundingBox3d){
 		getVertexArray().update(boundingBox3d);
 	}
 
@@ -223,7 +223,7 @@ public class WebGL_Shape {
 		return getVertexArray().size();
 	}
 
-	public void startPatch(Affine3d transformation){
+	public void startPatch(Ad transformation){
 		this.currentTransformation = transformation;
 		this.elementIndexOffset = getVertexArray().size();
 	}
@@ -238,7 +238,7 @@ public class WebGL_Shape {
 	 * Scale shape
 	 * @param scalingFactor
 	 */
-	public void transform(Affine3d affine3d){
+	public void transform(Ad affine3d){
 		if(isVertexDefined()){ vertexArray.transform(affine3d); }
 		if(isNormalDefined()){ normalArray.transform(affine3d); }
 		if(isUTangentDefined()){ uTangentArray.transform(affine3d); }
@@ -251,7 +251,7 @@ public class WebGL_Shape {
 	 * @param basis3d
 	 * @return
 	 */
-	public void add(WebGL_Shape shape, Affine3d basis3d){
+	public void add(WebGL_Shape shape, Ad basis3d){
 
 		// surface
 		startPatch(basis3d);
@@ -330,7 +330,7 @@ public class WebGL_Shape {
 	public static void focus(WebGL_Shape[] shapes){
 		
 		// build bounding box
-		BoundingBox3d boundingBox3d = new BoundingBox3d();
+		BoundingBox boundingBox3d = new BoundingBox(3);
 		for(WebGL_Shape shape : shapes){
 			shape.update(boundingBox3d);	
 		}
@@ -338,11 +338,11 @@ public class WebGL_Shape {
 		
 		// first transformation set center to the screen center
 		for(WebGL_Shape shape : shapes){
-			shape.transform(new Affine3d(boundingBox3d.getCenter().opposite()));	
+			shape.transform(new Ad(boundingBox3d.getCenter().opposite()));	
 		}
 		
 		for(WebGL_Shape shape : shapes){
-			shape.transform(new Affine3d(Matrix3d.scaleMatrix(10.0/boundingBox3d.getMaxDimension())));	
+			shape.transform(new Ad(Md.scaleMatrix3D(10.0/boundingBox3d.getRadius())));	
 		}
 	}
 	

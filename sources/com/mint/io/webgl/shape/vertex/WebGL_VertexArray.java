@@ -1,9 +1,10 @@
 package com.mint.io.webgl.shape.vertex;
 
 import com.mint.io.webgl.shape.WebGL_Shape;
-import com.mint.mathematics.linear3d.Affine3d;
-import com.mint.mathematics.linear3d.BoundingBox3d;
-import com.mint.mathematics.linear3d.Vector3d;
+import com.mint.mathematics.linear.Ad;
+import com.mint.mathematics.linear.BoundingBox;
+import com.mint.mathematics.linear.Vd;
+
 
 public class WebGL_VertexArray extends WebGL_AttributeArray3d {
 
@@ -19,13 +20,13 @@ public class WebGL_VertexArray extends WebGL_AttributeArray3d {
 	}
 
 	@Override
-	public Vector3d transform(Affine3d affine3d, Vector3d vector){
+	public Vd transform(Ad affine3d, Vd vector){
 		return affine3d.applyToPoint(vector);
 	}
 
 
-	public void update(BoundingBox3d boundingBox3d) {
-		for(Vector3d vector : getVectors()){
+	public void update(BoundingBox boundingBox3d) {
+		for(Vd vector : getVectors()){
 			boundingBox3d.update(vector);
 		}
 	}

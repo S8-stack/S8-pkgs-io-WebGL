@@ -6,14 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mint.io.webgl.shape.WebGL_Shape;
-import com.mint.mathematics.linear2d.Vector2d;
+import com.mint.mathematics.linear.Vd;
+
 
 public abstract class WebGL_AttributeArray2d extends WebGL_AttributeArray {
 
 	/**
 	 * vertices
 	 */
-	private List<Vector2d> vectors = new ArrayList<Vector2d>();
+	private List<Vd> vectors = new ArrayList<Vd>();
 
 	
 	public WebGL_AttributeArray2d(WebGL_Shape shape){
@@ -26,18 +27,18 @@ public abstract class WebGL_AttributeArray2d extends WebGL_AttributeArray {
 		return vectors.size();
 	}
 	
-	public void add(Vector2d vector){
+	public void add(Vd vector){
 		vectors.add(vector.clone());
 	}
 	
 	@Override
 	public void add(WebGL_AttributeArray vertexAttributeArray){
-		for(Vector2d vertexAttribute : ((WebGL_AttributeArray2d) vertexAttributeArray).getVectors()){
+		for(Vd vertexAttribute : ((WebGL_AttributeArray2d) vertexAttributeArray).getVectors()){
 			this.vectors.add(vertexAttribute.clone());	
 		}
 	}
 	
-	public List<Vector2d> getVectors(){
+	public List<Vd> getVectors(){
 		return vectors;
 	}
 	
@@ -56,10 +57,10 @@ public abstract class WebGL_AttributeArray2d extends WebGL_AttributeArray {
 	public void writeSetup(OutputStreamWriter builder) throws IOException{
 		builder.append("this."+getKeyword()+"=new WebGL_ArrayBuffer(2, [");
 		int n = size();
-		Vector2d vector;
+		Vd vector;
 		for(int i=0; i<n; i++){
 			vector = vectors.get(i);
-			builder.append(vector.x+", "+vector.y+((i==n-1)?"]);\n":", "));
+			builder.append(vector.get(0)+", "+vector.get(1)+((i==n-1)?"]);\n":", "));
 			if((i+1)%MAX_NUMBER_OF_VECTOR_PER_LINE==0){
 				builder.append("\n");
 			}

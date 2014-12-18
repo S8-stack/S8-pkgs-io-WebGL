@@ -2,8 +2,9 @@ package com.mint.io.webgl.shape.vertex;
 
 
 import com.mint.io.webgl.shape.WebGL_Shape;
-import com.mint.mathematics.linear3d.Affine3d;
-import com.mint.mathematics.linear3d.Vector3d;
+import com.mint.mathematics.linear.Ad;
+import com.mint.mathematics.linear.Vd;
+
 
 public class WebGL_VTangentArray extends WebGL_AttributeArray3d {
 
@@ -19,7 +20,7 @@ public class WebGL_VTangentArray extends WebGL_AttributeArray3d {
 	}
 
 	@Override
-	public Vector3d transform(Affine3d affine3d, Vector3d vector){
+	public Vd transform(Ad affine3d, Vd vector){
 		return affine3d.applyToVector(vector).normalize();
 	}
 }

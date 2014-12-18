@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mint.io.webgl.shape.WebGL_Shape;
-import com.mint.mathematics.linear3d.Affine3d;
-import com.mint.mathematics.linear3d.Vector3d;
+import com.mint.mathematics.linear.Ad;
+import com.mint.mathematics.linear.Vd;
 
 public abstract class WebGL_AttributeArray3d extends WebGL_AttributeArray {
 
@@ -15,7 +15,7 @@ public abstract class WebGL_AttributeArray3d extends WebGL_AttributeArray {
 	/**
 	 * vertices
 	 */
-	private List<Vector3d> vectors = new ArrayList<Vector3d>();
+	private List<Vd> vectors = new ArrayList<Vd>();
 
 	public WebGL_AttributeArray3d(WebGL_Shape shape){
 		super(shape);
@@ -27,29 +27,29 @@ public abstract class WebGL_AttributeArray3d extends WebGL_AttributeArray {
 	}
 
 	
-	public abstract Vector3d transform(Affine3d affine3d, Vector3d vector);
+	public abstract Vd transform(Ad affine3d, Vd vector);
 
 
 	/**
 	 * Scale shape
 	 * @param scalingFactor
 	 */
-	public void transform(Affine3d affine3d){
-		List<Vector3d> transformedVectors = new ArrayList<Vector3d>();
-		for(Vector3d vertex : getVectors()){
+	public void transform(Ad affine3d){
+		List<Vd> transformedVectors = new ArrayList<Vd>();
+		for(Vd vertex : getVectors()){
 			transformedVectors.add(transform(affine3d, vertex));
 		}
 		vectors = transformedVectors;
 	}
 
 
-	public void add(Vector3d vector){
+	public void add(Vd vector){
 		vectors.add(transform(getCurrentTransformation(), vector));
 	}
 
 	@Override
 	public void add(WebGL_AttributeArray vertexAttributeArray){
-		for(Vector3d vertexAttribute : ((WebGL_AttributeArray3d) vertexAttributeArray).getVectors()){
+		for(Vd vertexAttribute : ((WebGL_AttributeArray3d) vertexAttributeArray).getVectors()){
 			add(vertexAttribute);	
 		}
 	}
@@ -68,10 +68,10 @@ public abstract class WebGL_AttributeArray3d extends WebGL_AttributeArray {
 	public void writeSetup(OutputStreamWriter builder) throws IOException{
 		builder.append("this."+getKeyword()+"=new WebGL_ArrayBuffer(3, [");
 		int n = size();
-		Vector3d vector;
+		Vd vector;
 		for(int i=0; i<n; i++){
 			vector = vectors.get(i);
-			builder.append(vector.x+", "+vector.y+", "+vector.z+((i==n-1)?"]);\n":", "));
+			builder.append(vector.get(0)+", "+vector.get(1)+", "+vector.get(2)+((i==n-1)?"]);\n":", "));
 			if((i+1)%MAX_NUMBER_OF_VECTOR_PER_LINE==0){
 				builder.append("\n");
 			}
@@ -83,7 +83,7 @@ public abstract class WebGL_AttributeArray3d extends WebGL_AttributeArray {
 
 
 
-	public List<Vector3d> getVectors(){
+	public List<Vd> getVectors(){
 		return vectors;
 	}
 

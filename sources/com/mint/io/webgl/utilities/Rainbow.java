@@ -2,7 +2,8 @@ package com.mint.io.webgl.utilities;
 
 import java.util.Hashtable;
 
-import com.mint.mathematics.linear3d.Vector3d;
+import com.mint.mathematics.linear.Vd;
+
 
 
 /**
@@ -142,7 +143,7 @@ public class Rainbow {
 	public static void main(String[] args){
 		Rainbow rainbow = new Rainbow();
 		
-		System.out.println(new Vector3d(rainbow.colourAt(0.5)));
+		System.out.println(new Vd(rainbow.colourAt(0.5)));
 	}
 	
 }

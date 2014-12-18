@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import com.mint.io.webgl.shape.WebGL_Shape;
-import com.mint.mathematics.linear3d.Affine3d;
+import com.mint.mathematics.linear.Ad;
 
 
 public abstract class WebGL_AttributeArray {
@@ -22,7 +22,7 @@ public abstract class WebGL_AttributeArray {
 		this.shape = shape;
 	}
 	
-	public Affine3d getCurrentTransformation(){
+	public Ad getCurrentTransformation(){
 		return shape.getCurrentTransformation();
 	}
 
