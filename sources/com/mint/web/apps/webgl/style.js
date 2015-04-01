@@ -80,15 +80,18 @@ WebGL_Style.prototype = {
 		/*
 		 * detach form current style 
 		 */ 
-		removeShape : function(id){	
-			i=0; n=this.displayList.length; index=-1;
-			while(index>-1 && i<n){
+		removeShape : function(id){
+			this.displayList.splice(this.getShapeIndex(id), 1);
+		},
+		
+		
+		getShapeIndex : function(id){
+			var i=0; n=this.displayList.length;
+			for(var i=0; i<n; i++){
 				if(this.displayList[i].id == id){
-					index = i;
+					return i;
 				}
-				i++;
 			}
-			this.displayList.splice(index, 1);
 		}
 };
 
