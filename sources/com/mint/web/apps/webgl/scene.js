@@ -79,16 +79,6 @@ WebGL_Scene.prototype = {
 			this.picking.callback = callback;
 		},
 		
-		
-		/**
-		 * [WebGL_Scene API method]
-		 * clear scene
-		 */
-		setPickingCallback : function(callback){
-			this.picking.callback = callback;
-		},
-
-		
 
 		/**
 		 * Render
