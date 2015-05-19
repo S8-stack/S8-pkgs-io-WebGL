@@ -33,6 +33,7 @@ function WebGL_Style(id){
 		// from now on, the program is ready to render!
 		scene.getProgram(style.programId).displayList.push(style);
 		
+		scene.render();
 	});
 }
 

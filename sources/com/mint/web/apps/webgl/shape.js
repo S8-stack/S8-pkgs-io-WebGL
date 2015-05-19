@@ -57,6 +57,8 @@ function WebGL_Shape(id, scene){
 		shape.initialize();
 		shape.isInitialized = true;
 		// shape is ready to be rendered!
+		
+		scene.render();
 	});
 }
 

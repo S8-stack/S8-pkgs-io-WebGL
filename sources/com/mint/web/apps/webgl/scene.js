@@ -2,29 +2,29 @@
 
 /** Scene */
 function WebGL_Scene(){
-	
+
 	// list of programs
 	this.programs = [];
-	
+
 	// list of styles
 	this.styles = [];
-	
+
 	// list of shapes
 	this.shapes = [];
-	
+
 	//create view
-	this.view = new WebGL_View();
-	
+	this.view = new WebGL_View(this);
+
 	//create environment
 	this.environment = new WebGL_Environment(this);
 
 	// create picking module and link it
 	this.picking = new WebGL_PickingModule(this);
-	
+
 	// <initialize rendering>
 
 	//OpenGL initialization
-	
+
 	//gl.clearColor(0.5, 0.5, 0.8, 1.0);
 	gl.clearColor(1.0, 1.0, 1.0, 1.0);
 	gl.clearStencil(128);
@@ -39,8 +39,8 @@ function WebGL_Scene(){
 
 WebGL_Scene.prototype = {
 
-		
-		
+
+
 		/**
 		 * [WebGL_Scene API method]
 		 * setShapeStyle allows to start the rendering of a given shape with a specific style.
@@ -49,8 +49,11 @@ WebGL_Scene.prototype = {
 			// retrieve shape
 			var shape = this.getShape(shapeId);
 			shape.setStyle(styleId);
+			
+			// do a rendering pass to apply changes
+			this.render();
 		},
-		
+
 		/**
 		 * [WebGL_Scene API method]
 		 * deleteShape allows to delete a shape. The shape is disposed and removed from current style displayList automatically.
@@ -58,18 +61,21 @@ WebGL_Scene.prototype = {
 		deleteShape : function(shapeId){
 			// retrieve shape
 			var shape = this.getShape(shapeId);
-			
+
 			// remove shape from style displayList
 			shape.style.removeShape(shapeId);
-			
+
 			// remove shape from scene
 			this.removeShape(shapeId);
 			this.picking.updatePickingColors();
-			
+
 			// dispose object
 			shape.dispose();
+			
+			// do a rendering pass to apply changes
+			this.render();
 		},
-		
+
 		/**
 		 * [WebGL_Scene API method]
 		 * setPickingCallback allows to specify a behaviour if the event of a picking click.
@@ -77,8 +83,11 @@ WebGL_Scene.prototype = {
 		 */
 		setPickingCallback : function(callback){
 			this.picking.callback = callback;
+			
+			// do a rendering pass to apply changes
+			this.render();
 		},
-		
+
 
 		/**
 		 * Render
@@ -88,7 +97,7 @@ WebGL_Scene.prototype = {
 			// update view
 			this.view.update();
 			this.environment.update();
-			
+
 			gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
 
 			// gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -100,11 +109,14 @@ WebGL_Scene.prototype = {
 			}
 
 			// Recommended pattern for frame animation
+			
+			/*
 			var _this = this;
 			window.requestAnimFrame(function(){_this.render();}, canvas);
+			*/
 		},
-		
-		
+
+
 		/**
 		 * get program
 		 */
@@ -114,13 +126,13 @@ WebGL_Scene.prototype = {
 					return this.programs[i];
 				}
 			}
-			
+
 			// if style is not present, we create it
 			var program = new WebGL_Program(id);
 			this.programs.push(program);
 			return program;
 		},
-		
+
 		/**
 		 * get style
 		 */
@@ -136,7 +148,7 @@ WebGL_Scene.prototype = {
 			this.styles.push(style);
 			return style;
 		},
-		
+
 		/**
 		 * get shape
 		 */
@@ -146,15 +158,15 @@ WebGL_Scene.prototype = {
 					return this.shapes[i];
 				}
 			}
-			
+
 			// if shape is not present, we create it
 			var shape=new WebGL_Shape(id, this);
 			this.shapes.push(shape);
 			this.picking.updatePickingColors();
 			return shape;
 		},
-		
-		
+
+
 		/**
 		 * 
 		 */
@@ -171,7 +183,7 @@ WebGL_Scene.prototype = {
 			this.shapes.splice(index, 1);
 			this.picking.updatePickingColors();
 		}
-		
+
 };
 
 

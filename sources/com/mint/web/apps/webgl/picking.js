@@ -5,14 +5,14 @@
  */
 
 function WebGL_PickingModule(scene){
-	
+
 	// pointer to the scene
 	this.scene = scene;
-	
+
 	this.program = new WebGL_Program("picking");
 	this.program.displayList = scene.shapes;
-	
-	
+
+
 	this.width = gl.viewportWidth;
 	this.height = gl.viewportHeight;
 
@@ -101,22 +101,22 @@ function WebGL_PickingModule(scene){
 	/* handle an error : frame buffer incomplete */ 
 	/* return to the default frame buffer */ 
 	gl.bindFramebuffer(gl.FRAMEBUFFER, null); 
-	
-	
-	
-	
+
+
+
+
 	// default callback
 	this.callback = function(id){
 		alert("The shape picked has id:"+id);
 	}
-	
+
 	var _this = this;
 	canvas.addEventListener('click', function(event) { 
-		if(event.ctrlKey){
+		if(event.shiftKey){
 			_this.callback(_this.pick(event.clientX, event.clientY));
 		}
 	}, false);
-	
+
 }
 
 
@@ -124,8 +124,8 @@ WebGL_PickingModule.prototype = {
 
 
 
-		
-		
+
+
 		/**
 		 * picking
 		 */
@@ -138,12 +138,12 @@ WebGL_PickingModule.prototype = {
 
 			// render the shapes (in environment=null)
 			this.program.render(null, null);
-			
+
 			var pickedColor = new Uint8Array(4); 
 			gl.readPixels(x, gl.viewportHeight-y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pickedColor);
 
 			gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-			
+
 			//alert("r="+pickedColor[0]+", g="+pickedColor[1]+", b="+pickedColor[2]);
 			var index = pickedColor[0]+pickedColor[1]*255+pickedColor[2]*65025-32;
 			if(index>=0 && index<this.scene.shapes.length){
@@ -154,11 +154,11 @@ WebGL_PickingModule.prototype = {
 			}
 		},		
 
-		
+
 		updatePickingColors : function(){
 			var n = scene.shapes.length;
 			var pc0=32.0, pc1=0.0; pc2=0.0;
-			
+
 			for(var i=0; i<n; i++){
 				scene.shapes[i].pickingColor = [pc0/255.0, pc1/255.0, pc2/255.0];
 				pc0++;

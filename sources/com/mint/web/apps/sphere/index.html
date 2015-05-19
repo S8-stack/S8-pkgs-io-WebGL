@@ -1,0 +1,57 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="UTF-8" />
+
+
+<script type="text/javascript" src="/utilities.js"></script>
+
+<script type="text/javascript" src="script.js"></script>
+
+<script type="text/javascript" src="/webgl/utilities.js"></script>
+
+<script type="text/javascript" src="/webgl/geometry/matrix3.js"></script>
+<script type="text/javascript" src="/webgl/geometry/matrix4.js"></script>
+<script type="text/javascript" src="/webgl/geometry/vector3.js"></script>
+<script type="text/javascript" src="/webgl/geometry/vector2.js"></script>
+<script type="text/javascript" src="/webgl/geometry/vector4.js"></script>
+
+<script type="text/javascript" src="/webgl/environment.js"></script>
+<script type="text/javascript" src="/webgl/launch.js"></script>
+<script type="text/javascript" src="/webgl/picking.js"></script>
+<script type="text/javascript" src="/webgl/program.js"></script>
+<script type="text/javascript" src="/webgl/scene.js"></script>
+<script type="text/javascript" src="/webgl/shape.js"></script>
+<script type="text/javascript" src="/webgl/style.js"></script>
+<script type="text/javascript" src="/webgl/view.js"></script>
+
+
+</head>
+
+<body id="root" onload="WebGL_start()">
+
+
+	<canvas id="WebGL_Canvas" class="screen"></canvas>
+
+	<div class="control">
+		<div class="grey" onclick="Sphere.start()">Demo</div>
+		<div class="grey" onclick="Sphere.stop()">Stop Demo</div>
+		<div class="grey" onclick="Sphere.viewRadialTurboGeometry()">View radial turbo</div>
+		<div class="grey" onclick="Sphere.viewAxialTurboGeometry()">View axial turbo</div>
+		<div class="grey" id="control:definition">Definition</div>
+		<div class="grey" onclick="turbo_Display()">Rotor</div>
+		<div class="grey" onclick="scene.loadShape('shape01-controlPolygon')">Polygon</div>
+		<div class="grey" onclick="scene.loadShape('shape01-isoV')">Iso V</div>
+		<div class="grey" onclick="Matrix4.test01()">Test matrix</div>
+	</div>
+
+	<div class="output">
+		<div id="log64"></div>
+	</div>
+</body>
+</html>

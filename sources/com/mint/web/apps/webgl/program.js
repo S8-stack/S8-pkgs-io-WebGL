@@ -53,6 +53,8 @@ function WebGL_Program(id){
 		// program is ready to render!
 		program.isInitialized = true;
 		
+		scene.render();
+		
 	});
 	
 	

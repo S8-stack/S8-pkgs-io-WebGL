@@ -3,8 +3,9 @@
 /**
  * view for the scene
  */
-function WebGL_View(){
+function WebGL_View(scene){
 	
+	this.scene = scene;
 
 	this.mouseDown = false;
 	this.lastMouseX = null;
@@ -63,12 +64,16 @@ WebGL_View.prototype = {
 			this.mouseDown = true;
 			this.lastMouseX = event.clientX;
 			this.lastMouseY = event.clientY;
+
+			this.scene.render();
 		},
 
 
 		/** called on mouse up @param event */
 		handleMouseUp : function(event){
 			this.mouseDown = false;
+
+			this.scene.render();
 		},
 
 
@@ -93,6 +98,8 @@ WebGL_View.prototype = {
 				//log.nodeValue+= "x="+event.clientX+" y="+event.clientY+"\n";
 
 				//this.updateView();
+
+				this.scene.render();
 			}
 		},
 
@@ -102,6 +109,8 @@ WebGL_View.prototype = {
 				this.r = 1.0;
 			}
 			//this.updateView();
+
+			this.scene.render();
 		},
 
 
@@ -130,6 +139,8 @@ WebGL_View.prototype = {
 				break;
 
 			}
+
+			this.scene.render();
 		},
 
 		handleKeyUp : function(event) {
@@ -140,6 +151,8 @@ WebGL_View.prototype = {
 			this.eyeTarget_Speed.c[0] = 0;
 			this.eyeTarget_Speed.c[1] = 0;
 			this.eyeTarget_Speed.c[2] = 0;
+
+			this.scene.render();
 		},
 
 
