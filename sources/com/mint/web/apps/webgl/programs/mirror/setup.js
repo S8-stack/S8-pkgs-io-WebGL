@@ -1,7 +1,10 @@
 
 
 program.initialize = function(){
-
+	
+	// pass index for rendering sort (default is 1)
+	this.pass = 1;
+	
 	
 	/*
 	 * Get uniforms locations
@@ -23,17 +26,13 @@ program.initialize = function(){
 };
 
 
-program.loadView = function(view){
+
+program.bind = function(view, environment){
 	gl.uniform3fv(this.loc_Uniform_eyePosition, view.eyePosition.c);
+	environment.environmentTexture.bind(this.loc_Uniform_texture, 0);
 }
 
-
-
-/**
- * Scene uniforms loading
- */
-program.loadEnvironment = function(environment){
-	environment.environmentTexture.bind(this.loc_Uniform_texture, 0);
+program.unbind = function(){
 };
 
 

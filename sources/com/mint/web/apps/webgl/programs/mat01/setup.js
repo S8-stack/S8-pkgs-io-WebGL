@@ -1,6 +1,9 @@
 
 
 program.initialize = function(){
+	
+	// pass index for rendering sort (default is 1)
+	this.pass = 1;
 
 	// light 0
 	this.loc_Uniform_light0_ambient = gl.getUniformLocation(this.handle, "lights[0].ambient");	
@@ -33,10 +36,8 @@ program.initialize = function(){
 
 
 
-program.loadView = function(view){
-}
 
-program.loadEnvironment = function(environment){
+program.bind = function(view, environment){
 	
 	// light 0
 	gl.uniform4fv(this.loc_Uniform_light0_ambient, environment.light0.ambient);
@@ -51,6 +52,8 @@ program.loadEnvironment = function(environment){
 	gl.uniform3fv(this.loc_Uniform_light1_direction, environment.light1.direction);
 };
 
+program.unbind = function(){
+};
 
 program.loadStyle = function(style){
 	

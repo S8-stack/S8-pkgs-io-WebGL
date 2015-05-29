@@ -1,5 +1,9 @@
 
 program.initialize = function(){
+	
+	// pass index for rendering sort (default is 1)
+	this.pass = 1;
+	
 
 	/*
 	 * Get uniforms locations
@@ -40,10 +44,9 @@ program.initialize = function(){
 
 
 
-program.loadView = function(view){
-}
 
-program.loadEnvironment = function(environment){
+program.bind = function(view, environment){
+	
 	
 	// light 0
 	gl.uniform4fv(this.loc_Uniform_light0_ambient, environment.light0.ambient);
@@ -56,6 +59,9 @@ program.loadEnvironment = function(environment){
 	gl.uniform4fv(this.loc_Uniform_light1_diffuse, environment.light1.diffuse);
 	gl.uniform4fv(this.loc_Uniform_light1_specular, environment.light1.specular);
 	gl.uniform3fv(this.loc_Uniform_light1_direction, environment.light1.direction);
+};
+
+program.unbind = function(){
 };
 
 

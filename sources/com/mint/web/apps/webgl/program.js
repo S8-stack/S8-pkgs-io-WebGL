@@ -53,6 +53,10 @@ function WebGL_Program(id){
 		// program is ready to render!
 		program.isInitialized = true;
 		
+		// resort program
+		scene.sortProgramPass();
+		
+		// trigger a render to refresh
 		scene.render();
 		
 	});
@@ -71,15 +75,16 @@ WebGL_Program.prototype = {
 				gl.useProgram(this.handle);
 				
 				// load context uniforms
-				this.loadView(view);
-				
-				// load context uniforms
-				this.loadEnvironment(environment);
+				this.bind(view, environment);
 			
 				// render renderables
 				for(var i=0; i<this.displayList.length; i++){
 					this.displayList[i].render(this);
 				}
+				
+				// reset to default
+				this.unbind();
+				
 				// unbind program
 				//gl.useProgram(0);
 			}

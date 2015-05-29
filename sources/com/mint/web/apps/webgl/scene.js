@@ -129,8 +129,18 @@ WebGL_Scene.prototype = {
 
 			// if style is not present, we create it
 			var program = new WebGL_Program(id);
+			
+			// add the newly created program to the list
 			this.programs.push(program);
 			return program;
+		},
+		
+		
+		/**
+		 * sort programs
+		 */
+		sortProgramPass : function(){
+			this.programs = this.programs.sort(function(a, b){ return a.pass-b.pass; });
 		},
 
 		/**

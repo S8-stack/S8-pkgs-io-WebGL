@@ -2,6 +2,8 @@
 
 program.initialize = function(){
 
+	// pass index for rendering sort (default is 1)
+	this.pass = 1;
 	
 	// matrices
 	this.loc_Uniform_matrix_MVP = gl.getUniformLocation(this.handle, "ModelViewProjection_Matrix");
@@ -16,12 +18,12 @@ program.initialize = function(){
 
 
 
-program.loadView = function(view){
-}
 
-program.loadEnvironment = function(environment){
+program.bind = function(view, environment){
 };
 
+program.unbind = function(){
+};
 
 program.loadStyle = function(style){
 
