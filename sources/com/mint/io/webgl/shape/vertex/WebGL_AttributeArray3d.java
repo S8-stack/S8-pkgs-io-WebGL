@@ -12,6 +12,8 @@ import com.mint.mathematics.linear.Vd;
 public abstract class WebGL_AttributeArray3d extends WebGL_AttributeArray {
 
 
+	
+	
 	/**
 	 * vertices
 	 */
@@ -87,6 +89,9 @@ public abstract class WebGL_AttributeArray3d extends WebGL_AttributeArray {
 		return vectors;
 	}
 
+	public boolean isEmpty(){
+		return vectors.isEmpty();
+	}
 
 
 }

@@ -346,5 +346,17 @@ public class WebGL_Shape {
 		}
 	}
 	
+	
+	/**
+	 * Check whether shape is empty
+	 * @return
+	 */
+	public boolean isEmpty(){
+		if(vertexArray==null){
+			return true;
+		}
+		return vertexArray.isEmpty();
+	}
+	
 }
 
