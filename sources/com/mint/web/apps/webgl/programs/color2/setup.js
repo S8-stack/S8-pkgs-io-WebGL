@@ -20,9 +20,13 @@ program.initialize = function(){
 
 
 program.bind = function(view, environment){
+	// enable location
+	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
 };
 
 program.unbind = function(){
+	// disable location
+	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
 };
 
 program.loadStyle = function(style){
@@ -32,12 +36,18 @@ program.loadStyle = function(style){
 };
 
 
-program.loadShape = function(shape){
+program.bindShape = function(shape){
 	
 	// matrices
 	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, shape.matrix_ProjectionViewModel.c);
 	
 	// attributes
 	shape.vertex.bind(this.loc_Attribute_vertex);
+};
+
+program.unbindShape = function(shape){	
+	
+	/* unbind attributes */
+	shape.vertex.unbind(this.loc_Attribute_vertex);
 };
 

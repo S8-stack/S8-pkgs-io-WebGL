@@ -50,9 +50,16 @@ program.bind = function(view, environment){
 	gl.uniform4fv(this.loc_Uniform_light1_diffuse, environment.light1.diffuse);
 	gl.uniform4fv(this.loc_Uniform_light1_specular, environment.light1.specular);
 	gl.uniform3fv(this.loc_Uniform_light1_direction, environment.light1.direction);
+	
+	// enable location
+	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
+	gl.enableVertexAttribArray(this.loc_Attribute_normal);
 };
 
 program.unbind = function(){
+	// disable location
+	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
+	gl.disableVertexAttribArray(this.loc_Attribute_normal);
 };
 
 program.loadStyle = function(style){
@@ -66,7 +73,7 @@ program.loadStyle = function(style){
 };
 
 
-program.loadShape = function(shape){
+program.bindShape = function(shape){
 	
 	// matrices
 	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, shape.matrix_ProjectionViewModel.c);
@@ -76,5 +83,12 @@ program.loadShape = function(shape){
 	// attributes
 	shape.vertex.bind(this.loc_Attribute_vertex);
 	shape.normal.bind(this.loc_Attribute_normal);
+};
+
+program.unbindShape = function(shape){	
+	
+	/* unbind attributes */
+	shape.vertex.unbind(this.loc_Attribute_vertex);
+	shape.normal.unbind(this.loc_Attribute_normal);
 };
 

@@ -77,11 +77,15 @@ WebGL_Shape.prototype = {
 				this.matrix_ViewModel.multiply(this.matrix_View, this.matrix_Model);
 				this.matrix_Normal.transposeInverse4(this.matrix_ViewModel);
 				
-				// bond to program
-				program.loadShape(this);
+				// bind to program
+				program.bindShape(this);
 				
 				// render elements
 				this.element.render();
+				
+				// unbind of program
+				program.unbindShape(this);
+				
 			}
 		},
 		
@@ -136,14 +140,16 @@ WebGL_ArrayBuffer.prototype = {
 		/** Bind the buffer for rendering */
 		bind : function(location) {
 
-			// enable location
-			gl.enableVertexAttribArray(location);
 
 			// bind buffer
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferHandle);
 			gl.vertexAttribPointer(location, this.dimension, gl.FLOAT, false, 0, 0);
 		},
 
+		
+		unbind : function(location) {
+		},
+		
 		/**
 		 * Dispose the buffer
 		 */

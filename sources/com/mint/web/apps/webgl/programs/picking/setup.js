@@ -21,16 +21,20 @@ program.initialize = function(){
 
 
 program.bind = function(view, environment){
+	// enable location
+	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
 };
 
 program.unbind = function(){
+	// disable location
+	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
 };
 
 program.loadStyle = function(style){
 };
 
 
-program.loadShape = function(shape){
+program.bindShape = function(shape){
 
 
 	gl.uniform3fv(this.loc_Uniform_pickingColor, shape.pickingColor);
@@ -42,5 +46,9 @@ program.loadShape = function(shape){
 	shape.vertex.bind(this.loc_Attribute_vertex);
 };
 
-
+program.unbindShape = function(shape){	
+	
+	/* unbind attributes */
+	shape.vertex.unbind(this.loc_Attribute_vertex);
+};
 

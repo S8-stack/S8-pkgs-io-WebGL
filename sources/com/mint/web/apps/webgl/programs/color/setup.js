@@ -18,16 +18,23 @@ program.initialize = function(){
 
 
 program.bind = function(view, environment){
+	// enable location
+	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
+	gl.enableVertexAttribArray(this.loc_Attribute_color);
 };
 
 program.unbind = function(){
+
+	// enable location
+	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
+	gl.disableVertexAttribArray(this.loc_Attribute_color);
 };
 
 program.loadStyle = function(style){
 };
 
 
-program.loadShape = function(shape){
+program.bindShape = function(shape){
 	
 	// matrices
 	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, shape.matrix_ProjectionViewModel.c);
@@ -35,5 +42,12 @@ program.loadShape = function(shape){
 	// attributes
 	shape.vertex.bind(this.loc_Attribute_vertex);
 	shape.color.bind(this.loc_Attribute_color);
+};
+
+program.unbindShape = function(shape){	
+	
+	/* unbind attributes */
+	shape.vertex.unbind(this.loc_Attribute_vertex);
+	shape.color.unbind(this.loc_Attribute_texCoord);
 };
 

@@ -30,9 +30,16 @@ program.initialize = function(){
 program.bind = function(view, environment){
 	gl.uniform3fv(this.loc_Uniform_eyePosition, view.eyePosition.c);
 	environment.environmentTexture.bind(this.loc_Uniform_texture, 0);
+	
+	// enable location
+	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
+	gl.enableVertexAttribArray(this.loc_Attribute_normal);
 }
 
 program.unbind = function(){
+	// disable location
+	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
+	gl.disableVertexAttribArray(this.loc_Attribute_normal);
 };
 
 
@@ -42,7 +49,7 @@ program.loadStyle = function(style){
 /**
  * Shape uniforms and attributes loading
  */
-program.loadShape = function(shape){
+program.bindShape = function(shape){
 
 	// matrices
 	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, shape.matrix_ProjectionViewModel.c);
@@ -53,5 +60,12 @@ program.loadShape = function(shape){
 	 */
 	shape.vertex.bind(this.loc_Attribute_vertex);
 	shape.normal.bind(this.loc_Attribute_normal);
+};
+
+program.unbindShape = function(shape){	
+	
+	/* unbind attributes */
+	shape.vertex.unbind(this.loc_Attribute_vertex);
+	shape.normal.unbind(this.loc_Attribute_normal);
 };
 
