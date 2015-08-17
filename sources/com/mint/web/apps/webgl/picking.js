@@ -112,9 +112,7 @@ function WebGL_PickingModule(scene){
 
 	var _this = this;
 	canvas.addEventListener('click', function(event) { 
-		if(event.shiftKey){
-			_this.callback(_this.pick(event.clientX, event.clientY));
-		}
+		_this.callback(event, _this.pick(event.clientX, event.clientY));
 	}, false);
 
 }
