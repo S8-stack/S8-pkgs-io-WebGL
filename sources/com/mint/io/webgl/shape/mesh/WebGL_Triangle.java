@@ -12,7 +12,12 @@ public class WebGL_Triangle extends WebGL_Element {
 	}
 
 	@Override
-	public void shift(int offset) {
+	public WebGL_Triangle shift(int offset) {
+		return new WebGL_Triangle(i0+offset, i1+offset, i2+offset);
+	}
+	
+	@Override
+	public void shiftInPlace(int offset) {
 		this.i0 += offset;
 		this.i1 += offset;
 		this.i2 += offset;

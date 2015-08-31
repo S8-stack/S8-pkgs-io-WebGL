@@ -33,17 +33,19 @@ public class WebGL_ElementArray {
 	}
 
 	public void add(WebGL_Element element){
-		element.shift(shape.getElementIndexOffset());
+		element.shiftInPlace(shape.getElementIndexOffset());
 		elements.add(element);
 	}
+	
 	
 	public List<WebGL_Element> getElements(){
 		return elements;
 	}
 	
 	public void add(WebGL_ElementArray array){
+		int offset = shape.getElementIndexOffset();
 		for(WebGL_Element element : array.getElements()){
-			add(element);
+			elements.add(element.shift(offset));
 		}
 	}
 

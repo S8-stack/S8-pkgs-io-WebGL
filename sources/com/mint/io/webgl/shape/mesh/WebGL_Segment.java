@@ -11,7 +11,12 @@ public class WebGL_Segment extends WebGL_Element {
 	}
 
 	@Override
-	public void shift(int offset) {
+	public WebGL_Segment shift(int offset) {
+		return new WebGL_Segment(i0+offset, i1+offset);
+	}
+	
+	@Override
+	public void shiftInPlace(int offset) {
 		this.i0 += offset;
 		this.i1 += offset;
 	}

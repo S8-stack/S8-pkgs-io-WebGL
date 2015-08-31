@@ -272,7 +272,7 @@ public class WebGL_Shape {
 		}
 
 		// vTangent attributes
-		if(isVertexDefined()){
+		if(isVTangentDefined()){
 			vTangentArray.add(shape.getVTangentArray());
 		}
 
