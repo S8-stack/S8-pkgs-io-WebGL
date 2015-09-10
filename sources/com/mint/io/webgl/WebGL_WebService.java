@@ -1,6 +1,7 @@
 package com.mint.io.webgl;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -65,56 +66,60 @@ public class WebGL_WebService extends WebService {
 	public void process(WebRequest request, OutputStream outputStream) throws IOException, JAXBException, Exception {
 
 		String id = request.get("id");
-		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-
+		
 		switch(Action.valueOf(request.get("action"))){
 
+		// Shape
+		case GetShape: getShape(id, outputStream); break;
 
-		// <Shape>
-		case GetShape:
-			if(shapes.containsKey(id)){
-				shapes.get(id).write(writer);
-				shapes.remove(id);
-			}else{
-				throw new Exception("Shape with id:"+id+" cannot be retrieved.");
-			}
-			break;
-			// </Shape>
+		// Style
+		case GetStyle: getStyle(id, outputStream); break;
 
-
-			// <Style>
-		case GetStyle:
-			writeResource("apps/webgl/styles/"+id+".js", writer, "\n");
-			break;
-			// </Style>
-
-			// <Program>
-		case GetProgram:
-
-			// write vertex shader source
-			writer.append("var vertex_shader_source = \"");
-			writeResource("apps/webgl/programs/"+id+"/vertex.vsh", writer, "");
-			writer.append("\";\n");
-
-			// write fragment shader source
-			writer.append("var fragment_shader_source = \"");
-			writeResource("apps/webgl/programs/"+id+"/fragment.fsh", writer, "");
-			writer.append("\";\n");
-
-			// write js code
-			writeResource("apps/webgl/programs/"+id+"/setup.js", writer, "\n");
-			break;
-			// </Program>
+		// Program
+		case GetProgram: getProgram(id, outputStream); break;
+		
 		}
-
-
-		writer.close();
 
 	}
 
 
+	private void getShape(String id, OutputStream outputStream) throws Exception{
+		BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
+		if(shapes.containsKey(id)){
+			shapes.get(id).write(bufferedWriter);
+			shapes.remove(id);
+		}else{
+			throw new Exception("Shape with id:"+id+" cannot be retrieved.");
+		}
+		bufferedWriter.close();
+	}
+	
+	
+	private void getStyle(String id, OutputStream outputStream) throws Exception{
+		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+		writeResource("apps/webgl/styles/"+id+".js", writer, "\n");
+		writer.close();
+	}
 
 
+	private void getProgram(String id, OutputStream outputStream) throws Exception{
+
+		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
+		// write vertex shader source
+		writer.append("var vertex_shader_source = \"");
+		writeResource("apps/webgl/programs/"+id+"/vertex.vsh", writer, "");
+		writer.append("\";\n");
+
+		// write fragment shader source
+		writer.append("var fragment_shader_source = \"");
+		writeResource("apps/webgl/programs/"+id+"/fragment.fsh", writer, "");
+		writer.append("\";\n");
+
+		// write js code
+		writeResource("apps/webgl/programs/"+id+"/setup.js", writer, "\n");
+		writer.close();
+
+	}
 	private static void writeResource(String pathname, OutputStreamWriter writer, String endOfLine) throws Exception{
 
 		InputStream inputStream = WebServer.class.getResourceAsStream(pathname);

@@ -10,7 +10,6 @@ function WebGL_PickingModule(scene){
 	this.scene = scene;
 
 	this.program = new WebGL_Program("picking");
-	this.program.displayList = scene.shapes;
 
 
 	this.width = gl.viewportWidth;
@@ -135,6 +134,7 @@ WebGL_PickingModule.prototype = {
 			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 			// render the shapes (in environment=null)
+			this.program.displayList = scene.getShapes();
 			this.program.render(null, null);
 
 			var pickedColor = new Uint8Array(4); 
@@ -145,9 +145,11 @@ WebGL_PickingModule.prototype = {
 			//alert("r="+pickedColor[0]+", g="+pickedColor[1]+", b="+pickedColor[2]);
 			var index = pickedColor[0]+pickedColor[1]*255+pickedColor[2]*65025-32;
 			if(index>=0 && index<this.scene.shapes.length){
+				//alert(this.scene.shapes[index].id);
 				return this.scene.shapes[index].id;
 			}
 			else{
+				//alert("not picked "+index);
 				return null;
 			}
 		},		

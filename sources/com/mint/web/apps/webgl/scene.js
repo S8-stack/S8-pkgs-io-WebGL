@@ -88,6 +88,31 @@ WebGL_Scene.prototype = {
 			this.render();
 		},
 
+		
+		/**
+		 * [WebGL_Scene API method]
+		 * clear scene by deleting all shapes
+		 */
+		clear : function(){
+			
+			// remove all shapes on the programs
+			for(var i in this.programs){
+				this.programs[i].removeAllShapes();
+			}
+			
+			// dispose all shapes in direct list
+			for(var i in this.shapes){
+				//this.shape[i].dispose();					
+			}
+			this.shapes = [];
+			
+			
+			// update picking
+			this.picking.updatePickingColors();
+			
+			// do a rendering pass to apply changes
+			this.render();
+		},
 
 		/**
 		 * Render
@@ -135,6 +160,10 @@ WebGL_Scene.prototype = {
 			return program;
 		},
 		
+		
+		getShapes(){
+			return this.shapes;
+		},
 		
 		/**
 		 * sort programs

@@ -102,6 +102,13 @@ WebGL_Program.prototype = {
 			}
 			return null;
 		},
+		
+		
+		removeAllShapes : function(){
+			for(var i=0; i<this.displayList.length; i++){
+				this.displayList[i].removeAllShapes();
+			}
+		},
 
 		
 		/* dispose program-related disposable */

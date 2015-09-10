@@ -2,7 +2,7 @@ package com.mint.io.webgl.shape.vertex;
 
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 import com.mint.io.webgl.shape.WebGL_Shape;
 import com.mint.mathematics.linear.Ad;
@@ -33,10 +33,10 @@ public abstract class WebGL_AttributeArray {
 	
 	public abstract String getKeyword();
 	
-	public abstract void writeSetup(OutputStreamWriter builder) throws IOException;
+	public abstract void writeSetup(Writer writer) throws IOException;
 	
-	public void writeDispose(OutputStreamWriter builder) throws IOException{
-		builder.append("this."+getKeyword()+".dispose();");
+	public void writeDispose(Writer writer) throws IOException{
+		writer.append("this."+getKeyword()+".dispose();");
 	}
 
 

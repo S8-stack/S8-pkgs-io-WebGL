@@ -2,7 +2,7 @@ package com.mint.io.webgl.shape;
 
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.Writer;
 
 import com.mint.io.webgl.shape.mesh.WebGL_ElementArray;
 import com.mint.io.webgl.shape.mesh.WebGL_ElementType;
@@ -83,8 +83,8 @@ public class WebGL_Shape {
 	 * options
 	 */
 	private AttributesOptions options;
-	
-	
+
+
 	private WebGL_ElementType elementType;
 
 	public static class AttributesOptions {
@@ -96,23 +96,23 @@ public class WebGL_Shape {
 		public boolean isColorDefined;
 	}
 
-	
+
 	/**
 	 * @return the elementType
 	 */
 	public WebGL_ElementType getElementType() {
 		return elementType;
 	}
-	
-	
+
+
 	/**
 	 * @return the options
 	 */
 	public AttributesOptions getAttributesOptions() {
 		return options;
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * @param dimension
@@ -122,10 +122,10 @@ public class WebGL_Shape {
 
 		// options
 		this.options = attributeOptions;
-		
+
 		// WebGL_ElementType
 		this.elementType = elementType;
-		
+
 		// transformation
 		currentTransformation = Ad.STANDARD_3D;
 
@@ -296,7 +296,11 @@ public class WebGL_Shape {
 	 * @return
 	 * @throws IOException 
 	 */
-	public void write(OutputStreamWriter builder) throws IOException{
+	public void write(Writer builder) throws IOException{
+
+		// DEBUG
+		//long time = System.nanoTime();
+
 
 		// write setup
 		builder.append("shape.initialize = function(){\n");
@@ -324,29 +328,51 @@ public class WebGL_Shape {
 		elementsArray.writeDispose(builder);
 
 		builder.append("};\n");
+		/*
+		time = System.nanoTime() - time;
+		times.add(new Double(time));
+		 */
 	}
 
-	
+	/*
+	private static List<Double> times = new ArrayList<Double>();
+
+	public static void DEBUG_clearAverageTime(){
+		times = new ArrayList<Double>();
+	}
+
+	public static void DEBUG_printAverageTime(){
+		int n = times.size();
+		double elapsed=0;
+		for(double time : times){
+			elapsed+=time;
+		}
+		elapsed/=(n*1e6);
+		System.out.println("WebGL_Shape Average serialization done in: "+elapsed);
+	}
+	 */
+
+
 	public static void focus(WebGL_Shape[] shapes){
-		
+
 		// build bounding box
 		BoundingBox boundingBox3d = new BoundingBox(3);
 		for(WebGL_Shape shape : shapes){
 			shape.update(boundingBox3d);	
 		}
-		
-		
+
+
 		// first transformation set center to the screen center
 		for(WebGL_Shape shape : shapes){
 			shape.transform(new Ad(boundingBox3d.getCenter().opposite()));	
 		}
-		
+
 		for(WebGL_Shape shape : shapes){
 			shape.transform(new Ad(Md.scaleMatrix3D(10.0/boundingBox3d.getRadius())));	
 		}
 	}
-	
-	
+
+
 	/**
 	 * Check whether shape is empty
 	 * @return
@@ -357,6 +383,6 @@ public class WebGL_Shape {
 		}
 		return vertexArray.isEmpty();
 	}
-	
+
 }
 

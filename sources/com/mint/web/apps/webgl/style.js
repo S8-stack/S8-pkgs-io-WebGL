@@ -85,6 +85,10 @@ WebGL_Style.prototype = {
 			this.displayList.splice(this.getShapeIndex(id), 1);
 		},
 		
+		removeAllShapes : function(){
+			this.displayList = [];
+		},
+		
 		
 		getShapeIndex : function(id){
 			var i=0; n=this.displayList.length;

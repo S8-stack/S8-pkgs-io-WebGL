@@ -1,7 +1,7 @@
 package com.mint.io.webgl.shape.vertex;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,9 +57,17 @@ public abstract class WebGL_AttributeArray3d extends WebGL_AttributeArray {
 	}
 
 
-
+ 
 	private final static int MAX_NUMBER_OF_VECTOR_PER_LINE = 20;
 
+
+	/*
+	private final static String SEPARATOR0 = ", ";
+	private final static String SEPARATOR1 = "]);\n";
+	
+	*/
+	private final static String EOL = "\n";
+	
 	/**
 	 * 
 	 * @param builder
@@ -67,18 +75,59 @@ public abstract class WebGL_AttributeArray3d extends WebGL_AttributeArray {
 	 * @throws IOException
 	 */
 	@Override
-	public void writeSetup(OutputStreamWriter builder) throws IOException{
-		builder.append("this."+getKeyword()+"=new WebGL_ArrayBuffer(3, [");
+	public void writeSetup(Writer writer) throws IOException{
+		//long time = System.nanoTime();
+		writer.append("this."+getKeyword()+"=new WebGL_ArrayBuffer(3, [");
 		int n = size();
 		Vd vector;
 		for(int i=0; i<n; i++){
 			vector = vectors.get(i);
-			builder.append(vector.get(0)+", "+vector.get(1)+", "+vector.get(2)+((i==n-1)?"]);\n":", "));
+			writer.write(vector.get(0)+", "+vector.get(1)+", "+vector.get(2)+((i==n-1)?"]);\n":", "));
 			if((i+1)%MAX_NUMBER_OF_VECTOR_PER_LINE==0){
-				builder.append("\n");
+				writer.write(EOL);
 			}
-		}	
+			/*
+			builder.append(Double.toString(vector.get(0)));
+			builder.append(SEPARATOR0);
+			builder.append(Double.toString(vector.get(1)));
+			builder.append(SEPARATOR0);
+			builder.append(Double.toString(vector.get(2)));
+			if(i==n-1){
+				builder.append(SEPARATOR1);
+			}
+			else{
+				builder.append(SEPARATOR0);
+			}
+			
+			
+			*/
+		}
+		/*
+		time = System.nanoTime() - time;
+		times.add(new Double(time/vectors.size()));
+		*/
 	}
+	
+	/* <debug> */
+	
+	/*
+	private static List<Double> times = new ArrayList<Double>();
+	
+	
+	public static void DEBUG_clearAverageTime(){
+		times = new ArrayList<Double>();
+	}
+	
+	public static void DEBUG_printAverageTime(){
+		int n = times.size();
+		double elapsed=0;
+		for(double time : times){
+			elapsed+=time;
+		}
+		elapsed/=(n*1e6);
+		System.out.println("Average serialization done in: "+elapsed);
+	}
+	*/
 	
 
 
