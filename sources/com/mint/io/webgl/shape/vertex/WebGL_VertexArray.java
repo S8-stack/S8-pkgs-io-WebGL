@@ -30,7 +30,8 @@ public class WebGL_VertexArray extends WebGL_AttributeArray3d {
 			boundingBox3d.update(vector);
 		}
 	}
-	
+
+
 
 
 

@@ -1,7 +1,7 @@
 package com.mint.io.webgl.shape.vertex;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +45,6 @@ public abstract class WebGL_AttributeArray2d extends WebGL_AttributeArray {
 	
 	
 
-	private static final int MAX_NUMBER_OF_VECTOR_PER_LINE = 20;
 
 	/**
 	 * 
@@ -54,16 +53,10 @@ public abstract class WebGL_AttributeArray2d extends WebGL_AttributeArray {
 	 * @throws IOException
 	 */
 	@Override
-	public void writeSetup(Writer writer) throws IOException{
-		writer.append("this."+getKeyword()+"=new WebGL_ArrayBuffer(2, [");
-		int n = size();
-		Vd vector;
-		for(int i=0; i<n; i++){
-			vector = vectors.get(i);
-			writer.append(vector.get(0)+", "+vector.get(1)+((i==n-1)?"]);\n":", "));
-			if((i+1)%MAX_NUMBER_OF_VECTOR_PER_LINE==0){
-				writer.append("\n");
-			}
+	public void write(DataOutputStream outputStream) throws IOException{
+		for(Vd vector : vectors){
+			outputStream.writeFloat((float) vector.get(0));
+			outputStream.writeFloat((float) vector.get(1));
 		}	
 	}
 }

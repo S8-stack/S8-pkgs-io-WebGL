@@ -1,5 +1,8 @@
 package com.mint.io.webgl.shape.mesh;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 public class WebGL_Segment extends WebGL_Element {
 
 	public int i0, i1;
@@ -37,5 +40,11 @@ public class WebGL_Segment extends WebGL_Element {
 	@Override
 	public String toString(){
 		return i0+", "+i1;
+	}
+
+	@Override
+	public void write(DataOutputStream outputStream) throws IOException {
+		writeAsUInt16(outputStream, i0);
+		writeAsUInt16(outputStream, i1);
 	}
 }

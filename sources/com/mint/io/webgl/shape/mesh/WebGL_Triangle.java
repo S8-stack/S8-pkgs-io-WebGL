@@ -1,5 +1,8 @@
 package com.mint.io.webgl.shape.mesh;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 public class WebGL_Triangle extends WebGL_Element {
 
 	public int i0, i1, i2;
@@ -43,4 +46,10 @@ public class WebGL_Triangle extends WebGL_Element {
 		return i0+", "+i1+", "+i2;
 	}
 
+	@Override
+	public void write(DataOutputStream outputStream) throws IOException {
+		writeAsUInt16(outputStream, i0);
+		writeAsUInt16(outputStream, i1);
+		writeAsUInt16(outputStream, i2);
+	}
 }

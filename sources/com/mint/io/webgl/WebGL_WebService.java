@@ -1,7 +1,9 @@
 package com.mint.io.webgl;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -34,28 +36,49 @@ public class WebGL_WebService extends WebService {
 	}
 
 
-	private enum Action {
-		GetShape, GetStyle, GetProgram;
-	}
-
-
 	/**
 	 * identifier generator for shape access codes
 	 */
 	private IdentifierGenerator idGen = new IdentifierGenerator(12, "shape");
 
 
-	private Map<String, WebGL_Shape> shapes = new HashMap<String, WebGL_Shape>();
+	private Map<String, ShapeEntry> shapes = new HashMap<String, ShapeEntry>();
+	
 
-
+	private class ShapeEntry {
+		
+		private String id;
+		private WebGL_Shape shape;
+		private int count; 
+		
+		public ShapeEntry(String id, WebGL_Shape shape) {
+			super();
+			this.count = 0;
+			this.shape = shape;
+			this.id= id;
+		}
+	
+		public synchronized WebGL_Shape get(){
+			count++;
+			if(count==3){
+				shapes.remove(id);
+			}
+			return shape;
+		}
+	}
+	
+	
+	
+	
 	/**
 	 * put a shape in the WebGL service for later display within client side
 	 * @param shape
 	 * @return
 	 */
-	public String put(WebGL_Shape shape){
+	public synchronized String put(WebGL_Shape shape){
 		String id = idGen.create();
-		shapes.put(id, shape);
+		ShapeEntry entry = new ShapeEntry(id, shape);
+		shapes.put(id, entry);
 		return id;
 	}
 
@@ -67,31 +90,59 @@ public class WebGL_WebService extends WebService {
 
 		String id = request.get("id");
 		
-		switch(Action.valueOf(request.get("action"))){
+		switch(request.get("action")){
 
 		// Shape
-		case GetShape: getShape(id, outputStream); break;
+		case "GetShape": getShapeOutline(id, outputStream); break;
+
+		// Vertex Arrays Block
+		case "GetVertexArraysBlock": getVertexArraysBlock(id, outputStream); break;
+
+		// Element Array
+		case "GetElementArray": getElementArray(id, outputStream); break;
 
 		// Style
-		case GetStyle: getStyle(id, outputStream); break;
+		case "GetStyle": getStyle(id, outputStream); break;
 
 		// Program
-		case GetProgram: getProgram(id, outputStream); break;
+		case "GetProgram": getProgram(id, outputStream); break;
 		
 		}
 
 	}
 
 
-	private void getShape(String id, OutputStream outputStream) throws Exception{
+	private void getShapeOutline(String id, OutputStream outputStream) throws Exception{
 		BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream));
 		if(shapes.containsKey(id)){
-			shapes.get(id).write(bufferedWriter);
-			shapes.remove(id);
+			shapes.get(id).get().writeOutline(bufferedWriter);
+			
 		}else{
 			throw new Exception("Shape with id:"+id+" cannot be retrieved.");
 		}
 		bufferedWriter.close();
+	}
+	
+	private void getVertexArraysBlock(String id, OutputStream outputStream) throws Exception{
+		DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(outputStream));
+		if(shapes.containsKey(id)){
+			shapes.get(id).get().writeVertexArraysBlock(dataOutputStream);
+			
+		}else{
+			throw new Exception("Shape with id:"+id+" cannot be retrieved.");
+		}
+		dataOutputStream.close();
+	}
+	
+	private void getElementArray(String id, OutputStream outputStream) throws Exception{
+		DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(outputStream));
+		if(shapes.containsKey(id)){
+			shapes.get(id).get().writeElementArray(dataOutputStream);
+			
+		}else{
+			throw new Exception("Shape with id:"+id+" cannot be retrieved.");
+		}
+		dataOutputStream.close();
 	}
 	
 	

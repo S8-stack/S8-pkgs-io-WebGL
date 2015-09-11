@@ -1,6 +1,7 @@
 package com.mint.io.webgl.shape;
 
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.Writer;
 
@@ -296,44 +297,44 @@ public class WebGL_Shape {
 	 * @return
 	 * @throws IOException 
 	 */
-	public void write(Writer builder) throws IOException{
+	public void writeOutline(Writer builder) throws IOException{
 
 		// DEBUG
 		//long time = System.nanoTime();
 
+		/*
+		 *	this.nbVertices
+		 * 	this.nbElements;
+		 * 
+		 * 	(0) this.isVertexDefined
+		 * 	(1) this.isNormalDefined
+		 * 	(2) this.isUTangentDefined;
+		 * 	(3) this.isVTangentDefined;
+		 * 	(4) this.isTexCoordDefined;
+		 * 	(5) this.isColorDefined;
+		 * 
+		 * 	this.elementDimension;
+		 */
 
 		// write setup
-		builder.append("shape.initialize = function(){\n");
+		builder.append("shape.nbVertices="+vertexArray.getNumberOfVertices()+";\n");
+		builder.append("shape.nbElements="+elementsArray.getNumberOfElements()+";\n");
 
-		if(isVertexDefined()){ vertexArray.writeSetup(builder); }
-		if(isNormalDefined()){ normalArray.writeSetup(builder); }
-		if(isUTangentDefined()){ uTangentArray.writeSetup(builder); }
-		if(isVTangentDefined()){ vTangentArray.writeSetup(builder); }
-		if(isTexCoordDefined()){ texCoordArray.writeSetup(builder); }
-		if(isColorDefined()){ colorArray.writeSetup(builder); }
+		builder.append("shape.isVertexDefined="+isVertexDefined()+";\n"); 
+		builder.append("shape.isNormalDefined="+isNormalDefined()+";\n"); 
+		builder.append("shape.isUTangentDefined="+isUTangentDefined()+";\n"); 
+		builder.append("shape.isVTangentDefined="+isVTangentDefined()+";\n"); 
+		builder.append("shape.isTexCoordDefined="+isTexCoordDefined()+";\n"); 
+		builder.append("shape.isColorDefined="+isColorDefined()+";\n"); 
+		
+		builder.append("shape.elementDimension="+elementsArray.getDimension()+";\n"); 
 
-		elementsArray.writeSetup(builder);
-		builder.append("};\n");
-
-		// write dispose
-		builder.append("shape.dispose = function(){\n");
-
-		if(isVertexDefined()){ vertexArray.writeDispose(builder); }
-		if(isNormalDefined()){ normalArray.writeDispose(builder); }
-		if(isUTangentDefined()){ uTangentArray.writeDispose(builder); }
-		if(isVTangentDefined()){ vTangentArray.writeDispose(builder); }
-		if(isTexCoordDefined()){ texCoordArray.writeDispose(builder); }
-		if(isColorDefined()){ colorArray.writeDispose(builder); }
-
-		elementsArray.writeDispose(builder);
-
-		builder.append("};\n");
 		/*
 		time = System.nanoTime() - time;
 		times.add(new Double(time));
 		 */
 	}
-
+	
 	/*
 	private static List<Double> times = new ArrayList<Double>();
 
@@ -382,6 +383,37 @@ public class WebGL_Shape {
 			return true;
 		}
 		return vertexArray.isEmpty();
+	}
+	
+	
+	
+	
+
+	
+	public void writeVertexArraysBlock(DataOutputStream outputStream) throws IOException{
+		if(isVertexDefined()){
+			vertexArray.write(outputStream);
+		}
+		if(isNormalDefined()){
+			normalArray.write(outputStream);
+		}
+		if(isUTangentDefined()){
+			uTangentArray.write(outputStream);
+		}
+		if(isVTangentDefined()){
+			vTangentArray.write(outputStream);
+		}
+		if(isTexCoordDefined()){
+			texCoordArray.write(outputStream);
+		}
+		if(isColorDefined()){
+			colorArray.write(outputStream);
+		}
+	}
+
+	
+	public void writeElementArray(DataOutputStream dataOutputStream) throws IOException {
+		elementsArray.write(dataOutputStream);
 	}
 
 }

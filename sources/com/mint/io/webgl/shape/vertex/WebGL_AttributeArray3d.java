@@ -1,7 +1,7 @@
 package com.mint.io.webgl.shape.vertex;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,55 +57,24 @@ public abstract class WebGL_AttributeArray3d extends WebGL_AttributeArray {
 	}
 
 
- 
-	private final static int MAX_NUMBER_OF_VECTOR_PER_LINE = 20;
-
-
-	/*
-	private final static String SEPARATOR0 = ", ";
-	private final static String SEPARATOR1 = "]);\n";
-	
-	*/
-	private final static String EOL = "\n";
 	
 	/**
 	 * 
-	 * @param builder
+	 * @param writer
 	 * @param vectors
 	 * @throws IOException
 	 */
 	@Override
-	public void writeSetup(Writer writer) throws IOException{
-		//long time = System.nanoTime();
-		writer.append("this."+getKeyword()+"=new WebGL_ArrayBuffer(3, [");
-		int n = size();
-		Vd vector;
-		for(int i=0; i<n; i++){
-			vector = vectors.get(i);
-			writer.write(vector.get(0)+", "+vector.get(1)+", "+vector.get(2)+((i==n-1)?"]);\n":", "));
-			if((i+1)%MAX_NUMBER_OF_VECTOR_PER_LINE==0){
-				writer.write(EOL);
-			}
-			/*
-			builder.append(Double.toString(vector.get(0)));
-			builder.append(SEPARATOR0);
-			builder.append(Double.toString(vector.get(1)));
-			builder.append(SEPARATOR0);
-			builder.append(Double.toString(vector.get(2)));
-			if(i==n-1){
-				builder.append(SEPARATOR1);
-			}
-			else{
-				builder.append(SEPARATOR0);
-			}
-			
-			
-			*/
-		}
-		/*
-		time = System.nanoTime() - time;
-		times.add(new Double(time/vectors.size()));
-		*/
+	public void write(DataOutputStream outputStream) throws IOException{
+		float x,y,z;
+		for(Vd vector : vectors){
+			x = (float) vector.get(0);
+			y = (float) vector.get(1);
+			z = (float) vector.get(2);
+			outputStream.writeFloat(x);
+			outputStream.writeFloat(y);
+			outputStream.writeFloat(z);
+		}	
 	}
 	
 	/* <debug> */
@@ -141,6 +110,12 @@ public abstract class WebGL_AttributeArray3d extends WebGL_AttributeArray {
 	public boolean isEmpty(){
 		return vectors.isEmpty();
 	}
+	
+
+	public int getNumberOfVertices() {
+		return vectors.size();
+	}
+	
 
 
 }

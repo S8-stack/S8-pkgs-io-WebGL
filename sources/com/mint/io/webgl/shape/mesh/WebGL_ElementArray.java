@@ -1,5 +1,6 @@
 package com.mint.io.webgl.shape.mesh;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -37,6 +38,9 @@ public class WebGL_ElementArray {
 		elements.add(element);
 	}
 	
+	public int getNumberOfElements(){
+		return elements.size();
+	}
 	
 	public List<WebGL_Element> getElements(){
 		return elements;
@@ -71,9 +75,21 @@ public class WebGL_ElementArray {
 			c++;
 		}
 	}
-
 	
-	public void writeDispose(Writer writer) throws IOException{
-		writer.append("this.element.dispose();");
+	/**
+	 * 
+	 * @param writer
+	 * @param vectors
+	 * @throws IOException
+	 */
+	public void write(DataOutputStream outputStream) throws IOException{
+		for(WebGL_Element element : elements){
+			element.write(outputStream);
+		}	
+	}
+
+
+	public int getDimension() {
+		return type.size;
 	}
 }
