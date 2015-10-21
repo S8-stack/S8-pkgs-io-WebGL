@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBException;
@@ -81,7 +82,19 @@ public class WebGL_WebService extends WebService {
 		shapes.put(id, entry);
 		return id;
 	}
+	
 
+	/**
+	 * Dispose a list of shapes
+	 * @param identifiers
+	 */
+	public synchronized void dispose(List<String> identifiers){
+		for(String id : identifiers){
+			if(shapes.containsKey(id)){
+				shapes.remove(id);
+			}
+		}
+	}
 
 
 
