@@ -1,6 +1,5 @@
 package com.mint.io.webgl.test;
 
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
 import com.mint.io.webgl.WebGL_WebService;
@@ -9,7 +8,8 @@ import com.mint.io.webgl.shape.WebGL_Shape;
 import com.mint.io.webgl.shape.mesh.WebGL_ElementType;
 import com.mint.mathematics.linear.Ad;
 import com.mint.mathematics.linear.Vd;
-import com.mint.web.WebRequest;
+import com.mint.web.HTTP_Request;
+import com.mint.web.HTTP_Response;
 import com.mint.web.WebServer;
 import com.mint.web.WebService;
 
@@ -37,7 +37,7 @@ public class WebGL_DebugWebService extends WebService {
 	}
 
 	@Override
-	public void process(WebRequest request, OutputStream outputStream) throws Exception {
+	public void process(HTTP_Request request, HTTP_Response response) throws Exception {
 		
 		String id0 = buildSpheres(3, 3, 3, 5.0, 5.0, 5.0);
 		String id1 = buildSpheres(2, 2, 2, 5.0, 5.0, 5.0);
@@ -54,10 +54,8 @@ public class WebGL_DebugWebService extends WebService {
 		String id2 = webGL_Service.put(shape);
 		
 		
-		OutputStreamWriter writer = new OutputStreamWriter(outputStream, "UTF8");
+		OutputStreamWriter writer = response.start_TEXT();
 		writer.append("var shapeId0=\""+id0+"\"; var shapeId1=\""+id1+"\"; var shapeId2=\""+id2+"\";");
-		writer.close();
-		outputStream.close();
 	}
 
 	
