@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AttirbutesOptions>
+	<vertex>true</vertex>
+	<normal>true</normal>
+	<uTangent>false</uTangent>
+	<vTangent>false</vTangent>
+	<texCoord>false</texCoord>
+	<color>false</color>
+</AttirbutesOptions>

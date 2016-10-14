@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry combineaccessrules="false" kind="src" path="/WebServer"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/mathematics-min-0.2.jar"/>
 	<classpathentry kind="src" path="sources"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Alpha"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
