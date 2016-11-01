@@ -1,6 +1,8 @@
 package com.mint.webgl.test;
 
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+
 
 
 
@@ -51,8 +53,11 @@ public class WebGL_DebugWebService extends HTTP_POST_Service {
 		String id2 = webGL_Service.put(shape);
 
 
-		OutputStreamWriter writer = response.start_TEXT();
+		response.writeHeader("text");
+		OutputStream outputStream = response.getOutputStream();
+		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 		writer.append("var shapeId0=\""+id0+"\"; var shapeId1=\""+id1+"\"; var shapeId2=\""+id2+"\";");
+		writer.close();
 	}
 
 

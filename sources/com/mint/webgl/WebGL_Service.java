@@ -136,18 +136,20 @@ public class WebGL_Service extends HTTP_POST_Service {
 
 
 	private void getShapeOutline(String id, HTTP_Response response) throws Exception{
-		BufferedWriter bufferedWriter = new BufferedWriter(response.start_TEXT());
+		response.writeHeader("text");
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(response.getOutputStream()));
 		if(shapes.containsKey(id)){
-			shapes.get(id).get().writeOutline(bufferedWriter);
+			shapes.get(id).get().writeOutline(writer);
 
 		}else{
 			throw new Exception("Shape with id:"+id+" cannot be retrieved.");
 		}
-		bufferedWriter.close();
+		writer.close();
 	}
 
 	private void getVertexArraysBlock(String id, HTTP_Response response) throws Exception{
-		OutputStream outputStream = response.start_ArrayBuffer();
+		response.writeHeader(null);
+		OutputStream outputStream = response.getOutputStream();
 		DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(outputStream));  
 
 		if(shapes.containsKey(id)){
@@ -157,10 +159,12 @@ public class WebGL_Service extends HTTP_POST_Service {
 			throw new Exception("Shape with id:"+id+" cannot be retrieved.");
 		}
 		dataOutputStream.close();
+		outputStream.close();
 	}
 
 	private void getElementArray(String id, HTTP_Response response) throws Exception{
-		OutputStream outputStream = response.start_ArrayBuffer();
+		response.writeHeader(null);
+		OutputStream outputStream = response.getOutputStream();
 		DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(outputStream));  
 		if(shapes.containsKey(id)){
 			shapes.get(id).get().writeElementArray(dataOutputStream);
@@ -169,19 +173,23 @@ public class WebGL_Service extends HTTP_POST_Service {
 			throw new Exception("Shape with id:"+id+" cannot be retrieved.");
 		}
 		dataOutputStream.close();
+		outputStream.close();
 	}
 
 
 	private void getStyle(String id, HTTP_Response response) throws Exception{
-		OutputStreamWriter writer = response.startResponse();
+		response.writeHeader("application/javascript");
+		OutputStream outputStream = response.getOutputStream();
+		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 		writeResource("apps/webgl/styles/"+id+".js", writer, "\n");
 		writer.close();
 	}
 
 
 	private void getProgram(String id, HTTP_Response response) throws Exception{
-
-		OutputStreamWriter writer = response.startResponse();
+		response.writeHeader("application/javascript");
+		OutputStream outputStream = response.getOutputStream();
+		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 		// write vertex shader source
 		writer.append("var vertex_shader_source = \"");
 		writeResource("apps/webgl/programs/"+id+"/vertex.vsh", writer, "");
