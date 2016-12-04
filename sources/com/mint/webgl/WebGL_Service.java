@@ -15,9 +15,9 @@ import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 
-import com.mint.http.HTTP_POST_Service;
 import com.mint.http.HTTP_Request;
 import com.mint.http.HTTP_Response;
+import com.mint.http.POST.HTTP_POST_Service;
 import com.mint.utilities.IdentifierGenerator;
 import com.mint.web.HTTP_ResourcesRoot;
 import com.mint.webgl.shape.WebGL_AttributesLibrary;
