@@ -3,19 +3,16 @@ package com.mint.webgl.test;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-
-
-
-import com.mint.http.HTTP_POST_Service;
 import com.mint.http.HTTP_Request;
 import com.mint.http.HTTP_Response;
-import com.mint.math.Ad;
-import com.mint.math.Vd;
 import com.mint.webgl.WebGL_Service;
 import com.mint.webgl.primitive.Sphere;
 import com.mint.webgl.shape.WebGL_AttributesSettings;
 import com.mint.webgl.shape.WebGL_Shape;
 import com.mint.webgl.shape.mesh.WebGL_ElementType;
+import com.qx.http.HTTP_POST_Service;
+import com.qx.maths.Ad;
+import com.qx.maths.Vd;
 
 
 /**

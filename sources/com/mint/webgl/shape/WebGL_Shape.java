@@ -5,9 +5,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.mint.math.Ad;
-import com.mint.math.BoundingBox;
-import com.mint.math.Md;
 import com.mint.webgl.shape.mesh.WebGL_ElementArray;
 import com.mint.webgl.shape.mesh.WebGL_ElementType;
 import com.mint.webgl.shape.vertex.WebGL_AttributeArray;
@@ -17,6 +14,9 @@ import com.mint.webgl.shape.vertex.WebGL_TexCoordArray;
 import com.mint.webgl.shape.vertex.WebGL_UTangentArray;
 import com.mint.webgl.shape.vertex.WebGL_VTangentArray;
 import com.mint.webgl.shape.vertex.WebGL_VertexArray;
+import com.qx.maths.Ad;
+import com.qx.maths.BoundingBox;
+import com.qx.maths.Md;
 
 /**
  * Can only be created with factory include in the class as inner class

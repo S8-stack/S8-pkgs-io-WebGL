@@ -4,8 +4,8 @@ package com.mint.webgl.shape.vertex;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import com.mint.math.Ad;
 import com.mint.webgl.shape.WebGL_Shape;
+import com.qx.maths.Ad;
 
 
 public abstract class WebGL_AttributeArray {

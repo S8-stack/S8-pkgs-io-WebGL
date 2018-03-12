@@ -1,13 +1,13 @@
 package com.mint.webgl.primitive;
 
-import com.mint.math.Ad;
-import com.mint.math.Vd;
 import com.mint.webgl.shape.WebGL_Shape;
 import com.mint.webgl.shape.mesh.WebGL_ElementArray;
 import com.mint.webgl.shape.mesh.WebGL_Triangle;
 import com.mint.webgl.shape.vertex.WebGL_NormalArray;
 import com.mint.webgl.shape.vertex.WebGL_TexCoordArray;
 import com.mint.webgl.shape.vertex.WebGL_VertexArray;
+import com.qx.maths.Ad;
+import com.qx.maths.Vd;
 
 
 public class Sphere {

@@ -1,6 +1,6 @@
 package com.mint.webgl;
 
-import com.mint.math.Vd;
+import com.qx.maths.Vd;
 
 
 public class EngineeringColor {

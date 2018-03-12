@@ -2,7 +2,7 @@ package com.mint.webgl.utilities;
 
 import java.util.Hashtable;
 
-import com.mint.math.Vd;
+import com.qx.maths.Vd;
 
 
 

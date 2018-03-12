@@ -1,9 +1,9 @@
 package com.mint.webgl.shape.vertex;
 
 
-import com.mint.math.Ad;
-import com.mint.math.Vd;
 import com.mint.webgl.shape.WebGL_Shape;
+import com.qx.maths.Ad;
+import com.qx.maths.Vd;
 
 public class WebGL_UTangentArray extends WebGL_AttributeArray3d {
 
