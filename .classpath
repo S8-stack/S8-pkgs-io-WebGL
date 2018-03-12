@@ -3,8 +3,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="sources"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Alpha"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/maths"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/utilities"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/lang-JOOS"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/mesh2d"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
