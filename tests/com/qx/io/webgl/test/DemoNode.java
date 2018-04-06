@@ -5,7 +5,7 @@ import java.io.OutputStreamWriter;
 
 import com.qx.io.https.protocol.header.MIME_Type;
 import com.qx.io.https.protocol.session.HTTPS_Session;
-import com.qx.io.https.server.HTTPS_ServerConnection;
+import com.qx.io.https.server.HTTPS_Socket;
 import com.qx.io.https.server.HTTPS_ServerTask.Processing;
 import com.qx.io.https.server.POST.HTTPS_POST_Node;
 import com.qx.io.https.server.POST.HTTPS_POST_RootNode;
@@ -37,7 +37,7 @@ public class DemoNode extends HTTPS_POST_RootNode {
 
 
 	@HTTPS_POST_Method(mapping="getDemoShapes", processing=Processing.CPU_SHORT)
-	public void process(HTTPS_ServerConnection connection) throws Exception {
+	public void process(HTTPS_Socket socket) throws Exception {
 
 		String id0 = buildSpheres(3, 3, 3, 5.0, 5.0, 5.0);
 		String id1 = buildSpheres(2, 2, 2, 5.0, 5.0, 5.0);
@@ -54,9 +54,9 @@ public class DemoNode extends HTTPS_POST_RootNode {
 		String id2 = webGL_Service.put(shape);
 
 		
-		connection.sendContent(MIME_Type.TEXT);
+		socket.sendContent(MIME_Type.TEXT);
 
-		OutputStream outputStream = connection.getOutputStream();
+		OutputStream outputStream = socket.getOutputStream();
 		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 		writer.append("var shapeId0=\""+id0+"\"; var shapeId1=\""+id1+"\"; var shapeId2=\""+id2+"\";");
 		writer.close();
