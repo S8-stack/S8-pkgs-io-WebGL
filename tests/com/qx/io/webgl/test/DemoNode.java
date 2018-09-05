@@ -15,8 +15,8 @@ import com.qx.io.webgl.primitive.Sphere;
 import com.qx.io.webgl.shape.WebGL_AttributesSettings;
 import com.qx.io.webgl.shape.WebGL_Shape;
 import com.qx.io.webgl.shape.mesh.WebGL_ElementType;
-import com.qx.maths.Ad;
-import com.qx.maths.Vd;
+import com.qx.maths.affine.Affine3d;
+import com.qx.maths.vector.Vector3d;
 
 
 /**
@@ -49,7 +49,7 @@ public class DemoNode extends HTTPS_POST_RootNode {
 		WebGL_Shape shape = new WebGL_Shape(options, WebGL_ElementType.TRIANGLE);
 
 
-		new Sphere(6.0, 20).draw(shape, new Ad(new Vd(0, 12, 0.0)));
+		new Sphere(6.0, 20).draw(shape, new Affine3d(new Vector3d(0, 12, 0.0)));
 
 		String id2 = webGL_Service.put(shape);
 
@@ -75,12 +75,12 @@ public class DemoNode extends HTTPS_POST_RootNode {
 
 		Sphere sphere = new Sphere(2.0, 20);
 
-		Vd center;
+		Vector3d center;
 		for(int ix=0; ix<nx; ix++){
 			for(int iy=0; iy<ny; iy++){
 				for(int iz=0; iz<nz; iz++){
-					center = new Vd(ix*ax-(nx-1)*ax/2.0, iy*ay-(ny-1)*ay/2.0, iz*az-(nz-1)*az/2.0);
-					sphere.draw(shape, new Ad(center));
+					center = new Vector3d(ix*ax-(nx-1)*ax/2.0, iy*ay-(ny-1)*ay/2.0, iz*az-(nz-1)*az/2.0);
+					sphere.draw(shape, new Affine3d(center));
 				}
 			}
 		}

@@ -2,7 +2,7 @@ package com.qx.io.webgl.utilities;
 
 import java.util.Hashtable;
 
-import com.qx.maths.Vd;
+import com.qx.maths.vector.Vector3d;
 
 
 
@@ -143,7 +143,7 @@ public class Rainbow {
 	public static void main(String[] args){
 		Rainbow rainbow = new Rainbow();
 		
-		System.out.println(new Vd(rainbow.colourAt(0.5)));
+		System.out.println(new Vector3d(rainbow.colourAt(0.5)));
 	}
 	
 }

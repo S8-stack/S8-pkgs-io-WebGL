@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.qx.io.webgl.shape.WebGL_Shape;
-import com.qx.maths.Vd;
+import com.qx.maths.vector.Vector2d;
 
 
 public abstract class WebGL_AttributeArray2d extends WebGL_AttributeArray {
@@ -14,7 +14,7 @@ public abstract class WebGL_AttributeArray2d extends WebGL_AttributeArray {
 	/**
 	 * vertices
 	 */
-	private List<Vd> vectors = new ArrayList<Vd>();
+	private List<Vector2d> vectors = new ArrayList<>();
 
 	
 	public WebGL_AttributeArray2d(WebGL_Shape shape){
@@ -27,18 +27,18 @@ public abstract class WebGL_AttributeArray2d extends WebGL_AttributeArray {
 		return vectors.size();
 	}
 	
-	public void add(Vd vector){
+	public void add(Vector2d vector){
 		vectors.add(vector.clone());
 	}
 	
 	@Override
 	public void add(WebGL_AttributeArray vertexAttributeArray){
-		for(Vd vertexAttribute : ((WebGL_AttributeArray2d) vertexAttributeArray).getVectors()){
+		for(Vector2d vertexAttribute : ((WebGL_AttributeArray2d) vertexAttributeArray).getVectors()){
 			this.vectors.add(vertexAttribute.clone());	
 		}
 	}
 	
-	public List<Vd> getVectors(){
+	public List<Vector2d> getVectors(){
 		return vectors;
 	}
 	
@@ -54,7 +54,7 @@ public abstract class WebGL_AttributeArray2d extends WebGL_AttributeArray {
 	 */
 	@Override
 	public void write(DataOutputStream outputStream) throws IOException{
-		for(Vd vector : vectors){
+		for(Vector2d vector : vectors){
 			outputStream.writeFloat((float) vector.get(0));
 			outputStream.writeFloat((float) vector.get(1));
 		}	

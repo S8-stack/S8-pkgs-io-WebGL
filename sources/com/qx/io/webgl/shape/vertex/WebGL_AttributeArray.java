@@ -5,7 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 
 import com.qx.io.webgl.shape.WebGL_Shape;
-import com.qx.maths.Ad;
+import com.qx.maths.affine.Affine3d;
 
 
 public abstract class WebGL_AttributeArray {
@@ -22,7 +22,7 @@ public abstract class WebGL_AttributeArray {
 		this.shape = shape;
 	}
 	
-	public Ad getCurrentTransformation(){
+	public Affine3d getCurrentTransformation(){
 		return shape.getCurrentTransformation();
 	}
 

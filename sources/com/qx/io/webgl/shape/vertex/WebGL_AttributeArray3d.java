@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.qx.io.webgl.shape.WebGL_Shape;
-import com.qx.maths.Ad;
-import com.qx.maths.Vd;
+import com.qx.maths.affine.Affine3d;
+import com.qx.maths.vector.Vector3d;
 
 public abstract class WebGL_AttributeArray3d extends WebGL_AttributeArray {
 
@@ -17,7 +17,7 @@ public abstract class WebGL_AttributeArray3d extends WebGL_AttributeArray {
 	/**
 	 * vertices
 	 */
-	private List<Vd> vectors = new ArrayList<Vd>();
+	private List<Vector3d> vectors = new ArrayList<Vector3d>();
 
 	public WebGL_AttributeArray3d(WebGL_Shape shape){
 		super(shape);
@@ -29,29 +29,29 @@ public abstract class WebGL_AttributeArray3d extends WebGL_AttributeArray {
 	}
 
 	
-	public abstract Vd transform(Ad affine3d, Vd vector);
+	public abstract Vector3d transform(Affine3d affine3d, Vector3d vector);
 
 
 	/**
 	 * Scale shape
 	 * @param scalingFactor
 	 */
-	public void transform(Ad affine3d){
-		List<Vd> transformedVectors = new ArrayList<Vd>();
-		for(Vd vertex : getVectors()){
+	public void transform(Affine3d affine3d){
+		List<Vector3d> transformedVectors = new ArrayList<Vector3d>();
+		for(Vector3d vertex : getVectors()){
 			transformedVectors.add(transform(affine3d, vertex));
 		}
 		vectors = transformedVectors;
 	}
 
 
-	public void add(Vd vector){
+	public void add(Vector3d vector){
 		vectors.add(transform(getCurrentTransformation(), vector));
 	}
 
 	@Override
 	public void add(WebGL_AttributeArray vertexAttributeArray){
-		for(Vd vertexAttribute : ((WebGL_AttributeArray3d) vertexAttributeArray).getVectors()){
+		for(Vector3d vertexAttribute : ((WebGL_AttributeArray3d) vertexAttributeArray).getVectors()){
 			add(vertexAttribute);	
 		}
 	}
@@ -67,7 +67,7 @@ public abstract class WebGL_AttributeArray3d extends WebGL_AttributeArray {
 	@Override
 	public void write(DataOutputStream outputStream) throws IOException{
 		float x,y,z;
-		for(Vd vector : vectors){
+		for(Vector3d vector : vectors){
 			x = (float) vector.get(0);
 			y = (float) vector.get(1);
 			z = (float) vector.get(2);
@@ -103,7 +103,7 @@ public abstract class WebGL_AttributeArray3d extends WebGL_AttributeArray {
 
 
 
-	public List<Vd> getVectors(){
+	public List<Vector3d> getVectors(){
 		return vectors;
 	}
 
