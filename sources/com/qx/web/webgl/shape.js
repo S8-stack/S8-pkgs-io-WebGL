@@ -36,9 +36,8 @@ function WebGL_Shape(id, scene){
 
 WebGL_Shape.prototype = {
 
-
 		/** initialize the scene */
-		initialize(scene){
+		initialize : function(scene){
 
 			this.style = null;
 

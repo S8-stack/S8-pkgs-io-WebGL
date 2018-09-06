@@ -13,9 +13,9 @@ import java.util.Map;
 
 import com.qx.io.https.protocol.header.MIME_Type;
 import com.qx.io.https.protocol.session.HTTPS_Session;
-import com.qx.io.https.server.HTTPS_ServerTask.Processing;
-import com.qx.io.https.server.HTTPS_Socket;
+import com.qx.io.https.server.HTTPS_Connection;
 import com.qx.io.https.server.POST.HTTPS_POST_Node;
+import com.qx.io.https.server.POST.HTTPS_POST_Task.Processing;
 import com.qx.io.https.server.POST.annotation.HTTPS_POST_Method;
 import com.qx.io.https.server.POST.annotation.QueryParam;
 import com.qx.io.webgl.shape.WebGL_AttributesLibrary;
@@ -113,7 +113,7 @@ public class WebGL_Node implements HTTPS_POST_Node {
 
 
 	@HTTPS_POST_Method(mapping="getShape", processing=Processing.CPU_SHORT)
-	public synchronized void getShapeOutline(HTTPS_Socket socket, @QueryParam(name="id") String id) throws Exception {
+	public synchronized void getShapeOutline(HTTPS_Connection socket, @QueryParam(name="id") String id) throws Exception {
 
 		socket.sendContent(MIME_Type.TEXT_PLAIN);
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -127,7 +127,7 @@ public class WebGL_Node implements HTTPS_POST_Node {
 	}
 
 	@HTTPS_POST_Method(mapping="getVertexArraysBlock", processing=Processing.CPU_LONG)
-	public synchronized void getVertexArraysBlock(HTTPS_Socket socket, @QueryParam(name="id") String id) throws Exception {
+	public synchronized void getVertexArraysBlock(HTTPS_Connection socket, @QueryParam(name="id") String id) throws Exception {
 		socket.sendContent(MIME_Type.APPLICATION_OCTET_STREAM);
 		DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));  
 
@@ -142,7 +142,7 @@ public class WebGL_Node implements HTTPS_POST_Node {
 
 
 	@HTTPS_POST_Method(mapping="getElementArray", processing=Processing.CPU_LONG)
-	public synchronized void getElementArray(HTTPS_Socket socket, @QueryParam(name="id") String id) throws Exception{
+	public synchronized void getElementArray(HTTPS_Connection socket, @QueryParam(name="id") String id) throws Exception{
 		socket.sendContent(MIME_Type.APPLICATION_ARRAY_BUFFER);
 		DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));  
 		if(shapes.containsKey(id)){
@@ -156,7 +156,7 @@ public class WebGL_Node implements HTTPS_POST_Node {
 
 	
 	@HTTPS_POST_Method(mapping="getStyle", processing=Processing.CPU_SHORT)
-	public synchronized void getStyle(HTTPS_Socket socket, @QueryParam(name="id") String id) throws Exception{
+	public synchronized void getStyle(HTTPS_Connection socket, @QueryParam(name="id") String id) throws Exception{
 		socket.sendContent(MIME_Type.TEXT_PLAIN);
 		OutputStreamWriter writer = new OutputStreamWriter(socket.getOutputStream());
 		writeResource("webgl/styles/"+id+".js", writer, "\n");
@@ -165,7 +165,7 @@ public class WebGL_Node implements HTTPS_POST_Node {
 	
 
 	@HTTPS_POST_Method(mapping="getProgram", processing=Processing.CPU_SHORT)
-	public synchronized void getProgram(HTTPS_Socket socket, @QueryParam(name="id") String id) throws Exception{
+	public synchronized void getProgram(HTTPS_Connection socket, @QueryParam(name="id") String id) throws Exception{
 		socket.sendContent(MIME_Type.TEXT_PLAIN);
 		OutputStreamWriter writer = new OutputStreamWriter(socket.getOutputStream());
 		// write vertex shader source

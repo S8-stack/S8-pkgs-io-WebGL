@@ -161,7 +161,7 @@ WebGL_Scene.prototype = {
 		},
 		
 		
-		getShapes(){
+		getShapes: function(){
 			return this.shapes;
 		},
 		

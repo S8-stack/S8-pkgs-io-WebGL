@@ -5,10 +5,10 @@ import java.io.OutputStreamWriter;
 
 import com.qx.io.https.protocol.header.MIME_Type;
 import com.qx.io.https.protocol.session.HTTPS_Session;
-import com.qx.io.https.server.HTTPS_Socket;
-import com.qx.io.https.server.HTTPS_ServerTask.Processing;
+import com.qx.io.https.server.HTTPS_Connection;
 import com.qx.io.https.server.POST.HTTPS_POST_Node;
 import com.qx.io.https.server.POST.HTTPS_POST_RootNode;
+import com.qx.io.https.server.POST.HTTPS_POST_Task.Processing;
 import com.qx.io.https.server.POST.annotation.HTTPS_POST_Method;
 import com.qx.io.webgl.WebGL_Node;
 import com.qx.io.webgl.primitive.Sphere;
@@ -37,7 +37,7 @@ public class DemoNode extends HTTPS_POST_RootNode {
 
 
 	@HTTPS_POST_Method(mapping="getDemoShapes", processing=Processing.CPU_SHORT)
-	public void process(HTTPS_Socket socket) throws Exception {
+	public void process(HTTPS_Connection socket) throws Exception {
 
 		String id0 = buildSpheres(3, 3, 3, 5.0, 5.0, 5.0);
 		String id1 = buildSpheres(2, 2, 2, 5.0, 5.0, 5.0);
