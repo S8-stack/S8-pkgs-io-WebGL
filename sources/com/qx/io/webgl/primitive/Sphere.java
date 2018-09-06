@@ -44,40 +44,32 @@ public class Sphere {
 		shape.startPatch(basis);
 
 		// Vertex
-		if(shape.isVertexDefined()){
-			WebGL_VertexArray vertices =shape.getVertexArray();
-			for(int i=0; i<n; i++){
-				for(int j=0; j<2*n; j++){
-					vertices.add(Vector3d.sphericalRadial(r, j*dPhi, i*dTheta));
-				}
+		WebGL_VertexArray vertices =shape.getVertexArray();
+		for(int i=0; i<n; i++){
+			for(int j=0; j<2*n; j++){
+				vertices.add(Vector3d.sphericalRadial(r, j*dPhi, i*dTheta));
 			}
 		}
 
 		// Normal
-		if(shape.isNormalDefined()){
-			WebGL_NormalArray normals = shape.getNormalArray();
-			for(int i=0; i<n; i++){
-				for(int j=0; j<2*n; j++){
-					normals.add(Vector3d.sphericalRadial(1.0, j*dPhi, i*dTheta));
-				}
+		WebGL_NormalArray normals = shape.getNormalArray();
+		for(int i=0; i<n; i++){
+			for(int j=0; j<2*n; j++){
+				normals.add(Vector3d.sphericalRadial(1.0, j*dPhi, i*dTheta));
 			}
 		}
 
 		// TexCoord
-		if(shape.isTexCoordDefined()){
-			WebGL_TexCoordArray texCoords = shape.getTexCoordArray();
-
-			double du = 1.0/(2*n-1);
-			double dv = 1.0/(n-1);
-
-			for(int i=0; i<n; i++){
-				for(int j=0; j<2*n; j++){
-					texCoords.add(new Vector2d(j*du, 1.0-i*dv));
-				}
+		WebGL_TexCoordArray texCoords = shape.getTexCoordArray();
+		double du = 1.0/(2*n-1);
+		double dv = 1.0/(n-1);
+		for(int i=0; i<n; i++){
+			for(int j=0; j<2*n; j++){
+				texCoords.add(new Vector2d(j*du, 1.0-i*dv));
 			}
 		}
-		
-		
+
+
 		// Elements
 		WebGL_ElementArray elements = shape.getElementArray();
 		for(int j=0; j<2*n-1; j++){

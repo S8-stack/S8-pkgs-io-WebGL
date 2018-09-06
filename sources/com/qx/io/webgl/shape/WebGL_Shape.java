@@ -7,12 +7,8 @@ import java.io.Writer;
 
 import com.qx.io.webgl.shape.mesh.WebGL_ElementArray;
 import com.qx.io.webgl.shape.mesh.WebGL_ElementType;
-import com.qx.io.webgl.shape.vertex.WebGL_AttributeArray;
-import com.qx.io.webgl.shape.vertex.WebGL_ColorArray;
 import com.qx.io.webgl.shape.vertex.WebGL_NormalArray;
 import com.qx.io.webgl.shape.vertex.WebGL_TexCoordArray;
-import com.qx.io.webgl.shape.vertex.WebGL_UTangentArray;
-import com.qx.io.webgl.shape.vertex.WebGL_VTangentArray;
 import com.qx.io.webgl.shape.vertex.WebGL_VertexArray;
 import com.qx.maths.affine.Affine3d;
 import com.qx.maths.box.BoundingBox3d;
@@ -31,28 +27,23 @@ public class WebGL_Shape {
 	 */
 
 	private WebGL_VertexArray vertexArray;
-	public boolean isVertexDefined(){ return vertexArray!=null; }
-	public WebGL_VertexArray getVertexArray(){ return vertexArray; }
+	
+	public WebGL_VertexArray getVertexArray(){
+		return vertexArray;
+	}
 
 	private WebGL_NormalArray normalArray;
-	public boolean isNormalDefined(){ return normalArray!=null; }
-	public WebGL_NormalArray getNormalArray(){ return normalArray; }
-
-	private WebGL_UTangentArray uTangentArray;
-	public boolean isUTangentDefined(){ return uTangentArray!=null; }
-	public WebGL_UTangentArray getUTangentArray(){ return uTangentArray; }
-
-	private WebGL_VTangentArray vTangentArray;
-	public boolean isVTangentDefined(){ return vTangentArray!=null; }
-	public WebGL_VTangentArray getVTangentArray(){ return vTangentArray; }
+	
+	public WebGL_NormalArray getNormalArray(){
+		return normalArray;
+	}
 
 	private WebGL_TexCoordArray texCoordArray;
-	public boolean isTexCoordDefined(){ return texCoordArray!=null; }
-	public WebGL_TexCoordArray getTexCoordArray(){ return texCoordArray; }
-
-	private WebGL_ColorArray colorArray;
-	public boolean isColorDefined(){ return colorArray!=null; }
-	public WebGL_ColorArray getColorArray(){ return colorArray; }
+	
+	public WebGL_TexCoordArray getTexCoordArray(){
+		return texCoordArray;
+	}
+	
 
 
 	/**
@@ -79,13 +70,6 @@ public class WebGL_Shape {
 	private int elementIndexOffset = 0;
 
 
-
-	/**
-	 * options
-	 */
-	private WebGL_AttributesSettings options;
-
-
 	private WebGL_ElementType elementType;
 
 	
@@ -100,22 +84,12 @@ public class WebGL_Shape {
 
 
 	/**
-	 * @return the options
-	 */
-	public WebGL_AttributesSettings getAttributesOptions() {
-		return options;
-	}
-
-
-	/**
 	 * 
 	 * @param dimension
 	 * @param identifier
 	 */
-	public WebGL_Shape(WebGL_AttributesSettings attributeOptions, WebGL_ElementType elementType) {
+	public WebGL_Shape(WebGL_ElementType elementType) {
 
-		// options
-		this.options = attributeOptions;
 
 		// WebGL_ElementType
 		this.elementType = elementType;
@@ -124,35 +98,14 @@ public class WebGL_Shape {
 		currentTransformation = Affine3d.STANDARD;
 
 		// vertex attributes
-		if(attributeOptions.isVertexDefined){
-			vertexArray = new WebGL_VertexArray(this);
-		}
-
+		vertexArray = new WebGL_VertexArray(this);
+	
 		// normal attributes
-		if(attributeOptions.isNormalDefined){
-			normalArray = new WebGL_NormalArray(this);
-		}
-
-		// uTangent attributes
-		if(attributeOptions.isUTangentDefined){
-			uTangentArray = new WebGL_UTangentArray(this);
-		}
-
-		// vTangent attributes
-		if(attributeOptions.isVTangentDefined){
-			vTangentArray = new WebGL_VTangentArray(this);
-		}
+		normalArray = new WebGL_NormalArray(this);
 
 		// texCoord attributes
-		if(attributeOptions.isTexCoordDefined){
-			texCoordArray = new WebGL_TexCoordArray(this);
-		}
-
-		// color attributes
-		if(attributeOptions.isColorDefined){
-			colorArray = new WebGL_ColorArray(this);
-		}
-
+		texCoordArray = new WebGL_TexCoordArray(this);
+	
 		// elements
 		elementsArray = new WebGL_ElementArray(elementType, this);
 	}
@@ -165,17 +118,15 @@ public class WebGL_Shape {
 	/**
 	 * per vertex attributes
 	 */
-	private WebGL_AttributeArray[] attributeArrays;
+	//private WebGL_AttributeArray[] attributeArrays;
 
+	/*
 	public WebGL_AttributeArray[] getAttributeArrays(){
 		if(attributeArrays==null){
 			WebGL_AttributeArray[] tempAttributeArrays = new WebGL_AttributeArray[]{
 					vertexArray,
 					normalArray,
-					uTangentArray,
-					vTangentArray,
-					texCoordArray,
-					colorArray
+					texCoordArray
 			};
 
 			int nbOfAttributeArraysDefined = 0;
@@ -195,6 +146,7 @@ public class WebGL_Shape {
 		}
 		return attributeArrays;
 	}
+	*/
 
 
 	/**
@@ -233,10 +185,8 @@ public class WebGL_Shape {
 	 * @param scalingFactor
 	 */
 	public void transform(Affine3d affine3d){
-		if(isVertexDefined()){ vertexArray.transform(affine3d); }
-		if(isNormalDefined()){ normalArray.transform(affine3d); }
-		if(isUTangentDefined()){ uTangentArray.transform(affine3d); }
-		if(isVTangentDefined()){ vTangentArray.transform(affine3d); }
+		vertexArray.transform(affine3d);
+		normalArray.transform(affine3d);
 	}
 
 
@@ -251,35 +201,14 @@ public class WebGL_Shape {
 		startPatch(basis3d);
 
 		// vertex attributes
-		if(isVertexDefined()){
-			vertexArray.add(shape.getVertexArray());
-		}
-
+		vertexArray.add(shape.getVertexArray());
+		
 		// normal attributes
-		if(isNormalDefined()){
-			normalArray.add(shape.getNormalArray());
-		}
-
-		// uTangent attributes
-		if(isUTangentDefined()){
-			uTangentArray.add(shape.getUTangentArray());
-		}
-
-		// vTangent attributes
-		if(isVTangentDefined()){
-			vTangentArray.add(shape.getVTangentArray());
-		}
+		normalArray.add(shape.getNormalArray());
 
 		// texCoord attributes
-		if(isTexCoordDefined()){
-			texCoordArray.add(shape.getTexCoordArray());
-		}
-
-		// color attributes
-		if(isColorDefined()){
-			colorArray.add(shape.getColorArray());
-		}
-
+		texCoordArray.add(shape.getTexCoordArray());
+		
 		// elements
 		elementsArray.add(shape.getElementArray());
 	}
@@ -299,27 +228,12 @@ public class WebGL_Shape {
 		 *	this.nbVertices
 		 * 	this.nbElements;
 		 * 
-		 * 	(0) this.isVertexDefined
-		 * 	(1) this.isNormalDefined
-		 * 	(2) this.isUTangentDefined;
-		 * 	(3) this.isVTangentDefined;
-		 * 	(4) this.isTexCoordDefined;
-		 * 	(5) this.isColorDefined;
-		 * 
 		 * 	this.elementDimension;
 		 */
 
 		// write setup
 		builder.append("shape.nbVertices="+vertexArray.getNumberOfVertices()+";\n");
 		builder.append("shape.nbElements="+elementsArray.getNumberOfElements()+";\n");
-
-		builder.append("shape.isVertexDefined="+isVertexDefined()+";\n"); 
-		builder.append("shape.isNormalDefined="+isNormalDefined()+";\n"); 
-		builder.append("shape.isUTangentDefined="+isUTangentDefined()+";\n"); 
-		builder.append("shape.isVTangentDefined="+isVTangentDefined()+";\n"); 
-		builder.append("shape.isTexCoordDefined="+isTexCoordDefined()+";\n"); 
-		builder.append("shape.isColorDefined="+isColorDefined()+";\n"); 
-		
 		builder.append("shape.elementDimension="+elementsArray.getDimension()+";\n"); 
 
 		/*
@@ -380,28 +294,10 @@ public class WebGL_Shape {
 	
 	
 	
-	
-
-	
 	public void writeVertexArraysBlock(DataOutputStream outputStream) throws IOException{
-		if(isVertexDefined()){
-			vertexArray.write(outputStream);
-		}
-		if(isNormalDefined()){
-			normalArray.write(outputStream);
-		}
-		if(isUTangentDefined()){
-			uTangentArray.write(outputStream);
-		}
-		if(isVTangentDefined()){
-			vTangentArray.write(outputStream);
-		}
-		if(isTexCoordDefined()){
-			texCoordArray.write(outputStream);
-		}
-		if(isColorDefined()){
-			colorArray.write(outputStream);
-		}
+		vertexArray.write(outputStream);
+		normalArray.write(outputStream);
+		texCoordArray.write(outputStream);
 	}
 
 	

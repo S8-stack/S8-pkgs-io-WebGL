@@ -74,16 +74,7 @@ WebGL_Shape.prototype = {
 				 * 
 				 * 	this.nbVertices
 				 * 	this.nbElements;
-				 * 
-				 * 	(0) this.isVertexDefined
-				 * 	(1) this.isNormalDefined
-				 * 	(2) this.isUTangentDefined;
-				 * 	(3) this.isVTangentDefined;
-				 * 	(4) this.isTexCoordDefined;
-				 * 	(5) this.isColorDefined;
-				 * 
 				 * 	this.elementDimension;
-				 * 
 				 */
 
 				// <vertices block array block>
@@ -94,48 +85,21 @@ WebGL_Shape.prototype = {
 					
 					var offset = 0, length;
 
-					// vertex
-					if(shape.isVertexDefined){
-						length = 3*shape.nbVertices;
-						shape.vertex=new WebGL_ArrayBuffer(3, blockData, offset, length);
-						offset+=length;
-					}
-
+					// load vertex buffer
+					length = 3*shape.nbVertices;
+					shape.vertex=new WebGL_ArrayBuffer(3, blockData, offset, length);
+					offset+=length;
+				
 					// normal
-					if(shape.isNormalDefined){
-						length = 3*shape.nbVertices;
-						shape.normal=new WebGL_ArrayBuffer(3, blockData, offset, length);
-						offset+=length;
-					}
-
-					// uTangent
-					if(shape.isUTangentDefined){
-						length = 3*shape.nbVertices;
-						shape.uTangent=new WebGL_ArrayBuffer(3, blockData, offset, length);
-						offset+=length;
-					}
-
-					// vTangent
-					if(shape.isVTangentDefined){
-						length = 3*shape.nbVertices;
-						shape.vTangent=new WebGL_ArrayBuffer(3, blockData, offset, length);
-						offset+=length;
-					}
+					length = 3*shape.nbVertices;
+					shape.normal=new WebGL_ArrayBuffer(3, blockData, offset, length);
+					offset+=length;
 
 					// texCoord
-					if(shape.isTexCoordDefined){
-						length = 2*shape.nbVertices;
-						shape.texCoord=new WebGL_ArrayBuffer(2, blockData, offset, length);
-						offset+=length;
-					}
-
-					// color
-					if(shape.isColorDefined){
-						length = 3*shape.nbVertices;
-						shape.color=new WebGL_ArrayBuffer(3, blockData, offset, length);
-						offset+=length;
-					}
-
+					length = 2*shape.nbVertices;
+					shape.texCoord=new WebGL_ArrayBuffer(2, blockData, offset, length);
+					offset+=length;
+					
 					// flagged as done
 					shape.isVertexArraysInitialized = true;
 

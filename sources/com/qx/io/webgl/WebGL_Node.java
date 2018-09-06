@@ -18,8 +18,6 @@ import com.qx.io.https.server.POST.HTTPS_POST_Node;
 import com.qx.io.https.server.POST.HTTPS_POST_Task.Processing;
 import com.qx.io.https.server.POST.annotation.HTTPS_POST_Method;
 import com.qx.io.https.server.POST.annotation.QueryParam;
-import com.qx.io.webgl.shape.WebGL_AttributesLibrary;
-import com.qx.io.webgl.shape.WebGL_AttributesSettings;
 import com.qx.io.webgl.shape.WebGL_Shape;
 import com.qx.utils.IdentifierGenerator;
 import com.qx.web.Web;
@@ -37,8 +35,6 @@ public class WebGL_Node implements HTTPS_POST_Node {
 	 */
 	private IdentifierGenerator idGen = new IdentifierGenerator(12, "shape");
 
-
-	private WebGL_AttributesLibrary attributesLibrary = new WebGL_AttributesLibrary();
 
 
 	private Map<String, ShapeEntry> shapes = new HashMap<String, ShapeEntry>();
@@ -74,16 +70,6 @@ public class WebGL_Node implements HTTPS_POST_Node {
 		super();
 	}
 
-
-
-	/**
-	 * Give access to the correct settings
-	 * @param styleId
-	 * @return
-	 */
-	public WebGL_AttributesSettings getAttributesSettings(String styleId){
-		return attributesLibrary.getSettings(styleId);
-	}
 
 
 	/**
