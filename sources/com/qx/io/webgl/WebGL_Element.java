@@ -1,4 +1,4 @@
-package com.qx.io.webgl.shape.mesh;
+package com.qx.io.webgl;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

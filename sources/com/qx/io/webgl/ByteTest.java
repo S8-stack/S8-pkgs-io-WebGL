@@ -1,4 +1,4 @@
-package com.qx.io.webgl.shape.mesh;
+package com.qx.io.webgl;
 
 public class ByteTest {
 

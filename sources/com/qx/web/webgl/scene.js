@@ -4,13 +4,16 @@
 function WebGL_Scene(){
 
 	// list of programs
-	this.programs = [];
+	this.programs = new WebGL_Programs();
 
-	// list of styles
-	this.styles = [];
+	// store of styles
+	this.styles = new WebGL_Styles();
 
-	// list of shapes
-	this.shapes = [];
+	// store of shapes models
+	this.shapeModels = new WebGL_ShapeModels();
+
+	// store of shapes instances
+	this.shapeInstances = new WebGL_ShapeInstances(this);
 
 	//create view
 	this.view = new WebGL_View(this);
@@ -40,42 +43,6 @@ function WebGL_Scene(){
 WebGL_Scene.prototype = {
 
 
-
-		/**
-		 * [WebGL_Scene API method]
-		 * setShapeStyle allows to start the rendering of a given shape with a specific style.
-		 */
-		setShapeStyle: function(shapeId, styleId){
-			// retrieve shape
-			var shape = this.getShape(shapeId);
-			shape.setStyle(styleId);
-			
-			// do a rendering pass to apply changes
-			this.render();
-		},
-
-		/**
-		 * [WebGL_Scene API method]
-		 * deleteShape allows to delete a shape. The shape is disposed and removed from current style displayList automatically.
-		 */
-		deleteShape : function(shapeId){
-			// retrieve shape
-			var shape = this.getShape(shapeId);
-
-			// remove shape from style displayList
-			shape.style.removeShape(shapeId);
-
-			// remove shape from scene
-			this.removeShape(shapeId);
-			this.picking.updatePickingColors();
-
-			// dispose object
-			shape.dispose();
-			
-			// do a rendering pass to apply changes
-			this.render();
-		},
-
 		/**
 		 * [WebGL_Scene API method]
 		 * setPickingCallback allows to specify a behaviour if the event of a picking click.
@@ -95,20 +62,8 @@ WebGL_Scene.prototype = {
 		 */
 		clear : function(){
 			
-			// remove all shapes on the programs
-			for(var i in this.programs){
-				this.programs[i].removeAllShapes();
-			}
-			
-			// dispose all shapes in direct list
-			for(var i in this.shapes){
-				//this.shape[i].dispose();					
-			}
-			this.shapes = [];
-			
-			
-			// update picking
-			this.picking.updatePickingColors();
+			// remove all instances, keep programs, styles and models
+			this.instances.clear();
 			
 			// do a rendering pass to apply changes
 			this.render();
@@ -128,11 +83,9 @@ WebGL_Scene.prototype = {
 			// gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
 
-			// render the programs -> styles -> shapes
-			for(var i=0; i<this.programs.length; i++){
-				this.programs[i].render(this.view, this.environment);
-			}
-
+			this.instances.udpate();
+			
+			this.programs.render(this.view, this.environment);
 			// Recommended pattern for frame animation
 			
 			/*
@@ -140,88 +93,6 @@ WebGL_Scene.prototype = {
 			window.requestAnimFrame(function(){_this.render();}, canvas);
 			*/
 		},
-
-
-		/**
-		 * get program
-		 */
-		getProgram : function(id){
-			for(var i=0; i<this.programs.length; i++){
-				if(this.programs[i].id == id){
-					return this.programs[i];
-				}
-			}
-
-			// if style is not present, we create it
-			var program = new WebGL_Program(id);
-			
-			// add the newly created program to the list
-			this.programs.push(program);
-			return program;
-		},
-		
-		
-		getShapes: function(){
-			return this.shapes;
-		},
-		
-		/**
-		 * sort programs
-		 */
-		sortProgramPass : function(){
-			this.programs = this.programs.sort(function(a, b){ return a.pass-b.pass; });
-		},
-
-		/**
-		 * get style
-		 */
-		getStyle : function(id){
-			for(var i=0; i<this.styles.length; i++){
-				if(this.styles[i].id == id){
-					return this.styles[i];
-				}
-			}
-
-			// if style is not present, we create it
-			var style=new WebGL_Style(id);
-			this.styles.push(style);
-			return style;
-		},
-
-		/**
-		 * get shape
-		 */
-		getShape : function(id){
-			for(var i=0; i<this.shapes.length; i++){
-				if(this.shapes[i].id == id){
-					return this.shapes[i];
-				}
-			}
-
-			// if shape is not present, we create it
-			var shape=new WebGL_Shape(id, this);
-			this.shapes.push(shape);
-			this.picking.updatePickingColors();
-			return shape;
-		},
-
-
-		/**
-		 * 
-		 */
-		removeShape : function(id){	
-			i=0; n=this.shapes.length; index=-1;
-			while(index==-1 && i<n){
-				if(this.shapes[i].id == id){
-					index = i;
-				}
-				else{
-					i++;	
-				}
-			}
-			this.shapes.splice(index, 1);
-			this.picking.updatePickingColors();
-		}
 
 };
 

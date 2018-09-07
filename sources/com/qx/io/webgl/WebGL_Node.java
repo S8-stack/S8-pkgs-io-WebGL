@@ -18,7 +18,6 @@ import com.qx.io.https.server.POST.HTTPS_POST_Node;
 import com.qx.io.https.server.POST.HTTPS_POST_Task.Processing;
 import com.qx.io.https.server.POST.annotation.HTTPS_POST_Method;
 import com.qx.io.https.server.POST.annotation.QueryParam;
-import com.qx.io.webgl.shape.WebGL_Shape;
 import com.qx.utils.IdentifierGenerator;
 import com.qx.web.Web;
 
@@ -33,30 +32,60 @@ public class WebGL_Node implements HTTPS_POST_Node {
 	/**
 	 * identifier generator for shape access codes
 	 */
-	private IdentifierGenerator idGen = new IdentifierGenerator(12, "shape");
+	private IdentifierGenerator shapeModelIdGenenerator = new IdentifierGenerator(12, "shmod");
+
+	/**
+	 * identifier generator for shape access codes
+	 */
+	private IdentifierGenerator shapeInstanceIdGenenerator = new IdentifierGenerator(12, "shins");
 
 
+	private Map<String, ShapeModelEntry> shapeModels = new HashMap<>();
+	
+	private Map<String, ShapeInstanceEntry> shapeInstances = new HashMap<>();
 
-	private Map<String, ShapeEntry> shapes = new HashMap<String, ShapeEntry>();
 
+	private class ShapeModelEntry {
 
-	private class ShapeEntry {
-
-		private String id;
-		private WebGL_Shape shape;
+		private WebGL_ShapeModel.Build shapeModel;
 		private int count; 
 
-		public ShapeEntry(String id, WebGL_Shape shape) {
+		public ShapeModelEntry(WebGL_ShapeModel.Build shapeModel) {
+			super();
+			this.count = 0;
+			this.shapeModel = shapeModel;
+		}
+		
+		public String getIdentifier(){
+			return shapeModel.getIdentifier();
+		}
+
+		public synchronized WebGL_ShapeModel.Build get(){
+			count++;
+			if(count==3){
+				shapeModels.remove(getIdentifier());
+			}
+			return shapeModel;
+		}
+	}
+	
+	private class ShapeInstanceEntry {
+
+		private String id;
+		private WebGL_ShapeInstance shape;
+		private int count; 
+
+		public ShapeInstanceEntry(String id, WebGL_ShapeInstance shape) {
 			super();
 			this.count = 0;
 			this.shape = shape;
 			this.id= id;
 		}
 
-		public synchronized WebGL_Shape get(){
+		public synchronized WebGL_ShapeInstance get(){
 			count++;
 			if(count==3){
-				shapes.remove(id);
+				shapeInstances.remove(id);
 			}
 			return shape;
 		}
@@ -74,13 +103,23 @@ public class WebGL_Node implements HTTPS_POST_Node {
 
 	/**
 	 * put a shape in the WebGL service for later display within client side
+	 * @param shapeModel
+	 * @return
+	 */
+	public synchronized String putShapeModel(WebGL_ShapeModel shapeModel){
+		String id = shapeModelIdGenenerator.create();
+		shapeModels.put(id, new ShapeModelEntry(shapeModel.build(id)));
+		return id;
+	}
+	
+	/**
+	 * put a shape in the WebGL service for later display within client side
 	 * @param shape
 	 * @return
 	 */
-	public synchronized String put(WebGL_Shape shape){
-		String id = idGen.create();
-		ShapeEntry entry = new ShapeEntry(id, shape);
-		shapes.put(id, entry);
+	public synchronized String putShapeInstance(WebGL_ShapeInstance shape){
+		String id = shapeInstanceIdGenenerator.create();
+		shapeInstances.put(id, new ShapeInstanceEntry(id, shape));
 		return id;
 	}
 
@@ -89,22 +128,36 @@ public class WebGL_Node implements HTTPS_POST_Node {
 	 * Dispose a list of shapes
 	 * @param identifiers
 	 */
-	public synchronized void dispose(List<String> identifiers){
+	public synchronized void disposeInstances(List<String> identifiers){
 		for(String id : identifiers){
-			if(shapes.containsKey(id)){
-				shapes.remove(id);
+			if(shapeInstances.containsKey(id)){
+				shapeInstances.remove(id);
 			}
 		}
 	}
 
 
-	@HTTPS_POST_Method(mapping="getShape", processing=Processing.CPU_SHORT)
-	public synchronized void getShapeOutline(HTTPS_Connection socket, @QueryParam(name="id") String id) throws Exception {
+	@HTTPS_POST_Method(mapping="getShapeInstance", processing=Processing.CPU_SHORT)
+	public synchronized void getShapeInstance(HTTPS_Connection socket, @QueryParam(name="id") String id) throws Exception {
 
 		socket.sendContent(MIME_Type.TEXT_PLAIN);
 		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-		if(shapes.containsKey(id)){
-			shapes.get(id).get().writeOutline(writer);
+		if(shapeInstances.containsKey(id)){
+			shapeInstances.get(id).get().writeOutline(writer);
+
+		}else{
+			throw new Exception("Shape with id:"+id+" cannot be retrieved.");
+		}
+		writer.close();
+	}
+	
+	@HTTPS_POST_Method(mapping="getShapeModel", processing=Processing.CPU_SHORT)
+	public synchronized void getShapeModel(HTTPS_Connection socket, @QueryParam(name="id") String id) throws Exception {
+
+		socket.sendContent(MIME_Type.TEXT_PLAIN);
+		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		if(shapeModels.containsKey(id)){
+			shapeModels.get(id).get().writeOutline(writer);
 
 		}else{
 			throw new Exception("Shape with id:"+id+" cannot be retrieved.");
@@ -117,8 +170,8 @@ public class WebGL_Node implements HTTPS_POST_Node {
 		socket.sendContent(MIME_Type.APPLICATION_OCTET_STREAM);
 		DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));  
 
-		if(shapes.containsKey(id)){
-			shapes.get(id).get().writeVertexArraysBlock(dataOutputStream);
+		if(shapeModels.containsKey(id)){
+			shapeModels.get(id).get().writeVertexArraysBlock(dataOutputStream);
 
 		}else{
 			throw new Exception("Shape with id:"+id+" cannot be retrieved.");
@@ -127,12 +180,12 @@ public class WebGL_Node implements HTTPS_POST_Node {
 	}
 
 
-	@HTTPS_POST_Method(mapping="getElementArray", processing=Processing.CPU_LONG)
-	public synchronized void getElementArray(HTTPS_Connection socket, @QueryParam(name="id") String id) throws Exception{
+	@HTTPS_POST_Method(mapping="getElementArraysBlock", processing=Processing.CPU_LONG)
+	public synchronized void getElementArraysBlock(HTTPS_Connection socket, @QueryParam(name="id") String id) throws Exception{
 		socket.sendContent(MIME_Type.APPLICATION_ARRAY_BUFFER);
 		DataOutputStream dataOutputStream = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));  
-		if(shapes.containsKey(id)){
-			shapes.get(id).get().writeElementArray(dataOutputStream);
+		if(shapeModels.containsKey(id)){
+			shapeModels.get(id).get().writeElementArray(dataOutputStream);
 
 		}else{
 			throw new Exception("Shape with id:"+id+" cannot be retrieved.");

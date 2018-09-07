@@ -1,8 +1,5 @@
 
 
-
-
-
 /*
  * an id is required to build the program
  */
@@ -10,7 +7,6 @@ function WebGL_Program(id){
 	this.id = id;
 	this.isInitialized = false;
 	this.displayList = [];
-	
 	
 	var program = this;
 	
@@ -78,7 +74,7 @@ WebGL_Program.prototype = {
 				this.bind(view, environment);
 			
 				// render renderables
-				for(var i=0; i<this.displayList.length; i++){
+				for(var i in this.displayList){
 					this.displayList[i].render(this);
 				}
 				
@@ -94,19 +90,14 @@ WebGL_Program.prototype = {
 		/*
 		 * get shape
 		 */
-		getStyle : function(id){
-			for(var i=0; i<this.displayList.length; i++){
-				if(this.displayList[i].id == id){
-					return this.displayList[i];
-				}
-			}
-			return null;
+		append : function(style){
+			this.displayList[i].push(style);
 		},
 		
 		
-		removeAllShapes : function(){
-			for(var i=0; i<this.displayList.length; i++){
-				this.displayList[i].removeAllShapes();
+		clear : function(){
+			for(var i in this.displayList){
+				this.displayList[i].clear();
 			}
 		},
 
@@ -151,4 +142,55 @@ WebGL_Shader.prototype = {
 			gl.glDeleteShader(this.handle);
 		}
 };
+
+
+
+function WebGL_Programs(){
+
+	// map for allocation of styles
+	this.programs = new Array();
+}
+
+
+WebGL_Programs.prototype = {
+	
+	/**
+	 * get program
+	 */
+	get : function(id){
+		for(var i in this.programs){
+			if(this.programs[i].id == id){
+				return this.programs[i];
+			}
+		}
+	
+		// if style is not present, we create it
+		var program = new WebGL_Program(id);
+		
+		// add the newly created program to the list
+		this.programs.push(program);
+		
+		// sort the programs by pass index
+		this.programs = this.programs.sort(function(a, b){ return a.pass-b.pass; });
+		
+		return program;
+	},
+	
+	render : function(view, environment){
+		// render the programs -> styles -> shapes
+		for(var i in this.programs){
+			this.programs[i].render();
+		}
+	}
+	
+	clear : function(view, environment){
+		// render the programs -> styles -> shapes
+		for(var i in this.programs){
+			this.programs[i].clear();
+		}
+	}
+
+};
+
+
 

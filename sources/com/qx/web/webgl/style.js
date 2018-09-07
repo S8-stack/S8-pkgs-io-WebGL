@@ -9,9 +9,11 @@
 function WebGL_Style(id){
 
 	this.id = id;
-	// display list if the scene
-	this.displayList = [];
 	
+	// display list for this style
+	this.renderables = new Map();
+	this.renderablesCount = 0;
+	this.iterator = this.renderables.values();
 	
 	this.isInitialized = false;
 
@@ -31,7 +33,7 @@ function WebGL_Style(id){
 		style.isInitialized = true;
 		
 		// from now on, the program is ready to render!
-		scene.getProgram(style.programId).displayList.push(style);
+		scene.programs.get(style.programId).append(style);
 		
 		scene.render();
 	});
@@ -40,64 +42,58 @@ function WebGL_Style(id){
 
 WebGL_Style.prototype = {
 
-		/**
-		 * render the styles and shapes
-		 */
-		render : function(program){
-			if(this.isInitialized){
-				// load style uniforms
-				program.loadStyle(this);
+	/**
+	 * render the styles and shapes
+	 */
+	render : function(program){
+		if(this.isInitialized){
+			// load style uniforms
+			program.loadStyle(this);
 
-				// render shapes
-				for(var i=0; i<this.displayList.length; i++){
-					this.displayList[i].render(program);
-				}	
-			}
-		},
-
-
-		/*
-		 * append shape
-		 */
-		addShape : function(shape){
-			this.displayList.push(shape);
-			shape.style = this;
-		},
-
-
-		/*
-		 * get shape
-		 */
-		getShape : function(id){
-			for(var i=0; i<this.displayList.length; i++){
-				if(this.displayList[i].id == id){
-					return this.displayList[i];
-				}
-			}
-			return null;
-		},
-
-
-		/*
-		 * detach form current style 
-		 */ 
-		removeShape : function(id){
-			this.displayList.splice(this.getShapeIndex(id), 1);
-		},
-		
-		removeAllShapes : function(){
-			this.displayList = [];
-		},
-		
-		
-		getShapeIndex : function(id){
-			var i=0; n=this.displayList.length;
-			for(var i=0; i<n; i++){
-				if(this.displayList[i].id == id){
-					return i;
+			// render shapes
+			for(let renderable of this.iterator){
+				
+				// renderable
+				renderable = this.renderables[i];
+				
+				// update
+				renderable.update();
+				
+				// render if OK
+				if(renderable.isInitialized){
+					program.render(renderable);	
 				}
 			}
 		}
+	},
+
+	/*
+	 * append shape
+	 */
+	append : function(renderable){
+		this.renderables.set(renderable.id, renderable);
+		this.renderablesCount++;
+		this.iterator = this.renderables.values();
+		
+		// set current style
+		renderable.style = this;
+	},
+
+	
+	remove : function(renderableId){
+		if(this.renderables.has(renderableId)){
+			this.renderables.delete(renderableId);
+			this.iterator = this.renderables.values();
+			this.renderablesCount--;
+		}
+	}
+	
+	clear : function(){
+
+		this.renderables.clear();
+		this.renderablesCount=0;
+		this.iterator = this.renderables.values();
+	}
 };
 
 
@@ -200,5 +196,30 @@ WebGL_TextureCubeMap.loadImage = function(target, cubeImage, cubeTexture){
 	gl.bindTexture(gl.TEXTURE_CUBE_MAP, cubeTexture);
 	gl.texImage2D(target, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, cubeImage);
 	gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
+};
+
+
+
+function WebGL_Styles(){
+
+	// map for allocation of styles
+	this.map = new Map();
+}
+
+WebGL_Styles.prototype = {
+		
+	/**
+	 * get style
+	 */
+	get : function(id){
+		
+		var style = this.map.get(id);
+		if(style==undefined){
+			// if style is not present, we create it
+			style=new WebGL_Style(id);
+			this.map.set(id, style);	
+		}
+		return style;
+	}
 };
 

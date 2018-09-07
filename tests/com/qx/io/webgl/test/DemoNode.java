@@ -11,9 +11,8 @@ import com.qx.io.https.server.POST.HTTPS_POST_RootNode;
 import com.qx.io.https.server.POST.HTTPS_POST_Task.Processing;
 import com.qx.io.https.server.POST.annotation.HTTPS_POST_Method;
 import com.qx.io.webgl.WebGL_Node;
+import com.qx.io.webgl.WebGL_ShapeModel;
 import com.qx.io.webgl.primitive.Sphere;
-import com.qx.io.webgl.shape.WebGL_Shape;
-import com.qx.io.webgl.shape.mesh.WebGL_ElementType;
 import com.qx.maths.affine.Affine3d;
 import com.qx.maths.vector.Vector3d;
 
@@ -41,12 +40,12 @@ public class DemoNode extends HTTPS_POST_RootNode {
 		String id0 = buildSpheres(3, 3, 3, 5.0, 5.0, 5.0);
 		String id1 = buildSpheres(2, 2, 2, 5.0, 5.0, 5.0);
 
-		WebGL_Shape shape = new WebGL_Shape(WebGL_ElementType.TRIANGLE);
+		WebGL_ShapeModel shape = new WebGL_ShapeModel();
 
 
 		new Sphere(6.0, 20).draw(shape, new Affine3d(new Vector3d(0, 12, 0.0)));
 
-		String id2 = webGL_Service.put(shape);
+		String id2 = webGL_Service.putShapeModel(shape);
 
 		
 		socket.sendContent(MIME_Type.TEXT);
@@ -62,7 +61,7 @@ public class DemoNode extends HTTPS_POST_RootNode {
 	private String buildSpheres(int nx, int ny, int nz, double ax, double ay, double az){
 
 		
-		WebGL_Shape shape = new WebGL_Shape(WebGL_ElementType.TRIANGLE);
+		WebGL_ShapeModel shape = new WebGL_ShapeModel();
 
 		Sphere sphere = new Sphere(2.0, 20);
 
@@ -76,7 +75,7 @@ public class DemoNode extends HTTPS_POST_RootNode {
 			}
 		}
 
-		String id = webGL_Service.put(shape);
+		String id = webGL_Service.putShapeModel(shape);
 		return id;
 	}
 

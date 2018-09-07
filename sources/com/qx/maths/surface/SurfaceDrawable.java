@@ -1,13 +1,13 @@
 package com.qx.maths.surface;
 
 import com.qx.io.webgl.EngineeringColor;
-import com.qx.io.webgl.shape.WebGL_Shape;
-import com.qx.io.webgl.shape.mesh.WebGL_ElementArray;
-import com.qx.io.webgl.shape.mesh.WebGL_Segment;
-import com.qx.io.webgl.shape.mesh.WebGL_Triangle;
-import com.qx.io.webgl.shape.vertex.WebGL_ColorArray;
-import com.qx.io.webgl.shape.vertex.WebGL_NormalArray;
-import com.qx.io.webgl.shape.vertex.WebGL_VertexArray;
+import com.qx.io.webgl.WebGL_Segment;
+import com.qx.io.webgl.WebGL_ShapeModel;
+import com.qx.io.webgl.WebGL_Triangle;
+import com.qx.io.webgl.mesh.WebGL_ElementArray;
+import com.qx.io.webgl.vertex.WebGL_ColorArray;
+import com.qx.io.webgl.vertex.WebGL_NormalArray;
+import com.qx.io.webgl.vertex.WebGL_VertexArray;
 import com.qx.maths.Ad;
 import com.qx.maths.Vd;
 
@@ -82,7 +82,7 @@ public class SurfaceDrawable {
 	 * @param wire
 	 * @throws Exception
 	 */
-	public void draw(WebGL_Shape surface, WebGL_Shape wire) throws Exception{
+	public void draw(WebGL_ShapeModel surface, WebGL_ShapeModel wire) throws Exception{
 
 		double[] uNodes = getUNodes();
 		int nu = uNodes.length;

@@ -73,22 +73,36 @@ program.loadStyle = function(style){
 };
 
 
-program.bindShape = function(shape){
+program.render = function(surface){
 	
-	// matrices
-	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, shape.matrix_ProjectionViewModel.c);
-	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MV, false, shape.matrix_ViewModel.c);
-	gl.uniformMatrix3fv(this.loc_Uniform_matrix_N, false, shape.matrix_Normal.c);
 	
-	// attributes
-	shape.vertex.bind(this.loc_Attribute_vertex);
-	shape.normal.bind(this.loc_Attribute_normal);
-};
-
-program.unbindShape = function(shape){	
+	/*
+	 * bind shape
+	 */
+	
+	// bind instance matrices
+	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, surface.instance.matrix_ProjectionViewModel.c);
+	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MV, false, surface.instance.matrix_ViewModel.c);
+	gl.uniformMatrix3fv(this.loc_Uniform_matrix_N, false, surface.instance.matrix_Normal.c);
+	
+	// bind model vertex attributes
+	surface.model.shape.surfaceVertices.bind(this.loc_Attribute_vertex, surface.model.verticesOffset);
+	surface.model.shape.surfaceNormals.bind(this.loc_Attribute_normal, surface.model.verticesOffset);
+	
+	// bind model elements
+	surface.model.shape.surfaceTriangles.bind();
+	
+	// draw
+	surface.model.render()
+	
+	/*
+	 * unbind shape
+	 */
 	
 	/* unbind attributes */
-	shape.vertex.unbind(this.loc_Attribute_vertex);
-	shape.normal.unbind(this.loc_Attribute_normal);
+	surface.model.shape.surfaceVertices.unbind(this.loc_Attribute_vertex);
+	surface.model.shape.surfaceNormals.unbind(this.loc_Attribute_normal);
+	
 };
+
 
