@@ -210,24 +210,24 @@ function WebGL_ArrayBuffer(dimension, blockData, offset, length){
 WebGL_ArrayBuffer.prototype = {
 
 
-		/** Bind the buffer for rendering */
-		bind : function(location, offset) {
+	/** Bind the buffer for rendering */
+	bind : function(location, offset) {
 
-			// bind buffer
-			gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferHandle);
-			gl.vertexAttribPointer(location, this.dimension, gl.FLOAT, false, 0, 0);
-		},
+		// bind buffer
+		gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferHandle);
+		gl.vertexAttribPointer(location, this.dimension, gl.FLOAT, false, 0, 0);
+	},
 
 
-		unbind : function(location) {
-		},
+	unbind : function(location) {
+	},
 
-		/**
-		 * Dispose the buffer
-		 */
-		dispose : function(){
-			gl.deleteBuffer(this.bufferHandle);
-		}
+	/**
+	 * Dispose the buffer
+	 */
+	dispose : function(){
+		gl.deleteBuffer(this.bufferHandle);
+	}
 };
 
 
@@ -267,18 +267,16 @@ function WebGL_ElementArrayBuffer(dimension, buffer, offset, nbElements){
 
 WebGL_ElementArrayBuffer.prototype = {
 
-		/** Bind the buffer for rendering */
-		bind : function() {
-			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
-		},
+	/** Bind the buffer for rendering */
+	bind : function() {
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
+	},
 
-		/** Dispose the buffer */
-		dispose : function(){
-			gl.deleteBuffer(this.bufferHandle);
-		}
+	/** Dispose the buffer */
+	dispose : function(){
+		gl.deleteBuffer(this.bufferHandle);
+	}
 };
-
-
 
 
 
@@ -332,8 +330,6 @@ WebGL_SurfaceModel.prototype = {
 			gl.drawElements(gl.TRIANGLES, this.trianglesLength, gl.UNSIGNED_SHORT, this.trianglesOffset);
 		}
 };
-
-
 
 
 function WebGL_ShapeModels(){
