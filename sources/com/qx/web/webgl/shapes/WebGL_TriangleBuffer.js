@@ -9,49 +9,49 @@
  * @param location : the location of this attribute in the shader program given by : gl.getAttribLocation(shaderProgram, [Keyword]);
  * 
  */
-function WebGL_SegmentBuffer(){
+function WebGL_TriangleBuffer(){
 	this.buffer = new Array();
 }
 
 
-WebGL_ElementArrayBuffer.prototype = {
-	
-	push : function(i0, i1, i2){
-		this.buffer.push(i0);
-		this.buffer.push(i1);
-		this.buffer.push(i2);
-		this.length++;
-	},
-	
-	compile : function(){
-		
-		// Create buffer handle
-		this.bufferHandle = gl.createBuffer();
+WebGL_TriangleBuffer.prototype = {
 
-		// Bind buffer handle to current buffer
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
+		push : function(i0, i1, i2){
+			this.buffer.push(i0);
+			this.buffer.push(i1);
+			this.buffer.push(i2);
+			this.length++;
+		},
 
-		// Store array data in the current buffer
-		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(buffer, 0, 3*this.length), gl.STATIC_DRAW);
+		compile : function(){
 
-		// delete buffer
-		delete this.buffer;
-	}
+			// Create buffer handle
+			this.bufferHandle = gl.createBuffer();
 
-	/** Bind the buffer for rendering */
-	bind : function() {
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
-	},
-	
-	render : function() {
-		// draw elements
-		gl.drawElements(gl.TRIANGLES, this.length, gl.UNSIGNED_SHORT);
-	},
+			// Bind buffer handle to current buffer
+			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
 
-	/** Dispose the buffer */
-	dispose : function(){
-		gl.deleteBuffer(this.bufferHandle);
-	}
+			// Store array data in the current buffer
+			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(buffer, 0, 3*this.length), gl.STATIC_DRAW);
+
+			// delete buffer
+			delete this.buffer;
+		},
+
+		/** Bind the buffer for rendering */
+		bind : function() {
+			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
+		},
+
+		render : function() {
+			// draw elements
+			gl.drawElements(gl.TRIANGLES, this.length, gl.UNSIGNED_SHORT);
+		},
+
+		/** Dispose the buffer */
+		dispose : function(){
+			gl.deleteBuffer(this.bufferHandle);
+		}
 };
 
 

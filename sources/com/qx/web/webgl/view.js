@@ -13,30 +13,30 @@ function WebGL_View(scene){
 
 	this.mouseTrackballSensitity = 0.3;
 	this.mouseWheelSensitivity = 0.8*1e-3;
-	this.newRotationMatrix = new Matrix4();
+	this.newRotationMatrix = new WebGL_Matrix4();
 
 	
 	// Eye
-	this.eyePosition = new Vector3();
+	this.eyePosition = new Vector3(0.0, 0.0, 0.0);
 	this.phi = 135;
 	this.theta = 135;
 	this.r = 20;
 	this.eyePosition.eyeVector(20, this.phi*Math.PI/180.0, this.theta*Math.PI/180.0);
 
-	this.eyeTarget = new Vector3(0,0,0);
-	this.eyeTarget_Speed = new Vector3(0,0,0);
-	this.eyeTarget_Acceleration = new Vector3(0,0,0);
+	this.eyeTarget = new Vector3(0.0, 0.0, 0.0);
+	this.eyeTarget_Speed = new Vector3(0.0, 0.0, 0.0);
+	this.eyeTarget_Acceleration = new Vector3(0.0, 0.0, 0.0);
 	
 	// Projection matrix
-	this.matrix_Projection = new Matrix4();
+	this.matrix_Projection = new WebGL_Matrix4();
 	this.matrix_Projection.perspectiveProjection(45, gl.viewportWidth / gl.viewportHeight, 0.1, 10000.0);
 	
 	// View matrix 
-	this.matrix_View = new Matrix4();
-	this.matrix_View.lookAt(this.eyePosition, this.eyeTarget, new Vector3(0,0,1));
+	this.matrix_View = new WebGL_Matrix4();
+	this.matrix_View.lookAt(this.eyePosition, this.eyeTarget, new Vector3(0.0, 0.0, 1.0));
 
 	// Projection * View Matrix
-	this.matrix_ProjectionView = new Matrix4();
+	this.matrix_ProjectionView = new WebGL_Matrix4();
 	this.matrix_ProjectionView.multiply(this.matrix_Projection, this.matrix_View);
 
 	
@@ -120,22 +120,22 @@ WebGL_View.prototype = {
 
 			// left arrow	 
 			case 37 :
-				this.eyeTarget_Acceleration.c[1] -= 0.001;
+				this.eyeTarget_Acceleration.y -= 0.001;
 				break;
 
 				// right arrow
 			case 39 :
-				this.eyeTarget_Acceleration.c[1] += 0.001;
+				this.eyeTarget_Acceleration.y += 0.001;
 				break;
 
 				// up arrow
 			case 38 :
-				this.eyeTarget_Acceleration.c[0] += 0.001;
+				this.eyeTarget_Acceleration.x += 0.001;
 				break;
 
 				// down arrow
 			case 40 :
-				this.eyeTarget_Acceleration.c[0] -= 0.001;
+				this.eyeTarget_Acceleration.x -= 0.001;
 				break;
 
 			}
@@ -144,13 +144,13 @@ WebGL_View.prototype = {
 		},
 
 		handleKeyUp : function(event) {
-			this.eyeTarget_Acceleration.c[0] = 0;
-			this.eyeTarget_Acceleration.c[1] = 0;
-			this.eyeTarget_Acceleration.c[2] = 0;
+			this.eyeTarget_Acceleration.x = 0;
+			this.eyeTarget_Acceleration.y = 0;
+			this.eyeTarget_Acceleration.z = 0;
 
-			this.eyeTarget_Speed.c[0] = 0;
-			this.eyeTarget_Speed.c[1] = 0;
-			this.eyeTarget_Speed.c[2] = 0;
+			this.eyeTarget_Speed.x = 0;
+			this.eyeTarget_Speed.y = 0;
+			this.eyeTarget_Speed.z = 0;
 
 			this.scene.render();
 		},
@@ -161,15 +161,14 @@ WebGL_View.prototype = {
 		 */
 		update : function(){
 			// compute new eye target position
-			this.eyeTarget.add_inPlace(this.eyeTarget_Speed);
-			this.eyeTarget_Speed.add_inPlace(this.eyeTarget_Acceleration);
+			this.eyeTarget.add(this.eyeTarget_Speed);
+			this.eyeTarget_Speed.add(this.eyeTarget_Acceleration);
 
 			// update view matrices
 			this.eyePosition.eyeVector(this.r, this.phi*Math.PI/180.0, this.theta*Math.PI/180.0);
-			this.eyePosition.add_inPlace(this.eyeTarget);
+			this.eyePosition.add(this.eyeTarget);
 			this.matrix_View.lookAt(this.eyePosition, this.eyeTarget, new Vector3(0,0,1));
 			this.matrix_ProjectionView.multiply(this.matrix_Projection, this.matrix_View);
-
 		}
 };
 

@@ -5,6 +5,13 @@
 var WebGL_Toolbox = {};
 
 
+WebGL_Toolbox.segmentNormal = function(p0, p1){
+	 normal = p1.copy().substract(p0);
+	 normal.normalize();
+	 normal.orthgonal(true);
+	 return normal;
+}
+
 WebGL_Toolbox.fullyRevolvePoint = function(affine, wire, point, n){
 
 	if(Math.abs(point.y)>1e-12){
@@ -30,8 +37,8 @@ WebGL_Toolbox.fullyRevolvePoint = function(affine, wire, point, n){
 
 		// elements
 		var segments = wire.segments;
-		for(int i=0; i<n; i++){
-			segments.push(offset+i%n, offset+(i+1)%n));
+		for(var i=0; i<n; i++){
+			segments.push(offset+i%n, offset+(i+1)%n);
 		}
 	}
 };
@@ -92,20 +99,20 @@ WebGL_Toolbox.fullyRevolveSegment = function(affine, surface, p0, p1, n){
 		// point p1 is degenerated
 		if(Math.abs(p1.y)<1e-12){
 			for(var i=0; i<n; i++){
-				triangles.push(offset+(2*i)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+2)%(2*n)));
+				triangles.push(offset+(2*i)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+2)%(2*n));
 			}
 		}
 		// point p0 is degenerated
 		else if(Math.abs(p0.y)<1e-12){
 			for(var i=0; i<n; i++){
-				triangles.push(offset+(2*i+2)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+3)%(2*n)));
+				triangles.push(offset+(2*i+2)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+3)%(2*n));
 			}
 		}
 		// neither point p0 nor point p1 are degenerated
 		else{
 			for(var i=0; i<n; i++){
-				triangles.push(offset+(2*i)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+2)%(2*n)));
-				triangles.push(offset+(2*i+2)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+3)%(2*n)));
+				triangles.push(offset+(2*i)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+2)%(2*n));
+				triangles.push(offset+(2*i+2)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+3)%(2*n));
 			}
 		}
 	}

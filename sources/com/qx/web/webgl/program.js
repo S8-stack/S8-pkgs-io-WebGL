@@ -3,8 +3,9 @@
 /*
  * an id is required to build the program
  */
-function WebGL_Program(id){
+function WebGL_Program(id, programs){
 	this.id = id;
+	this.programs = programs;
 	this.isInitialized = false;
 	this.displayList = [];
 	
@@ -50,11 +51,10 @@ function WebGL_Program(id){
 		program.isInitialized = true;
 		
 		// resort program
-		scene.sortProgramPass();
+		program.programs.sort();
 		
 		// trigger a render to refresh
 		scene.render();
-		
 	});
 	
 	
@@ -165,15 +165,18 @@ WebGL_Programs.prototype = {
 		}
 	
 		// if style is not present, we create it
-		var program = new WebGL_Program(id);
+		var program = new WebGL_Program(id, this);
 		
 		// add the newly created program to the list
 		this.programs.push(program);
 		
+		return program;
+	},
+	
+	
+	sort : function(){
 		// sort the programs by pass index
 		this.programs = this.programs.sort(function(a, b){ return a.pass-b.pass; });
-		
-		return program;
 	},
 	
 	render : function(view, environment){
@@ -181,7 +184,7 @@ WebGL_Programs.prototype = {
 		for(var i in this.programs){
 			this.programs[i].render();
 		}
-	}
+	},
 	
 	clear : function(view, environment){
 		// render the programs -> styles -> shapes

@@ -63,7 +63,7 @@ WebGL_Scene.prototype = {
 		clear : function(){
 			
 			// remove all instances, keep programs, styles and models
-			this.instances.clear();
+			this.shapeInstances.clear();
 			
 			// do a rendering pass to apply changes
 			this.render();
@@ -83,7 +83,7 @@ WebGL_Scene.prototype = {
 			// gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
 
-			this.instances.udpate();
+			this.shapeInstances.update();
 			
 			this.programs.render(this.view, this.environment);
 			// Recommended pattern for frame animation

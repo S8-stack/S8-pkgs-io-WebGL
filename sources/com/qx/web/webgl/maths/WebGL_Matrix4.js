@@ -20,7 +20,7 @@
 /**
  * No argument constructor
  */
-function Matrix4(){
+function WebGL_Matrix4(){
 	this.c = [0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0];
 }
 
@@ -30,12 +30,12 @@ function Matrix4(){
 /**
  * In place operations are preferred to keep pointer to the scene object when updated.  
  */
-Matrix4.prototype = {
+WebGL_Matrix4.prototype = {
 
 		/**
 		 * Define the constructor
 		 */
-		constructor : Matrix4(),
+		constructor : WebGL_Matrix4(),
 
 		/**
 		 * Define PI (Shared by all Vector4 Objects)
@@ -515,16 +515,11 @@ Matrix4.prototype = {
 		 */
 		lookAt : function (eye, center, up) {
 
+			// load numbers
 			var x0, x1, x2, y0, y1, y2, z0, z1, z2, len,
-			eyex = eye.c[0],
-			eyey = eye.c[1],
-			eyez = eye.c[2],
-			upx = up.c[0],
-			upy = up.c[1],
-			upz = up.c[2],
-			centerx = center.c[0],
-			centery = center.c[1],
-			centerz = center.c[2];
+			eyex = eye.x, eyey = eye.y, eyez = eye.z,
+			upx = up.x, upy = up.y, upz = up.z,
+			centerx = center.x, centery = center.y, centerz = center.z;
 
 			if (eyex == centerx && eyey == centery && eyez == centerz) {
 				this.identity();
@@ -715,7 +710,7 @@ Matrix4.prototype = {
 };
 
 
-Matrix4.test01 = function() {
+WebGL_Matrix4.test01 = function() {
 
 	var m = new Matrix4(), inv = new Matrix4(), tr = new Matrix4(), trinv = new Matrix4(), result = new Matrix4(),
 	trinv3 = new Matrix3(), trinv3c = new Matrix3(), result3 = new Matrix3();
@@ -747,7 +742,7 @@ Matrix4.test01 = function() {
 
 
 
-Matrix4.rotationX = function(angle){
+WebGL_Matrix4.rotationX = function(angle){
 	
     var rot = new Matrix4();
     rot.identity();
@@ -764,7 +759,7 @@ Matrix4.rotationX = function(angle){
 };
 
 
-Matrix4.rotationY = function(angle){
+WebGL_Matrix4.rotationY = function(angle){
     var rot = new Matrix4();
     rot.identity();
 
@@ -779,7 +774,7 @@ Matrix4.rotationY = function(angle){
     return rot;
 };
 
-Matrix4.rotationZ = function(angle){
+WebGL_Matrix4.rotationZ = function(angle){
     var rot = new Matrix4();
     rot.identity();
 
@@ -798,7 +793,7 @@ Matrix4.rotationZ = function(angle){
 /**
  * Average multiplication time less than 600 nanoseconds.
  */
-Matrix4.testPerformance = function(){
+WebGL_Matrix4.testPerformance = function(){
 
 	var A = new Matrix4();
 	A.random();

@@ -13,15 +13,15 @@ function WebGL_ArrayBuffer3(){
 
 
 WebGL_ArrayBuffer3.prototype = {
-		
+
 		push(vector){
 			this.buffer.push(vector.x);
 			this.buffer.push(vector.y);
 			this.buffer.push(vector.z);
 			this.length++;
 		},
-		
-		
+
+
 		compile : function(){
 
 			// Create buffer handle
@@ -35,34 +35,34 @@ WebGL_ArrayBuffer3.prototype = {
 			for(var i in this.buffer){
 				bufferData[i] = this.buffer[i];
 			}
-			
+
 			// delete
 			delete this.buffer;
-			
+
 			// store data in GPU
 			gl.bufferData(gl.ARRAY_BUFFER, bufferData, gl.STATIC_DRAW);
+		},
+
+
+		/**
+		 * Bind the buffer for rendering
+		 */
+		bind : function(location, offset) {
+
+			// bind buffer
+			gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferHandle);
+			gl.vertexAttribPointer(location, 3, gl.FLOAT, false, 0, 0);
+		},
+
+
+		unbind : function(location) {
+		},
+
+		/**
+		 * Dispose the buffer
+		 */
+		dispose : function(){
+			gl.deleteBuffer(this.bufferHandle);
 		}
-
-
-	/**
-	 * Bind the buffer for rendering
-	 */
-	bind : function(location, offset) {
-
-		// bind buffer
-		gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferHandle);
-		gl.vertexAttribPointer(location, 3, gl.FLOAT, false, 0, 0);
-	},
-
-
-	unbind : function(location) {
-	},
-
-	/**
-	 * Dispose the buffer
-	 */
-	dispose : function(){
-		gl.deleteBuffer(this.bufferHandle);
-	}
 };
 

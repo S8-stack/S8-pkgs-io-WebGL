@@ -15,43 +15,43 @@ function WebGL_SegmentBuffer(){
 }
 
 
-WebGL_ElementArrayBuffer.prototype = {
-		
-	push : function(i0, i1){
-		this.buffer.push(i0);
-		this.buffer.push(i1);
-		this.length++;
-	},
-	
-	compile : function(){
+WebGL_SegmentBuffer.prototype = {
 
-		// Create buffer handle
-		this.bufferHandle = gl.createBuffer();
+		push : function(i0, i1){
+			this.buffer.push(i0);
+			this.buffer.push(i1);
+			this.length++;
+		},
 
-		// Bind buffer handle to current buffer
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
-		
-		// bind buffer data
-		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(buffer, 0, 2*this.length), gl.STATIC_DRAW);
+		compile : function(){
 
-		// delete data
-		delete this.buffer;
-	}
+			// Create buffer handle
+			this.bufferHandle = gl.createBuffer();
 
-	/** Bind the buffer for rendering */
-	bind : function() {
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
-	},
-	
-	render : function() {
-		// draw elements
-		gl.drawElements(gl.LINES, this.length, gl.UNSIGNED_SHORT);
-	},
+			// Bind buffer handle to current buffer
+			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
 
-	/** Dispose the buffer */
-	dispose : function(){
-		gl.deleteBuffer(this.bufferHandle);
-	}
+			// bind buffer data
+			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(buffer, 0, 2*this.length), gl.STATIC_DRAW);
+
+			// delete data
+			delete this.buffer;
+		},
+
+		/** Bind the buffer for rendering */
+		bind : function() {
+			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
+		},
+
+		render : function() {
+			// draw elements
+			gl.drawElements(gl.LINES, this.length, gl.UNSIGNED_SHORT);
+		},
+
+		/** Dispose the buffer */
+		dispose : function(){
+			gl.deleteBuffer(this.bufferHandle);
+		}
 };
 
 

@@ -1,15 +1,10 @@
 package com.qx.io.webgl;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.qx.maths.affine.Affine3d;
-import com.qx.maths.box.BoundingBox3d;
 import com.qx.maths.matrix.SquareMatrix3d;
-import com.qx.maths.vector.Vector2d;
 import com.qx.maths.vector.Vector3d;
 
 /**
@@ -23,15 +18,15 @@ public class WebGL_ShapeInstance {
 
 	private Affine3d position;
 
-	private WebGL_ShapeModel.Build model;
+	private WebGL_ShapeModel model;
 
-	private String[][] modeStyles;
+	private String[][] styles;
 
-	public WebGL_ShapeInstance(WebGL_ShapeModel.Build model) {
+	public WebGL_ShapeInstance(Affine3d position, WebGL_ShapeModel model) {
 		super();
+		this.position = position;
 		this.model = model;
-		this.position = Affine3d.STANDARD;
-		this.modeStyles = model.getDefaultModeStyles();
+		this.styles = model.getDefaultModeStyles();
 	}
 
 
@@ -51,9 +46,15 @@ public class WebGL_ShapeInstance {
 		write(writer, position);
 		writer.append(";\n");
 
-		// position
-		writer.append("var modelId ="+model.getIdentifier()+";\n");
+		// model id
+		writer.append("var modelId ="+model.id+";\n");
 
+		// mode styles
+		writer.append("var styles =");
+		write(writer, styles);
+		writer.append(";\n");
+
+		
 	}
 
 
@@ -108,6 +109,35 @@ public class WebGL_ShapeInstance {
 				writer.append(",");
 			}
 			writer.append(Double.toString(coefficients[i]));
+		}
+		writer.append("]");
+	}
+	
+	
+	public static void write(Writer writer, String[][] values) throws IOException{
+		writer.append("[");
+		int n0 = values.length, n1;
+		boolean isStarted0 = false, isStarted1;
+		for(int i0=0; i0<n0; i0++){
+			if(isStarted0){
+				writer.append(",");
+			}
+			else{
+				isStarted0 = true;
+			}
+			writer.append("[");
+			n1 = values[i0].length;
+			isStarted1 = false;
+			for(int i1=0; i1<n1; i1++){
+				if(isStarted1){
+					writer.append(",");
+				}
+				else{
+					isStarted0 = true;
+				}
+				writer.append(values[i0][i1]);
+			}
+			writer.append("]");
 		}
 		writer.append("]");
 	}

@@ -78,7 +78,6 @@ WebGL_Style.prototype = {
 		// set current style
 		renderable.style = this;
 	},
-
 	
 	remove : function(renderableId){
 		if(this.renderables.has(renderableId)){
@@ -86,7 +85,7 @@ WebGL_Style.prototype = {
 			this.iterator = this.renderables.values();
 			this.renderablesCount--;
 		}
-	}
+	},
 	
 	clear : function(){
 

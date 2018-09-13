@@ -19,7 +19,7 @@
 /**
  * No argument constructor
  */
-function Matrix3(){
+function WebGL_Matrix3(){
 	this.c = [];
 }
 
@@ -29,12 +29,12 @@ function Matrix3(){
 /**
  * In place operations are preferred to keep pointer to the scene object when updated.  
  */
-Matrix3.prototype = {
+WebGL_Matrix3.prototype = {
 
 		/**
 		 * Define the constructor
 		 */
-		constructor : Matrix3,
+		constructor : WebGL_Matrix3,
 
 		/**
 		 * Define PI (Shared by all Vector4 Objects)
@@ -354,14 +354,14 @@ Matrix3.prototype = {
 
 
 
-Matrix3.random = function(destination) {
+WebGL_Matrix3.random = function(destination) {
 	for(var i=0; i<9; i++){
 		destination.c[i]=Math.random();	
 	}
 };
 
 
-Matrix3.test = function() {
+WebGL_Matrix3.test = function() {
 
 	var m = new Matrix3();
 	Matrix3.random(m);

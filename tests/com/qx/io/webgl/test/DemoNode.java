@@ -3,7 +3,6 @@ package com.qx.io.webgl.test;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-import com.qx.io.https.protocol.header.MIME_Type;
 import com.qx.io.https.protocol.session.HTTPS_Session;
 import com.qx.io.https.server.HTTPS_Connection;
 import com.qx.io.https.server.POST.HTTPS_POST_Node;
@@ -11,8 +10,8 @@ import com.qx.io.https.server.POST.HTTPS_POST_RootNode;
 import com.qx.io.https.server.POST.HTTPS_POST_Task.Processing;
 import com.qx.io.https.server.POST.annotation.HTTPS_POST_Method;
 import com.qx.io.webgl.WebGL_Node;
+import com.qx.io.webgl.WebGL_ShapeInstance;
 import com.qx.io.webgl.WebGL_ShapeModel;
-import com.qx.io.webgl.primitive.Sphere;
 import com.qx.maths.affine.Affine3d;
 import com.qx.maths.vector.Vector3d;
 
@@ -37,46 +36,17 @@ public class DemoNode extends HTTPS_POST_RootNode {
 	@HTTPS_POST_Method(mapping="getDemoShapes", processing=Processing.CPU_SHORT)
 	public void process(HTTPS_Connection socket) throws Exception {
 
-		String id0 = buildSpheres(3, 3, 3, 5.0, 5.0, 5.0);
-		String id1 = buildSpheres(2, 2, 2, 5.0, 5.0, 5.0);
-
-		WebGL_ShapeModel shape = new WebGL_ShapeModel();
-
-
-		new Sphere(6.0, 20).draw(shape, new Affine3d(new Vector3d(0, 12, 0.0)));
-
-		String id2 = webGL_Service.putShapeModel(shape);
-
-		
-		socket.sendContent(MIME_Type.TEXT);
+		WebGL_ShapeModel model = new WebGL_ShapeModel();
+		webGL_Service.push(model);
+	
+		String id0 = webGL_Service.push(new WebGL_ShapeInstance(new Affine3d(new Vector3d(-5.0, 0.0, 0.0)), model));
+		String id1 = webGL_Service.push(new WebGL_ShapeInstance(new Affine3d(new Vector3d(5.0, 0.0, 0.0)), model));
+		String id2 = webGL_Service.push(new WebGL_ShapeInstance(new Affine3d(new Vector3d(5.0, 5.0, 0.0)), model));
 
 		OutputStream outputStream = socket.getOutputStream();
 		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-		writer.append("var shapeId0=\""+id0+"\"; var shapeId1=\""+id1+"\"; var shapeId2=\""+id2+"\";");
+		writer.append("var id0=\""+id0+"\", id1=\""+id1+"\", id2=\""+id2+"\";");
 		writer.close();
-	}
-
-
-
-	private String buildSpheres(int nx, int ny, int nz, double ax, double ay, double az){
-
-		
-		WebGL_ShapeModel shape = new WebGL_ShapeModel();
-
-		Sphere sphere = new Sphere(2.0, 20);
-
-		Vector3d center;
-		for(int ix=0; ix<nx; ix++){
-			for(int iy=0; iy<ny; iy++){
-				for(int iz=0; iz<nz; iz++){
-					center = new Vector3d(ix*ax-(nx-1)*ax/2.0, iy*ay-(ny-1)*ay/2.0, iz*az-(nz-1)*az/2.0);
-					sphere.draw(shape, new Affine3d(center));
-				}
-			}
-		}
-
-		String id = webGL_Service.putShapeModel(shape);
-		return id;
 	}
 
 

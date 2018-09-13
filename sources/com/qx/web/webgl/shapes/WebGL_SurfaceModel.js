@@ -23,12 +23,16 @@ function WebGL_SurfaceModel(){
 
 WebGL_SurfaceModel.prototype = {
 
-		compile : function(){
-			this.vertices.compile();
-			this.normals.compile();
-			this.texCoords.compile();
-			this.triangles.compile();
-		}
-		
+	compile : function(){
+		this.vertices.compile();
+		this.normals.compile();
+		this.texCoords.compile();
+		this.triangles.compile();
+	},
+	
+	dispose : function(){
+		this.vertices.dispose();
+		this.segments.dispose();
+	}
 };
 

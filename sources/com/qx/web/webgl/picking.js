@@ -9,7 +9,7 @@ function WebGL_PickingModule(scene){
 	// pointer to the scene
 	this.scene = scene;
 
-	this.program = new WebGL_Program("picking");
+	this.program = scene.programs.get("picking");
 
 
 	this.width = gl.viewportWidth;

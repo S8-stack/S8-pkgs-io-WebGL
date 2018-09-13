@@ -17,10 +17,14 @@ function WebGL_WireModel(){
 
 WebGL_WireModel.prototype = {
 
-		compile : function(){
-			this.vertices.compile();
-			this.segments.compile();
-		}
-		
+	compile : function(){
+		this.vertices.compile();
+		this.segments.compile();
+	},
+
+	dispose : function(){
+		this.vertices.dispose();
+		this.segments.dispose();
+	}	
 };
 

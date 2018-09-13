@@ -1,6 +1,5 @@
-var wire = new WebGL_Wire();
-var surface = new WebGL_Wire();
-WebGL_RevolveTool.partial(wire, surface, new WebGL_Profile2([
+
+var profile = new WebGL_Profile2([
 	12.0, -23.0,
 	12.0, -23.0,
 	12.0, -23.0,
@@ -10,5 +9,9 @@ WebGL_RevolveTool.partial(wire, surface, new WebGL_Profile2([
 	12.0, -23.0,
 	12.0, -23.0,
 	12.0, -23.0,
-	12.0, -23.3]), 0.0, 2.6575, 20);
-var renderables = [wire, surface];
+	12.0, -23.3], true);
+
+var wire = new WebGL_WireModel();
+var surface = new WebGL_SurfaceModel();
+profile.fullyRevolve(wire, surface, 20);
+model.renderables = [wire, surface];

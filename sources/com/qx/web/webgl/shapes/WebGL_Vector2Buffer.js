@@ -41,7 +41,7 @@ WebGL_ArrayBuffer2.prototype = {
 		
 		// store data in GPU
 		gl.bufferData(gl.ARRAY_BUFFER, bufferData, gl.STATIC_DRAW);
-	}
+	},
 
 
 	/**
