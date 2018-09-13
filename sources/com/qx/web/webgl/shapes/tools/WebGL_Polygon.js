@@ -2,13 +2,13 @@
 /**
  * 
  */
-function WebGL_Polygon(vertices, isClosed){
+function WebGL_Polygon(data, isClosed){
 	
 	// store vertices
-	var nbVertices = vertices.length/2;
+	var nbVertices = data.length/2;
 	this.vertices = new Array();
 	for(var i=0; i<nbVertices; i++){
-		this.vertices.push(new Vector2(vertices[0], vertices[1]));
+		this.vertices.push(new Vector2(data[2*i+0], data[2*i+1]));
 	}
 	
 	// indicate if closed or not
@@ -31,20 +31,20 @@ WebGL_Polygon.prototype = {
 		
 	shift : 0.01,
 		
-	fullyRevolve : function(affine, wire, n, isWireEndingsEnabled){
+	fullyRevolve : function(affine, wire, surface, n, isWireEndingsEnabled){
 		
 		var nbVertices = this.vertices.length;
 		var vertex;
 
 		// wire
 		var normal, vertex;
-		for(var i=0; i<nbVertices-1; i++){
-			normal = this.normals[i-1].copy();
-			normal.add(this.normals[i]);
+		for(var i=0; i<nbVertices; i++){
+			normal = this.normals[i].copy();
+			normal.add(this.normals[(i+1)%nbVertices]);
 			normal.normalize();
 			
-			vertex = this.vertices[i].copy();
-			vertex.integrate(normal, shift);
+			vertex = this.vertices[(i+1)%nbVertices].copy();
+			vertex.integrate(normal, this.shift);
 			
 			// revolve point
 			WebGL_Toolbox.fullyRevolvePoint(affine, wire, vertex, n);
@@ -53,12 +53,10 @@ WebGL_Polygon.prototype = {
 		// surface
 		var normal, vertex;
 		for(var i=0; i<nbVertices-1; i++){
-			WebGL_Toolbox.fullyRevolveSegment(affine, surface,
-					this.nbVertices[i], this.nbVertices[i+1], n);
+			WebGL_Toolbox.fullyRevolveSegment(affine, surface, this.vertices[i], this.vertices[i+1], n);
 		}
 		if(this.isClosed){
-			WebGL_Toolbox.fullyRevolveSegment(affine, surface,
-					this.nbVertices[nbPoints-1], this.nbVertices[0], n);
+			WebGL_Toolbox.fullyRevolveSegment(affine, surface, this.vertices[nbVertices-1], this.vertices[0], n);
 		}
 	}
 };

@@ -15,8 +15,8 @@ function WebGL_SurfaceModel(){
 	// tex coords
 	this.texCoords = new WebGL_Vector2Buffer();
 	
-	// triangles
-	this.triangles = new WebGL_TriangleBuffer();
+	// elements
+	this.elements = new WebGL_TriangleBuffer();
 	
 }
 
@@ -27,7 +27,7 @@ WebGL_SurfaceModel.prototype = {
 		this.vertices.compile();
 		this.normals.compile();
 		this.texCoords.compile();
-		this.triangles.compile();
+		this.elements.compile();
 	},
 	
 	dispose : function(){

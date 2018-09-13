@@ -15,8 +15,8 @@ function WebGL_Environment(scene){
 	this.light0.diffuse = rgb(1.0, 1.0, 1.0);
 	this.light0.specular = rgb(1.0, 1.0, 1.0);
 
-	this.light0.absolute_direction = new Vector3();
-	this.light0.absolute_direction.c = [1.0, 1.0, 1.0];
+	this.light0.absolute_direction = new WebGL_Vector3();
+	this.light0.absolute_direction.c = [];
 	this.light0.absolute_direction.normalize();
 
 	// light 1
@@ -26,7 +26,7 @@ function WebGL_Environment(scene){
 	this.light1.diffuse = rgb(0.8, 0.8, 0.8);
 	this.light1.specular = rgb(1.0, 1.0, 1.0);
 
-	this.light1.absolute_direction = new Vector3();
+	this.light1.absolute_direction = new WebGL_Vector3();
 	this.light1.absolute_direction.c = [0.5, -1.0, 0.8];
 	this.light1.absolute_direction.normalize();
 

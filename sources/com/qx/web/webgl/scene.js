@@ -22,7 +22,7 @@ function WebGL_Scene(){
 	this.environment = new WebGL_Environment(this);
 
 	// create picking module and link it
-	this.picking = new WebGL_PickingModule(this);
+	//this.picking = new WebGL_PickingModule(this);
 
 	// <initialize rendering>
 
@@ -85,7 +85,7 @@ WebGL_Scene.prototype = {
 
 			this.shapeInstances.update();
 			
-			this.programs.render(this.view, this.environment);
+			this.programs.draw(this.view, this.environment);
 			// Recommended pattern for frame animation
 			
 			/*

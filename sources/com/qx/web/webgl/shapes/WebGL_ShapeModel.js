@@ -29,11 +29,11 @@ function WebGL_ShapeModel(id){
 		eval(response.responseText);
 		
 		// compile renderables
-		for(let renderable of renderables){
+		for(let renderable of model.renderables){
 			renderable.compile();
 		}
 		
-		shape.isInitialized = true;
+		model.isInitialized = true;
 	});
 }
 
@@ -59,12 +59,12 @@ WebGL_ShapeModels.prototype = {
 	 * get shape
 	 */
 	get : function(id){
-		var shapeModel = map.get(id);
+		var shapeModel = this.map.get(id);
 		
 		// if shape is not present, we create it
 		if(shapeModel==undefined){
-			shapeModel =new WebGL_Shape(id);	
-			map.set(id, shapeModel);
+			shapeModel =new WebGL_ShapeModel(id);	
+			this.map.set(id, shapeModel);
 		}
 		return shapeModel;
 	}

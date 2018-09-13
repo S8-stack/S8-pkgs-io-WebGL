@@ -8,6 +8,9 @@ function WebGL_ShapeInstance(id, scene){
 
 	// id
 	this.id = id;
+	
+	// mode
+	this.mode = 0;
 
 	this.isInitialized = false;
 	this.isDisposed = false;
@@ -37,7 +40,7 @@ function WebGL_ShapeInstance(id, scene){
 
 	var instance = this;
 
-	request("webGL.getShapeInstance:id="+shape.id, function (response){
+	request("webGL.getShapeInstance:id="+instance.id, function (response){
 
 		if(!instance.isDisposed){
 			eval(response.responseText);
@@ -56,12 +59,17 @@ function WebGL_ShapeInstance(id, scene){
 
 			// build renderables
 			instance.renderables = new Array();
-			for(var index in modeStyles){
-				instance.renderables[i] = new WebGL_ShapeInstanceRenderable(instance, index, styles[index]);
+			for(var index in styles){
+				instance.renderables.push(new WebGL_ShapeInstanceRenderable(instance, index, styles[index]));
 			}
 
 			// done...
-			instance.isInitialized = true;	
+			instance.isInitialized = true;
+			
+			// update modes
+			for(var index in instance.renderables){
+				instance.renderables[index].setMode(instance.mode);
+			}
 		}
 	});
 }
@@ -79,17 +87,18 @@ WebGL_ShapeInstance.prototype = {
 		},
 
 
-		setMode : function(modeIndex){
-			if(this.modeIndex==undefined || modeIndex!=this.modeIndex){
+		setMode : function(mode){
+			if(mode!=this.mode){
 				for(var index in this.renderables){
-					renderables[index].setMode(modeIndex);
+					this.renderables[index].setMode(mode);
 				}
-				this.modeIndex = modeIndex;
+				this.mode = mode;
 
 				// refresh
 				scene.render();
 			}
 		},
+		
 
 		dispose : function(){
 			if(this.isInitialized){
@@ -107,7 +116,7 @@ WebGL_ShapeInstance.prototype = {
  * a model must be defined
  * an instance must be defined
  */
-function WebGL_ShapeInstanceRenderable(instance, index, modeStyles){
+function WebGL_ShapeInstanceRenderable(instance, index, styles){
 
 	// instance
 	this.id = instance.id+'-'+index;
@@ -122,7 +131,7 @@ function WebGL_ShapeInstanceRenderable(instance, index, modeStyles){
 	this.isInitialized = false;
 
 	// mode styles
-	this.modeStyles = modeStyles;
+	this.styles = styles;
 }
 
 
@@ -130,7 +139,7 @@ WebGL_ShapeInstanceRenderable.prototype = {
 
 		update : function(){
 			if(!this.isInitialized){
-				if(this.instance.model.isRenderableModelsInitialized){
+				if(this.instance.model.isInitialized){
 					this.model = this.instance.model.renderables[this.index];
 					this.isInitialized = true;
 				}
@@ -140,7 +149,7 @@ WebGL_ShapeInstanceRenderable.prototype = {
 		/**
 		 * setStyle to a shape
 		 */
-		setMode : function(modeIndex){
+		setMode : function(mode){
 
 			// detach form current style if any
 			if(this.style!=undefined){
@@ -148,7 +157,7 @@ WebGL_ShapeInstanceRenderable.prototype = {
 			}
 
 			// append to new style
-			var styleId = this.modeStyles[modeIndex];
+			var styleId = this.styles[mode];
 			this.style = scene.styles.get(styleId);
 			this.style.append(this);
 		},
@@ -167,12 +176,9 @@ WebGL_ShapeInstanceRenderable.prototype = {
 function WebGL_ShapeInstances(scene){
 
 	// keep reference of scene
+	this.chain = new Chain();
+	
 	this.scene = scene;
-
-	// map for Instance storage
-	this.map = new Map();
-
-	this.iterator = this.map.values();
 }
 
 
@@ -182,39 +188,31 @@ WebGL_ShapeInstances.prototype = {
 		 * update all instances
 		 */
 		update : function(){
-			for(let instance of this.iterator){
+			this.chain.crawl(function(instance){
 				instance.update();
-			}
+			});
 		},
 
 		/**
 		 * get shape
 		 */
 		get : function(id){
-			var shapeInstance = this.map.get(id);
+			var instance = this.chain.get(id);
 
 			// if shape is not present, we create it
-			if(shapeInstance==undefined){
-				shapeInstance = new WebGL_ShapeInstance(id, this.scene);	
-				this.map.set(id, shapeInstance);
-				this.iterator = map.values();
+			if(instance==undefined){
+				instance = new WebGL_ShapeInstance(id, this.scene);	
+				this.chain.append(id, instance);
 			}
-			return shapeInstance;
+			return instance;
 		},
 
 		remove : function(id){
-			var instance = this.map.get(id);
-			if(instance!=undefined){
-				instance.dispose();
-				this.map.delete(id);
-				this.iterator = map.values();
-			}	
+			this.chain.remove(id);
 		},
 
 		clear : function(){
-			for(let instance of this.iterator){
-				instance.dispose();
-			}
+			//TODO
 		}
 
 };

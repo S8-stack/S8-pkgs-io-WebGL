@@ -9,8 +9,8 @@ function WebGL_WireModel(){
 	// vertices
 	this.vertices = new WebGL_Vector3Buffer();
 	
-	// segments
-	this.segments = new WebGL_SegmentBuffer();
+	// elements
+	this.elements = new WebGL_SegmentBuffer();
 	
 }
 
@@ -19,12 +19,12 @@ WebGL_WireModel.prototype = {
 
 	compile : function(){
 		this.vertices.compile();
-		this.segments.compile();
+		this.elements.compile();
 	},
 
 	dispose : function(){
 		this.vertices.dispose();
-		this.segments.dispose();
+		this.elements.dispose();
 	}	
 };
 

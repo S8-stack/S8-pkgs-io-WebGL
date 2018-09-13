@@ -9,17 +9,14 @@
 function WebGL_Style(id){
 
 	this.id = id;
-	
-	// display list for this style
-	this.renderables = new Map();
-	this.renderablesCount = 0;
-	this.iterator = this.renderables.values();
-	
+
+	this.renderables = new Chain();
+
 	this.isInitialized = false;
 
 	// start initialization
 	var style = this;
-	
+
 	request("webGL.getStyle:id="+id, function (response){
 		eval(response.responseText);
 		/*
@@ -31,10 +28,10 @@ function WebGL_Style(id){
 
 		style.initialize();
 		style.isInitialized = true;
-		
+
 		// from now on, the program is ready to render!
 		scene.programs.get(style.programId).append(style);
-		
+
 		scene.render();
 	});
 }
@@ -42,57 +39,48 @@ function WebGL_Style(id){
 
 WebGL_Style.prototype = {
 
-	/**
-	 * render the styles and shapes
-	 */
-	render : function(program){
-		if(this.isInitialized){
-			// load style uniforms
-			program.loadStyle(this);
+		/**
+		 * render the styles and shapes
+		 */
+		draw : function(program){
+			if(this.isInitialized){
+				// load style uniforms
+				program.loadStyle(this);
 
-			// render shapes
-			for(let renderable of this.iterator){
-				
-				// renderable
-				renderable = this.renderables[i];
-				
-				// update
-				renderable.update();
-				
-				// render if OK
-				if(renderable.isInitialized){
-					program.render(renderable);	
-				}
+				this.renderables.crawl(function(renderable){
+					// update
+					renderable.update();
+
+					// render if OK
+					if(renderable.isInitialized){
+						program.render(renderable);	
+					}
+				});
 			}
-		}
-	},
+		},
 
-	/*
-	 * append shape
-	 */
-	append : function(renderable){
-		this.renderables.set(renderable.id, renderable);
-		this.renderablesCount++;
-		this.iterator = this.renderables.values();
-		
-		// set current style
-		renderable.style = this;
-	},
-	
-	remove : function(renderableId){
-		if(this.renderables.has(renderableId)){
-			this.renderables.delete(renderableId);
-			this.iterator = this.renderables.values();
-			this.renderablesCount--;
-		}
-	},
-	
-	clear : function(){
 
-		this.renderables.clear();
-		this.renderablesCount=0;
-		this.iterator = this.renderables.values();
-	}
+		/*
+		 * append shape
+		 */
+		append : function(renderable){
+			
+			// append to chain
+			this.renderables.append(renderable.id, renderable);
+
+			// set current style
+			renderable.style = this;
+		},
+
+		remove : function(renderableId){
+			// append to chain
+			this.renderables.remove(renderable.id);
+		},
+
+		clear : function(){
+			// append to chain
+			this.renderables.clear(renderable.id);
+		}
 };
 
 
@@ -151,11 +139,11 @@ WebGL_TextureCubeMap.prototype = {
 		load : function(pathname, extension) {
 
 			var targets = [gl.TEXTURE_CUBE_MAP_POSITIVE_X,
-			               gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
-			               gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
-			               gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
-			               gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
-			               gl.TEXTURE_CUBE_MAP_NEGATIVE_Z ];
+				gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
+				gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
+				gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
+				gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
+				gl.TEXTURE_CUBE_MAP_NEGATIVE_Z ];
 
 
 			var suffixes = [ "_negx", "_posx", "_posy", "_negy", "_posz", "_negz"];
@@ -206,19 +194,19 @@ function WebGL_Styles(){
 }
 
 WebGL_Styles.prototype = {
-		
-	/**
-	 * get style
-	 */
-	get : function(id){
-		
-		var style = this.map.get(id);
-		if(style==undefined){
-			// if style is not present, we create it
-			style=new WebGL_Style(id);
-			this.map.set(id, style);	
+
+		/**
+		 * get style
+		 */
+		get : function(id){
+
+			var style = this.map.get(id);
+			if(style==undefined){
+				// if style is not present, we create it
+				style=new WebGL_Style(id);
+				this.map.set(id, style);	
+			}
+			return style;
 		}
-		return style;
-	}
 };
 

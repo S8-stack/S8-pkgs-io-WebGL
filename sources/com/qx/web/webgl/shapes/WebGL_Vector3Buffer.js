@@ -7,20 +7,22 @@
  * @param dimension : the dimensions of the vectors passed as vertex data
  * 
  */
-function WebGL_ArrayBuffer3(){
-	this.vectors = new Array();
+function WebGL_Vector3Buffer(){
+	this.buffer = new Array();
 }
 
 
-WebGL_ArrayBuffer3.prototype = {
+WebGL_Vector3Buffer.prototype = {
 
 		push(vector){
 			this.buffer.push(vector.x);
 			this.buffer.push(vector.y);
 			this.buffer.push(vector.z);
-			this.length++;
 		},
-
+		
+		length : function(){
+			return this.buffer.length/3;
+		},
 
 		compile : function(){
 
@@ -31,13 +33,13 @@ WebGL_ArrayBuffer3.prototype = {
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferHandle);
 
 			// Store array data in the current buffer (Float32Array.BYTES_PER_ELEMENT=4: 4 bytes per float)
-			var bufferData = new Float32Array(3*this.length);
+			var bufferData = new Float32Array(this.buffer.length);
 			for(var i in this.buffer){
 				bufferData[i] = this.buffer[i];
 			}
 
 			// delete
-			delete this.buffer;
+			//delete this.buffer;
 
 			// store data in GPU
 			gl.bufferData(gl.ARRAY_BUFFER, bufferData, gl.STATIC_DRAW);

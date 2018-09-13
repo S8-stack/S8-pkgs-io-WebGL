@@ -86,22 +86,19 @@ program.render = function(surface){
 	gl.uniformMatrix3fv(this.loc_Uniform_matrix_N, false, surface.instance.matrix_Normal.c);
 	
 	// bind model vertex attributes
-	surface.model.shape.surfaceVertices.bind(this.loc_Attribute_vertex, surface.model.verticesOffset);
-	surface.model.shape.surfaceNormals.bind(this.loc_Attribute_normal, surface.model.verticesOffset);
+	surface.model.vertices.bind(this.loc_Attribute_vertex, surface.model.verticesOffset);
+	surface.model.normals.bind(this.loc_Attribute_normal, surface.model.verticesOffset);
 	
 	// bind model elements
-	surface.model.shape.surfaceTriangles.bind();
-	
-	// draw
-	surface.model.render()
+	surface.model.elements.render();
 	
 	/*
 	 * unbind shape
 	 */
 	
 	/* unbind attributes */
-	surface.model.shape.surfaceVertices.unbind(this.loc_Attribute_vertex);
-	surface.model.shape.surfaceNormals.unbind(this.loc_Attribute_normal);
+	surface.model.vertices.unbind(this.loc_Attribute_vertex);
+	surface.model.normals.unbind(this.loc_Attribute_normal);
 	
 };
 

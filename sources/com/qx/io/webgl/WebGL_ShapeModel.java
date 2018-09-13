@@ -19,10 +19,10 @@ public class WebGL_ShapeModel {
 	public void writeOutline(Writer writer) throws IOException{
 
 		String definition = 
-				"var profile = new WebGL_Profile2([-1.0, 2.0, 1.0, 2.0, 1.0, 3.0, -1.0, 3.0], true)"
+				"var profile = new WebGL_Polygon([-1.0, .5, 1.0, .5, 1.0, 2.0, -1.0, 2.0], true);"
 						+"var wire = new WebGL_WireModel();"
 						+"var surface = new WebGL_SurfaceModel();"
-						+"profile.fullyRevolve(wire, surface, 20);"
+						+"profile.fullyRevolve(Affine3.STD, wire, surface, 20, true);"
 						+"model.renderables = [wire, surface];";
 
 		writer.append(definition);

@@ -6,9 +6,10 @@ var WebGL_Toolbox = {};
 
 
 WebGL_Toolbox.segmentNormal = function(p0, p1){
-	 normal = p1.copy().substract(p0);
+	 normal = p1.copy();
+	 normal.substract(p0);
 	 normal.normalize();
-	 normal.orthgonal(true);
+	 normal.orthogonal(true);
 	 return normal;
 }
 
@@ -20,9 +21,11 @@ WebGL_Toolbox.fullyRevolvePoint = function(affine, wire, point, n){
 		var dTheta = 2.0*Math.PI/n;
 		var point3d = new Vector3(point.x, point.y, 0);
 			
-		var matrix;
+		var matrix = new Matrix3();
 		var vertex;
 		var vertices = wire.vertices;
+		var offset = vertices.length();
+		
 		for(var i=0; i<n; i++){
 			matrix.xRotation(i*dTheta);
 			
@@ -36,9 +39,9 @@ WebGL_Toolbox.fullyRevolvePoint = function(affine, wire, point, n){
 		}
 
 		// elements
-		var segments = wire.segments;
+		var elements = wire.elements;
 		for(var i=0; i<n; i++){
-			segments.push(offset+i%n, offset+(i+1)%n);
+			elements.push(offset+i%n, offset+(i+1)%n);
 		}
 	}
 };
@@ -53,8 +56,8 @@ WebGL_Toolbox.fullyRevolveSegment = function(affine, surface, p0, p1, n){
 		var normals = surface.normals;
 		var texCoords = surface.texCoords;
 		
-		var offset = vertices.length;
-		var triangles = surface.triangles();
+		var offset = vertices.length();
+		var elements = surface.elements();
 		
 		var dTheta = 2.0*Math.PI/n;
 	
@@ -99,20 +102,20 @@ WebGL_Toolbox.fullyRevolveSegment = function(affine, surface, p0, p1, n){
 		// point p1 is degenerated
 		if(Math.abs(p1.y)<1e-12){
 			for(var i=0; i<n; i++){
-				triangles.push(offset+(2*i)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+2)%(2*n));
+				elements.push(offset+(2*i)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+2)%(2*n));
 			}
 		}
 		// point p0 is degenerated
 		else if(Math.abs(p0.y)<1e-12){
 			for(var i=0; i<n; i++){
-				triangles.push(offset+(2*i+2)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+3)%(2*n));
+				elements.push(offset+(2*i+2)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+3)%(2*n));
 			}
 		}
 		// neither point p0 nor point p1 are degenerated
 		else{
 			for(var i=0; i<n; i++){
-				triangles.push(offset+(2*i)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+2)%(2*n));
-				triangles.push(offset+(2*i+2)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+3)%(2*n));
+				elements.push(offset+(2*i)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+2)%(2*n));
+				elements.push(offset+(2*i+2)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+3)%(2*n));
 			}
 		}
 	}

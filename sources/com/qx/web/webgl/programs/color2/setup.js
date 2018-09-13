@@ -36,18 +36,25 @@ program.loadStyle = function(style){
 };
 
 
-program.bindShape = function(shape){
+
+program.render = function(shape){
+	
+	
+	/*
+	 * bind shape
+	 */
 	
 	// matrices
-	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, shape.matrix_ProjectionViewModel.c);
+	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, shape.instance.matrix_ProjectionViewModel.c);
 	
 	// attributes
-	shape.vertex.bind(this.loc_Attribute_vertex);
-};
-
-program.unbindShape = function(shape){	
+	shape.model.vertices.bind(this.loc_Attribute_vertex);
+	
+	// bind model elements
+	shape.model.elements.render();
 	
 	/* unbind attributes */
-	shape.vertex.unbind(this.loc_Attribute_vertex);
+	shape.model.vertices.unbind(this.loc_Attribute_vertex);
+	
 };
 

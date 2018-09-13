@@ -32,20 +32,17 @@ WebGL_SegmentBuffer.prototype = {
 			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
 
 			// bind buffer data
-			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(buffer, 0, 2*this.length), gl.STATIC_DRAW);
+			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.buffer, 0, 2*this.length), gl.STATIC_DRAW);
 
 			// delete data
-			delete this.buffer;
+			//delete this.buffer;
 		},
 
 		/** Bind the buffer for rendering */
-		bind : function() {
-			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
-		},
-
 		render : function() {
+			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
 			// draw elements
-			gl.drawElements(gl.LINES, this.length, gl.UNSIGNED_SHORT);
+			gl.drawElements(gl.LINES, this.length, gl.UNSIGNED_SHORT, 0);
 		},
 
 		/** Dispose the buffer */

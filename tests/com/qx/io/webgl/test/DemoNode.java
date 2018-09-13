@@ -3,6 +3,7 @@ package com.qx.io.webgl.test;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
+import com.qx.io.https.protocol.header.MIME_Type;
 import com.qx.io.https.protocol.session.HTTPS_Session;
 import com.qx.io.https.server.HTTPS_Connection;
 import com.qx.io.https.server.POST.HTTPS_POST_Node;
@@ -34,19 +35,16 @@ public class DemoNode extends HTTPS_POST_RootNode {
 
 
 	@HTTPS_POST_Method(mapping="getDemoShapes", processing=Processing.CPU_SHORT)
-	public void process(HTTPS_Connection socket) throws Exception {
+	public void process(HTTPS_Connection connection) throws Exception {
 
 		WebGL_ShapeModel model = new WebGL_ShapeModel();
 		webGL_Service.push(model);
 	
-		String id0 = webGL_Service.push(new WebGL_ShapeInstance(new Affine3d(new Vector3d(-5.0, 0.0, 0.0)), model));
+		String id0 = webGL_Service.push(new WebGL_ShapeInstance(new Affine3d(new Vector3d(0.0, 0.0, 0.0)), model));
 		String id1 = webGL_Service.push(new WebGL_ShapeInstance(new Affine3d(new Vector3d(5.0, 0.0, 0.0)), model));
 		String id2 = webGL_Service.push(new WebGL_ShapeInstance(new Affine3d(new Vector3d(5.0, 5.0, 0.0)), model));
 
-		OutputStream outputStream = socket.getOutputStream();
-		OutputStreamWriter writer = new OutputStreamWriter(outputStream);
-		writer.append("var id0=\""+id0+"\", id1=\""+id1+"\", id2=\""+id2+"\";");
-		writer.close();
+		connection.sendText(MIME_Type.APPLICATION_JS, "var id0=\""+id0+"\", id1=\""+id1+"\", id2=\""+id2+"\";");
 	}
 
 

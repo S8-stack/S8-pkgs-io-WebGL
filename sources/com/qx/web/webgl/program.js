@@ -65,7 +65,7 @@ WebGL_Program.prototype = {
 		/*
 		 * render the styles and shapes
 		 */
-		render : function(view, environment){
+		draw : function(view, environment){
 			if(this.isInitialized){
 				// bind shader program
 				gl.useProgram(this.handle);
@@ -75,7 +75,7 @@ WebGL_Program.prototype = {
 			
 				// render renderables
 				for(var i in this.displayList){
-					this.displayList[i].render(this);
+					this.displayList[i].draw(this);
 				}
 				
 				// reset to default
@@ -91,7 +91,7 @@ WebGL_Program.prototype = {
 		 * get shape
 		 */
 		append : function(style){
-			this.displayList[i].push(style);
+			this.displayList.push(style);
 		},
 		
 		
@@ -179,14 +179,14 @@ WebGL_Programs.prototype = {
 		this.programs = this.programs.sort(function(a, b){ return a.pass-b.pass; });
 	},
 	
-	render : function(view, environment){
+	 draw : function(view, environment){
 		// render the programs -> styles -> shapes
 		for(var i in this.programs){
-			this.programs[i].render();
+			this.programs[i].draw(view, environment);
 		}
 	},
 	
-	clear : function(view, environment){
+	clear : function(){
 		// render the programs -> styles -> shapes
 		for(var i in this.programs){
 			this.programs[i].clear();

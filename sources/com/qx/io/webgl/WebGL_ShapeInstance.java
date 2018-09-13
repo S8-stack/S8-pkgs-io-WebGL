@@ -47,7 +47,7 @@ public class WebGL_ShapeInstance {
 		writer.append(";\n");
 
 		// model id
-		writer.append("var modelId ="+model.id+";\n");
+		writer.append("var modelId =\""+model.id+"\";\n");
 
 		// mode styles
 		writer.append("var styles =");
@@ -101,7 +101,7 @@ public class WebGL_ShapeInstance {
 		coefficients[12] = vector.get(0);
 		coefficients[13] = vector.get(1);
 		coefficients[14] = vector.get(2);
-		coefficients[15] = 0.0;
+		coefficients[15] = 1.0;
 
 		writer.append("[");
 		for(int i=0; i<16; i++){
@@ -133,9 +133,9 @@ public class WebGL_ShapeInstance {
 					writer.append(",");
 				}
 				else{
-					isStarted0 = true;
+					isStarted1 = true;
 				}
-				writer.append(values[i0][i1]);
+				writer.append('\"'+values[i0][i1]+'\"');
 			}
 			writer.append("]");
 		}
