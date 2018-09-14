@@ -43,7 +43,10 @@ function WebGL_ShapeInstance(id, scene){
 	request("webGL.getShapeInstance:id="+instance.id, function (response){
 
 		if(!instance.isDisposed){
+			
 			eval(response.responseText);
+			
+			
 			/*
 			 * eval must define:
 			 * var modelId

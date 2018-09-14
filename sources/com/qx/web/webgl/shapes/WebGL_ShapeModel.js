@@ -11,10 +11,11 @@
  *  Potential attributes are: vertex, normal, uTangent, vTangent, texCoord, color
  *  
  */
-function WebGL_ShapeModel(id){
+function WebGL_ShapeModel(id, graphicSettings){
 	
 	// id
 	this.id = id;
+	this.graphicSettings = graphicSettings;
 	
 	// define renderables
 	this.renderables = [];
@@ -24,6 +25,9 @@ function WebGL_ShapeModel(id){
 	// start initialization
 	var model = this;
 	request("webGL.getShapeModel:id="+this.id, function (response){
+
+		// load settings for geometry eval
+		var settings = model.graphicSettings;
 
 		//eval must define the shape, i.e. renderables
 		eval(response.responseText);
@@ -46,10 +50,12 @@ WebGL_ShapeModel.prototype = {
 };
 
 
-function WebGL_ShapeModels(){
+function WebGL_ShapeModels(grahicSettings){
 	
 	// map for model storage
 	this.map = new Map();
+	
+	this.graphicSettings = new WebGL_GraphicSettings();
 }
 
 
@@ -63,7 +69,7 @@ WebGL_ShapeModels.prototype = {
 		
 		// if shape is not present, we create it
 		if(shapeModel==undefined){
-			shapeModel =new WebGL_ShapeModel(id);	
+			shapeModel =new WebGL_ShapeModel(id, this.graphicSettings);	
 			this.map.set(id, shapeModel);
 		}
 		return shapeModel;

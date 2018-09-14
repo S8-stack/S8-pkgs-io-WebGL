@@ -10,13 +10,15 @@ WebGL_Toolbox.segmentNormal = function(p0, p1){
 	 normal.copy(p1);
 	 normal.substract(p0);
 	 normal.normalize();
-	 normal.orthogonal(true);
+	 normal.orthogonal(false);
 	 return normal;
 }
 
-WebGL_Toolbox.fullyRevolvePoint = function(affine, wire, point, n){
+WebGL_Toolbox.fullyRevolvePoint = function(affine, wire, point, settings){
 
 	if(Math.abs(point.y)>1e-12){
+
+		var n = settings.n;
 
 		var offset = wire.vertices.length();
 		var dTheta = 2.0*Math.PI/n;
@@ -49,10 +51,12 @@ WebGL_Toolbox.fullyRevolvePoint = function(affine, wire, point, n){
 };
 
 
-WebGL_Toolbox.fullyRevolveSegment = function(affine, surface, p0, p1, n){
+WebGL_Toolbox.fullyRevolveSegment = function(affine, surface, p0, p1, settings){
 	
 	// filter degenerated surfaces
 	if(Math.abs(p0.y)>1.0e-12 || Math.abs(p1.y)>1.0e-12){
+		
+		var n = settings.n;
 	
 		var vertices = surface.vertices;
 		var normals = surface.normals;
@@ -71,6 +75,7 @@ WebGL_Toolbox.fullyRevolveSegment = function(affine, surface, p0, p1, n){
 		var normal2 = new Vector2();
 		normal2.copy(p1);
 		normal2.substract(p0);
+		normal2.orthogonal(false);
 		normal2.normalize();
 		var baseNormal = new Vector3(normal2.x, normal2.y, 0);
 	
@@ -104,8 +109,9 @@ WebGL_Toolbox.fullyRevolveSegment = function(affine, surface, p0, p1, n){
 			normals.push(normal);
 			
 			// normal 1
-			normal = new Vector3();
-			normals.push(normal); // one more time...
+			normal2 = new Vector3();
+			normal2.copy(normal);
+			normals.push(normal2); // one more time...
 			
 		}
 	

@@ -2,7 +2,7 @@
 
 /** Scene */
 function WebGL_Scene(){
-
+	
 	// list of programs
 	this.programs = new WebGL_Programs();
 

@@ -14,7 +14,7 @@ function WebGL_Polygon(data, isClosed){
 	// indicate if closed or not
 	this.isClosed = isClosed;
 
-	// build normals
+	// build face normals
 	var nbPoints = this.vertices.length;
 	this.normals = new Array();
 	var normal;
@@ -29,9 +29,9 @@ function WebGL_Polygon(data, isClosed){
 
 WebGL_Polygon.prototype = {
 		
-	shift : 0.01,
+	shift : 0.001,
 		
-	fullyRevolve : function(affine, wire, surface, n, isWireEndingsEnabled){
+	fullyRevolve : function(affine, wire, surface, settings){
 		
 		
 		var nbVertices = this.vertices.length;
@@ -49,15 +49,15 @@ WebGL_Polygon.prototype = {
 			vertex.integrate(normal, this.shift);
 			
 			// revolve point
-			WebGL_Toolbox.fullyRevolvePoint(affine, wire, vertex, n);
+			WebGL_Toolbox.fullyRevolvePoint(affine, wire, vertex, settings);
 		}	
 		
 		// surface
 		for(var i=0; i<nbVertices-1; i++){
-			WebGL_Toolbox.fullyRevolveSegment(affine, surface, this.vertices[i], this.vertices[i+1], n);
+			WebGL_Toolbox.fullyRevolveSegment(affine, surface, this.vertices[i], this.vertices[i+1], settings);
 		}
 		if(this.isClosed){
-			WebGL_Toolbox.fullyRevolveSegment(affine, surface, this.vertices[nbVertices-1], this.vertices[0], n);
+			WebGL_Toolbox.fullyRevolveSegment(affine, surface, this.vertices[nbVertices-1], this.vertices[0], settings);
 		}
 	}
 };

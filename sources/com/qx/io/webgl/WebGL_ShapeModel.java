@@ -22,7 +22,7 @@ public class WebGL_ShapeModel {
 				"var profile = new WebGL_Polygon([-0.25, .5, 0.25, .5, 0.25, 2.0, -.25, 2.0], true);"
 						+"var wire = new WebGL_WireModel();"
 						+"var surface = new WebGL_SurfaceModel();"
-						+"profile.fullyRevolve(Affine3.STD, wire, surface, 20, true);"
+						+"profile.fullyRevolve(Affine3.STD, wire, surface, settings);"
 						+"model.renderables = [wire, surface];";
 		
 		writer.append(definition);
