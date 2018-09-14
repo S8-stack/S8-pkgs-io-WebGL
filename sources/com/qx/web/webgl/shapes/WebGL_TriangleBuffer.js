@@ -20,11 +20,13 @@ WebGL_TriangleBuffer.prototype = {
 			this.buffer.push(i0);
 			this.buffer.push(i1);
 			this.buffer.push(i2);
-			this.length++;
 		},
 
 		compile : function(){
 
+			// length
+			this.length = this.buffer.length;
+			
 			// Create buffer handle
 			this.bufferHandle = gl.createBuffer();
 
@@ -32,7 +34,7 @@ WebGL_TriangleBuffer.prototype = {
 			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
 
 			// Store array data in the current buffer
-			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.buffer, 0, 3*this.length), gl.STATIC_DRAW);
+			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.buffer, 0, this.length), gl.STATIC_DRAW);
 
 			// delete buffer
 			delete this.buffer;

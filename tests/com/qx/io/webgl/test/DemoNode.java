@@ -1,8 +1,5 @@
 package com.qx.io.webgl.test;
 
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-
 import com.qx.io.https.protocol.header.MIME_Type;
 import com.qx.io.https.protocol.session.HTTPS_Session;
 import com.qx.io.https.server.HTTPS_Connection;
@@ -14,6 +11,7 @@ import com.qx.io.webgl.WebGL_Node;
 import com.qx.io.webgl.WebGL_ShapeInstance;
 import com.qx.io.webgl.WebGL_ShapeModel;
 import com.qx.maths.affine.Affine3d;
+import com.qx.maths.matrix.SquareMatrix3d;
 import com.qx.maths.vector.Vector3d;
 
 
@@ -40,9 +38,15 @@ public class DemoNode extends HTTPS_POST_RootNode {
 		WebGL_ShapeModel model = new WebGL_ShapeModel();
 		webGL_Service.push(model);
 	
-		String id0 = webGL_Service.push(new WebGL_ShapeInstance(new Affine3d(new Vector3d(0.0, 0.0, 0.0)), model));
-		String id1 = webGL_Service.push(new WebGL_ShapeInstance(new Affine3d(new Vector3d(5.0, 0.0, 0.0)), model));
-		String id2 = webGL_Service.push(new WebGL_ShapeInstance(new Affine3d(new Vector3d(5.0, 5.0, 0.0)), model));
+		String id0 = webGL_Service.push(new WebGL_ShapeInstance(new Affine3d(
+				new Vector3d(0.0, 0.0, 0.0),
+				SquareMatrix3d.yRotationMatrix(Math.PI/4.0)), model));
+		
+		String id1 = webGL_Service.push(new WebGL_ShapeInstance(new Affine3d(
+				new Vector3d(2.0, 0.0, 0.0),
+				SquareMatrix3d.yRotationMatrix(Math.PI/8.0)), model));
+		
+		String id2 = webGL_Service.push(new WebGL_ShapeInstance(new Affine3d(new Vector3d(2.0, 2.0, 0.0)), model));
 
 		connection.sendText(MIME_Type.APPLICATION_JS, "var id0=\""+id0+"\", id1=\""+id1+"\", id2=\""+id2+"\";");
 	}

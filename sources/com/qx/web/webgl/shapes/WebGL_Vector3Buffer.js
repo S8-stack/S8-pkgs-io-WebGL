@@ -9,6 +9,8 @@
  */
 function WebGL_Vector3Buffer(){
 	this.buffer = new Array();
+	
+	this.DEBUG_Vectors = new Array();
 }
 
 
@@ -18,6 +20,8 @@ WebGL_Vector3Buffer.prototype = {
 			this.buffer.push(vector.x);
 			this.buffer.push(vector.y);
 			this.buffer.push(vector.z);
+			
+			this.DEBUG_Vectors.push(vector);
 		},
 		
 		length : function(){
@@ -49,7 +53,7 @@ WebGL_Vector3Buffer.prototype = {
 		/**
 		 * Bind the buffer for rendering
 		 */
-		bind : function(location, offset) {
+		bind : function(location) {
 
 			// bind buffer
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferHandle);

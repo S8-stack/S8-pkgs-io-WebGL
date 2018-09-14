@@ -18,7 +18,7 @@ function WebGL_Polygon(data, isClosed){
 	var nbPoints = this.vertices.length;
 	this.normals = new Array();
 	var normal;
-	for(var i=0; i<nbPoints-1; i++){
+	for(var i=0; i<nbVertices-1; i++){
 		this.normals.push(WebGL_Toolbox.segmentNormal(this.vertices[i], this.vertices[i+1]));
 	}
 	if(this.isClosed){
@@ -33,17 +33,19 @@ WebGL_Polygon.prototype = {
 		
 	fullyRevolve : function(affine, wire, surface, n, isWireEndingsEnabled){
 		
+		
 		var nbVertices = this.vertices.length;
 		var vertex;
 
 		// wire
-		var normal, vertex;
+		var normal = new Vector2(), vertex = new Vector2();
 		for(var i=0; i<nbVertices; i++){
-			normal = this.normals[i].copy();
+			
+			normal.copy(this.normals[i]);
 			normal.add(this.normals[(i+1)%nbVertices]);
 			normal.normalize();
 			
-			vertex = this.vertices[(i+1)%nbVertices].copy();
+			vertex.copy(this.vertices[(i+1)%nbVertices]);
 			vertex.integrate(normal, this.shift);
 			
 			// revolve point
@@ -51,7 +53,6 @@ WebGL_Polygon.prototype = {
 		}	
 		
 		// surface
-		var normal, vertex;
 		for(var i=0; i<nbVertices-1; i++){
 			WebGL_Toolbox.fullyRevolveSegment(affine, surface, this.vertices[i], this.vertices[i+1], n);
 		}

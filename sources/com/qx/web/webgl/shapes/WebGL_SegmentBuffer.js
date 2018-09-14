@@ -42,7 +42,7 @@ WebGL_SegmentBuffer.prototype = {
 		render : function() {
 			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
 			// draw elements
-			gl.drawElements(gl.LINES, this.length, gl.UNSIGNED_SHORT, 0);
+			gl.drawElements(gl.LINES, 2*this.length, gl.UNSIGNED_SHORT, 0);
 		},
 
 		/** Dispose the buffer */
