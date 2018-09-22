@@ -1,7 +1,6 @@
 package com.qx.io.webgl;
 
 import java.io.IOException;
-import java.io.Writer;
 
 import com.qx.maths.affine.Affine3d;
 import com.qx.maths.matrix.SquareMatrix3d;
@@ -38,23 +37,24 @@ public class WebGL_ShapeInstance {
 	 * <li>var modeStyles (String[8][nbRenderables])</li>
 	 * <li>var position (float[16])</li>
 	 */
-	public void writeOutline(Writer writer) throws IOException{
+	public String writeOutline() throws IOException{
 
 
+		StringBuilder builder = new StringBuilder();
 		// position
-		writer.append("var position =");
-		write(writer, position);
-		writer.append(";\n");
+		builder.append("var position =");
+		write(builder, position);
+		builder.append(";\n");
 
 		// model id
-		writer.append("var modelId =\""+model.id+"\";\n");
+		builder.append("var modelId =\""+model.id+"\";\n");
 
 		// mode styles
-		writer.append("var styles =");
-		write(writer, styles);
-		writer.append(";\n");
+		builder.append("var styles =");
+		write(builder, styles);
+		builder.append(";\n");
 
-		
+		return builder.toString();
 	}
 
 
@@ -76,7 +76,7 @@ public class WebGL_ShapeInstance {
 	 * @param affine
 	 * @throws IOException 
 	 */
-	public static void write(Writer writer, Affine3d affine) throws IOException{
+	public static void write(StringBuilder builder, Affine3d affine) throws IOException{
 		double[] coefficients = new double[16];
 
 		SquareMatrix3d matrix = affine.getMatrix();
@@ -103,43 +103,43 @@ public class WebGL_ShapeInstance {
 		coefficients[14] = vector.get(2);
 		coefficients[15] = 1.0;
 
-		writer.append("[");
+		builder.append("[");
 		for(int i=0; i<16; i++){
 			if(i>0){
-				writer.append(",");
+				builder.append(",");
 			}
-			writer.append(Double.toString(coefficients[i]));
+			builder.append(Double.toString(coefficients[i]));
 		}
-		writer.append("]");
+		builder.append("]");
 	}
 	
 	
-	public static void write(Writer writer, String[][] values) throws IOException{
-		writer.append("[");
+	public static void write(StringBuilder builder, String[][] values) throws IOException{
+		builder.append("[");
 		int n0 = values.length, n1;
 		boolean isStarted0 = false, isStarted1;
 		for(int i0=0; i0<n0; i0++){
 			if(isStarted0){
-				writer.append(",");
+				builder.append(",");
 			}
 			else{
 				isStarted0 = true;
 			}
-			writer.append("[");
+			builder.append("[");
 			n1 = values[i0].length;
 			isStarted1 = false;
 			for(int i1=0; i1<n1; i1++){
 				if(isStarted1){
-					writer.append(",");
+					builder.append(",");
 				}
 				else{
 					isStarted1 = true;
 				}
-				writer.append('\"'+values[i0][i1]+'\"');
+				builder.append('\"'+values[i0][i1]+'\"');
 			}
-			writer.append("]");
+			builder.append("]");
 		}
-		writer.append("]");
+		builder.append("]");
 	}
 
 }

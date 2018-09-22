@@ -1,21 +1,19 @@
 package com.qx.io.webgl;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.qx.io.https.connection.HTTPS_ClientConnection;
 import com.qx.io.https.protocol.header.MIME_Type;
 import com.qx.io.https.protocol.session.HTTPS_Session;
-import com.qx.io.https.server.HTTPS_Connection;
-import com.qx.io.https.server.POST.HTTPS_POST_Node;
-import com.qx.io.https.server.POST.HTTPS_POST_Task.Processing;
-import com.qx.io.https.server.POST.annotation.HTTPS_POST_Method;
-import com.qx.io.https.server.POST.annotation.QueryParam;
+import com.qx.io.https.server.node.HTTPS_POST_Node;
+import com.qx.io.https.server.node.annotation.HTTPS_POST_Method;
+import com.qx.io.https.server.node.annotation.QueryParam;
 import com.qx.utils.IdentifierGenerator;
 import com.qx.web.Web;
 
@@ -90,65 +88,78 @@ public class WebGL_Node implements HTTPS_POST_Node {
 	}
 
 
-	@HTTPS_POST_Method(mapping="getShapeInstance", processing=Processing.CPU_SHORT)
-	public synchronized void getShapeInstance(HTTPS_Connection socket, @QueryParam(name="id") String id) throws Exception {
+	@HTTPS_POST_Method(mapping="getShapeInstance")
+	public synchronized void getShapeInstance(HTTPS_ClientConnection connection, @QueryParam(name="id") String id) {
 
-		socket.sendContent(MIME_Type.TEXT_PLAIN);
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+		
 		if(shapeInstances.containsKey(id)){
-			shapeInstances.get(id).writeOutline(writer);
-
-		}else{
-			throw new Exception("Shape with id:"+id+" cannot be retrieved.");
+			String content;
+			try {
+				content = shapeInstances.get(id).writeOutline();
+				connection.sendContent(MIME_Type.TEXT_PLAIN, content.getBytes());
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+				connection.respondNotOkStatus("Cannot load shape instance with id="+id);
+			}
 		}
-		writer.close();
+		else{
+			connection.respondNotOkStatus("Cannot find shape instance with id="+id);
+		}
+		
 	}
 	
-	@HTTPS_POST_Method(mapping="getShapeModel", processing=Processing.CPU_SHORT)
-	public synchronized void getShapeModel(HTTPS_Connection socket, @QueryParam(name="id") String id) throws Exception {
+	
+	@HTTPS_POST_Method(mapping="getShapeModel")
+	public synchronized void getShapeModel(HTTPS_ClientConnection connection, @QueryParam(name="id") String id) throws Exception {
 
-		socket.sendContent(MIME_Type.TEXT_PLAIN);
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 		if(shapeModels.containsKey(id)){
-			shapeModels.get(id).writeOutline(writer);
-
-		}else{
-			throw new Exception("Shape with id:"+id+" cannot be retrieved.");
+			String content = shapeModels.get(id).getConstructionScript();
+			connection.sendContent(MIME_Type.TEXT_PLAIN, content.getBytes());
 		}
-		writer.close();
+		else{
+			connection.respondNotOkStatus("Cannot find shape model with id="+id);
+		}
 	}
 
 	
-	@HTTPS_POST_Method(mapping="getStyle", processing=Processing.CPU_SHORT)
-	public synchronized void getStyle(HTTPS_Connection socket, @QueryParam(name="id") String id) throws Exception{
-		socket.sendContent(MIME_Type.TEXT_PLAIN);
-		OutputStreamWriter writer = new OutputStreamWriter(socket.getOutputStream());
-		writeResource("webgl/styles/"+id+".js", writer, "\n");
-		writer.close();
+	@HTTPS_POST_Method(mapping="getStyle")
+	public synchronized void getStyle(HTTPS_ClientConnection connection, @QueryParam(name="id") String id) throws Exception{
+		String content = writeResource("webgl/styles/"+id+".js", "\n");
+		connection.sendContent(MIME_Type.TEXT_PLAIN, content.getBytes());
 	}
 	
 
-	@HTTPS_POST_Method(mapping="getProgram", processing=Processing.CPU_SHORT)
-	public synchronized void getProgram(HTTPS_Connection socket, @QueryParam(name="id") String id) throws Exception{
-		socket.sendContent(MIME_Type.TEXT_PLAIN);
-		OutputStreamWriter writer = new OutputStreamWriter(socket.getOutputStream());
+	@HTTPS_POST_Method(mapping="getProgram")
+	public synchronized void getProgram(HTTPS_ClientConnection connection, @QueryParam(name="id") String id) throws Exception{
+		StringBuilder builder = new StringBuilder();
+		
 		// write vertex shader source
-		writer.append("var vertex_shader_source = \"");
-		writeResource("webgl/programs/"+id+"/vertex.vsh", writer, "");
-		writer.append("\";\n");
+		builder.append("var vertex_shader_source = \"");
+		writeResource("webgl/programs/"+id+"/vertex.vsh", builder, "");
+		builder.append("\";\n");
 
 		// write fragment shader source
-		writer.append("var fragment_shader_source = \"");
-		writeResource("webgl/programs/"+id+"/fragment.fsh", writer, "");
-		writer.append("\";\n");
+		builder.append("var fragment_shader_source = \"");
+		writeResource("webgl/programs/"+id+"/fragment.fsh", builder, "");
+		builder.append("\";\n");
 
 		// write js code
-		writeResource("webgl/programs/"+id+"/setup.js", writer, "\n");
-		writer.close();
+		writeResource("webgl/programs/"+id+"/setup.js", builder, "\n");
+		
+		String content = builder.toString();
+		
+		connection.sendContent(MIME_Type.TEXT_PLAIN, content.getBytes());
 	}
 
 	
-	private static void writeResource(String pathname, OutputStreamWriter writer, String endOfLine) throws Exception{
+	private static String writeResource(String pathname, String endOfLine) throws Exception{
+		StringBuilder builder = new StringBuilder();
+		writeResource(pathname, builder, endOfLine);
+		return builder.toString();
+	}
+	
+	private static void writeResource(String pathname, StringBuilder builder, String endOfLine) throws Exception{
 
 		InputStream inputStream = Web.class.getResourceAsStream(pathname);
 		if(inputStream==null){
@@ -156,11 +167,11 @@ public class WebGL_Node implements HTTPS_POST_Node {
 		}
 		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(inputStream));
 		String line;
-
+		
 		while((line = bufferReader.readLine())!= null){
-			writer.append(line+endOfLine);
+			builder.append(line);
+			builder.append(endOfLine);
 		}
-		bufferReader.close();	
 	}
 
 

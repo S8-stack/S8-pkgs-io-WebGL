@@ -29,7 +29,7 @@ function WebGL_Polygon(data, isClosed){
 
 WebGL_Polygon.prototype = {
 		
-	shift : 0.001,
+	shift : 0.0005,
 		
 	fullyRevolve : function(affine, wire, surface, settings){
 		

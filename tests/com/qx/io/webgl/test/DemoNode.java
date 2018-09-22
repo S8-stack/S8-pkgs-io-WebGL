@@ -1,12 +1,11 @@
 package com.qx.io.webgl.test;
 
+import com.qx.io.https.connection.HTTPS_ClientConnection;
 import com.qx.io.https.protocol.header.MIME_Type;
 import com.qx.io.https.protocol.session.HTTPS_Session;
-import com.qx.io.https.server.HTTPS_Connection;
-import com.qx.io.https.server.POST.HTTPS_POST_Node;
-import com.qx.io.https.server.POST.HTTPS_POST_RootNode;
-import com.qx.io.https.server.POST.HTTPS_POST_Task.Processing;
-import com.qx.io.https.server.POST.annotation.HTTPS_POST_Method;
+import com.qx.io.https.server.node.HTTPS_POST_Node;
+import com.qx.io.https.server.node.HTTPS_POST_RootNode;
+import com.qx.io.https.server.node.annotation.HTTPS_POST_Method;
 import com.qx.io.webgl.WebGL_Node;
 import com.qx.io.webgl.WebGL_ShapeInstance;
 import com.qx.io.webgl.WebGL_ShapeModel;
@@ -32,10 +31,10 @@ public class DemoNode extends HTTPS_POST_RootNode {
 	}
 
 
-	@HTTPS_POST_Method(mapping="getDemoShapes", processing=Processing.CPU_SHORT)
-	public void process(HTTPS_Connection connection) throws Exception {
+	@HTTPS_POST_Method(mapping="getDemoShapes")
+	public void process(HTTPS_ClientConnection connection) throws Exception {
 
-		WebGL_ShapeModel model = new WebGL_ShapeModel();
+		WebGL_ShapeModel model = new MyShapeModel();
 		webGL_Service.push(model);
 	
 		String id0 = webGL_Service.push(new WebGL_ShapeInstance(new Affine3d(
