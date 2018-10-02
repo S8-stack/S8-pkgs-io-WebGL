@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.qx.io.https.connection.HTTPS_ClientConnection;
+import com.qx.io.https.connection.HTTPS_Connection;
 import com.qx.io.https.protocol.header.MIME_Type;
 import com.qx.io.https.protocol.session.HTTPS_Session;
 import com.qx.io.https.server.node.HTTPS_POST_Node;
@@ -89,7 +89,7 @@ public class WebGL_Node implements HTTPS_POST_Node {
 
 
 	@HTTPS_POST_Method(mapping="getShapeInstance")
-	public synchronized void getShapeInstance(HTTPS_ClientConnection connection, @QueryParam(name="id") String id) {
+	public synchronized void getShapeInstance(HTTPS_Connection connection, @QueryParam(name="id") String id) {
 
 		
 		if(shapeInstances.containsKey(id)){
@@ -111,7 +111,7 @@ public class WebGL_Node implements HTTPS_POST_Node {
 	
 	
 	@HTTPS_POST_Method(mapping="getShapeModel")
-	public synchronized void getShapeModel(HTTPS_ClientConnection connection, @QueryParam(name="id") String id) throws Exception {
+	public synchronized void getShapeModel(HTTPS_Connection connection, @QueryParam(name="id") String id) throws Exception {
 
 		if(shapeModels.containsKey(id)){
 			String content = shapeModels.get(id).getConstructionScript();
@@ -124,14 +124,14 @@ public class WebGL_Node implements HTTPS_POST_Node {
 
 	
 	@HTTPS_POST_Method(mapping="getStyle")
-	public synchronized void getStyle(HTTPS_ClientConnection connection, @QueryParam(name="id") String id) throws Exception{
+	public synchronized void getStyle(HTTPS_Connection connection, @QueryParam(name="id") String id) throws Exception{
 		String content = writeResource("webgl/styles/"+id+".js", "\n");
 		connection.sendContent(MIME_Type.TEXT_PLAIN, content.getBytes());
 	}
 	
 
 	@HTTPS_POST_Method(mapping="getProgram")
-	public synchronized void getProgram(HTTPS_ClientConnection connection, @QueryParam(name="id") String id) throws Exception{
+	public synchronized void getProgram(HTTPS_Connection connection, @QueryParam(name="id") String id) throws Exception{
 		StringBuilder builder = new StringBuilder();
 		
 		// write vertex shader source
