@@ -1,6 +1,6 @@
 package com.qx.io.webgl.test;
 
-import com.qx.io.https.connection.HTTPS_ClientConnection;
+import com.qx.io.https.connection.HTTPS_Connection;
 import com.qx.io.https.protocol.header.MIME_Type;
 import com.qx.io.https.protocol.session.HTTPS_Session;
 import com.qx.io.https.server.node.HTTPS_POST_Node;
@@ -32,7 +32,7 @@ public class DemoNode extends HTTPS_POST_RootNode {
 
 
 	@HTTPS_POST_Method(mapping="getDemoShapes")
-	public void process(HTTPS_ClientConnection connection) throws Exception {
+	public void process(HTTPS_Connection connection) throws Exception {
 
 		WebGL_ShapeModel model = new MyShapeModel();
 		webGL_Service.push(model);
