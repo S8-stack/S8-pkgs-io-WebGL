@@ -3,64 +3,59 @@
 /*
  * an id is required to build the program
  */
-function WebGL_Program(id, programs){
+function WebGL_Program(id){
 	this.id = id;
-	this.programs = programs;
 	this.isInitialized = false;
 	this.displayList = [];
-	
-	var program = this;
-	
-	request("webGL.getProgram:id="+id, function (response){
-		
-		eval(response.responseText);
-		/*
-		 * eval must define:
-		 *      (String) vertex_shader_source,
-		 *      (String) fragment_shader_source
-		 *      (function) this.loadContext()
-		 * 		(function) this.loadStyle()	
-		 */
-		
-		
-		// Build vertex shader
-		program.vertexShader = new WebGL_Shader(gl.VERTEX_SHADER, vertex_shader_source);
-
-		// Build fragment shader
-		program.fragmentShader = new WebGL_Shader(gl.FRAGMENT_SHADER, fragment_shader_source);
-
-		// Create shader program
-		program.handle = gl.createProgram();
-
-		// Attach vertex shader
-		gl.attachShader(program.handle, program.vertexShader.handle);
-
-		// Attach vertex shader
-		gl.attachShader(program.handle, program.fragmentShader.handle);
-
-		// Link shader program
-		gl.linkProgram(program.handle);
-		if (!gl.getProgramParameter(program.handle, gl.LINK_STATUS)) {
-			alert("Could not initialise shaders : linking problem");
-		}
-		
-		// setup
-		program.initialize();
-		
-		// program is ready to render!
-		program.isInitialized = true;
-		
-		// resort program
-		program.programs.sort();
-		
-		// trigger a render to refresh
-		scene.render();
-	});
-	
-	
 }
 
 WebGL_Program.prototype = {
+		
+		load : function(onload){
+			var program = this;
+			
+			request("webGL.getProgram:id="+this.id, function (response){
+				
+				eval(response.responseText);
+				/*
+				 * eval must define:
+				 *      (String) vertex_shader_source,
+				 *      (String) fragment_shader_source
+				 *      (function) this.loadContext()
+				 * 		(function) this.loadStyle()	
+				 */
+				
+				
+				// Build vertex shader
+				program.vertexShader = new WebGL_Shader(gl.VERTEX_SHADER, vertex_shader_source);
+
+				// Build fragment shader
+				program.fragmentShader = new WebGL_Shader(gl.FRAGMENT_SHADER, fragment_shader_source);
+
+				// Create shader program
+				program.handle = gl.createProgram();
+
+				// Attach vertex shader
+				gl.attachShader(program.handle, program.vertexShader.handle);
+
+				// Attach vertex shader
+				gl.attachShader(program.handle, program.fragmentShader.handle);
+
+				// Link shader program
+				gl.linkProgram(program.handle);
+				if (!gl.getProgramParameter(program.handle, gl.LINK_STATUS)) {
+					alert("Could not initialise shaders : linking problem");
+				}
+				
+				// setup
+				program.initialize();
+				
+				// program is ready to render!
+				program.isInitialized = true;
+				
+				onload();
+			});
+		},
 		
 		/*
 		 * render the styles and shapes
@@ -165,7 +160,16 @@ WebGL_Programs.prototype = {
 		}
 	
 		// if style is not present, we create it
-		var program = new WebGL_Program(id, this);
+		var program = new WebGL_Program(id);
+		var that = this;
+		
+		program.load(function(){
+			// sort programs
+			that.sort();
+			
+			// trigger a render to refresh
+			scene.render();
+		});
 		
 		// add the newly created program to the list
 		this.programs.push(program);
@@ -179,7 +183,7 @@ WebGL_Programs.prototype = {
 		this.programs = this.programs.sort(function(a, b){ return a.pass-b.pass; });
 	},
 	
-	 draw : function(view, environment){
+	draw : function(view, environment){
 		// render the programs -> styles -> shapes
 		for(var i in this.programs){
 			this.programs[i].draw(view, environment);

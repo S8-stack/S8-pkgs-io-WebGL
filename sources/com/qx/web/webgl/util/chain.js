@@ -39,7 +39,7 @@ Chain.prototype = {
 			}
 
 			// update map
-			this.map.set(id, entry);
+			this.map.set(id, object);
 
 		},
 

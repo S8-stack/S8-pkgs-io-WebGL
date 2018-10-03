@@ -69,10 +69,14 @@ function WebGL_ShapeInstance(id, scene){
 			// done...
 			instance.isInitialized = true;
 			
-			// update modes
+			// update modes for display
 			for(var index in instance.renderables){
 				instance.renderables[index].setMode(instance.mode);
 			}
+			
+			// update picking
+			scene.picking.append(instance);
+			
 		}
 	});
 }

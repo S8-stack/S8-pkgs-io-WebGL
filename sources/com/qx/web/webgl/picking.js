@@ -6,12 +6,53 @@
 
 function WebGL_PickingModule(scene){
 
+	// index generator
+	this.pc0=this.indexOffset;
+	this.pc1=0;
+	this.pc2=0;
+	
 	// pointer to the scene
 	this.scene = scene;
 
-	this.program = scene.programs.get("picking");
+	this.pickables = new Chain();
+
+	// program
+	this.program = new WebGL_Program("picking");
+	this.program.load(function(){
+		// nothing to on loaded
+	});
+
+	// style hack
+	this.program.draw = function(){
+
+		if(this.isInitialized){
+			// bind shader program
+			gl.useProgram(this.handle);
+
+			// load context uniforms
+			this.bind(null, null);
+
+			_this.pickables.crawl(function(instance){
+
+				// go through renderables of the instance
+				for(let renderable of instance.renderables){
+					// update
+					renderable.update();
+
+					// render if OK
+					if(renderable.isInitialized){
+						_this.program.render(renderable);	
+					}
+				}
+			});
+
+			// reset to default
+			this.unbind();
+		}
+	};
 
 
+	// setup FBO
 	this.width = gl.viewportWidth;
 	this.height = gl.viewportHeight;
 
@@ -105,13 +146,15 @@ function WebGL_PickingModule(scene){
 
 
 	// default callback
-	this.callback = function(id){
-		alert("The shape picked has id:"+id);
+	this.callback = function(event, instance){
+		alert("The shape picked has id:"+instance.id);
 	}
 
 	var _this = this;
 	canvas.addEventListener('click', function(event) { 
-		_this.callback(event, _this.pick(event.clientX, event.clientY));
+		if(event.shiftKey){
+			_this.callback(event, _this.pick(event.clientX, event.clientY));	
+		}
 	}, false);
 
 }
@@ -120,7 +163,7 @@ function WebGL_PickingModule(scene){
 WebGL_PickingModule.prototype = {
 
 
-
+		indexOffset : 32,
 
 
 		/**
@@ -134,8 +177,7 @@ WebGL_PickingModule.prototype = {
 			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 			// render the shapes (in environment=null)
-			this.program.displayList = scene.getShapes();
-			this.program.render(null, null);
+			this.program.draw();
 
 			var pickedColor = new Uint8Array(4); 
 			gl.readPixels(x, gl.viewportHeight-y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pickedColor);
@@ -143,34 +185,38 @@ WebGL_PickingModule.prototype = {
 			gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
 			//alert("r="+pickedColor[0]+", g="+pickedColor[1]+", b="+pickedColor[2]);
-			var index = pickedColor[0]+pickedColor[1]*255+pickedColor[2]*65025-32;
-			if(index>=0 && index<this.scene.shapes.length){
-				//alert(this.scene.shapes[index].id);
-				return this.scene.shapes[index].id;
-			}
-			else{
-				//alert("not picked "+index);
-				return null;
-			}
+			var index = pickedColor[0]+pickedColor[1]*255+pickedColor[2]*65025-this.indexOffset;
+			return this.pickables.get(index);
 		},		
-
-
-		updatePickingColors : function(){
-			var n = scene.shapes.length;
-			var pc0=32.0, pc1=0.0; pc2=0.0;
-
-			for(var i=0; i<n; i++){
-				scene.shapes[i].pickingColor = [pc0/255.0, pc1/255.0, pc2/255.0];
-				pc0++;
-				if(pc0==255){
-					pc0=0;
-					pc1++;
-					if(pc1==255){
-						pc1=0;
-						pc2++;
+		
+		incrementIndex : function(){
+			this.pc0++;
+			if(this.pc0==255){
+				this.pc0=0;
+				this.pc1++;
+				if(this.pc1==255){
+					this.pc1=0;
+					this.pc2++;
+					if(this.pc2==255){
+						this.pc2= this.indexOffset;
 					}
 				}
 			}
 		},
+
+		getPickingColor : function(){
+			return [this.pc0/255.0, this.pc1/255.0, this.pc2/255.0];
+		},
+
+		
+		getPickingIndex : function(){
+			return this.pc0+this.pc1*255+this.pc2*65025-this.indexOffset;
+		},
+		
+		append : function(instance){
+			instance.pickingColor = this.getPickingColor();
+			this.pickables.append(this.getPickingIndex(), instance);
+			this.incrementIndex();
+		}
 };
 

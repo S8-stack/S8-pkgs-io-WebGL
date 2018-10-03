@@ -22,7 +22,7 @@ function WebGL_Scene(){
 	this.environment = new WebGL_Environment(this);
 
 	// create picking module and link it
-	//this.picking = new WebGL_PickingModule(this);
+	this.picking = new WebGL_PickingModule(this);
 
 	// <initialize rendering>
 
@@ -92,7 +92,7 @@ WebGL_Scene.prototype = {
 			var _this = this;
 			window.requestAnimFrame(function(){_this.render();}, canvas);
 			*/
-		},
+		}
 
 };
 

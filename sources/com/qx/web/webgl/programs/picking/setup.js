@@ -37,7 +37,6 @@ program.loadStyle = function(style){
 program.bindShape = function(shape){
 
 
-	gl.uniform3fv(this.loc_Uniform_pickingColor, shape.pickingColor);
 
 	// matrices
 	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, shape.matrix_ProjectionViewModel.c);
@@ -51,4 +50,30 @@ program.unbindShape = function(shape){
 	/* unbind attributes */
 	shape.vertex.unbind(this.loc_Attribute_vertex);
 };
+
+
+
+program.render = function(surface){
+	
+	
+	/*
+	 * bind shape
+	 */
+
+	gl.uniform3fv(this.loc_Uniform_pickingColor, surface.instance.pickingColor);
+	
+	// bind instance matrices
+	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, surface.instance.matrix_ProjectionViewModel.c);
+	
+	// bind model vertex attributes
+	surface.model.vertices.bind(this.loc_Attribute_vertex, surface.model.verticesOffset);
+	
+	// render elements
+	surface.model.elements.render();
+	
+	/* unbind attributes */
+	surface.model.vertices.unbind(this.loc_Attribute_vertex);
+};
+
+
 
