@@ -17,15 +17,15 @@ function WebGL_View(scene){
 
 	
 	// Eye
-	this.eyePosition = new Vector3(0.0, 0.0, 0.0);
+	this.eyePosition = new MathVector3(0.0, 0.0, 0.0);
 	this.phi = 135;
 	this.theta = 135;
 	this.r = 20;
 	this.eyePosition.eyeVector(20, this.phi*Math.PI/180.0, this.theta*Math.PI/180.0);
 
-	this.eyeTarget = new Vector3(0.0, 0.0, 0.0);
-	this.eyeTarget_Speed = new Vector3(0.0, 0.0, 0.0);
-	this.eyeTarget_Acceleration = new Vector3(0.0, 0.0, 0.0);
+	this.eyeTarget = new MathVector3(0.0, 0.0, 0.0);
+	this.eyeTarget_Speed = new MathVector3(0.0, 0.0, 0.0);
+	this.eyeTarget_Acceleration = new MathVector3(0.0, 0.0, 0.0);
 	
 	// Projection matrix
 	this.matrix_Projection = new WebGL_Matrix4();
@@ -33,7 +33,7 @@ function WebGL_View(scene){
 	
 	// View matrix 
 	this.matrix_View = new WebGL_Matrix4();
-	this.matrix_View.lookAt(this.eyePosition, this.eyeTarget, new Vector3(0.0, 0.0, 1.0));
+	this.matrix_View.lookAt(this.eyePosition, this.eyeTarget, new MathVector3(0.0, 0.0, 1.0));
 
 	// Projection * View Matrix
 	this.matrix_ProjectionView = new WebGL_Matrix4();
@@ -167,7 +167,7 @@ WebGL_View.prototype = {
 			// update view matrices
 			this.eyePosition.eyeVector(this.r, this.phi*Math.PI/180.0, this.theta*Math.PI/180.0);
 			this.eyePosition.add(this.eyeTarget);
-			this.matrix_View.lookAt(this.eyePosition, this.eyeTarget, new Vector3(0,0,1));
+			this.matrix_View.lookAt(this.eyePosition, this.eyeTarget, new MathVector3(0,0,1));
 			this.matrix_ProjectionView.multiply(this.matrix_Projection, this.matrix_View);
 		}
 };

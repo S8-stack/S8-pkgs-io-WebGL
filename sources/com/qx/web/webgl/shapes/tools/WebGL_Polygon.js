@@ -8,7 +8,7 @@ function WebGL_Polygon(data, isClosed){
 	var nbVertices = data.length/2;
 	this.vertices = new Array();
 	for(var i=0; i<nbVertices; i++){
-		this.vertices.push(new Vector2(data[2*i+0], data[2*i+1]));
+		this.vertices.push(new MathVector2(data[2*i+0], data[2*i+1]));
 	}
 	
 	// indicate if closed or not
@@ -38,7 +38,7 @@ WebGL_Polygon.prototype = {
 		var vertex;
 
 		// wire
-		var normal = new Vector2(), vertex = new Vector2();
+		var normal = new MathVector2(), vertex = new MathVector2();
 		for(var i=0; i<nbVertices; i++){
 			
 			normal.copy(this.normals[i]);
@@ -50,7 +50,7 @@ WebGL_Polygon.prototype = {
 			
 			// revolve point
 			WebGL_Toolbox.fullyRevolvePoint(affine, wire, vertex, settings);
-		}	
+		}
 		
 		// surface
 		for(var i=0; i<nbVertices-1; i++){

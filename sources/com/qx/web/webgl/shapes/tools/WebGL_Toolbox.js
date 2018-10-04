@@ -6,7 +6,7 @@ var WebGL_Toolbox = {};
 
 
 WebGL_Toolbox.segmentNormal = function(p0, p1){
-	 var normal = new Vector2();
+	 var normal = new MathVector2();
 	 normal.copy(p1);
 	 normal.substract(p0);
 	 normal.normalize();
@@ -22,9 +22,9 @@ WebGL_Toolbox.fullyRevolvePoint = function(affine, wire, point, settings){
 
 		var offset = wire.vertices.length();
 		var dTheta = 2.0*Math.PI/n;
-		var point3d = new Vector3(point.x, point.y, 0);
+		var point3d = new MathVector3(point.x, point.y, 0);
 			
-		var matrix = new Matrix3();
+		var matrix = new MathMatrix3();
 		var vertex;
 		var vertices = wire.vertices;
 		var offset = vertices.length();
@@ -33,7 +33,7 @@ WebGL_Toolbox.fullyRevolvePoint = function(affine, wire, point, settings){
 			matrix.xRotation(i*dTheta);
 			
 			// build vertex
-			vertex = new Vector3();
+			vertex = new MathVector3();
 			vertex.copy(point3d);
 			matrix.transform(vertex);
 			//affine.transformVertex(vertex);
@@ -67,49 +67,49 @@ WebGL_Toolbox.fullyRevolveSegment = function(affine, surface, p0, p1, settings){
 		
 		var dTheta = 2.0*Math.PI/n;
 	
-		var baseVertex0 = new Vector3(p0.x, p0.y, 0);
-		var baseVertex1 = new Vector3(p1.x, p1.y, 0);
+		var baseVertex0 = new MathVector3(p0.x, p0.y, 0);
+		var baseVertex1 = new MathVector3(p1.x, p1.y, 0);
 		
 		
 		
-		var normal2 = new Vector2();
+		var normal2 = new MathVector2();
 		normal2.copy(p1);
 		normal2.substract(p0);
 		normal2.orthogonal(false);
 		normal2.normalize();
-		var baseNormal = new Vector3(normal2.x, normal2.y, 0);
+		var baseNormal = new MathVector3(normal2.x, normal2.y, 0);
 	
 		// Vertex
-		var matrix = new Matrix3();
+		var matrix = new MathMatrix3();
 		var vertex, normal;
-		texCoord = new Vector2();
+		texCoord = new MathVector2();
 		
 		for(var i=0; i<n; i++){
 			matrix.xRotation(i*dTheta);
 	
 			// vertex 0
-			vertex = new Vector3();
+			vertex = new MathVector3();
 			vertex.copy(baseVertex0);
 			matrix.transform(vertex);
 			affine.transformVertex(vertex);
 			vertices.push(vertex);
 			
 			// vertex 1
-			vertex = new Vector3();
+			vertex = new MathVector3();
 			vertex.copy(baseVertex1);
 			matrix.transform(vertex);
 			affine.transformVertex(vertex);
 			vertices.push(vertex);
 			
 			// normal 0
-			normal = new Vector3();
+			normal = new MathVector3();
 			normal.copy(baseNormal);
 			matrix.transform(normal);
 			affine.transformNormal(normal);
 			normals.push(normal);
 			
 			// normal 1
-			normal2 = new Vector3();
+			normal2 = new MathVector3();
 			normal2.copy(normal);
 			normals.push(normal2); // one more time...
 			
