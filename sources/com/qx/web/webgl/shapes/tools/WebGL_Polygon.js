@@ -41,12 +41,12 @@ WebGL_Polygon.prototype = {
 		var normal = new MathVector2(), vertex = new MathVector2();
 		for(var i=0; i<nbVertices; i++){
 			
-			normal.copy(this.normals[i]);
-			normal.add(this.normals[(i+1)%nbVertices]);
-			normal.normalize();
+			this.normals[i].copy(normal);
+			this.normals[(i+1)%nbVertices].add(normal, normal);
+			normal.normalize(normal);
 			
-			vertex.copy(this.vertices[(i+1)%nbVertices]);
-			vertex.integrate(normal, this.shift);
+			this.vertices[(i+1)%nbVertices].copy(vertex);
+			vertex.integrate(normal, this.shift, vertex);
 			
 			// revolve point
 			WebGL_Toolbox.fullyRevolvePoint(affine, wire, vertex, settings);

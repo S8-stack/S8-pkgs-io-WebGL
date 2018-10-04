@@ -161,12 +161,13 @@ WebGL_View.prototype = {
 		 */
 		update : function(){
 			// compute new eye target position
-			this.eyeTarget.add(this.eyeTarget_Speed);
-			this.eyeTarget_Speed.add(this.eyeTarget_Acceleration);
+			this.eyeTarget.add(this.eyeTarget_Speed, this.eyeTarget);
+			this.eyeTarget_Speed.add(this.eyeTarget_Acceleration, this.eyeTarget_Speed);
 
 			// update view matrices
 			this.eyePosition.eyeVector(this.r, this.phi*Math.PI/180.0, this.theta*Math.PI/180.0);
-			this.eyePosition.add(this.eyeTarget);
+			this.eyePosition.add(this.eyeTarget, this.eyePosition);
+			
 			this.matrix_View.lookAt(this.eyePosition, this.eyeTarget, new MathVector3(0,0,1));
 			this.matrix_ProjectionView.multiply(this.matrix_Projection, this.matrix_View);
 		}

@@ -7,10 +7,9 @@ var WebGL_Toolbox = {};
 
 WebGL_Toolbox.segmentNormal = function(p0, p1){
 	 var normal = new MathVector2();
-	 normal.copy(p1);
-	 normal.substract(p0);
-	 normal.normalize();
-	 normal.orthogonal(false);
+	 p1.substract(p0, normal);
+	 normal.normalize(normal);
+	 normal.orthogonal(false, normal);
 	 return normal;
 }
 
@@ -34,9 +33,8 @@ WebGL_Toolbox.fullyRevolvePoint = function(affine, wire, point, settings){
 			
 			// build vertex
 			vertex = new MathVector3();
-			vertex.copy(point3d);
-			matrix.transform(vertex);
-			//affine.transformVertex(vertex);
+			point3d.copy(vertex);
+			matrix.transform(vertex, vertex);
 			
 			// push vertex
 			vertices.push(vertex);
@@ -70,13 +68,10 @@ WebGL_Toolbox.fullyRevolveSegment = function(affine, surface, p0, p1, settings){
 		var baseVertex0 = new MathVector3(p0.x, p0.y, 0);
 		var baseVertex1 = new MathVector3(p1.x, p1.y, 0);
 		
-		
-		
 		var normal2 = new MathVector2();
-		normal2.copy(p1);
-		normal2.substract(p0);
-		normal2.orthogonal(false);
-		normal2.normalize();
+		p1.substract(p0, normal2);
+		normal2.orthogonal(false, normal2);
+		normal2.normalize(normal2);
 		var baseNormal = new MathVector3(normal2.x, normal2.y, 0);
 	
 		// Vertex
@@ -89,28 +84,28 @@ WebGL_Toolbox.fullyRevolveSegment = function(affine, surface, p0, p1, settings){
 	
 			// vertex 0
 			vertex = new MathVector3();
-			vertex.copy(baseVertex0);
-			matrix.transform(vertex);
-			affine.transformVertex(vertex);
+			baseVertex0.copy(vertex);
+			matrix.transform(vertex, vertex);
+			affine.transformVertex(vertex, vertex);
 			vertices.push(vertex);
 			
 			// vertex 1
 			vertex = new MathVector3();
-			vertex.copy(baseVertex1);
-			matrix.transform(vertex);
-			affine.transformVertex(vertex);
+			baseVertex1.copy(vertex);
+			matrix.transform(vertex, vertex);
+			affine.transformVertex(vertex, vertex);
 			vertices.push(vertex);
 			
 			// normal 0
 			normal = new MathVector3();
-			normal.copy(baseNormal);
-			matrix.transform(normal);
-			affine.transformNormal(normal);
+			baseNormal.copy(normal);
+			matrix.transform(normal, normal);
+			affine.transformNormal(normal, normal);
 			normals.push(normal);
 			
 			// normal 1
 			normal2 = new MathVector3();
-			normal2.copy(normal);
+			normal.copy(normal2);
 			normals.push(normal2); // one more time...
 			
 		}
