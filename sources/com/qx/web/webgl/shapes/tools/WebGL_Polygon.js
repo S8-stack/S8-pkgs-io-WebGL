@@ -16,13 +16,27 @@ function WebGL_Polygon(data, isClosed){
 
 	// build face normals
 	var nbPoints = this.vertices.length;
-	this.normals = new Array();
-	var normal;
 	for(var i=0; i<nbVertices-1; i++){
-		this.normals.push(WebGL_Toolbox.segmentNormal(this.vertices[i], this.vertices[i+1]));
+		this.vertices[i].next = this.vertices[i+1];
+		this.vertices[i+1].previous = this.vertices[i];
 	}
 	if(this.isClosed){
-		this.normals.push(WebGL_Toolbox.segmentNormal(this.vertices[nbPoints-1], this.vertices[0]));
+		this.vertices[nbVertices-1].next = this.vertices[0];
+		this.vertices[0].previous = this.vertices[nbVertices-1];
+	}
+	
+	
+	var normal;
+	for(let vertex of this.vertices){
+		normal = new MathVector2();
+		if(vertex.previous!=undefined){
+			WebGL_Toolbox.segmentNormal(vertex.previous, vertex).add(normal, normal);
+		}
+		if(vertex.next!=undefined){
+			WebGL_Toolbox.segmentNormal(vertex, vertex.next).add(normal, normal);
+		}
+		normal.normalize(normal);
+		vertex.normal = normal;
 	}
 }
 
@@ -39,14 +53,10 @@ WebGL_Polygon.prototype = {
 
 		// wire
 		var normal = new MathVector2(), vertex = new MathVector2();
-		for(var i=0; i<nbVertices; i++){
+		for(var i=0; i<nbVertices-1; i++){
 			
-			this.normals[i].copy(normal);
-			this.normals[(i+1)%nbVertices].add(normal, normal);
-			normal.normalize(normal);
-			
-			this.vertices[(i+1)%nbVertices].copy(vertex);
-			vertex.integrate(normal, this.shift, vertex);
+			this.vertices[i].copy(vertex);
+			vertex.integrate(this.vertices[i].normal, this.shift, vertex);
 			
 			// revolve point
 			WebGL_Toolbox.fullyRevolvePoint(affine, wire, vertex, settings);

@@ -4,7 +4,7 @@
 /**
  *
  */
-function WebGL_ShapeInstance(id, scene){
+function WebGL_ShapeInstance(id, scene, define){
 
 	// id
 	this.id = id;
@@ -38,52 +38,64 @@ function WebGL_ShapeInstance(id, scene){
 	// TODO : update picking
 	//this.picking.updatePickingColors();
 
-	var instance = this;
+	// server-side definition
+	if(define==undefined){
+		var instance = this;
+		request("webGL.getShapeInstance:id="+instance.id, function (response){
 
-	request("webGL.getShapeInstance:id="+instance.id, function (response){
+			if(!instance.isDisposed){
+				
+				eval(response.responseText);
+				
+				
+				/*
+				 * eval must define:
+				 * var modelId
+				 * var position (float[16])
+				 * var styles (String[8][nbRenderables])
+				 * 
+				 */
 
-		if(!instance.isDisposed){
-			
-			eval(response.responseText);
-			
-			
-			/*
-			 * eval must define:
-			 * var modelId
-			 * var position (float[16])
-			 * var styles (String[8][nbRenderables])
-			 * 
-			 */
+				instance.matrix_Model.c = position;
 
-			instance.matrix_Model.c = position;
-
-			// build model
-			instance.model = scene.shapeModels.get(modelId);
-
-			// build renderables
-			instance.renderables = new Array();
-			for(var index in styles){
-				instance.renderables.push(new WebGL_ShapeInstanceRenderable(instance, index, styles[index]));
+				instance.setup(modelId, styles);
+				
 			}
-
-			// done...
-			instance.isInitialized = true;
-			
-			// update modes for display
-			for(var index in instance.renderables){
-				instance.renderables[index].setMode(instance.mode);
-			}
-			
-			// update picking
-			scene.picking.append(instance);
-			
-		}
-	});
+		});	
+	}
+	// client-side definition
+	else{
+		define(this);
+	}
+	
 }
 
 
 WebGL_ShapeInstance.prototype = {
 
+		
+		setup : function(modelId, styles){
+			
+			// build model
+			this.model = scene.shapeModels.get(modelId);
+
+			// build renderables
+			this.renderables = new Array();
+			for(var index in styles){
+				this.renderables.push(new WebGL_ShapeInstanceRenderable(this, index, styles[index]));
+			}
+
+			// done...
+			this.isInitialized = true;
+			
+			// update modes for display
+			for(var index in this.renderables){
+				this.renderables[index].setMode(this.mode);
+			}
+			
+			// update picking
+			scene.picking.append(this);
+		},
 
 		update : function(){
 
@@ -198,6 +210,11 @@ WebGL_ShapeInstances.prototype = {
 			this.chain.crawl(function(instance){
 				instance.update();
 			});
+		},
+		
+		
+		push(instance){
+			this.chain.append(instance.id, instance);
 		},
 
 		/**

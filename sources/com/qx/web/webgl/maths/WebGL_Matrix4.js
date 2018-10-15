@@ -99,11 +99,42 @@ WebGL_Matrix4.prototype = {
 		},
 		
 		
-		set : function (coefficient, line, column){
+		setAffine : function(affine){
+			
+			var matrix = affine.matrix;
+			
+			// Column 0
+			this.c[0] = matrix.c0;
+			this.c[1] = matrix.c1;
+			this.c[2] = matrix.c2;
+			this.c[3] = 0.0;
+
+			// Column 1
+			this.c[4] = matrix.c3;
+			this.c[5] = matrix.c4;
+			this.c[6] = matrix.c5;
+			this.c[7] = 0.0;
+
+			// Column 2
+			this.c[8] = matrix.c6;
+			this.c[9] = matrix.c7;
+			this.c[10] = matrix.c8;
+			this.c[11] = 0.0;
+
+			var vector = affine.vector;
+			// Column 3
+			this.c[12] = vector.x;
+			this.c[13] = vector.y;
+			this.c[14] = vector.z;
+			this.c[15] = 1.0;
+		},
+		
+		
+		setCoefficient : function (coefficient, line, column){
 			this.c[line+column*4] = coefficent;
 		},
 		
-		get : function (line, column){
+		getCoefficieny : function (line, column){
 			return this.c[line+column*4];
 		},
 		
