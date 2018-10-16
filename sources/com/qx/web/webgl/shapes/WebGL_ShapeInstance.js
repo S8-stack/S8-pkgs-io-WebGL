@@ -41,7 +41,7 @@ function WebGL_ShapeInstance(id, scene, define){
 	// server-side definition
 	if(define==undefined){
 		var instance = this;
-		request("webGL.getShapeInstance:id="+instance.id, function (response){
+		ctx.request("webGL.getShapeInstance:id="+instance.id, function (response){
 
 			if(!instance.isDisposed){
 				

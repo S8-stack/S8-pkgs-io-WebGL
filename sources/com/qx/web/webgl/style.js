@@ -17,7 +17,7 @@ function WebGL_Style(id){
 	// start initialization
 	var style = this;
 
-	request("webGL.getStyle:id="+id, function (response){
+	ctx.request("webGL.getStyle:id="+id, function (response){
 		eval(response.responseText);
 		/*
 		 * eval must define:

@@ -28,7 +28,7 @@ function WebGL_ShapeModel(id, graphicSettings, define){
 	// server-side definition
 	if(define==undefined){ 
 		var model = this;
-		request("webGL.getShapeModel:id="+this.id, function (response){
+		ctx.request("webGL.getShapeModel:id="+this.id, function (response){
 
 			// load settings for geometry eval
 			var settings = model.graphicSettings;

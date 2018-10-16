@@ -14,7 +14,7 @@ WebGL_Program.prototype = {
 		load : function(onload){
 			var program = this;
 			
-			request("webGL.getProgram:id="+this.id, function (response){
+			ctx.request("webGL.getProgram:id="+this.id, function (response){
 				
 				eval(response.responseText);
 				/*
