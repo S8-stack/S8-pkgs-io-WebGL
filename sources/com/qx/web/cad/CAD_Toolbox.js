@@ -2,10 +2,10 @@
 /**
  * 
  */
-var WebGL_Toolbox = {};
+var CAD_Toolbox = {};
 
 
-WebGL_Toolbox.segmentNormal = function(p0, p1){
+CAD_Toolbox.segmentNormal = function(p0, p1){
 	 var normal = new MathVector2();
 	 p1.substract(p0, normal);
 	 normal.normalize(normal);
@@ -13,7 +13,7 @@ WebGL_Toolbox.segmentNormal = function(p0, p1){
 	 return normal;
 }
 
-WebGL_Toolbox.fullyRevolvePoint = function(affine, wire, point, settings){
+CAD_Toolbox.fullyRevolvePoint = function(affine, wire, point, settings){
 
 	if(Math.abs(point.y)>1e-12){
 
@@ -49,7 +49,7 @@ WebGL_Toolbox.fullyRevolvePoint = function(affine, wire, point, settings){
 };
 
 
-WebGL_Toolbox.fullyRevolveSegment = function(affine, surface, p0, p1, settings){
+CAD_Toolbox.fullyRevolveSegment = function(affine, surface, p0, p1, settings){
 	
 	// filter degenerated surfaces
 	if(Math.abs(p0.y)>1.0e-12 || Math.abs(p1.y)>1.0e-12){

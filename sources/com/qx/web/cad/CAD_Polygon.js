@@ -2,7 +2,7 @@
 /**
  * 
  */
-function WebGL_Polygon(data, isClosed){
+function CAD_Polygon(data, isClosed){
 	
 	// store vertices
 	var nbVertices = data.length/2;
@@ -30,10 +30,10 @@ function WebGL_Polygon(data, isClosed){
 	for(let vertex of this.vertices){
 		normal = new MathVector2();
 		if(vertex.previous!=undefined){
-			WebGL_Toolbox.segmentNormal(vertex.previous, vertex).add(normal, normal);
+			CAD_Toolbox.segmentNormal(vertex.previous, vertex).add(normal, normal);
 		}
 		if(vertex.next!=undefined){
-			WebGL_Toolbox.segmentNormal(vertex, vertex.next).add(normal, normal);
+			CAD_Toolbox.segmentNormal(vertex, vertex.next).add(normal, normal);
 		}
 		normal.normalize(normal);
 		vertex.normal = normal;
@@ -41,7 +41,7 @@ function WebGL_Polygon(data, isClosed){
 }
 
 
-WebGL_Polygon.prototype = {
+CAD_Polygon.prototype = {
 		
 	shift : 0.0005,
 		
@@ -59,15 +59,15 @@ WebGL_Polygon.prototype = {
 			vertex.integrate(this.vertices[i].normal, this.shift, vertex);
 			
 			// revolve point
-			WebGL_Toolbox.fullyRevolvePoint(affine, wire, vertex, settings);
+			CAD_Toolbox.fullyRevolvePoint(affine, wire, vertex, settings);
 		}
 		
 		// surface
 		for(var i=0; i<nbVertices-1; i++){
-			WebGL_Toolbox.fullyRevolveSegment(affine, surface, this.vertices[i], this.vertices[i+1], settings);
+			CAD_Toolbox.fullyRevolveSegment(affine, surface, this.vertices[i], this.vertices[i+1], settings);
 		}
 		if(this.isClosed){
-			WebGL_Toolbox.fullyRevolveSegment(affine, surface, this.vertices[nbVertices-1], this.vertices[0], settings);
+			CAD_Toolbox.fullyRevolveSegment(affine, surface, this.vertices[nbVertices-1], this.vertices[0], settings);
 		}
 	}
 };
