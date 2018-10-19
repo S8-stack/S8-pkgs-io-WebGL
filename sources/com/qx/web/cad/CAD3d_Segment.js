@@ -2,21 +2,24 @@
 /**
  * 
  */
-function CAD3d_Segment(affine, u0, u1){
+function CAD3d_Segment(affine, z0, z1){
 	this.affine = affine;
-	this.vector = this.affine.matrix.getvector(2);
-	this.u0 = u0;
-	this.u1 = u1;
+	this.z0 = z0;
+	this.z1 = z1;
+	this.isTesselated = false;
 }
 
 
 CAD3d_Segment.prototype = {
 
-		
+		isClosed : false,
+
+		nbSections : 2,
+
 		evaluatePoint : function(u, result){
 			this.affine.transformVertex(new MathVector3(0.0, 0.0, u), result);
 		},
-		
+
 		evaluateAffine : function(u, result){
 			this.affine.copy(result);
 			result.vector.integrate(this.vector, u);
@@ -30,27 +33,34 @@ CAD3d_Segment.prototype = {
 			this.point.integrate(this.vector, u1, result);
 		},
 
-		draw : function(affine3, wire, settings){
 
-			var offset = wire.vertices.length();
-			
-			// vertex 0
-			var v0 = evaluatePoint(this.u0);
-			var vertex0 = new MathVector3();
-			affine3.transformVertex(new MathVector3(v0.x, v0.y, v0.z), vertex0);
-			wire.vertices.push(vertex0);
-			
-			// vertex 1
-			var v1 = evaluatePoint(this.u1);
-			var vertex1 = new MathVector3();
-			affine3.transformVertex(new MathVector3(v1.x, v1.y, v1.z), vertex1);
-			wire.vertices.push(vertex1);
-			
-			// element
-			wire.elements.push(offset+0, offset+1);
+		tesselate : function(settings){
+
+			if(!this.isTesselated){
+
+				var zVector = this.affine.matrix.getVector(2);
+
+				// start
+				var affine0 = new MathAffine3();
+				this.affine.copy(affine0);
+				this.affine.vector.integrate(zVector, this.z0, affine0.vector);
+
+
+				// end
+				var affine1 = new MathAffine3();
+				this.affine.copy(affine1);
+				this.affine.vector.integrate(zVector, this.z1, affine1.vector);
+
+				this.affines = [affine0, affine1];
+
+				this.isTesselated = true;
+			}			
 		},
-		
-		sweep :function(curve, surface, wire, shift, isEndLineEnabled){
 
-		}
+		sweepLoop : CAD3d_Curve.prototype.sweepLoop,
+
+		sweepCurve : CAD3d_Curve.prototype.sweepCurve,
+
+		sweepPoint : CAD3d_Curve.prototype.sweepPoint
+
 };

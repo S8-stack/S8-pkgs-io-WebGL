@@ -9,6 +9,9 @@ function CAD2d_Segment(){
 
 CAD2d_Segment.prototype = {
 
+		isClosed : false,
+		
+		nbVertices : 2,
 
 		set : function(/*MathVector2*/ point, /*MathVector2*/ vector, u0, u1){
 			this.point = point;
@@ -56,47 +59,46 @@ CAD2d_Segment.prototype = {
 			if(!this.isTesselated){
 
 				// vertex 0
-				this.vertex0 = new MathVector3();
-				this.evaluateVertex(this.u0, this.vertex0);
+				var vertex0 = new MathVector3();
+				this.evaluateVertex(this.u0, vertex0);
 
 				// normal 0
-				this.normal0 = new MathVector3();
-				this.evaluateNormal(this.u0, this.normal0);
+				var normal0 = new MathVector3();
+				this.evaluateNormal(this.u0, normal0);
 
 				// vertex 1
-				this.vertex1 = new MathVector3();
-				this.evaluateVertex(this.u1, this.vertex1);
+				var vertex1 = new MathVector3();
+				this.evaluateVertex(this.u1, vertex1);
 
 				// normal 1
-				this.normal1 = new MathVector3();
-				this.evaluateNormal(this.u1, this.normal1);
+				var normal1 = new MathVector3();
+				this.evaluateNormal(this.u1, normal1);
 
+				this.vertices = [vertex0, vertex1];
+
+				this.normals = [normal0, normal1];
+				
 				this.isTesselated = true;
 			}
 		},
 
-		normal : function(result){
-			this.vector.orthogonal(false, result);
-		},
 
-		draw : function(affine3, wire, settings){
+		draw : function(affine, wire, settings){
 			this.tesselate();
 			var offset = wire.vertices.length();
 
 			var shift = settings.shift;
 
 			// vertex 0
-			var v0 = new MathVector2();
-			this.vertex0.integrate(this.normal0, shift, v0);
 			var vertex0 = new MathVector3();
-			affine3.transformVertex(new MathVector3(v0.x, v0.y, 0.0), vertex0);
+			this.vertices[0].integrate(this.normals[0], shift, vertex0);
+			affine.transformVertex(vertex0, vertex0);
 			wire.vertices.push(vertex0);
 
-			// vertex 0
-			var v1 = new MathVector2();
-			this.vertex1.integrate(this.normal1, shift, v1);
+			// vertex 1
 			var vertex1 = new MathVector3();
-			affine3.transformVertex(new MathVector3(v1.x, v1.y, 0.0), vertex1);
+			this.vertices[1].integrate(this.normals[1], shift, vertex1);
+			affine.transformVertex(vertex1, vertex1);
 			wire.vertices.push(vertex1);
 
 			// element

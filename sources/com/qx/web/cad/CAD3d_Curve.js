@@ -1,0 +1,145 @@
+
+/**
+ * 
+ */
+function CAD3d_Curve(){
+	this.isTesselated = false;
+}
+
+
+CAD3d_Curve.prototype = {
+
+		
+		
+		sweepLoop : function(loop, surface, wire, settings){
+			this.tesselate(settings);
+
+			var nbCurves = loop.curves.length;
+			for(var i in loop.curves){
+				this.sweepCurve(loop.curves[i], surface, wire, settings, loop.isClosed && i==nbCurves-1);
+			}
+			
+			loop.draw(this.affines[0], wire, settings);
+			loop.draw(this.affines[this.affines.length-1], wire, settings);
+			
+		},
+		
+		sweepCurve : function(curve, surface, wire, settings, isEndEnabled){
+
+			this.tesselate(settings);
+			curve.tesselate(settings);
+
+			// <surface>
+			var vertices = surface.vertices;
+			var offset = vertices.length();
+			var normals = surface.normals;
+			var vertex, normal;
+
+			// lengths
+			var n = curve.nbVertices, p=this.nbSections;
+
+			// sections
+			var affine;
+			for(var i=0; i<p; i++){
+				affine = this.affines[i];
+
+				// vertices
+				for(var j=0; j<n; j++){
+
+					// vertex
+					vertex = new MathVector3();
+					curve.vertices[j].copy(vertex);
+					affine.transformVertex(vertex, vertex);
+					vertices.push(vertex);
+
+					// normal
+					normal = new MathVector3();
+					curve.normals[j].copy(normal);
+					affine.transformVector(normal, normal);
+					normals.push(normal);
+				}
+			}
+
+
+			// elements
+			var elements = surface.elements;
+
+			// sections
+			for(var i=0; i<p-1; i++){
+				// vertices
+				for(var j=0; j<n-1; j++){
+					elements.push(offset+i*n+j, offset+i*n+j+1, offset+(i+1)*n+j);
+					elements.push(offset+i*n+j+1, offset+(i+1)*n+j+1, offset+(i+1)*n+j);
+				}
+				if(curve.isClosed){
+					elements.push(offset+i*n+(n-1), offset+i*n+0, offset+(i+1)*n+(n-1));
+					elements.push(offset+i*n+0, offset+(i+1)*n+0, offset+(i+1)*n+(n-1));
+				}
+			}
+			if(this.isClosed){
+				// vertices
+				for(var j=0; j<n-1; j++){
+					elements.push(offset+(p-1)*n+j+0, offset+(p-1)*n+j+1, offset+0*n+j);
+					elements.push(offset+(p-1)*n+j+1, offset+0*n+j+1, offset+0*n+j);
+				}
+			}
+			// </surface>
+
+			// <wire>
+			if(!this.isClosed){
+				var shift = settings.shift;
+
+				// <start-wire>
+				var point0 = new MathVector2();
+				curve.vertices[0].integrate(curve.normals[0], shift, point0);
+				this.sweepPoint(point0, wire, settings);
+				// </start-wire>
+
+				// <end-wire>
+				if(!this.isClosed && this.isEndEnabled){
+					var point1 = new MathVector2();
+					var p = this.nbVertices-1;
+					this.vertices[p].integrate(this.normals[p], shift, point1);
+					this.sweepPoint(point1, wire, settings);
+				}
+				// </end-wire>	
+			}
+
+			// </wire>
+		},
+
+
+		sweepPoint : function(point, wire, settings){
+
+			this.tesselate(settings);
+
+			// <surface>
+			var vertices = wire.vertices;
+			var offset = vertices.length();
+
+			var point3d = new MathVector3();
+			point.copy(point3d);
+			var vertex;
+
+			// sections
+			for(var i=0; i<this.nbSections; i++){
+
+				vertex = new MathVector3();
+				this.affines[i].transformVertex(point3d, vertex);
+				vertices.push(vertex);
+			}
+
+			// elements
+			var elements = wire.elements;
+			// sections
+			for(var i=0; i<this.nbSections-1; i++){
+				elements.push(offset+i, offset+i+1);
+			}
+			if(this.isClosed){
+				// vertices
+				for(var j=0; j<n-1; j++){
+					elements.push(offset+this.nbSections-1, offset+0);
+				}
+			}
+		}
+};
