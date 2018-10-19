@@ -23,7 +23,7 @@ CAD3d_Arc.prototype = {
 		evaluateAffine : function(theta, result){
 			result.vector.radial(this.r, theta);
 			this.affine.transformVertex(result.vector, result.vector);
-			MathMatrix3 rotationMatrix = new MathMatrix3();
+			var rotationMatrix = new MathMatrix3();
 			rotationMatrix.zRotation(theta+Math.PI/2.0);
 			affine.matrix.multiply(rotationMatrix, result.matrix);
 		},

@@ -26,18 +26,17 @@ CAD2d_Arc.prototype = {
 		evaluateAffine : function(theta, result){
 			result.vector.radial(this.r, theta);
 			this.affine.transformVertex(result.vector, result.vector);
-			MathMatrix2 rotationMatrix = new MathMatrix2();
+			var rotationMatrix = new MathMatrix2();
 			rotationMatrix.rotation(theta+Math.PI/2.0);
 			affine.matrix.multiply(rotationMatrix, result.matrix);
 		},
 
 		startPoint : function(result){
-			result.radial(this.r, theta);
-			this.affine.transformVertex(result.vector, result.vector);
+			this.evaluateVertex(this.theta0, result);
 		},
 
 		endPoint : function(result){
-			this.point.integrate(this.vector, u1, result);
+			this.evaluateVertex(this.theta1, result);
 		},
 
 		tesselate : function(settings){
@@ -46,10 +45,10 @@ CAD2d_Arc.prototype = {
 
 				var n = Math.ceil((this.theta1-this.theta0)/(2.0*Math.PI)*settings.n);
 				var dTheta = (this.theta1-this.theta0)/n;
-				this.nbVertices=isClosed?n:(n+1);
+				this.nbVertices=this.isClosed?n:(n+1);
 
-				this.vertices = new Array(nbVertices);
-				this.normals = new Array(nbVertices);
+				this.vertices = new Array(this.nbVertices);
+				this.normals = new Array(this.nbVertices);
 
 				var vertex, normal;
 				for(var i=0; i<this.nbVertices; i++){
@@ -76,6 +75,7 @@ CAD2d_Arc.prototype = {
 
 			// vertices
 			var vertices = wire.vertices;
+			var offset = vertices.length();
 			var vertex;
 			var shift = settings.shift;
 			for(var i=0; i<this.nbVertices; i++){
@@ -87,11 +87,10 @@ CAD2d_Arc.prototype = {
 
 			// elements
 			var elements = wire.elements;
-			var offset = elements.length();
 			for(var i=0; i<this.nbVertices-1; i++){
 				elements.push(offset+i, offset+(i+1));
 			}
-			if(isClosed){
+			if(this.isClosed){
 				elements.push(offset+this.nbVertices-1, offset+0);
 			}
 		},
@@ -104,8 +103,9 @@ CAD2d_Arc.prototype = {
 			// <surface>
 
 			// vertices
-			var surfaceVertices = surface.vertices;
-			var surfaceNormals = surface.normals;
+			var vertices = surface.vertices;
+			var offset = vertices.length();
+			var normals = surface.normals;
 			var vertex, normal;
 			for(var i=0; i<this.nbVertices; i++){
 
@@ -114,34 +114,33 @@ CAD2d_Arc.prototype = {
 				this.vertices[i].copy(vertex); // copy only x, y
 				vertex.z = z0;
 				affine.transformVertex(vertex, vertex);
-				surfaceVertices.push(vertex);
+				vertices.push(vertex);
 
 				// normal 0
 				normal = new MathVector3();
-				this.normas[i].copy(normal); // copy only x, y
+				this.normals[i].copy(normal); // copy only x, y
 				affine.transformVector(normal, normal);
-				surfaceNormals.push(normal);
+				normals.push(normal);
 
 				// vertex 1
 				vertex = new MathVector3();
 				this.vertices[i].copy(vertex); // copy only x, y
 				vertex.z = z1;
 				affine.transformVertex(vertex, vertex);
-				surfaceVertices.push(vertex);
+				vertices.push(vertex);
 
 				// normal 1
 				normal = new MathVector3();
-				this.normas[i].copy(normal); // copy only x, y
+				this.normals[i].copy(normal); // copy only x, y
 				affine.transformVector(normal, normal);
-				surfaceNormals.push(normal);
+				normals.push(normal);
 			}
 
 
-			var surfaceElements = surface.elements;
-			var offset = surfaceElements.length();
+			var elements = surface.elements;
 			for(var i=0; i<this.nbVertices; i++){
-				surfaceElements.push(offset+i, offset+i+2, offset+i+1);
-				surfaceElements.push(offset+i+2, offset+i+3, offset+i+1);
+				elements.push(offset+2*i, offset+2*i+2, offset+2*i+1);
+				elements.push(offset+2*i+2, offset+2*i+3, offset+2*i+1);
 			}
 
 
@@ -152,14 +151,14 @@ CAD2d_Arc.prototype = {
 			var shift = settings.shift;
 
 			// <start-wire>
-			CAD2d_Point point0 = new CAD2d_Point();
+			var point0 = new CAD2d_Point();
 			this.vertices[0].integrate(this.normals[0], shift, point0.position);
 			point0.extrude(affine, z0, z1, wire);
 			// </start-wire>
 
 			// <end-wire>
 			if(!this.isClosed && this.isEndEnabled){
-				CAD2d_Point point1 = new CAD2d_Point();
+				var point1 = new CAD2d_Point();
 				var p = this.nbVertices-1;
 				this.vertices[p].integrate(this.normals[p], shift, point1.position);
 				point1.extrude(affine, z0, z1, wire);
@@ -182,8 +181,9 @@ CAD2d_Arc.prototype = {
 			affine2.inverse(invAffine2);
 
 			// <surface>
-			var surfaceVertices = surface.vertices;
-			var surfaceNormals = surface.normals;
+			var vertices = surface.vertices;
+			var offset = vertices.length();
+			var normals = surface.normals;
 			var sectionAffine = new MathAffine3();
 			var rotationMatrix = new MathMatrix3();
 			var vertex2, normal2, vertex3, normal3;
@@ -200,33 +200,32 @@ CAD2d_Arc.prototype = {
 					invAffine2.transformVertex(this.vertices[j], vertex2);
 					vertex3 = new MathVector3(vertex2.x, vertex2.y, 0.0);
 					sectionAffine.transformVertex(vertex3, vertex3);
-					surfaceVertices.push(vertex3);
+					vertices.push(vertex3);
 
 					// normal
 					invAffine2.transformVector(this.normals[j], normal2);
 					normal3 = new MathVector3(normal2.x, normal2.y, 0.0);
 					sectionAffine.transformVector(normal3, normal3);
-					surfaceNormals.push(normal3);
+					normals.push(normal3);
 				}
 			}
 
 			// elements
-			var surfaceElements =surface.elements;
-			var offset = surfaceElements.length();
+			var elements =surface.elements;
 			var n = this.nbVertices, p=nbSections;
 			// sections
 			for(var i=0; i<p-1; i++){
 				// vertices
 				for(var j=0; j<n-1; j++){
-					surfaceElements.push(offset+i*n+j+0, offset+i*n+j+1, offset+(i+1)*n+j);
-					surfaceElements.push(offset+i*n+j+1, offset+(i+1)*n+j+1, offset+(i+1)*n+j);
+					elements.push(offset+i*n+j+0, offset+i*n+j+1, offset+(i+1)*n+j);
+					elements.push(offset+i*n+j+1, offset+(i+1)*n+j+1, offset+(i+1)*n+j);
 				}
 			}
 			if(isFullyRevolved){
 				// vertices
 				for(var j=0; j<n-1; j++){
-					surfaceElements.push(offset+(p-1)*n+j+0, offset+(p-1)*n+j+1, offset+0*n+j);
-					surfaceElements.push(offset+(p-1)*n+j+1, offset+0*n+j+1, offset+0*n+j);
+					elements.push(offset+(p-1)*n+j+0, offset+(p-1)*n+j+1, offset+0*n+j);
+					elements.push(offset+(p-1)*n+j+1, offset+0*n+j+1, offset+0*n+j);
 				}
 			}
 			// </surface>
@@ -236,14 +235,14 @@ CAD2d_Arc.prototype = {
 				var shift = settings.shift;
 
 				// <start-wire>
-				CAD2d_Point point0 = new CAD2d_Point();
+				var point0 = new CAD2d_Point();
 				this.vertices[0].integrate(affine3, affine2, wire, settings, theta0, theta1);
 				point0.revolve(affine3, affine2, theta0, theta1, wire, settings);
 				// </start-wire>
 
 				// <end-wire>
 				if(!this.isClosed && this.isEndEnabled){
-					CAD2d_Point point1 = new CAD2d_Point();
+					var point1 = new CAD2d_Point();
 					var p = this.nbVertices-1;
 					this.vertices[p].integrate(this.normals[p], shift, point1.position);
 					point1.revolve(affine3, affine2, theta0, theta1, wire, settings);

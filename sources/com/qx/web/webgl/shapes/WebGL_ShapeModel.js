@@ -11,22 +11,16 @@
  *  Potential attributes are: vertex, normal, uTangent, vTangent, texCoord, color
  *  
  */
-function WebGL_ShapeModel(id, graphicSettings, define){
+function WebGL_ShapeModel(id, graphicSettings, define=null){
 	
 	// id
 	this.id = id;
 	this.graphicSettings = graphicSettings;
 	
-	// define renderables
-	this.renderables = [];
-	
 	this.isInitialized = false;
-	
-	// start initialization
-	
-	
+		
 	// server-side definition
-	if(define==undefined){ 
+	if(define==null){ 
 		var model = this;
 		ctx.request("webGL.getShapeModel:id="+this.id, function (response){
 
@@ -34,14 +28,13 @@ function WebGL_ShapeModel(id, graphicSettings, define){
 			var settings = model.graphicSettings;
 
 			//eval must define the shape, i.e. renderables
-			eval(response.responseText);
-			
+			model.renderables = eval(response.responseText);
 			model.compile();
 		});	
 	}
 	// client-side definition
 	else{ 
-		define(this);
+		this.renderables = define(this.graphicSettings);
 		this.compile();
 	}
 }
@@ -56,7 +49,7 @@ WebGL_ShapeModel.prototype = {
 			renderable.compile();
 		}
 		
-		this.isInitialized = true;	
+		this.isInitialized = true;
 	},
 	
 	dispose : function(){

@@ -14,6 +14,7 @@ CAD2d_Point.prototype = {
 
 			// vertices
 			var vertices = wire.vertices;
+			var offset = vertices.length();
 			var normals = wire.normals;
 			var vertex, normal;
 
@@ -33,7 +34,6 @@ CAD2d_Point.prototype = {
 
 			// segment element
 			var elements = wire.elements;
-			var offset = elements.length();
 			elements.push(offset+0, offset+1);
 		},
 
@@ -51,6 +51,8 @@ CAD2d_Point.prototype = {
 
 			// <surface>
 			var vertices = surface.vertices;
+			var offset = vertices.length();
+			
 			var normals = surface.normals;
 			var sectionAffine = new MathAffine3();
 			var rotationMatrix = new MathMatrix3();
@@ -72,7 +74,6 @@ CAD2d_Point.prototype = {
 
 			// elements
 			var elements = wire.elements;
-			var offset = elements.length();
 			// sections
 			for(var i=0; i<nbSections-1; i++){
 				surfaceElements.push(offset+i, offset+i+1);

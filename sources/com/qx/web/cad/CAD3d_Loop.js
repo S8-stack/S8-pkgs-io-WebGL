@@ -13,7 +13,7 @@ CAD3d_Loop.prototype = {
 	
 	sweep : function(section, wire, settings){
 		for(let curve of this.curves){
-			curve.draw(affine, wire settings);
+			curve.draw(affine, wire, settings);
 		}
 	}
 
