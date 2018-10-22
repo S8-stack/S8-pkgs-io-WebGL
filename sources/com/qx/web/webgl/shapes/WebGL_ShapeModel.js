@@ -11,49 +11,39 @@
  *  Potential attributes are: vertex, normal, uTangent, vTangent, texCoord, color
  *  
  */
-function WebGL_ShapeModel(id, graphicSettings, define=null){
-	
-	// id
+function WebGL_ShapeModel(id){
 	this.id = id;
-	this.graphicSettings = graphicSettings;
-	
 	this.isInitialized = false;
-		
-	// server-side definition
-	if(define==null){ 
-		var model = this;
-		ctx.request("webGL.getShapeModel:id="+this.id, function (response){
-
-			// load settings for geometry eval
-			var settings = model.graphicSettings;
-
-			//eval must define the shape, i.e. renderables
-			model.renderables = eval(response.responseText);
-			model.compile();
-		});	
-	}
-	// client-side definition
-	else{ 
-		this.renderables = define(this.graphicSettings);
-		this.compile();
-	}
 }
 
 
 WebGL_ShapeModel.prototype = {
-		
+	
+	load : function(settings){
+		var model = this;
+		ctx.request("webGL.getShapeModel:id="+this.id, function (response){
+			
+			//eval must define the shape, i.e. renderables
+			// settings is defined in the context of the response eval
+			model.renderables = eval(response.responseText);
+			model.compile();
+		});
+	},
 		
 	compile : function(){
-		// compile renderables
-		for(let renderable of this.renderables){
-			renderable.compile();
+		if(!this.isInitialized){
+			// compile renderables
+			for(let renderable of this.renderables){
+				renderable.compile();
+			}
+			this.isInitialized = true;
 		}
-		
-		this.isInitialized = true;
 	},
 	
 	dispose : function(){
-		for(let renderable of renderables){ renderable.dispose(); }
+		for(let renderable of this.renderables){
+			renderable.dispose();
+		}
 	}
 };
 
@@ -73,7 +63,6 @@ WebGL_ShapeModels.prototype = {
 		this.map.set(model.id, model);
 	},
 		
-		
 	/**
 	 * get shape
 	 */
@@ -82,12 +71,12 @@ WebGL_ShapeModels.prototype = {
 		
 		// if shape is not present, we create it
 		if(shapeModel==undefined){
-			shapeModel = new WebGL_ShapeModel(id, this.graphicSettings);	
+			shapeModel = new WebGL_ShapeModel(id);	
+			shapeModel.load(this.graphicSettings);
 			this.map.set(id, shapeModel);
 		}
 		return shapeModel;
 	}
-
 };
 
 

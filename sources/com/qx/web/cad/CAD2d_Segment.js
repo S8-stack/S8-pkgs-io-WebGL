@@ -85,10 +85,12 @@ CAD2d_Segment.prototype = {
 
 		draw : function(affine, wire, settings){
 			this.tesselate();
-			var offset = wire.vertices.length();
+			var offset = wire.vertices.getNumberOfVectors();
 
 			var shift = settings.shift;
 
+			wire.vertices.expand(2);
+			
 			// vertex 0
 			var vertex0 = new MathVector3();
 			this.vertices[0].integrate(this.normals[0], shift, vertex0);
@@ -102,6 +104,7 @@ CAD2d_Segment.prototype = {
 			wire.vertices.push(vertex1);
 
 			// element
+			wire.elements.expand(1);
 			wire.elements.push(offset+0, offset+1);
 		},
 

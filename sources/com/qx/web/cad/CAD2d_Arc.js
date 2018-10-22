@@ -75,9 +75,10 @@ CAD2d_Arc.prototype = {
 
 			// vertices
 			var vertices = wire.vertices;
-			var offset = vertices.length();
+			var offset = vertices.getNumberOfVectors();
 			var vertex;
 			var shift = settings.shift;
+			vertices.expand(this.nbVertices);
 			for(var i=0; i<this.nbVertices; i++){
 				vertex = new MathVector3();
 				this.vertices[i].integrate(this.normals[i], shift, vertex);
@@ -87,6 +88,7 @@ CAD2d_Arc.prototype = {
 
 			// elements
 			var elements = wire.elements;
+			elements.expand(this.isClosed?this.nbVertices:this.nbVertices-1);
 			for(var i=0; i<this.nbVertices-1; i++){
 				elements.push(offset+i, offset+(i+1));
 			}

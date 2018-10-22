@@ -9,23 +9,36 @@
  * @param location : the location of this attribute in the shader program given by : gl.getAttribLocation(shaderProgram, [Keyword]);
  * 
  */
-function WebGL_TriangleBuffer(){
-	this.buffer = new Array();
+function WebGL_TriangleBuffer(nbElements=0){
+	this.array = new Uint16Array(nbElements);
+	this.offset = 0;
 }
 
 
 WebGL_TriangleBuffer.prototype = {
+		
+
+		expand : function(nbAllocatedTriangles){
+			var expandedArray = new Uint16Array(this.array.length+3*nbAllocatedTriangles);
+			expandedArray.set(this.array);
+			this.array = expandedArray;
+		},
 
 		push : function(i0, i1, i2){
-			this.buffer.push(i0);
-			this.buffer.push(i1);
-			this.buffer.push(i2);
+			this.array[this.offset+0] = i0;
+			this.array[this.offset+1] = i1;
+			this.array[this.offset+2] = i2;
+			this.offset+=3;
+		},
+		
+		getNumberOfElements : function(){
+			return this.array.length/3;
 		},
 
 		compile : function(){
 
 			// length
-			this.length = this.buffer.length;
+			this.length = this.array.length;
 			
 			// Create buffer handle
 			this.bufferHandle = gl.createBuffer();
@@ -34,10 +47,8 @@ WebGL_TriangleBuffer.prototype = {
 			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
 
 			// Store array data in the current buffer
-			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(this.buffer, 0, this.length), gl.STATIC_DRAW);
+			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.array, gl.STATIC_DRAW);
 
-			// delete buffer
-			delete this.buffer;
 		},
 
 		/** Bind the buffer for rendering */
@@ -49,6 +60,18 @@ WebGL_TriangleBuffer.prototype = {
 		/** Dispose the buffer */
 		dispose : function(){
 			gl.deleteBuffer(this.bufferHandle);
+		},
+		
+		shift : function(offset, target){
+			var n = this.array.length/3;
+			var index;
+			for(var i=0; i<n; i++){
+				index=i*3;
+				target.push(
+						offset+this.array[index+0],
+						offset+this.array[index+1],
+						offset+this.array[index+2]);
+			}
 		}
 };
 

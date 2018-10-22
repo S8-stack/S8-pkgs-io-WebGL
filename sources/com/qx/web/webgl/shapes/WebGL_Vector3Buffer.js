@@ -7,25 +7,41 @@
  * @param dimension : the dimensions of the vectors passed as vertex data
  * 
  */
-function WebGL_Vector3Buffer(){
-	this.buffer = new Array();
-	
-	this.DEBUG_Vectors = new Array();
+function WebGL_Vector3Buffer(nbVectors=0){
+	this.offset = 0;
+	this.nbVectors = nbVectors;
+	this.array = new Float32Array(3*nbVectors);
 }
 
 
 WebGL_Vector3Buffer.prototype = {
 
-		push(vector){
-			this.buffer.push(vector.x);
-			this.buffer.push(vector.y);
-			this.buffer.push(vector.z);
-			
-			this.DEBUG_Vectors.push(vector);
+		expand : function(nbAdditionalVectors){
+			if(this.offset!=3*this.nbVectors){
+				throw "Previous patch has not been filled!";
+			}
+			var expandedArray = new Float32Array(this.array.length+3*nbAdditionalVectors);
+			expandedArray.set(this.array);
+			this.array = expandedArray;
+			this.nbVectors+=nbAdditionalVectors;
 		},
 		
-		length : function(){
-			return this.buffer.length/3;
+		push : function(vector){
+			this.array[this.offset+0] = vector.x;
+			this.array[this.offset+1] = vector.y;
+			this.array[this.offset+2] = vector.z;
+			this.offset+=3;
+		},
+		
+		getVector : function(index, result){
+			var offset = index*3;
+			result.x = this.array[offset+0];
+			result.y = this.array[offset+1];
+			result.z = this.array[offset+2];
+		},
+
+		getNumberOfVectors : function(){
+			return this.nbVectors;
 		},
 
 		compile : function(){
@@ -37,16 +53,17 @@ WebGL_Vector3Buffer.prototype = {
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferHandle);
 
 			// Store array data in the current buffer (Float32Array.BYTES_PER_ELEMENT=4: 4 bytes per float)
+			/*
 			var bufferData = new Float32Array(this.buffer.length);
 			for(var i in this.buffer){
 				bufferData[i] = this.buffer[i];
 			}
-
+			 */
 			// delete
 			//delete this.buffer;
 
 			// store data in GPU
-			gl.bufferData(gl.ARRAY_BUFFER, bufferData, gl.STATIC_DRAW);
+			gl.bufferData(gl.ARRAY_BUFFER, this.array, gl.STATIC_DRAW);
 		},
 
 
@@ -69,6 +86,49 @@ WebGL_Vector3Buffer.prototype = {
 		 */
 		dispose : function(){
 			gl.deleteBuffer(this.bufferHandle);
+		},
+		
+		copy(target){
+			var nbVectors = this.getNumberOfVectors();
+
+			var input = new MathVector3(), output = new MathVector3();
+			for(var i=0; i<nbVectors; i++){
+				this.getVector(i, input);
+				input.copy(output);
+				target.push(output);
+			}
+		},
+		
+		transformVertices(affine, target){
+			var nbVectors = this.getNumberOfVectors();
+
+			var input = new MathVector3(), output = new MathVector3();
+			for(var i=0; i<nbVectors; i++){
+				this.getVector(i, input);
+				affine.transformVertex(input, output);
+				target.push(output);
+			}
+		},
+		
+		transformVectors(affine, target){
+			var nbVectors = this.getNumberOfVectors();
+
+			var input = new MathVector3(), output = new MathVector3();
+			for(var i=0; i<nbVectors; i++){
+				this.getVector(i, input);
+				affine.transformVector(input, output);
+				target.push(output);
+			}
+		},
+		
+		transformNormals(affine, target){
+			var nbVectors = this.getNumberOfVectors();
+			var input = new MathVector3(), output = new MathVector3();
+			for(var i=0; i<nbVectors; i++){
+				this.getVector(i, input);
+				affine.transformNormal(input, output);
+				target.push(output);
+			}
 		}
 };
 
