@@ -28,17 +28,17 @@ public class WebGL_Node implements HTTPS_POST_Node {
 	/**
 	 * identifier generator for shape access codes
 	 */
-	private IdentifierGenerator shapeModelIdGenenerator = new IdentifierGenerator(12, "shmod");
+	private IdentifierGenerator shapeModelIdGenenerator = new IdentifierGenerator(12, "mod");
 
 	/**
 	 * identifier generator for shape access codes
 	 */
-	private IdentifierGenerator shapeInstanceIdGenenerator = new IdentifierGenerator(12, "shins");
+	private IdentifierGenerator shapeInstanceIdGenenerator = new IdentifierGenerator(12, "inst");
 
 
-	private Map<String, WebGL_ShapeModel> shapeModels = new HashMap<>();
+	private Map<String, WebGL_ObjectModel> models = new HashMap<>();
 	
-	private Map<String, WebGL_ShapeInstance> shapeInstances = new HashMap<>();
+	private Map<String, WebGL_ObjectInstance> instances = new HashMap<>();
 
 
 	
@@ -56,10 +56,10 @@ public class WebGL_Node implements HTTPS_POST_Node {
 	 * @param shapeModel
 	 * @return
 	 */
-	public synchronized String push(WebGL_ShapeModel shapeModel){
+	public synchronized String push(WebGL_ObjectModel shapeModel){
 		String id = shapeModelIdGenenerator.create();
 		shapeModel.id = id;
-		shapeModels.put(shapeModel.id, shapeModel);
+		models.put(shapeModel.id, shapeModel);
 		return id;
 	}
 	
@@ -68,9 +68,9 @@ public class WebGL_Node implements HTTPS_POST_Node {
 	 * @param shapeInstance
 	 * @return
 	 */
-	public synchronized String push(WebGL_ShapeInstance shapeInstance){
+	public synchronized String push(WebGL_ObjectInstance shapeInstance){
 		String id = shapeInstanceIdGenenerator.create();
-		shapeInstances.put(id, shapeInstance);
+		instances.put(id, shapeInstance);
 		return id;
 	}
 
@@ -81,21 +81,21 @@ public class WebGL_Node implements HTTPS_POST_Node {
 	 */
 	public synchronized void disposeInstances(List<String> identifiers){
 		for(String id : identifiers){
-			if(shapeInstances.containsKey(id)){
-				shapeInstances.remove(id);
+			if(instances.containsKey(id)){
+				instances.remove(id);
 			}
 		}
 	}
 
 
-	@HTTPS_POST_Method(mapping="getShapeInstance")
+	@HTTPS_POST_Method(mapping="getObjectInstance")
 	public synchronized void getShapeInstance(HTTPS_Connection connection, @QueryParam(name="id") String id) {
 
 		
-		if(shapeInstances.containsKey(id)){
+		if(instances.containsKey(id)){
 			String content;
 			try {
-				content = shapeInstances.get(id).writeOutline();
+				content = instances.get(id).writeOutline();
 				connection.sendContent(MIME_Type.TEXT_PLAIN, content.getBytes());
 			}
 			catch (IOException e) {
@@ -110,11 +110,11 @@ public class WebGL_Node implements HTTPS_POST_Node {
 	}
 	
 	
-	@HTTPS_POST_Method(mapping="getShapeModel")
+	@HTTPS_POST_Method(mapping="getObjectModel")
 	public synchronized void getShapeModel(HTTPS_Connection connection, @QueryParam(name="id") String id) throws Exception {
 
-		if(shapeModels.containsKey(id)){
-			String content = shapeModels.get(id).getConstructionScript();
+		if(models.containsKey(id)){
+			String content = models.get(id).getConstructionScript();
 			connection.sendContent(MIME_Type.TEXT_PLAIN, content.getBytes());
 		}
 		else{

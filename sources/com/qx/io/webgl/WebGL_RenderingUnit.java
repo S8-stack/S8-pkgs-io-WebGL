@@ -5,9 +5,9 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.qx.maths.affine.Affine3d;
+import com.qx.maths.affine.MathAffine3d;
 import com.qx.maths.box.BoundingBox3d;
-import com.qx.maths.vector.Vector3d;
+import com.qx.maths.vector.MathVector3d;
 
 public abstract class WebGL_RenderingUnit {
 
@@ -17,13 +17,13 @@ public abstract class WebGL_RenderingUnit {
 	/**
 	 * current affine transformation
 	 */
-	public Affine3d affine;
+	public MathAffine3d affine;
 	
 
 	/**
 	 * vertices
 	 */
-	public List<Vector3d> vertices;
+	public List<MathVector3d> vertices;
 	
 	/**
 	 * offset for patches
@@ -36,14 +36,14 @@ public abstract class WebGL_RenderingUnit {
 		this.name = name;
 
 		// transformation
-		affine = Affine3d.STANDARD;
+		affine = MathAffine3d.STANDARD;
 
 		// vertex attributes
 		vertices = new ArrayList<>();
 	}
 	
 
-	public void addVertex(Vector3d vertex){
+	public void addVertex(MathVector3d vertex){
 		vertices.add(affine.applyToPoint(vertex));
 	}
 	
@@ -52,7 +52,7 @@ public abstract class WebGL_RenderingUnit {
 	 * 
 	 * @param affine
 	 */
-	public void setAffine(Affine3d affine){
+	public void setAffine(MathAffine3d affine){
 		this.affine = affine;
 	}
 	
@@ -69,12 +69,12 @@ public abstract class WebGL_RenderingUnit {
 
 
 
-	public List<Vector3d> getVertices() {
+	public List<MathVector3d> getVertices() {
 		return vertices;
 	}
 	
 	public void update(BoundingBox3d boundingBox3d){
-		for(Vector3d vertex : vertices){
+		for(MathVector3d vertex : vertices){
 			boundingBox3d.update(vertex);
 		}
 	}

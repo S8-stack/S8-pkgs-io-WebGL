@@ -173,3 +173,53 @@ WebGL_View.prototype = {
 		}
 };
 
+
+
+
+/** Scene */
+function WebGL_MatrixStack(view){
+	
+	// keep pointer
+	this.matrix_View = view.matrix_View;
+
+	// view model matrix
+	this.matrix_ViewModel = new WebGL_Matrix4();
+
+	// keep pointer
+	this.matrix_ProjectionView = view.matrix_ProjectionView;
+
+	// projection view matrix
+	this.matrix_ProjectionViewModel = new WebGL_Matrix4();
+	
+	// normal matrix (for shader rendering of normals)
+	this.matrix_Normal = new WebGL_Matrix3();
+	
+	// model matrix
+	this.matrix_Model = new WebGL_Matrix4();
+	
+	// affine for the WebGL_ObjectInstance
+	this.instanceAffine = new MathAffine3();
+	
+	// affine for WebGL_ObjectShape
+	this.modelAffine = new MathAffine3();
+	
+	// affine for WebGL_ObjectShape
+	this.instanceModelAffine = new MathAffine3();
+	
+}
+
+WebGL_MatrixStack.prototype = {
+		
+		compute : function(){
+			
+			this.instanceAffine.multiply(this.modelAffine, this.instanceModelAffine);
+			this.matrix_Model.setAffine(this.instanceModelAffine);
+			
+			this.matrix_ProjectionViewModel.multiply(this.matrix_ProjectionView, this.matrix_Model);
+			this.matrix_ViewModel.multiply(this.matrix_View, this.matrix_Model);
+			this.matrix_Normal.transposeInverse4(this.matrix_ViewModel);
+		}
+};
+
+
+

@@ -10,10 +10,10 @@ function WebGL_Scene(){
 	this.styles = new WebGL_Styles();
 
 	// store of shapes models
-	this.shapeModels = new WebGL_ShapeModels();
+	this.objectModels = new WebGL_ObjectModels();
 
 	// store of shapes instances
-	this.shapeInstances = new WebGL_ShapeInstances(this);
+	this.objectInstances = new WebGL_ObjectInstances(this);
 
 	//create view
 	this.view = new WebGL_View(this);
@@ -36,6 +36,8 @@ function WebGL_Scene(){
 	gl.enable(gl.DEPTH_TEST);
 
 	// </initialize rendering>
+	
+	this.matrixStack = new WebGL_MatrixStack(this.view);
 
 }
 
@@ -83,9 +85,9 @@ WebGL_Scene.prototype = {
 			// gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
 
-			this.shapeInstances.update();
+			//this.shapeInstances.update();
 			
-			this.programs.draw(this.view, this.environment);
+			this.programs.render(this.view, this.environment, this.matrixStack);
 			// Recommended pattern for frame animation
 			
 			/*
@@ -111,3 +113,4 @@ window.requestAnimFrame = (function() {
 		window.setTimeout(callback, 1000/60);
 	};
 })();
+

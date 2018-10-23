@@ -2,9 +2,9 @@ package com.qx.io.webgl.primitive;
 
 import com.qx.io.webgl.WebGL_Surface;
 import com.qx.io.webgl.WebGL_Triangle;
-import com.qx.maths.affine.Affine3d;
-import com.qx.maths.vector.Vector2d;
-import com.qx.maths.vector.Vector3d;
+import com.qx.maths.affine.MathAffine3d;
+import com.qx.maths.vector.MathVector2d;
+import com.qx.maths.vector.MathVector3d;
 
 
 public class Sphere {
@@ -29,7 +29,7 @@ public class Sphere {
 	}
 
 
-	public void draw(WebGL_Surface surface, Affine3d affine) {
+	public void draw(WebGL_Surface surface, MathAffine3d affine) {
 
 		double dTheta = (double) (Math.PI/(n-1));
 		double dPhi = (double) (2*Math.PI/(2*n-1));
@@ -43,14 +43,14 @@ public class Sphere {
 		// Vertex
 		for(int i=0; i<n; i++){
 			for(int j=0; j<2*n; j++){
-				surface.addVertex(Vector3d.sphericalRadial(r, j*dPhi, i*dTheta));
+				surface.addVertex(MathVector3d.sphericalRadial(r, j*dPhi, i*dTheta));
 			}
 		}
 
 		// Normal
 		for(int i=0; i<n; i++){
 			for(int j=0; j<2*n; j++){
-				surface.addNormal(Vector3d.sphericalRadial(1.0, j*dPhi, i*dTheta));
+				surface.addNormal(MathVector3d.sphericalRadial(1.0, j*dPhi, i*dTheta));
 			}
 		}
 
@@ -59,7 +59,7 @@ public class Sphere {
 		double dv = 1.0/(n-1);
 		for(int i=0; i<n; i++){
 			for(int j=0; j<2*n; j++){
-				surface.addTexCoord(new Vector2d(j*du, 1.0-i*dv));
+				surface.addTexCoord(new MathVector2d(j*du, 1.0-i*dv));
 			}
 		}
 

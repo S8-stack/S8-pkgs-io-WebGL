@@ -7,11 +7,11 @@ import java.io.IOException;
  * @author Pierre Convert
  *
  */
-public abstract class WebGL_ShapeModel {
+public abstract class WebGL_ObjectModel {
 
 	public String id;
 
-	public WebGL_ShapeModel() {
+	public WebGL_ObjectModel() {
 		super();
 	}
 

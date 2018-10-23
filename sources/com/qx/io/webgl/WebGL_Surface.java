@@ -5,21 +5,21 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.qx.maths.affine.Affine3d;
-import com.qx.maths.vector.Vector2d;
-import com.qx.maths.vector.Vector3d;
+import com.qx.maths.affine.MathAffine3d;
+import com.qx.maths.vector.MathVector2d;
+import com.qx.maths.vector.MathVector3d;
 
 public class WebGL_Surface extends WebGL_RenderingUnit {
 
 	/**
 	 * normals
 	 */
-	private List<Vector3d> normals;
+	private List<MathVector3d> normals;
 
 	/**
 	 * texture coordinates
 	 */
-	private List<Vector2d> texCoords;
+	private List<MathVector2d> texCoords;
 
 	/**
 	 * elements
@@ -53,11 +53,11 @@ public class WebGL_Surface extends WebGL_RenderingUnit {
 	
 
 	
-	public void addNormal(Vector3d normal){
+	public void addNormal(MathVector3d normal){
 		normals.add(affine.applyToNormal(normal));
 	}
 	
-	public void addTexCoord(Vector2d texCoord){
+	public void addTexCoord(MathVector2d texCoord){
 		texCoords.add(texCoord);
 	}
 	
@@ -67,7 +67,7 @@ public class WebGL_Surface extends WebGL_RenderingUnit {
 	 * @param basis3d
 	 * @return
 	 */
-	public void add(Affine3d affine, WebGL_Surface surface){
+	public void add(MathAffine3d affine, WebGL_Surface surface){
 
 		// affine
 		setAffine(affine);
@@ -75,15 +75,15 @@ public class WebGL_Surface extends WebGL_RenderingUnit {
 		// surface
 		startPatch();
 		
-		for(Vector3d vertex : surface.getVertices()){
+		for(MathVector3d vertex : surface.getVertices()){
 			addVertex(vertex);
 		}
 		
-		for(Vector3d normal : surface.normals){
+		for(MathVector3d normal : surface.normals){
 			addNormal(normal);
 		}
 
-		for(Vector2d texCoord : surface.texCoords){
+		for(MathVector2d texCoord : surface.texCoords){
 			addTexCoord(texCoord);
 		}
 		
@@ -99,11 +99,11 @@ public class WebGL_Surface extends WebGL_RenderingUnit {
 		return triangles.size();
 	}
 	
-	public List<Vector3d> getNormals() {
+	public List<MathVector3d> getNormals() {
 		return normals;
 	}
 	
-	public List<Vector2d> getTexCoords() {
+	public List<MathVector2d> getTexCoords() {
 		return texCoords;
 	}
 
@@ -130,8 +130,8 @@ public class WebGL_Surface extends WebGL_RenderingUnit {
 		
 		@Override
 		public String[] getDefaultModeStyles(){
-			String[] modes = new String[WebGL_ShapeInstance.NB_MODES];
-			for(int i=0; i<WebGL_ShapeInstance.NB_MODES; i++){
+			String[] modes = new String[WebGL_ObjectInstance.NB_MODES];
+			for(int i=0; i<WebGL_ObjectInstance.NB_MODES; i++){
 				modes[i] = "shinyBluePlastic";
 			}
 			return modes;

@@ -42,19 +42,14 @@ WebGL_Style.prototype = {
 		/**
 		 * render the styles and shapes
 		 */
-		draw : function(program){
+		render : function(matrixStack, program){
 			if(this.isInitialized){
+				
 				// load style uniforms
-				program.loadStyle(this);
+				program.bindStyle(this);
 
 				this.renderables.crawl(function(renderable){
-					// update
-					renderable.update();
-
-					// render if OK
-					if(renderable.isInitialized){
-						program.render(renderable);	
-					}
+					renderable.render(matrixStack, program);	
 				});
 			}
 		},

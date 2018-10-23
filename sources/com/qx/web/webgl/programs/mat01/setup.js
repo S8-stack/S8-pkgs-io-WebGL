@@ -34,10 +34,17 @@ program.initialize = function(){
 	
 };
 
+program.bindSettings = function(){
+	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
+	gl.enableVertexAttribArray(this.loc_Attribute_normal);
+};
 
 
+program.bindView = function(view){
+	// nothing to do
+};
 
-program.bind = function(view, environment){
+program.bindEnvironment = function(environment){
 	
 	// light 0
 	gl.uniform4fv(this.loc_Uniform_light0_ambient, environment.light0.ambient);
@@ -50,21 +57,11 @@ program.bind = function(view, environment){
 	gl.uniform4fv(this.loc_Uniform_light1_diffuse, environment.light1.diffuse);
 	gl.uniform4fv(this.loc_Uniform_light1_specular, environment.light1.specular);
 	gl.uniform3fv(this.loc_Uniform_light1_direction, environment.light1.direction);
-	
-	// enable location
-	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
-	gl.enableVertexAttribArray(this.loc_Attribute_normal);
+
 };
 
-program.unbind = function(){
-	// disable location
-	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
-	gl.disableVertexAttribArray(this.loc_Attribute_normal);
-};
 
-program.loadStyle = function(style){
-	
-	// material
+program.bindStyle = function(style){
 	gl.uniform4fv(this.loc_Uniform_material_ambient, style.ambient);
 	gl.uniform4fv(this.loc_Uniform_material_diffuse, style.diffuse);
 	gl.uniform4fv(this.loc_Uniform_material_specular, style.specular);
@@ -73,33 +70,27 @@ program.loadStyle = function(style){
 };
 
 
-program.render = function(surface){
-	
-	
-	/*
-	 * bind shape
-	 */
-	
-	// bind instance matrices
-	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, surface.instance.matrix_ProjectionViewModel.c);
-	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MV, false, surface.instance.matrix_ViewModel.c);
-	gl.uniformMatrix3fv(this.loc_Uniform_matrix_N, false, surface.instance.matrix_Normal.c);
-	
-	// bind model vertex attributes
-	surface.model.vertices.bind(this.loc_Attribute_vertex, surface.model.verticesOffset);
-	surface.model.normals.bind(this.loc_Attribute_normal, surface.model.verticesOffset);
-	
-	// bind model elements
-	surface.model.elements.render();
-	
-	/*
-	 * unbind shape
-	 */
-	
-	/* unbind attributes */
-	surface.model.vertices.unbind(this.loc_Attribute_vertex);
-	surface.model.normals.unbind(this.loc_Attribute_normal);
-	
+program.bindVertexAttributes = function(model){
+	model.vertices.bind(this.loc_Attribute_vertex);
+	model.normals.bind(this.loc_Attribute_normal);
 };
 
+
+program.bindMatrixStack = function(stack){
+	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, stack.matrix_ProjectionViewModel.c);
+	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MV, false, stack.matrix_ViewModel.c);
+	gl.uniformMatrix3fv(this.loc_Uniform_matrix_N, false, stack.matrix_Normal.c);
+};
+
+
+program.unbindVertexAttributes = function(model){
+	surface.model.vertices.unbind(this.loc_Attribute_vertex);
+	surface.model.normals.unbind(this.loc_Attribute_normal);
+};
+
+
+program.unbindSettings = function(){
+	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
+	gl.disableVertexAttribArray(this.loc_Attribute_normal);
+};
 

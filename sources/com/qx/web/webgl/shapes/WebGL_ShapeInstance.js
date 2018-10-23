@@ -1,147 +1,17 @@
 
 
-
-/**
- *
- */
-function WebGL_ShapeInstance(id, scene, define){
-
-	// id
-	this.id = id;
-	
-	// mode
-	this.mode = 0;
-
-	this.isInitialized = false;
-	this.isDisposed = false;
-
-	// model matrix to position object
-	this.matrix_Model = new WebGL_Matrix4();
-	this.matrix_Model.identity();
-
-	// normal matrix (for shader rendering of normals)
-	this.matrix_Normal = new WebGL_Matrix3();
-
-	// projection view matrix
-	this.matrix_ProjectionViewModel = new WebGL_Matrix4();
-
-	// view model matrix
-	this.matrix_ViewModel = new WebGL_Matrix4();
-
-	// keep pointer
-	this.matrix_ProjectionView = scene.view.matrix_ProjectionView;
-
-	// keep pointer
-	this.matrix_View = scene.view.matrix_View;
-
-
-	// TODO : update picking
-	//this.picking.updatePickingColors();
-
-	// server-side definition
-	if(define==undefined){
-		var instance = this;
-		ctx.request("webGL.getShapeInstance:id="+instance.id, function (response){
-
-			if(!instance.isDisposed){
-				
-				eval(response.responseText);
-				
-				
-				/*
-				 * eval must define:
-				 * var modelId
-				 * var position (float[16])
-				 * var styles (String[8][nbRenderables])
-				 * 
-				 */
-
-				instance.matrix_Model.c = position;
-
-				instance.setup(modelId, styles);
-				
-			}
-		});	
-	}
-	// client-side definition
-	else{
-		define(this);
-	}
-	
-}
-
-
-WebGL_ShapeInstance.prototype = {
-
-		
-		setup : function(modelId, styles){
-			
-			// build model
-			this.model = scene.shapeModels.get(modelId);
-
-			// build renderables
-			this.renderables = new Array();
-			for(var index in styles){
-				this.renderables.push(new WebGL_ShapeInstanceRenderable(this, index, styles[index]));
-			}
-
-			// done...
-			this.isInitialized = true;
-			
-			// update modes for display
-			for(var index in this.renderables){
-				this.renderables[index].setMode(this.mode);
-			}
-			
-			// update picking
-			scene.picking.append(this);
-		},
-
-		update : function(){
-
-			// update matrices
-			this.matrix_ProjectionViewModel.multiply(this.matrix_ProjectionView, this.matrix_Model);
-			this.matrix_ViewModel.multiply(this.matrix_View, this.matrix_Model);
-			this.matrix_Normal.transposeInverse4(this.matrix_ViewModel);
-		},
-
-
-		setMode : function(mode){
-			if(mode!=this.mode){
-				for(var index in this.renderables){
-					this.renderables[index].setMode(mode);
-				}
-				this.mode = mode;
-
-				// refresh
-				scene.render();
-			}
-		},
-		
-
-		dispose : function(){
-			if(this.isInitialized){
-				for(var index in this.renderables){
-					renderables[index].setMode(modeIndex);
-				}
-			}
-			this.isDisposed = true;
-		}
-}
-
-
 /**
  * WebGL Surface object. Sub-part of a shape
  * a model must be defined
  * an instance must be defined
  */
-function WebGL_ShapeInstanceRenderable(instance, index, styles){
+function WebGL_ShapeInstance(objectInstance, index, styles){
 
-	// instance
-	this.id = instance.id+'-'+index;
-
-	// instance
-	this.instance = instance;
+	// keep tracking of wrapping object instance
+	this.objectInstance = objectInstance;
+	
+	// build id
+	this.id = objectInstance.id+'-'+index;
 
 	// index
 	this.index = index;
@@ -154,14 +24,31 @@ function WebGL_ShapeInstanceRenderable(instance, index, styles){
 }
 
 
-WebGL_ShapeInstanceRenderable.prototype = {
+WebGL_ShapeInstance.prototype = {
 
-		update : function(){
+		render : function(matrixStack, program){
+			
+			// try to initialize if not already done
 			if(!this.isInitialized){
-				if(this.instance.model.isInitialized){
-					this.model = this.instance.model.renderables[this.index];
+				if(this.objectInstance.model.isInitialized){
+					this.model = this.objectInstance.model.shapes[this.index];
 					this.isInitialized = true;
 				}
+			}
+			
+			// render if OK
+			if(this.isInitialized){
+				var that = this;
+				
+				// bind vertex attributes
+				program.bindVertexAttributes(this.model);
+				
+				// update matrixStack.instanceAffine
+				this.objectInstance.pattern(matrixStack.instanceAffine, function(){
+		
+					// bind model elements
+					that.model.render(matrixStack, program);
+				});		
 			}
 		},
 
@@ -188,56 +75,3 @@ WebGL_ShapeInstanceRenderable.prototype = {
 			}
 		}
 };
-
-
-
-
-function WebGL_ShapeInstances(scene){
-
-	// keep reference of scene
-	this.chain = new Chain();
-	
-	this.scene = scene;
-}
-
-
-WebGL_ShapeInstances.prototype = {
-
-		/**
-		 * update all instances
-		 */
-		update : function(){
-			this.chain.crawl(function(instance){
-				instance.update();
-			});
-		},
-		
-		
-		push(instance){
-			this.chain.append(instance.id, instance);
-		},
-
-		/**
-		 * get shape
-		 */
-		get : function(id){
-			var instance = this.chain.get(id);
-
-			// if shape is not present, we create it
-			if(instance==undefined){
-				instance = new WebGL_ShapeInstance(id, this.scene);	
-				this.chain.append(id, instance);
-			}
-			return instance;
-		},
-
-		remove : function(id){
-			this.chain.remove(id);
-		},
-
-		clear : function(){
-			//TODO
-		}
-
-};
-

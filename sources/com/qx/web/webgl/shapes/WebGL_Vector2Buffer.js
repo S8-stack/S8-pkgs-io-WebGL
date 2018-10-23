@@ -63,7 +63,7 @@ WebGL_Vector2Buffer.prototype = {
 		/**
 		 * Bind the buffer for rendering
 		 */
-		bind : function(location, offset) {
+		bind : function(location) {
 
 			// bind buffer
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferHandle);

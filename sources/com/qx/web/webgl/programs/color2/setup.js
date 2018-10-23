@@ -17,44 +17,44 @@ program.initialize = function(){
 };
 
 
+program.bindSettings = function(){
 
-
-program.bind = function(view, environment){
 	// enable location
 	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
 };
 
-program.unbind = function(){
-	// disable location
-	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
+
+program.bindView = function(view){
 };
 
-program.loadStyle = function(style){
 
+program.bindEnvironment = function(environment){
+};
+
+
+program.bindStyle = function(style){
 	// material
 	gl.uniform4fv(this.loc_Uniform_color, style.color);
 };
 
 
+program.bindVertexAttributes = function(model){
+	model.vertices.bind(this.loc_Attribute_vertex);
+};
 
-program.render = function(shape){
-	
-	
-	/*
-	 * bind shape
-	 */
-	
-	// matrices
-	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, shape.instance.matrix_ProjectionViewModel.c);
-	
-	// attributes
-	shape.model.vertices.bind(this.loc_Attribute_vertex);
-	
-	// bind model elements
-	shape.model.elements.render();
-	
-	/* unbind attributes */
-	shape.model.vertices.unbind(this.loc_Attribute_vertex);
-	
+
+program.bindMatrixStack = function(stack){
+	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, stack.matrix_ProjectionViewModel.c);
+};
+
+
+program.unbindVertexAttributes = function(model){
+	model.vertices.unbind(this.loc_Attribute_vertex);
+};
+
+
+program.unbindSettings = function(){
+	// disable location
+	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
 };
 

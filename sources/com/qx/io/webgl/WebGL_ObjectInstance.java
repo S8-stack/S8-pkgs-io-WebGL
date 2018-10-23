@@ -2,26 +2,24 @@ package com.qx.io.webgl;
 
 import java.io.IOException;
 
-import com.qx.maths.affine.Affine3d;
-import com.qx.maths.matrix.SquareMatrix3d;
-import com.qx.maths.vector.Vector3d;
+import com.qx.maths.affine.MathAffine3d;
 
 /**
  * Can only be created with factory include in the class as inner class
  * @author Pierre Convert
  *
  */
-public class WebGL_ShapeInstance {
+public class WebGL_ObjectInstance {
 
 	public final static int NB_MODES = 8;
 
-	private Affine3d position;
+	private MathAffine3d position;
 
-	private WebGL_ShapeModel model;
+	private WebGL_ObjectModel model;
 
 	private String[][] styles;
 
-	public WebGL_ShapeInstance(Affine3d position, WebGL_ShapeModel model) {
+	public WebGL_ObjectInstance(MathAffine3d position, WebGL_ObjectModel model) {
 		super();
 		this.position = position;
 		this.model = model;
@@ -42,7 +40,7 @@ public class WebGL_ShapeInstance {
 
 		StringBuilder builder = new StringBuilder();
 		// position
-		builder.append("var position =");
+		builder.append("var positionCoefficients =");
 		write(builder, position);
 		builder.append(";\n");
 
@@ -76,35 +74,13 @@ public class WebGL_ShapeInstance {
 	 * @param affine
 	 * @throws IOException 
 	 */
-	public static void write(StringBuilder builder, Affine3d affine) throws IOException{
-		double[] coefficients = new double[16];
+	public static void write(StringBuilder builder, MathAffine3d affine) throws IOException{
+		double[] coefficients = new double[12];
 
-		SquareMatrix3d matrix = affine.getMatrix();
-
-		coefficients[0] = matrix.get(0, 0);
-		coefficients[1] = matrix.get(1, 0);
-		coefficients[2] = matrix.get(2, 0);
-		coefficients[3] = 0.0;
-
-		coefficients[4] = matrix.get(0, 1);
-		coefficients[5] = matrix.get(1, 1);
-		coefficients[6] = matrix.get(2, 1);
-		coefficients[7] = 0.0;
-
-		coefficients[8] = matrix.get(0, 2);
-		coefficients[9] = matrix.get(1, 2);
-		coefficients[10] = matrix.get(2, 2);
-		coefficients[11] = 0.0;
-
-		Vector3d vector = affine.getOrigin();
-
-		coefficients[12] = vector.get(0);
-		coefficients[13] = vector.get(1);
-		coefficients[14] = vector.get(2);
-		coefficients[15] = 1.0;
+		affine.getCoefficient(coefficients, 0);
 
 		builder.append("[");
-		for(int i=0; i<16; i++){
+		for(int i=0; i<12; i++){
 			if(i>0){
 				builder.append(",");
 			}

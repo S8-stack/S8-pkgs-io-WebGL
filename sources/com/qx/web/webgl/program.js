@@ -60,21 +60,28 @@ WebGL_Program.prototype = {
 		/*
 		 * render the styles and shapes
 		 */
-		draw : function(view, environment){
+		render : function(view, environment, matrixStack){
 			if(this.isInitialized){
+				
 				// bind shader program
 				gl.useProgram(this.handle);
 				
+				// setup settings
+				this.bindSettings();
+				
+				// use view if necessary
+				this.bindView(view);
+				
 				// load context uniforms
-				this.bind(view, environment);
+				this.bindEnvironment(environment);
 			
 				// render renderables
 				for(var i in this.displayList){
-					this.displayList[i].draw(this);
+					this.displayList[i].render(matrixStack, this);
 				}
 				
 				// reset to default
-				this.unbind();
+				this.unbindSettings();
 				
 				// unbind program
 				//gl.useProgram(0);
@@ -183,10 +190,10 @@ WebGL_Programs.prototype = {
 		this.programs = this.programs.sort(function(a, b){ return a.pass-b.pass; });
 	},
 	
-	draw : function(view, environment){
+	render : function(view, environment, matrixStack){
 		// render the programs -> styles -> shapes
 		for(var i in this.programs){
-			this.programs[i].draw(view, environment);
+			this.programs[i].render(view, environment, matrixStack);
 		}
 	},
 	

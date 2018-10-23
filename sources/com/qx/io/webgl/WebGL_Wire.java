@@ -5,8 +5,8 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.qx.maths.affine.Affine3d;
-import com.qx.maths.vector.Vector3d;
+import com.qx.maths.affine.MathAffine3d;
+import com.qx.maths.vector.MathVector3d;
 
 public class WebGL_Wire extends WebGL_RenderingUnit {
 
@@ -38,7 +38,7 @@ public class WebGL_Wire extends WebGL_RenderingUnit {
 	 * @param basis3d
 	 * @return
 	 */
-	public void add(Affine3d affine, WebGL_Wire wire){
+	public void add(MathAffine3d affine, WebGL_Wire wire){
 
 		// affine
 		setAffine(affine);
@@ -47,7 +47,7 @@ public class WebGL_Wire extends WebGL_RenderingUnit {
 		startPatch();
 
 		// vertices attributes
-		for(Vector3d vertex : wire.getVertices()){
+		for(MathVector3d vertex : wire.getVertices()){
 			addVertex(vertex);
 		}
 
@@ -87,8 +87,8 @@ public class WebGL_Wire extends WebGL_RenderingUnit {
 		
 		@Override
 		public String[] getDefaultModeStyles(){
-			String[] modes = new String[WebGL_ShapeInstance.NB_MODES];
-			for(int i=0; i<WebGL_ShapeInstance.NB_MODES; i++){
+			String[] modes = new String[WebGL_ObjectInstance.NB_MODES];
+			for(int i=0; i<WebGL_ObjectInstance.NB_MODES; i++){
 				modes[i] = "darkWire";
 			}
 			return modes;
