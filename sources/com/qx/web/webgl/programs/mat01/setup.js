@@ -8,16 +8,15 @@ program.initialize = function(){
 	this.nbLights = 8;
 	
 	// lights
-	this.loc_Uniform_lights_ambient = new Array(this.nbLights);
-	this.loc_Uniform_lights_diffuse = new Array(this.nbLights);
-	this.loc_Uniform_lights_specular = new Array(this.nbLights);
-	this.loc_Uniform_lights_direction = new Array(this.nbLights);
+	this.lightHandles = new Array(this.nbLights);
 	
 	for(var i=0; i<this.nbLights; i++){
-		this.loc_Uniform_lights_ambient[i] = gl.getUniformLocation(this.handle, "lights["+i+"].ambient");
-		this.loc_Uniform_lights_diffuse[i] = gl.getUniformLocation(this.handle, "lights["+i+"].diffuse");
-		this.loc_Uniform_lights_specular[i] = gl.getUniformLocation(this.handle, "lights["+i+"].specular");
-		this.loc_Uniform_lights_direction[i] = gl.getUniformLocation(this.handle, "lights["+i+"].direction");
+		var handle = {};
+		handle.loc_Uniform_light_ambient = gl.getUniformLocation(this.handle, "lights["+i+"].ambient");
+		handle.loc_Uniform_light_diffuse = gl.getUniformLocation(this.handle, "lights["+i+"].diffuse");
+		handle.loc_Uniform_light_specular = gl.getUniformLocation(this.handle, "lights["+i+"].specular");
+		handle.loc_Uniform_light_direction = gl.getUniformLocation(this.handle, "lights["+i+"].direction");
+		this.lightHandles[i] = handle;
 	}
 	
 	
@@ -52,11 +51,7 @@ program.bindEnvironment = function(environment){
 	
 	var light;
 	for(var i=0; i<this.nbLights; i++){
-		light = environment.lights[i];
-		gl.uniform4fv(this.loc_Uniform_lights_ambient[i], light.ambient);
-		gl.uniform4fv(this.loc_Uniform_lights_diffuse[i], light.diffuse);
-		gl.uniform4fv(this.loc_Uniform_lights_specular[i], light.specular);
-		gl.uniform3fv(this.loc_Uniform_lights_direction[i], light.direction);	
+		environment.lights[i].bind(this.lightHandles[i]);
 	}
 };
 

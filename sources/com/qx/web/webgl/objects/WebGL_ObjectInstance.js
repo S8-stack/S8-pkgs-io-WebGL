@@ -4,7 +4,7 @@
 /**
  *
  */
-function WebGL_ObjectInstance(id, scene, define){
+function WebGL_ObjectInstance(id, scene){
 
 	// id
 	this.id = id;
@@ -19,40 +19,6 @@ function WebGL_ObjectInstance(id, scene, define){
 	this.pattern = function(targetMatrix, callback){
 		targetMatrix.origin();
 		callback();
-	}
-
-
-	// TODO : update picking
-	//this.picking.updatePickingColors();
-
-	// server-side definition
-	if(define==undefined){
-		var instance = this;
-		ctx.request("webGL.getObjectInstance:id="+instance.id, function (response){
-
-			if(!instance.isDisposed){
-				
-				eval(response.responseText);
-				
-				
-				/*
-				 * eval must define:
-				 * var modelId
-				 * var position (float[16])
-				 * var styles (String[8][nbRenderables])
-				 * 
-				 */
-				
-				// single position pattern
-				instance.pattern = createSinglePattern(positionCoefficients);
-
-				instance.setup(modelId, styles);
-			}
-		});	
-	}
-	// client-side definition
-	else{
-		define(this);
 	}
 }
 
@@ -69,10 +35,37 @@ function createSinglePattern(positionCoefficients){
 
 WebGL_ObjectInstance.prototype = {
 		
-		setup : function(modelId, styles){
+		
+		load : function(){
+			var instance = this;
+			ctx.request("webGL.getObjectInstance:id="+instance.id, function (response){
+
+				if(!instance.isDisposed){
+					
+					eval(response.responseText);
+					
+					/*
+					 * eval must define:
+					 * var modelId
+					 * var position (float[16])
+					 * var styles (String[8][nbRenderables])
+					 * 
+					 */
+					
+					// single position pattern
+					instance.pattern = createSinglePattern(positionCoefficients);
+
+					// build model
+					instance.model = scene.objectModels.get(modelId);
+					
+					// set styles
+					instance.setStyles(styles);
+				}
+			});
+		},
+		
+		setStyles : function(styles){
 			
-			// build model
-			this.model = scene.objectModels.get(modelId);
 
 			// build renderables
 			this.shapeInstances = new Array();
@@ -150,7 +143,8 @@ WebGL_ObjectInstances.prototype = {
 
 			// if shape is not present, we create it
 			if(instance==undefined){
-				instance = new WebGL_ObjectInstance(id, this.scene);	
+				instance = new WebGL_ObjectInstance(id, this.scene);
+				instance.load();
 				this.chain.append(id, instance);
 			}
 			return instance;

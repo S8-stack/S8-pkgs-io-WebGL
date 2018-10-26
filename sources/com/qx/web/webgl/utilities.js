@@ -11,5 +11,3 @@ function rgb(r, g, b){
 function rgba(r, g, b, a){
 	return [r, g, b, a];
 };
-
-

@@ -29,7 +29,7 @@ function WebGL_Scene(){
 	//OpenGL initialization
 
 	//gl.clearColor(0.5, 0.5, 0.8, 1.0);
-	gl.clearColor(1.0, 1.0, 1.0, 1.0);
+	this.environment.setBackgroundColor();
 	gl.clearStencil(128);
 
 	//Set-up canvas parameters
