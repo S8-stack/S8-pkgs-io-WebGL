@@ -2,7 +2,7 @@
 /**
  * 
  */
-function CAD3d_Segment(affine, z0, z1){
+function CAD3d_Extrude(affine, z0, z1){
 	this.affine = affine;
 	this.z0 = z0;
 	this.z1 = z1;
@@ -10,8 +10,10 @@ function CAD3d_Segment(affine, z0, z1){
 }
 
 
-CAD3d_Segment.prototype = {
+CAD3d_Extrude.prototype = {
 
+		constructor : CAD3d_Extrude,
+		
 		isClosed : false,
 
 		nbSections : 2,

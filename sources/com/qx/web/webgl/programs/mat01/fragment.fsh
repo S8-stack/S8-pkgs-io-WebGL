@@ -9,7 +9,7 @@ struct Light {
 	vec3 direction;
 };
 
-uniform Light lights[2];
+uniform Light lights[8];
 
 
 struct Material {
@@ -30,7 +30,7 @@ void main() {
 	vec3 N,E,R;
 	vec4 final_color = vec4(0.0, 0.0, 0.0, 1.0);
 
-	for(int i=0; i<2; i++){
+	for(int i=0; i<8; i++){
 
 		final_color += lights[i].ambient * material.ambient;
 		

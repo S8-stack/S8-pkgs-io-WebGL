@@ -5,7 +5,7 @@
  * @param affine2d : MathAffine2 position of sketch origin within the swept plane of the revolution
  * 
  */
-function CAD3d_Arc(affine3d, affine2d, theta0, theta1){
+function CAD3d_Revolve(affine3d, affine2d, theta0, theta1){
 	this.affine3d = affine3d;
 	this.affine2d = affine2d;
 
@@ -18,9 +18,9 @@ function CAD3d_Arc(affine3d, affine2d, theta0, theta1){
 }
 
 
-CAD3d_Arc.prototype = {
+CAD3d_Revolve.prototype = {
 
-		constructor : CAD3d_Arc,
+		constructor : CAD3d_Revolve,
 	
 		evaluateAffine : function(theta, result){
 			this.affine3d

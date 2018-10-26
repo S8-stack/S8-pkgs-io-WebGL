@@ -5,7 +5,7 @@
 function WebGL_ShapeModel(){
 	
 	// identity pattern
-	this.pattern = function(targetMatrix, callback){
+	this.position = function(targetMatrix, callback){
 		targetMatrix.origin();
 		callback();
 	}
@@ -24,7 +24,7 @@ WebGL_ShapeModel.prototype = {
 		
 		render : function(matrixStack, program){
 			var that = this;
-			this.pattern(matrixStack.modelAffine, function(){
+			this.position(matrixStack.modelAffine, function(){
 
 				// update Model
 				matrixStack.compute();
@@ -34,6 +34,20 @@ WebGL_ShapeModel.prototype = {
 
 				// render
 				that.elements.render();
+			});
+		},
+		
+		pattern : function(patternFunction, result){
+			
+			var nbInstances = patternFunction.nbInstances;
+			var nbVertices = this.getNumberOfVertices();
+			result.expand(nbInstances*nbVertices, nbInstances*this.getNumberOfElements());
+			var affine = new MathAffine3();
+			var offset = 0;
+			var that = this;
+			patternFunction(affine, function(){
+				that.transform(affine, result, offset);
+				offset+=nbVertices;
 			});
 		}
 };
@@ -63,6 +77,8 @@ WebGL_Wire.prototype = {
 		getNumberOfElements : WebGL_ShapeModel.prototype.getNumberOfElements,
 		
 		render : WebGL_ShapeModel.prototype.render,
+		
+		pattern : WebGL_ShapeModel.prototype.pattern,
 		
 		expand : function(nbVertices, nbElements){
 			this.vertices.expand(nbVertices);
@@ -116,6 +132,8 @@ WebGL_Surface.prototype = {
 		
 		render : WebGL_ShapeModel.prototype.render,
 
+		pattern : WebGL_ShapeModel.prototype.pattern,
+		
 		expand : function(nbVertices, nbElements){
 			this.vertices.expand(nbVertices);
 			this.normals.expand(nbVertices);

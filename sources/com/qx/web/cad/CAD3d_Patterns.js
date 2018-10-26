@@ -6,8 +6,8 @@ CAD3d_Patterns.pattern_XY = function(affine, nx, xPitch, ny, yPitch){
 
 	var itemAffine = new MathAffine3();
 	affine.copy(itemAffine);
-	
-	return function(targetMatrix, callback){
+
+	var func = function(targetMatrix, callback){
 		affine.vector.copy(itemAffine.vector);
 		for(var ix=0; ix<nx; ix++){
 			for(var iy=0; iy<ny; iy++){
@@ -16,8 +16,10 @@ CAD3d_Patterns.pattern_XY = function(affine, nx, xPitch, ny, yPitch){
 				itemAffine.copy(targetMatrix);
 				callback();
 			}
-		}	
+		}
 	};
 	
+	func.nbInstances = nx*ny;
 	
+	return func;
 }
