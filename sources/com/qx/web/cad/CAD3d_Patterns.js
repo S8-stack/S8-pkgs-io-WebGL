@@ -18,8 +18,17 @@ CAD3d_Patterns.pattern_XY = function(affine, nx, xPitch, ny, yPitch){
 			}
 		}
 	};
-	
+
 	func.nbInstances = nx*ny;
-	
+
+	return func;
+}
+
+CAD3d_Patterns.single = function(affine){
+	var func = function(targetMatrix, callback){
+		affine.copy(targetMatrix);
+		callback();
+	};
+	func.nbInstances = 1;
 	return func;
 }

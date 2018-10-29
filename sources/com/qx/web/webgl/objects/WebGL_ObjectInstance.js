@@ -16,10 +16,7 @@ function WebGL_ObjectInstance(id, scene){
 	this.isDisposed = false;
 
 	// identity pattern
-	this.pattern = function(targetMatrix, callback){
-		targetMatrix.origin();
-		callback();
-	}
+	this.pattern = CAD3d_Patterns.single(new MathAffine3());
 }
 
 // single position pattern
