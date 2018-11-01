@@ -2,12 +2,36 @@
 /**
  * 
  */
-function CAD2d_Arc(affine, r, theta0=0.0, theta1=2.0*Math.PI){
+function CAD2d_Arc(affine, r, theta0, theta1, n){
 	this.affine = affine;
 	this.r = r;
 	this.theta0 = theta0;
 	this.theta1 = theta1;
-	this.isTesselated = false;
+	this.isClosed = Math.abs(this.theta1-this.theta0-2.0*Math.PI)<1e-6;
+	
+	// <tesselate>
+	//var n = Math.ceil((this.theta1-this.theta0)/(2.0*Math.PI)*settings.n);
+	var dTheta = (this.theta1-this.theta0)/n;
+	this.nbVertices=this.isClosed?n:(n+1);
+
+	this.vertices = new Array(this.nbVertices);
+	this.normals = new Array(this.nbVertices);
+
+	var vertex, normal;
+	for(var i=0; i<this.nbVertices; i++){
+		theta = this.theta0+i*dTheta;
+
+		// vertex
+		vertex = new MathVector2();
+		this.evaluateVertex(theta, vertex);
+		this.vertices[i]=vertex;
+
+		// normal
+		normal = new MathVector2();
+		this.evaluateNormal(theta, normal);
+		this.normals[i]=normal;
+	}
+	// </tesselate>
 }
 
 
@@ -39,45 +63,13 @@ CAD2d_Arc.prototype = {
 			this.evaluateVertex(this.theta1, result);
 		},
 
-		tesselate : function(settings){
-			if(!this.isTesselated){
-				this.isClosed = Math.abs(this.theta1-this.theta0-2.0*Math.PI)<1e-6;
+		draw : function(affine, wire, shift){
 
-				var n = Math.ceil((this.theta1-this.theta0)/(2.0*Math.PI)*settings.n);
-				var dTheta = (this.theta1-this.theta0)/n;
-				this.nbVertices=this.isClosed?n:(n+1);
-
-				this.vertices = new Array(this.nbVertices);
-				this.normals = new Array(this.nbVertices);
-
-				var vertex, normal;
-				for(var i=0; i<this.nbVertices; i++){
-					theta = this.theta0+i*dTheta;
-
-					// vertex
-					vertex = new MathVector2();
-					this.evaluateVertex(theta, vertex);
-					this.vertices[i]=vertex;
-
-					// normal
-					normal = new MathVector2();
-					this.evaluateNormal(theta, normal);
-					this.normals[i]=normal;
-				}
-				this.isTesselated = true;
-			}
-		},
-
-
-		draw : function(affine, wire, settings){
-
-			this.tesselate(settings);
 
 			// vertices
 			var vertices = wire.vertices;
 			var offset = vertices.getNumberOfVectors();
 			var vertex;
-			var shift = settings.shift;
 			vertices.expand(this.nbVertices);
 			for(var i=0; i<this.nbVertices; i++){
 				vertex = new MathVector3();
@@ -98,9 +90,7 @@ CAD2d_Arc.prototype = {
 		},
 
 
-		extrude : function(affine, z0, z1, surface, wire, settings, isEndEnabled){
-
-			this.tesselate(settings);
+		extrude : function(affine, z0, z1, surface, wire, isEndEnabled, shift){
 
 			// <surface>
 
@@ -150,7 +140,6 @@ CAD2d_Arc.prototype = {
 
 			// <wire>
 
-			var shift = settings.shift;
 
 			// <start-wire>
 			var point0 = new CAD2d_Point();
@@ -169,7 +158,7 @@ CAD2d_Arc.prototype = {
 			// </wire>
 		},
 
-		revolve : function(affine3, affine2, theta0, theta1, surface, wire, settings){
+		revolve : function(affine3, affine2, theta0, theta1, surface, wire, shift){
 
 
 			var isFullyRevolved = Math.abs(this.theta1-this.theta0-2.0*Math.PI)<1e-6;
@@ -234,7 +223,6 @@ CAD2d_Arc.prototype = {
 		
 			// <wire>
 			if(!this.isClosed){
-				var shift = settings.shift;
 
 				// <start-wire>
 				var point0 = new CAD2d_Point();

@@ -11,15 +11,15 @@
  *  Potential attributes are: vertex, normal, uTangent, vTangent, texCoord, color
  *  
  */
-function WebGL_ObjectModel(id){
-	this.id = id;
+function WebGL_ObjectModel(){
 	this.isInitialized = false;
 }
 
 
 WebGL_ObjectModel.prototype = {
 	
-	load : function(settings){
+	load : function(id){
+		this.id = id;
 		var model = this;
 		ctx.request("webGL.getObjectModel:id="+this.id, function (response){
 			
@@ -52,8 +52,6 @@ function WebGL_ObjectModels(grahicSettings){
 	
 	// map for model storage
 	this.map = new Map();
-	
-	this.graphicSettings = new WebGL_GraphicSettings();
 }
 
 
@@ -71,8 +69,8 @@ WebGL_ObjectModels.prototype = {
 		
 		// if shape is not present, we create it
 		if(objectModel==undefined){
-			objectModel = new WebGL_ObjectModel(id);	
-			objectModel.load(this.graphicSettings);
+			objectModel = new WebGL_ObjectModel();	
+			objectModel.load(id);
 			this.map.set(id, objectModel);
 		}
 		return objectModel;

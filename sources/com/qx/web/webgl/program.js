@@ -60,7 +60,7 @@ WebGL_Program.prototype = {
 		/*
 		 * render the styles and shapes
 		 */
-		render : function(view, environment, matrixStack){
+		render : function(view, environment, matrixStack, lod){
 			if(this.isInitialized){
 				
 				// bind shader program
@@ -77,7 +77,7 @@ WebGL_Program.prototype = {
 			
 				// render renderables
 				for(var i in this.displayList){
-					this.displayList[i].render(matrixStack, this);
+					this.displayList[i].render(matrixStack, this, lod);
 				}
 				
 				// reset to default
@@ -190,10 +190,10 @@ WebGL_Programs.prototype = {
 		this.programs = this.programs.sort(function(a, b){ return a.pass-b.pass; });
 	},
 	
-	render : function(view, environment, matrixStack){
+	render : function(view, environment, matrixStack, lod){
 		// render the programs -> styles -> shapes
 		for(var i in this.programs){
-			this.programs[i].render(view, environment, matrixStack);
+			this.programs[i].render(view, environment, matrixStack, lod);
 		}
 	},
 	

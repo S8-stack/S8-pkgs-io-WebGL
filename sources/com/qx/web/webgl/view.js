@@ -40,18 +40,19 @@ function WebGL_View(scene){
 	this.matrix_ProjectionView.multiply(this.matrix_Projection, this.matrix_View);
 
 	
-	var _this = this;
+	var that = this;
 	
 	//register event listener to take control of the canvas
-	canvas.addEventListener('mousedown', function(event) { _this.handleMouseDown(event);}, false);
-	document.addEventListener('mousemove', function(event){ _this.handleMouseMove(event);}, false);
+	canvas.addEventListener('mousedown', function(event) { that.handleMouseDown(event);}, false);
+	document.addEventListener('mousemove', function(event){ that.handleMouseMove(event);}, false);
+	document.addEventListener('mousemoveend', function(event){ that.handleMouseMoveEnd(event);}, false);
 
 	//to allow mouse movement ending outside of the canvas
-	document.addEventListener('mouseup', function(event) { _this.handleMouseUp(event);}, false);
-	document.addEventListener('mousewheel', function(event) { _this.handleMouseWheel(event);}, false);
+	document.addEventListener('mouseup', function(event) { that.handleMouseUp(event);}, false);
+	document.addEventListener('mousewheel', function(event) { that.handleMouseWheel(event);}, false);
 
-	document.addEventListener('keyup', function(event) { _this.handleKeyUp(event);}, false);
-	document.addEventListener('keydown', function(event) { _this.handleKeyDown(event);}, false);
+	document.addEventListener('keyup', function(event) { that.handleKeyUp(event);}, false);
+	document.addEventListener('keydown', function(event) { that.handleKeyDown(event);}, false);
 }
 
 
@@ -65,7 +66,7 @@ WebGL_View.prototype = {
 			this.lastMouseX = event.clientX;
 			this.lastMouseY = event.clientY;
 
-			this.scene.render();
+			this.scene.render(0);
 		},
 
 
@@ -73,7 +74,7 @@ WebGL_View.prototype = {
 		handleMouseUp : function(event){
 			this.mouseDown = false;
 
-			this.scene.render();
+			this.scene.render(0);
 		},
 
 
@@ -99,8 +100,13 @@ WebGL_View.prototype = {
 
 				//this.updateView();
 
-				this.scene.render();
+				this.scene.render(1);
 			}
+		},
+		
+		/** called on mouse move @param event */
+		handleMouseMoveEnd : function(event) {
+			this.scene.render(0);
 		},
 
 		handleMouseWheel : function(event) {
@@ -110,7 +116,7 @@ WebGL_View.prototype = {
 			}
 			//this.updateView();
 
-			this.scene.render();
+			this.scene.render(1);
 		},
 
 
@@ -140,7 +146,7 @@ WebGL_View.prototype = {
 
 			}
 
-			this.scene.render();
+			this.scene.render(1);
 		},
 
 		handleKeyUp : function(event) {
@@ -197,24 +203,15 @@ function WebGL_MatrixStack(view){
 	// model matrix
 	this.matrix_Model = new WebGL_Matrix4();
 	
-	// affine for the WebGL_ObjectInstance
-	this.instanceAffine = new MathAffine3();
-	
-	// affine for WebGL_ObjectShape
-	this.modelAffine = new MathAffine3();
-	
-	// affine for WebGL_ObjectShape
-	this.instanceModelAffine = new MathAffine3();
-	
 }
 
 WebGL_MatrixStack.prototype = {
 		
-		compute : function(){
+		setModel : function(modelAffine){
+			// update model
+			this.matrix_Model.setAffine(modelAffine);
 			
-			this.instanceAffine.multiply(this.modelAffine, this.instanceModelAffine);
-			this.matrix_Model.setAffine(this.instanceModelAffine);
-			
+			// re-compute everything...
 			this.matrix_ProjectionViewModel.multiply(this.matrix_ProjectionView, this.matrix_Model);
 			this.matrix_ViewModel.multiply(this.matrix_View, this.matrix_Model);
 			this.matrix_Normal.transposeInverse4(this.matrix_ViewModel);

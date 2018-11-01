@@ -11,23 +11,19 @@ CAD3d_Curve.prototype = {
 
 		
 		
-		sweepLoop : function(loop, surface, wire, settings){
-			this.tesselate(settings);
+		sweepLoop : function(loop, surface, wire, shift){
 
 			var nbCurves = loop.curves.length;
 			for(var i in loop.curves){
-				this.sweepCurve(loop.curves[i], surface, wire, settings, loop.isClosed && i==nbCurves-1);
+				this.sweepCurve(loop.curves[i], surface, wire, loop.isClosed && i==nbCurves-1, shift);
 			}
 			
-			loop.draw(this.affines[0], wire, settings);
-			loop.draw(this.affines[this.affines.length-1], wire, settings);
+			loop.draw(this.affines[0], wire, shift);
+			loop.draw(this.affines[this.affines.length-1], wire, shift);
 			
 		},
 		
-		sweepCurve : function(curve, surface, wire, settings, isEndEnabled){
-
-			this.tesselate(settings);
-			curve.tesselate(settings);
+		sweepCurve : function(curve, surface, wire, isEndEnabled, shift){
 
 			// <surface>
 			var vertices = surface.vertices;
@@ -91,13 +87,12 @@ CAD3d_Curve.prototype = {
 			// </surface>
 
 			// <wire>
-			if(!this.isClosed){
-				var shift = settings.shift;
+			if(!curve.isClosed){
 
 				// <start-wire>
 				var point0 = new MathVector2();
 				curve.vertices[0].integrate(curve.normals[0], shift, point0);
-				this.sweepPoint(point0, wire, settings);
+				this.sweepPoint(point0, wire);
 				// </start-wire>
 
 				// <end-wire>
@@ -105,7 +100,7 @@ CAD3d_Curve.prototype = {
 					var point1 = new MathVector2();
 					var p = this.nbVertices-1;
 					this.vertices[p].integrate(this.normals[p], shift, point1);
-					this.sweepPoint(point1, wire, settings);
+					this.sweepPoint(point1, wire);
 				}
 				// </end-wire>	
 			}
@@ -114,9 +109,7 @@ CAD3d_Curve.prototype = {
 		},
 
 
-		sweepPoint : function(point, wire, settings){
-
-			this.tesselate(settings);
+		sweepPoint : function(point, wire){
 
 			// <surface>
 			var vertices = wire.vertices;

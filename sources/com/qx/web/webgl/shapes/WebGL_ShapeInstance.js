@@ -9,7 +9,7 @@ function WebGL_ShapeInstance(objectInstance, index, styles){
 
 	// keep tracking of wrapping object instance
 	this.objectInstance = objectInstance;
-	
+
 	// build id
 	this.id = objectInstance.id+'-'+index;
 
@@ -21,34 +21,26 @@ function WebGL_ShapeInstance(objectInstance, index, styles){
 
 	// mode styles
 	this.styles = styles;
+
+	// level of detail
+	this.renderables  = null;
 }
 
 
 WebGL_ShapeInstance.prototype = {
 
-		render : function(matrixStack, program){
-			
+		render : function(matrixStack, program, lod){
+
 			// try to initialize if not already done
-			if(!this.isInitialized){
-				if(this.objectInstance.model.isInitialized){
-					this.model = this.objectInstance.model.shapes[this.index];
-					this.isInitialized = true;
-				}
+			if(!this.isInitialized && this.objectInstance.model.isInitialized){
+				var shapeModel = this.objectInstance.model.shapes[this.index];
+				this.renderables = shapeModel.createRenderables(this.objectInstance.affines);
+				this.isInitialized = true;
 			}
-			
-			// render if OK
+
+			// render according to lod (level of details) if OK
 			if(this.isInitialized){
-				var that = this;
-				
-				// bind vertex attributes
-				program.bindVertexAttributes(this.model);
-				
-				// update matrixStack.instanceAffine
-				this.objectInstance.pattern(matrixStack.instanceAffine, function(){
-		
-					// bind model elements
-					that.model.render(matrixStack, program);
-				});		
+				this.renderables[lod].render(matrixStack, program);
 			}
 		},
 

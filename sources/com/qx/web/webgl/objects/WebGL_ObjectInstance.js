@@ -16,7 +16,7 @@ function WebGL_ObjectInstance(id, scene){
 	this.isDisposed = false;
 
 	// identity pattern
-	this.pattern = CAD3d_Patterns.single(new MathAffine3());
+	this.affines = [new MathAffine3()];
 }
 
 // single position pattern
@@ -50,7 +50,7 @@ WebGL_ObjectInstance.prototype = {
 					 */
 					
 					// single position pattern
-					instance.pattern = createSinglePattern(positionCoefficients);
+					instance.affines[0].setCoefficients(positionCoefficients, 0);
 
 					// build model
 					instance.model = scene.objectModels.get(modelId);

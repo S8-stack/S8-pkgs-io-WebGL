@@ -13,11 +13,9 @@ CAD_Toolbox.segmentNormal = function(p0, p1){
 	 return normal;
 }
 
-CAD_Toolbox.fullyRevolvePoint = function(affine, wire, point, settings){
+CAD_Toolbox.fullyRevolvePoint = function(affine, wire, point, n){
 
 	if(Math.abs(point.y)>1e-12){
-
-		var n = settings.n;
 
 		var offset = wire.getNumberOfVertices();
 		var dTheta = 2.0*Math.PI/n;
@@ -50,12 +48,10 @@ CAD_Toolbox.fullyRevolvePoint = function(affine, wire, point, settings){
 };
 
 
-CAD_Toolbox.fullyRevolveSegment = function(affine, surface, p0, p1, settings){
+CAD_Toolbox.fullyRevolveSegment = function(affine, surface, p0, p1, n){
 	
 	// filter degenerated surfaces
 	if(Math.abs(p0.y)>1.0e-12 || Math.abs(p1.y)>1.0e-12){
-		
-		var n = settings.n;
 	
 		var vertices = surface.vertices;
 		var normals = surface.normals;

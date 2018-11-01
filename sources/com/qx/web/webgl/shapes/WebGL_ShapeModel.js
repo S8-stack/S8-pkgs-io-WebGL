@@ -3,168 +3,77 @@
  * WebGL Shape constructor, methods and utilities
  */
 function WebGL_ShapeModel(){
-	
-	// identity pattern
-	this.position = function(targetMatrix, callback){
-		targetMatrix.origin();
-		callback();
-	}
+
 }
 
 
 WebGL_ShapeModel.prototype = {
-		
-		getNumberOfVertices : function(){
-			return this.vertices.getNumberOfVectors();
-		},
-		
-		getNumberOfElements : function(){
-			return this.elements.getNumberOfElements();
-		},
-		
-		render : function(matrixStack, program){
-			var that = this;
-			this.position(matrixStack.modelAffine, function(){
 
-				// update Model
-				matrixStack.compute();
-				
-				// bind matrices
-				program.bindMatrixStack(matrixStack);
 
-				// render
-				that.elements.render();
-			});
+		/**
+		 * 
+		 */
+		createRenderables : function(instanceAffines){
+			var renderables = new Array(4);
+			for(var i=0; i<4; i++){
+				renderables[i] = this.meshes[i].createRenderable(instanceAffines);
+			}
+			return renderables;
 		},
 		
-		pattern : function(patternFunction, result){
-			
-			var nbInstances = patternFunction.nbInstances;
-			var nbVertices = this.getNumberOfVertices();
-			result.expand(nbInstances*nbVertices, nbInstances*this.getNumberOfElements());
-			var affine = new MathAffine3();
-			var offset = 0;
-			var that = this;
-			patternFunction(affine, function(){
-				that.transform(affine, result, offset);
-				offset+=nbVertices;
-			});
+		compile : function(){
+			for(var i=0; i<4; i++){
+				this.meshes[i].compile();
+			}
+		},
+
+		dispose : function(){
+			for(var i=0; i<4; i++){
+				this.meshes[i].dispose();
+			}
 		}
 };
+
+
+/**
+ * WebGL_WireModel
+ */
+function WebGL_WireModel(){
+	WebGL_ShapeModel.call();
+
+	// level of details
+	this.meshes = new Array(4);
+	for(var i=0; i<4; i++){
+		this.meshes[i] = new WebGL_WireMesh();
+	}
+}
+
+WebGL_WireModel.prototype = {
+		createRenderables : WebGL_ShapeModel.prototype.createRenderables,
+		compile : WebGL_ShapeModel.prototype.compile,
+		dispose : WebGL_ShapeModel.prototype.dispose
+};
+
 
 
 
 
 /**
- * WebGL Wire object. Sub-part of a shape
+ * WebGL_SurfaceModel
  */
-function WebGL_Wire(nbVertices=0, nbElements=0){
-	WebGL_ShapeModel.call(this);
+function WebGL_SurfaceModel(){
+	WebGL_ShapeModel.call();
 
-	// vertices
-	this.vertices = new WebGL_Vector3Buffer(nbVertices);
-
-	// elements
-	this.elements = new WebGL_SegmentBuffer(nbElements);
-
+	// level of details
+	this.meshes = new Array(4);
+	for(var i=0; i<4; i++){
+		this.meshes[i] = new WebGL_SurfaceMesh();
+	}
 }
 
-
-WebGL_Wire.prototype = {
-		
-		getNumberOfVertices : WebGL_ShapeModel.prototype.getNumberOfVertices,
-		
-		getNumberOfElements : WebGL_ShapeModel.prototype.getNumberOfElements,
-		
-		render : WebGL_ShapeModel.prototype.render,
-		
-		pattern : WebGL_ShapeModel.prototype.pattern,
-		
-		expand : function(nbVertices, nbElements){
-			this.vertices.expand(nbVertices);
-			this.elements.expand(nbElements);
-		},
-		
-		compile : function(){
-			this.vertices.compile();
-			this.elements.compile();
-		},
-
-		dispose : function(){
-			this.vertices.dispose();
-			this.elements.dispose();
-		},
-
-		transform : function(affine, target, offset){
-			this.vertices.transformVertices(affine, target.vertices);
-			this.elements.shift(offset, target.elements);
-		}
+WebGL_SurfaceModel.prototype = {
+		createRenderables : WebGL_ShapeModel.prototype.createRenderables,
+		compile : WebGL_ShapeModel.prototype.compile,
+		dispose : WebGL_ShapeModel.prototype.dispose
 };
-
-
-
-/**
- * WebGL Wire object. Sub-part of a shape
- */
-function WebGL_Surface(nbVertices=0, nbElements=0){
-	WebGL_ShapeModel.call(this);
-
-	// vertices
-	this.vertices = new WebGL_Vector3Buffer(nbVertices);
-
-	// normals
-	this.normals = new WebGL_Vector3Buffer(nbVertices);
-
-	// tex coords
-	this.texCoords = new WebGL_Vector2Buffer(nbVertices);
-
-	// elements
-	this.elements = new WebGL_TriangleBuffer(nbElements);
-
-}
-
-
-WebGL_Surface.prototype = {
-
-		getNumberOfVertices : WebGL_ShapeModel.prototype.getNumberOfVertices,
-		
-		getNumberOfElements : WebGL_ShapeModel.prototype.getNumberOfElements,
-		
-		render : WebGL_ShapeModel.prototype.render,
-
-		pattern : WebGL_ShapeModel.prototype.pattern,
-		
-		expand : function(nbVertices, nbElements){
-			this.vertices.expand(nbVertices);
-			this.normals.expand(nbVertices);
-			this.elements.expand(nbElements);
-		},
-		
-		getNumberOfVertices : function(){
-			return this.vertices.getNumberOfVectors();
-		},
-		
-		getNumberOfElements : function(){
-			return this.elements.getNumberOfElements();
-		},
-		
-		compile : function(){
-			this.vertices.compile();
-			this.normals.compile();
-			this.texCoords.compile();
-			this.elements.compile();
-		},
-
-		dispose : function(){
-			this.vertices.dispose();
-			this.segments.dispose();
-		},
-		
-		transform : function(affine, target, offset){
-			this.vertices.transformVertices(affine, target.vertices);
-			this.normals.transformNormals(affine, target.normals);
-			this.elements.shift(offset, target.elements);
-		}
-};
-
 

@@ -7,7 +7,7 @@
 function WebGL_GraphicSettings(){
 
 	// id
-	this.n = 40;
+	this.n = 24;
 	
 	this.shift = 0.0001;
 	

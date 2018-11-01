@@ -65,11 +65,16 @@ program.bindStyle = function(style){
 };
 
 
-program.bindVertexAttributes = function(model){
-	model.vertices.bind(this.loc_Attribute_vertex);
-	model.normals.bind(this.loc_Attribute_normal);
+program.bindVertexAttributes = function(renderable){
+	
+	// bind vertices
+	gl.bindBuffer(gl.ARRAY_BUFFER, renderable.vertexBufferHandle);
+	gl.vertexAttribPointer(this.loc_Attribute_vertex, 3, gl.FLOAT, false, 0, 0);
+	
+	// bind normals
+	gl.bindBuffer(gl.ARRAY_BUFFER, renderable.normalBufferHandle);
+	gl.vertexAttribPointer(this.loc_Attribute_normal, 3, gl.FLOAT, false, 0, 0);
 };
-
 
 program.bindMatrixStack = function(stack){
 	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, stack.matrix_ProjectionViewModel.c);

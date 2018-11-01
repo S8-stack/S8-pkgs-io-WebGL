@@ -2,9 +2,46 @@
 /**
  * 
  */
-function CAD2d_Segment(){
-	this.isTesselated = false;
+function CAD2d_Segment(/*MathVector2*/ point, /*MathVector2*/ vector, u0, u1){
+	this.point = point;
+	this.vector = vector;
+	this.u0 = u0;
+	this.u1 = u1;
+	
+	// <tesselate>
+	
+	// vertex 0
+	var vertex0 = new MathVector3();
+	this.evaluateVertex(this.u0, vertex0);
+
+	// normal 0
+	var normal0 = new MathVector3();
+	this.evaluateNormal(this.u0, normal0);
+
+	// vertex 1
+	var vertex1 = new MathVector3();
+	this.evaluateVertex(this.u1, vertex1);
+
+	// normal 1
+	var normal1 = new MathVector3();
+	this.evaluateNormal(this.u1, normal1);
+
+	this.vertices = [vertex0, vertex1];
+
+	this.normals = [normal0, normal1];
+	
+	// </tesselate>
 }
+
+
+CAD2d_Segment.createSegmentBetweenPoints = function(point0, point1){
+	this.vector = new MathVector2();
+	this.point = point0;
+	point1.substract(point0, this.vector);
+	this.u0 = 0.0;
+	this.u1 = this.vector.length();
+	return new CAD2d_Segment(point, vector, u0, u1);
+};
 
 
 CAD2d_Segment.prototype = {
@@ -12,24 +49,7 @@ CAD2d_Segment.prototype = {
 		isClosed : false,
 		
 		nbVertices : 2,
-
-		set : function(/*MathVector2*/ point, /*MathVector2*/ vector, u0, u1){
-			this.point = point;
-			this.vector = vector;
-			this.u0 = u0;
-			this.u1 = u1;
-		},
-
-
-		setPoints : function(point0, point1){
-			this.vector = new MathVector2();
-			this.point = point0;
-			point1.substract(point0, this.vector);
-			this.u0 = 0.0;
-			this.u1 = this.vector.length();
-			this.vector.normalize(this.vector);
-		},		
-
+		
 		length : function(){
 			return this.u1 - this.u0;
 		},
@@ -55,39 +75,9 @@ CAD2d_Segment.prototype = {
 			this.point.integrate(this.vector, this.u1, result);
 		},
 
-		tesselate : function(){
-			if(!this.isTesselated){
-
-				// vertex 0
-				var vertex0 = new MathVector3();
-				this.evaluateVertex(this.u0, vertex0);
-
-				// normal 0
-				var normal0 = new MathVector3();
-				this.evaluateNormal(this.u0, normal0);
-
-				// vertex 1
-				var vertex1 = new MathVector3();
-				this.evaluateVertex(this.u1, vertex1);
-
-				// normal 1
-				var normal1 = new MathVector3();
-				this.evaluateNormal(this.u1, normal1);
-
-				this.vertices = [vertex0, vertex1];
-
-				this.normals = [normal0, normal1];
-				
-				this.isTesselated = true;
-			}
-		},
-
-
-		draw : function(affine, wire, settings){
-			this.tesselate();
+		draw : function(affine, wire, shift){
+			
 			var offset = wire.vertices.getNumberOfVectors();
-
-			var shift = settings.shift;
 
 			wire.vertices.expand(2);
 			
@@ -108,9 +98,7 @@ CAD2d_Segment.prototype = {
 			wire.elements.push(offset+0, offset+1);
 		},
 
-		extrude : function(affine, z0, z1, surface, wire, settings, isEndEnabled){
-			this.tesselate();
-
+		extrude : function(affine, z0, z1, surface, wire, isEndEnabled, shift){
 
 			// <surface>
 
@@ -183,8 +171,6 @@ CAD2d_Segment.prototype = {
 
 
 			// <wire>
-
-			var shift = settings.shift;
 
 			// <start-wire>
 			var point0 = new CAD2d_Point();

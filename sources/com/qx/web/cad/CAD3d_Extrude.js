@@ -6,7 +6,23 @@ function CAD3d_Extrude(affine, z0, z1){
 	this.affine = affine;
 	this.z0 = z0;
 	this.z1 = z1;
-	this.isTesselated = false;
+	
+	// <tesselate>
+	var zVector = this.affine.matrix.getVector(2);
+
+	// start
+	var affine0 = new MathAffine3();
+	this.affine.copy(affine0);
+	this.affine.vector.integrate(zVector, this.z0, affine0.vector);
+
+	// end
+	var affine1 = new MathAffine3();
+	this.affine.copy(affine1);
+	this.affine.vector.integrate(zVector, this.z1, affine1.vector);
+
+	this.affines = [affine0, affine1];
+	
+	// </tesselate>
 }
 
 
@@ -35,29 +51,6 @@ CAD3d_Extrude.prototype = {
 			this.point.integrate(this.vector, u1, result);
 		},
 
-
-		tesselate : function(settings){
-
-			if(!this.isTesselated){
-
-				var zVector = this.affine.matrix.getVector(2);
-
-				// start
-				var affine0 = new MathAffine3();
-				this.affine.copy(affine0);
-				this.affine.vector.integrate(zVector, this.z0, affine0.vector);
-
-
-				// end
-				var affine1 = new MathAffine3();
-				this.affine.copy(affine1);
-				this.affine.vector.integrate(zVector, this.z1, affine1.vector);
-
-				this.affines = [affine0, affine1];
-
-				this.isTesselated = true;
-			}			
-		},
 
 		sweepLoop : CAD3d_Curve.prototype.sweepLoop,
 

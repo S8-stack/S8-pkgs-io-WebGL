@@ -39,6 +39,11 @@ function WebGL_Scene(){
 	
 	this.matrixStack = new WebGL_MatrixStack(this.view);
 
+	
+	this.totalRenderingTime = 0;
+	this.nbRenderings = 0;
+	this.logNode = document.getElementById("log64");
+	
 }
 
 
@@ -74,7 +79,10 @@ WebGL_Scene.prototype = {
 		/**
 		 * Render
 		 */
-		render : function(){
+		render : function(lod=0){
+			
+			// timer
+			var startTime = performance.now(); 
 
 			// update view
 			this.view.update();
@@ -87,13 +95,20 @@ WebGL_Scene.prototype = {
 
 			//this.shapeInstances.update();
 			
-			this.programs.render(this.view, this.environment, this.matrixStack);
+			this.programs.render(this.view, this.environment, this.matrixStack, lod);
 			// Recommended pattern for frame animation
 			
 			/*
 			var _this = this;
 			window.requestAnimFrame(function(){_this.render();}, canvas);
 			*/
+			
+
+			this.totalRenderingTime+=(performance.now() - startTime);
+			this.nbRenderings++;
+			var averareRenderingTime = this.totalRenderingTime/this.nbRenderings;
+			this.logNode.innerHTML = "rendering time: "+averareRenderingTime+" ms"
+			+"nb renderings: "+this.nbRenderings;
 		}
 
 };
