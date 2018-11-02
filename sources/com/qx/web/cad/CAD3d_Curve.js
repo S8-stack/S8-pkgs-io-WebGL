@@ -27,7 +27,7 @@ CAD3d_Curve.prototype = {
 
 			// <surface>
 			var vertices = surface.vertices;
-			var offset = vertices.getNumberOfVectors();
+			var offset = vertices.length;
 			var normals = surface.normals;
 			
 			var vertex, normal;
@@ -38,8 +38,6 @@ CAD3d_Curve.prototype = {
 			// sections
 			var affine;
 
-			vertices.expand(n*p);
-			normals.expand(n*p);
 			for(var i=0; i<p; i++){
 				affine = this.affines[i];
 
@@ -63,7 +61,6 @@ CAD3d_Curve.prototype = {
 
 			// elements
 			var elements = surface.elements;
-			elements.expand(2*(this.isClosed?p:(p-1))*(curve.isClosed?n:(n-1)));
 			
 			// sections
 			for(var i=0; i<p-1; i++){
@@ -113,14 +110,13 @@ CAD3d_Curve.prototype = {
 
 			// <surface>
 			var vertices = wire.vertices;
-			var offset = vertices.getNumberOfVectors();
+			var offset = vertices.length;
 
 			var point3d = new MathVector3();
 			point.copy(point3d);
 			var vertex;
 
 			// sections
-			vertices.expand(this.nbSections);
 			for(var i=0; i<this.nbSections; i++){
 				vertex = new MathVector3();
 				this.affines[i].transformVertex(point3d, vertex);
@@ -129,7 +125,6 @@ CAD3d_Curve.prototype = {
 
 			// elements
 			var elements = wire.elements;
-			elements.expand(this.isClosed?this.nbSections:this.nbSections-1);
 			// sections
 			for(var i=0; i<this.nbSections-1; i++){
 				elements.push(offset+i, offset+i+1);

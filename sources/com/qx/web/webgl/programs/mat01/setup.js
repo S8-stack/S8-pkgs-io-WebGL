@@ -65,14 +65,14 @@ program.bindStyle = function(style){
 };
 
 
-program.bindVertexAttributes = function(renderable){
+program.bindVertexAttributes = function(model){
 	
 	// bind vertices
-	gl.bindBuffer(gl.ARRAY_BUFFER, renderable.vertexBufferHandle);
+	gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexBufferHandle);
 	gl.vertexAttribPointer(this.loc_Attribute_vertex, 3, gl.FLOAT, false, 0, 0);
 	
 	// bind normals
-	gl.bindBuffer(gl.ARRAY_BUFFER, renderable.normalBufferHandle);
+	gl.bindBuffer(gl.ARRAY_BUFFER, model.normalBufferHandle);
 	gl.vertexAttribPointer(this.loc_Attribute_normal, 3, gl.FLOAT, false, 0, 0);
 };
 

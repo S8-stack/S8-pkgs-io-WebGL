@@ -17,7 +17,7 @@ CAD_Toolbox.fullyRevolvePoint = function(affine, wire, point, n){
 
 	if(Math.abs(point.y)>1e-12){
 
-		var offset = wire.getNumberOfVertices();
+		var offset = wire.vertices.length;
 		var dTheta = 2.0*Math.PI/n;
 		var point3d = new MathVector3(point.x, point.y, 0);
 			
@@ -25,7 +25,6 @@ CAD_Toolbox.fullyRevolvePoint = function(affine, wire, point, n){
 		var vertex;
 		var vertices = wire.vertices;
 		
-		vertices.expand(n);
 		for(var i=0; i<n; i++){
 			matrix.xRotation(i*dTheta);
 			
@@ -40,7 +39,6 @@ CAD_Toolbox.fullyRevolvePoint = function(affine, wire, point, n){
 
 		// elements
 		var elements = wire.elements;
-		elements.expand(n);
 		for(var i=0; i<n; i++){
 			elements.push(offset+i%n, offset+(i+1)%n);
 		}
@@ -57,7 +55,7 @@ CAD_Toolbox.fullyRevolveSegment = function(affine, surface, p0, p1, n){
 		var normals = surface.normals;
 		var texCoords = surface.texCoords;
 		
-		var offset = surface.getNumberOfVertices();
+		var offset = vertices.length;
 		var elements = surface.elements;
 		
 		var dTheta = 2.0*Math.PI/n;
@@ -76,8 +74,6 @@ CAD_Toolbox.fullyRevolveSegment = function(affine, surface, p0, p1, n){
 		var vertex, normal;
 		texCoord = new MathVector2();
 		
-		vertices.expand(2*n);
-		normals.expand(2*n);
 		for(var i=0; i<n; i++){
 			matrix.xRotation(i*dTheta);
 	
@@ -113,21 +109,18 @@ CAD_Toolbox.fullyRevolveSegment = function(affine, surface, p0, p1, n){
 		
 		// point p1 is degenerated
 		if(Math.abs(p1.y)<1e-12){
-			elements.expand(n);
 			for(var i=0; i<n; i++){
 				elements.push(offset+(2*i)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+2)%(2*n));
 			}
 		}
 		// point p0 is degenerated
 		else if(Math.abs(p0.y)<1e-12){
-			elements.expand(n);
 			for(var i=0; i<n; i++){
 				elements.push(offset+(2*i+2)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+3)%(2*n));
 			}
 		}
 		// neither point p0 nor point p1 are degenerated
 		else{
-			elements.expand(2*n);
 			for(var i=0; i<n; i++){
 				elements.push(offset+(2*i)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+2)%(2*n));
 				elements.push(offset+(2*i+2)%(2*n), offset+(2*i+1)%(2*n), offset+(2*i+3)%(2*n));

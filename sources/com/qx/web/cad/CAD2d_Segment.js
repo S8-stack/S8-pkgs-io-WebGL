@@ -34,13 +34,12 @@ function CAD2d_Segment(/*MathVector2*/ point, /*MathVector2*/ vector, u0, u1){
 }
 
 
-CAD2d_Segment.createSegmentBetweenPoints = function(point0, point1){
-	this.vector = new MathVector2();
-	this.point = point0;
-	point1.substract(point0, this.vector);
-	this.u0 = 0.0;
-	this.u1 = this.vector.length();
-	return new CAD2d_Segment(point, vector, u0, u1);
+CAD2d_Segment.between = function(point0, point1){
+	var vector = new MathVector2();
+	point1.substract(point0, vector);
+	var length = vector.length();
+	vector.normalize(vector);
+	return new CAD2d_Segment(point0, vector, 0.0, length);
 };
 
 
@@ -77,9 +76,8 @@ CAD2d_Segment.prototype = {
 
 		draw : function(affine, wire, shift){
 			
-			var offset = wire.vertices.getNumberOfVectors();
+			var offset = wire.vertices.length;
 
-			wire.vertices.expand(2);
 			
 			// vertex 0
 			var vertex0 = new MathVector3();
@@ -94,8 +92,7 @@ CAD2d_Segment.prototype = {
 			wire.vertices.push(vertex1);
 
 			// element
-			wire.elements.expand(1);
-			wire.elements.push(offset+0, offset+1);
+			wire.pushSegment(offset+0, offset+1);
 		},
 
 		extrude : function(affine, z0, z1, surface, wire, isEndEnabled, shift){

@@ -21,26 +21,25 @@ function WebGL_ShapeInstance(objectInstance, index, styles){
 
 	// mode styles
 	this.styles = styles;
-
-	// level of detail
-	this.renderables  = null;
+	
+	// model
+	this.model  = null;
 }
 
 
 WebGL_ShapeInstance.prototype = {
 
-		render : function(matrixStack, program, lod){
+		render : function(matrixStack, program){
 
 			// try to initialize if not already done
 			if(!this.isInitialized && this.objectInstance.model.isInitialized){
-				var shapeModel = this.objectInstance.model.shapes[this.index];
-				this.renderables = shapeModel.createRenderables(this.objectInstance.affines);
+				this.model = this.objectInstance.model.shapes[this.index];
 				this.isInitialized = true;
 			}
 
 			// render according to lod (level of details) if OK
 			if(this.isInitialized){
-				this.renderables[lod].render(matrixStack, program);
+				this.model.render(matrixStack, program, this.objectInstance.affines);
 			}
 		},
 

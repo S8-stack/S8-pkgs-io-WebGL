@@ -21,8 +21,6 @@ function WebGL_Scene(){
 	//create environment
 	this.environment = new WebGL_Environment(this);
 
-	// create picking module and link it
-	this.picking = new WebGL_PickingModule(this);
 
 	// <initialize rendering>
 
@@ -38,12 +36,13 @@ function WebGL_Scene(){
 	// </initialize rendering>
 	
 	this.matrixStack = new WebGL_MatrixStack(this.view);
-
 	
 	this.totalRenderingTime = 0;
 	this.nbRenderings = 0;
 	this.logNode = document.getElementById("log64");
 	
+	// create picking module and link it
+	this.picking = new WebGL_PickingModule(this);
 }
 
 

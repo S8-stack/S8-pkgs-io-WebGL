@@ -3,77 +3,252 @@
  * WebGL Shape constructor, methods and utilities
  */
 function WebGL_ShapeModel(){
-
+	// no affines
 }
 
 
 WebGL_ShapeModel.prototype = {
 
+		render : function(matrixStack, program, affines){
 
-		/**
-		 * 
-		 */
-		createRenderables : function(instanceAffines){
-			var renderables = new Array(4);
-			for(var i=0; i<4; i++){
-				renderables[i] = this.meshes[i].createRenderable(instanceAffines);
+			// bind vertex attributes buffer handles (program is doing the
+			// picking of the appropriate vertices attributes)
+			program.bindVertexAttributes(this);
+
+			// bind elements buffer (only one element buffer)
+			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.elementBufferHandle);
+
+			for(let affine of affines){
+
+				// update stack
+				matrixStack.setModel(affine);
+
+				// bind matrices
+				program.bindMatrixStack(matrixStack);
+
+				// trigger render by drawing elements
+				gl.drawElements(this.elementType, this.nbElements, gl.UNSIGNED_SHORT, 0);
 			}
-			return renderables;
 		},
 		
-		compile : function(){
-			for(var i=0; i<4; i++){
-				this.meshes[i].compile();
-			}
-		},
-
-		dispose : function(){
-			for(var i=0; i<4; i++){
-				this.meshes[i].dispose();
+		pattern : function(affines, target){
+			for(let affine of affines){
+				this.transform(affine, target);
 			}
 		}
 };
 
 
 /**
- * WebGL_WireModel
+ * WebGL Wire object. Sub-part of a shape
  */
 function WebGL_WireModel(){
-	WebGL_ShapeModel.call();
+	WebGL_ShapeModel.call(this);
 
-	// level of details
-	this.meshes = new Array(4);
-	for(var i=0; i<4; i++){
-		this.meshes[i] = new WebGL_WireMesh();
-	}
+	// vertices
+	this.vertices = new Array();
+
+	// elements
+	this.elementType = gl.LINES;
+	this.elements = new Array();
 }
 
+
 WebGL_WireModel.prototype = {
-		createRenderables : WebGL_ShapeModel.prototype.createRenderables,
-		compile : WebGL_ShapeModel.prototype.compile,
-		dispose : WebGL_ShapeModel.prototype.dispose
+
+		transform : function(affine, target){
+			var targetVertices = target.vertices;
+			var targetSegments = target.segments;
+
+			var transformedVertex;
+			var offset = targetVertices.length;
+			
+			// vertex
+			for(let vertex of this.vertices){
+				transformedVertex = new MathVector3d();
+				affine.transformVertex(vertex, transformedVertex);
+				targetVertices.push(transformedVertex);
+			}
+
+			// elements
+			for(let index of this.elements){
+				targetSegments.push(offset+index);
+			}
+		},
+
+		pattern : WebGL_ShapeModel.prototype.pattern,
+		
+		pushSegment : function(i0, i1){
+			this.elements.push(i0);
+			this.elements.push(i1);
+		},
+
+		compile : function(){
+
+			// vertex buffer handle
+			this.vertexBufferHandle = WebGL_ArrayBuffer.createVector3dBuffer(this.vertices);
+
+			// normal buffer handle
+			this.nbElements = this.elements.length;
+			this.elementBufferHandle = WebGL_ArrayBuffer.createElementBuffer(this.elements);
+		},
+
+		render : WebGL_ShapeModel.prototype.render,
+		
+		dispose : function(){
+			gl.deleteBuffer(this.vertexBufferHandle);
+			gl.deleteBuffer(this.elementBufferHandle);
+		}
 };
-
-
 
 
 
 /**
- * WebGL_SurfaceModel
+ * WebGL Wire object. Sub-part of a shape
  */
 function WebGL_SurfaceModel(){
-	WebGL_ShapeModel.call();
+	WebGL_ShapeModel.call(this);
 
-	// level of details
-	this.meshes = new Array(4);
-	for(var i=0; i<4; i++){
-		this.meshes[i] = new WebGL_SurfaceMesh();
-	}
+	// vertices
+	this.vertices = new Array();
+
+	// vertices
+	this.normals = new Array();
+
+	// elements
+	this.elementType = gl.TRIANGLES;
+	this.elements = new Array();
+
 }
 
+
 WebGL_SurfaceModel.prototype = {
-		createRenderables : WebGL_ShapeModel.prototype.createRenderables,
-		compile : WebGL_ShapeModel.prototype.compile,
-		dispose : WebGL_ShapeModel.prototype.dispose
+		
+		transform : function(affine, target){
+			var targetVertices = target.vertices;
+			var targetNormals = target.normals;
+			var targetElements = target.elements;
+
+			var transformedVertex, transformedNormal;
+			var offset = targetVertices.length;
+			
+			// vertex
+			for(let vertex of this.vertices){
+				transformedVertex = new MathVector3d();
+				affine.transformPoint(vertex, transformedVertex);
+				targetVertices.push(transformedVertex);
+			}
+			
+			// normals
+			for(let normal of this.normals){
+				transformedNormal = new MathVector3d();
+				affine.transformVector(vertex, transformedNormal);
+				targetNormals.push(transformedNormal);
+			}
+
+			// elements
+			for(let index of this.elements){
+				targetElements.push(offset+index);
+			}
+		},
+
+		pattern : WebGL_ShapeModel.prototype.pattern,
+		
+		pushTriangle : function(i0, i1, i2){
+			this.segments.push(i0);
+			this.segments.push(i1);
+			this.segments.push(i2);
+		},
+
+		compile : function(){
+
+			// vertex buffer handle
+			this.vertexBufferHandle = WebGL_ArrayBuffer.createVector3dBuffer(this.vertices);
+			
+			// vertex buffer handle
+			this.normalBufferHandle = WebGL_ArrayBuffer.createVector3dBuffer(this.normals);
+
+			// normal buffer handle
+			this.nbElements = this.elements.length;
+			this.elementBufferHandle = WebGL_ArrayBuffer.createElementBuffer(this.elements);
+		},
+		
+		render : WebGL_ShapeModel.prototype.render,
+
+		dispose : function(){
+			gl.deleteBuffer(this.vertexBufferHandle);
+			gl.deleteBuffer(this.normalBufferHandle);
+			gl.deleteBuffer(this.elementBufferHandle);
+		}
 };
 
+
+
+var WebGL_ArrayBuffer = {};
+
+WebGL_ArrayBuffer.createVector2dBuffer = function(vectors){
+
+	// create array
+	var array = new Float32Array(2*vectors.length);
+	var offset = 0;
+	for(let vector of vectors){
+		array[offset+0] = vector.x;
+		array[offset+1] = vector.y;
+		offset+=2;
+	}
+
+	// Create buffer handle
+	var bufferHandle = gl.createBuffer();
+
+	// Bind buffer handle to current buffer
+	gl.bindBuffer(gl.ARRAY_BUFFER, bufferHandle);
+
+	// store data in GPU
+	gl.bufferData(gl.ARRAY_BUFFER, array, gl.STATIC_DRAW);
+
+	return bufferHandle;
+}
+
+
+WebGL_ArrayBuffer.createVector3dBuffer = function(vectors){
+
+	// create array
+	var array = new Float32Array(3*vectors.length);
+	var offset = 0;
+	for(let vector of vectors){
+		array[offset+0] = vector.x;
+		array[offset+1] = vector.y;
+		array[offset+2] = vector.z;
+		offset+=3;
+	}
+
+	// Create buffer handle
+	var bufferHandle = gl.createBuffer();
+
+	// Bind buffer handle to current buffer
+	gl.bindBuffer(gl.ARRAY_BUFFER, bufferHandle);
+
+	// store data in GPU
+	gl.bufferData(gl.ARRAY_BUFFER, array, gl.STATIC_DRAW);
+
+	return bufferHandle;
+}
+
+
+WebGL_ArrayBuffer.createElementBuffer = function(indices){
+
+	// create and populate array
+	var array = new Uint16Array(indices.length);
+	array.set(indices);
+
+	// Create buffer handle
+	var bufferHandle = gl.createBuffer();
+
+	// Bind buffer handle to current buffer
+	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, bufferHandle);
+
+	// bind buffer data
+	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, array, gl.STATIC_DRAW);
+
+	return bufferHandle;
+}

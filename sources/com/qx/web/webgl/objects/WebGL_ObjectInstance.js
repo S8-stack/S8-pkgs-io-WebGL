@@ -65,17 +65,17 @@ WebGL_ObjectInstance.prototype = {
 			
 
 			// build renderables
-			this.shapeInstances = new Array();
+			this.shapes = new Array();
 			for(var index in styles){
-				this.shapeInstances.push(new WebGL_ShapeInstance(this, index, styles[index]));
+				this.shapes.push(new WebGL_ShapeInstance(this, index, styles[index]));
 			}
 
 			// done...
 			this.isInitialized = true;
 			
 			// update modes for display
-			for(let shapeInstance of this.shapeInstances){
-				shapeInstance.setMode(this.mode);
+			for(let shape of this.shapes){
+				shape.setMode(this.mode);
 			}
 			
 			// update picking
@@ -84,8 +84,8 @@ WebGL_ObjectInstance.prototype = {
 
 		setMode : function(mode){
 			if(mode!=this.mode){
-				for(var index in this.shapeInstances){
-					this.shapeInstances[index].setMode(mode);
+				for(var index in this.shapes){
+					this.shapes[index].setMode(mode);
 				}
 				this.mode = mode;
 
@@ -97,8 +97,8 @@ WebGL_ObjectInstance.prototype = {
 
 		dispose : function(){
 			if(this.isInitialized){
-				for(var index in this.shapeInstances){
-					this.shapeInstances[index].dispose();
+				for(var index in this.shapes){
+					this.shapes[index].dispose();
 				}
 			}
 			this.isDisposed = true;

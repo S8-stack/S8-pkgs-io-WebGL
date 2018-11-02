@@ -13,6 +13,7 @@ function WebGL_PickingModule(scene){
 	
 	// pointer to the scene
 	this.scene = scene;
+	this.matrixStack = scene.matrixStack;
 
 	this.pickables = new Chain();
 
@@ -28,26 +29,30 @@ function WebGL_PickingModule(scene){
 		if(this.isInitialized){
 			// bind shader program
 			gl.useProgram(this.handle);
-
-			// load context uniforms
-			this.bind(null, null);
-
+			
+			_this.program.bindSettings();
+			
 			_this.pickables.crawl(function(instance){
 
+				/*
+				 * bind shape
+				 */
+				gl.uniform3fv(_this.program.loc_Uniform_pickingColor, instance.pickingColor);
+				
 				// go through renderables of the instance
-				for(let renderable of instance.renderables){
+				for(let shape of instance.shapes){
 					// update
-					renderable.update();
+					//shape.update();
 
 					// render if OK
-					if(renderable.isInitialized){
-						_this.program.render(renderable);	
+					if(shape.isInitialized){
+						shape.render(_this.matrixStack, _this.program);
 					}
 				}
 			});
 
 			// reset to default
-			this.unbind();
+			_this.program.unbindSettings();
 		}
 	};
 

@@ -60,7 +60,7 @@ WebGL_Program.prototype = {
 		/*
 		 * render the styles and shapes
 		 */
-		render : function(view, environment, matrixStack, lod){
+		render : function(view, environment, matrixStack){
 			if(this.isInitialized){
 				
 				// bind shader program
@@ -77,7 +77,7 @@ WebGL_Program.prototype = {
 			
 				// render renderables
 				for(var i in this.displayList){
-					this.displayList[i].render(matrixStack, this, lod);
+					this.displayList[i].render(matrixStack, this);
 				}
 				
 				// reset to default

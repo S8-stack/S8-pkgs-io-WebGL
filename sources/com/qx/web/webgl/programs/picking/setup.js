@@ -20,60 +20,36 @@ program.initialize = function(){
 
 
 
-program.bind = function(view, environment){
-	// enable location
+program.bindSettings = function(view, environment){
 	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
 };
 
-program.unbind = function(){
-	// disable location
+
+program.bindView = function(view){
+	// nothing to do
+};
+
+program.bindEnvironment = function(environment){
+	// nothing to do
+};
+
+program.bindStyle = function(style){
+	// nothing to do
+};
+
+program.bindVertexAttributes = function(model){
+	gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexBufferHandle);
+	gl.vertexAttribPointer(this.loc_Attribute_vertex, 3, gl.FLOAT, false, 0, 0);
+};
+
+program.bindMatrixStack = function(stack){
+	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, stack.matrix_ProjectionViewModel.c);
+};
+
+
+program.unbindVertexAttributes = function(model){
+};
+
+program.unbindSettings = function(){
 	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
 };
-
-program.loadStyle = function(style){
-};
-
-
-program.bindShape = function(shape){
-
-
-
-	// matrices
-	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, shape.matrix_ProjectionViewModel.c);
-
-	// attributes
-	shape.vertex.bind(this.loc_Attribute_vertex);
-};
-
-program.unbindShape = function(shape){	
-	
-	/* unbind attributes */
-	shape.vertex.unbind(this.loc_Attribute_vertex);
-};
-
-
-
-program.render = function(surface){
-	
-	
-	/*
-	 * bind shape
-	 */
-
-	gl.uniform3fv(this.loc_Uniform_pickingColor, surface.instance.pickingColor);
-	
-	// bind instance matrices
-	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, surface.instance.matrix_ProjectionViewModel.c);
-	
-	// bind model vertex attributes
-	surface.model.vertices.bind(this.loc_Attribute_vertex, surface.model.verticesOffset);
-	
-	// render elements
-	surface.model.elements.render();
-	
-	/* unbind attributes */
-	surface.model.vertices.unbind(this.loc_Attribute_vertex);
-};
-
-
-
