@@ -11,19 +11,19 @@ function CAD2d_Segment(/*MathVector2*/ point, /*MathVector2*/ vector, u0, u1){
 	// <tesselate>
 	
 	// vertex 0
-	var vertex0 = new MathVector3();
+	var vertex0 = new Math3d_Vector();
 	this.evaluateVertex(this.u0, vertex0);
 
 	// normal 0
-	var normal0 = new MathVector3();
+	var normal0 = new Math3d_Vector();
 	this.evaluateNormal(this.u0, normal0);
 
 	// vertex 1
-	var vertex1 = new MathVector3();
+	var vertex1 = new Math3d_Vector();
 	this.evaluateVertex(this.u1, vertex1);
 
 	// normal 1
-	var normal1 = new MathVector3();
+	var normal1 = new Math3d_Vector();
 	this.evaluateNormal(this.u1, normal1);
 
 	this.vertices = [vertex0, vertex1];
@@ -35,7 +35,7 @@ function CAD2d_Segment(/*MathVector2*/ point, /*MathVector2*/ vector, u0, u1){
 
 
 CAD2d_Segment.between = function(point0, point1){
-	var vector = new MathVector2();
+	var vector = new Math2d_Vector();
 	point1.substract(point0, vector);
 	var length = vector.length();
 	vector.normalize(vector);
@@ -80,13 +80,13 @@ CAD2d_Segment.prototype = {
 
 			
 			// vertex 0
-			var vertex0 = new MathVector3();
+			var vertex0 = new Math3d_Vector();
 			this.vertices[0].integrate(this.normals[0], shift, vertex0);
 			affine.transformVertex(vertex0, vertex0);
 			wire.vertices.push(vertex0);
 
 			// vertex 1
-			var vertex1 = new MathVector3();
+			var vertex1 = new Math3d_Vector();
 			this.vertices[1].integrate(this.normals[1], shift, vertex1);
 			affine.transformVertex(vertex1, vertex1);
 			wire.vertices.push(vertex1);
@@ -108,53 +108,53 @@ CAD2d_Segment.prototype = {
 			var vertex, normal;
 
 			// vertex 0
-			vertex = new MathVector3();
+			vertex = new Math3d_Vector();
 			this.vertex0.copy(vertex); // copy only x, y
 			vertex.z = z0;
 			affine.transformVertex(vertex, vertex);
 			vertices.push(vertex);
 
 			// normal 0
-			normal = new MathVector3();
+			normal = new Math3d_Vector();
 			this.normal0.copy(normal); // copy only x, y
 			affine.transformVector(normal, normal);
 			normals.push(normal);
 
 			// vertex 1
-			vertex = new MathVector3();
+			vertex = new Math3d_Vector();
 			this.vertex1.copy(vertex); // copy only x, y
 			vertex.z = z0;
 			affine.transformVertex(vertex, vertex);
 			vertices.push(vertex);
 
 			// normal 1
-			normal = new MathVector3();
+			normal = new Math3d_Vector();
 			this.normal1.copy(normal); // copy only x, y
 			affine.transformVector(normal, normal);
 			normals.push(normal);
 
 			// vertex 2
-			vertex = new MathVector3();
+			vertex = new Math3d_Vector();
 			this.vertex0.copy(vertex); // copy only x, y
 			vertex.z = z1;
 			affine.transformVertex(vertex, vertex);
 			vertices.push(vertex);
 
 			// normal 2
-			normal = new MathVector3();
+			normal = new Math3d_Vector();
 			this.normal0.copy(normal); // copy only x, y
 			affine.transformVector(normal, normal);
 			normals.push(normal);
 
 			// vertex 3
-			vertex = new MathVector3();
+			vertex = new Math3d_Vector();
 			this.vertex1.copy(vertex); // copy only x, y
 			vertex.z = z1;
 			affine.transformVertex(vertex, vertex);
 			vertices.push(vertex);
 
 			// normal 3
-			normal = new MathVector3();
+			normal = new Math3d_Vector();
 			this.normal1.copy(normal); // copy only x, y
 			affine.transformVector(normal, normal);
 			normals.push(normal);

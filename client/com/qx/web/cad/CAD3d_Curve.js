@@ -43,13 +43,13 @@ CAD3d_Curve.prototype = {
 				for(var j=0; j<n; j++){
 
 					// vertex
-					vertex = new MathVector3();
+					vertex = new Math3d_Vector();
 					curve.vertices[j].copy(vertex);
 					affine.transformVertex(vertex, vertex);
 					vertices.push(vertex);
 
 					// normal
-					normal = new MathVector3();
+					normal = new Math3d_Vector();
 					curve.normals[j].copy(normal);
 					affine.transformVector(normal, normal);
 					normals.push(normal);
@@ -85,14 +85,14 @@ CAD3d_Curve.prototype = {
 			if(!curve.isClosed){
 
 				// <start-wire>
-				var point0 = new MathVector2();
+				var point0 = new Math2d_Vector();
 				curve.vertices[0].integrate(curve.normals[0], shift, point0);
 				this.sweepPoint(point0, wire);
 				// </start-wire>
 
 				// <end-wire>
 				if(!this.isClosed && this.isEndEnabled){
-					var point1 = new MathVector2();
+					var point1 = new Math2d_Vector();
 					var p = this.nbVertices-1;
 					this.vertices[p].integrate(this.normals[p], shift, point1);
 					this.sweepPoint(point1, wire);
@@ -110,13 +110,13 @@ CAD3d_Curve.prototype = {
 			var vertices = wire.vertices;
 			var offset = vertices.length;
 
-			var point3d = new MathVector3();
+			var point3d = new Math3d_Vector();
 			point.copy(point3d);
 			var vertex;
 
 			// sections
 			for(var i=0; i<this.nbSections; i++){
-				vertex = new MathVector3();
+				vertex = new Math3d_Vector();
 				this.affines[i].transformVertex(point3d, vertex);
 				vertices.push(vertex);
 			}

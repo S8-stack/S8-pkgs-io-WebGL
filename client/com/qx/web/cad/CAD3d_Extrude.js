@@ -11,12 +11,12 @@ function CAD3d_Extrude(affine, z0, z1){
 	var zVector = this.affine.matrix.getVector(2);
 
 	// start
-	var affine0 = new MathAffine3();
+	var affine0 = new Math3d_Affine();
 	this.affine.copy(affine0);
 	this.affine.vector.integrate(zVector, this.z0, affine0.vector);
 
 	// end
-	var affine1 = new MathAffine3();
+	var affine1 = new Math3d_Affine();
 	this.affine.copy(affine1);
 	this.affine.vector.integrate(zVector, this.z1, affine1.vector);
 
@@ -35,7 +35,7 @@ CAD3d_Extrude.prototype = {
 		nbSections : 2,
 
 		evaluatePoint : function(u, result){
-			this.affine.transformVertex(new MathVector3(0.0, 0.0, u), result);
+			this.affine.transformVertex(new Math3d_Vector(0.0, 0.0, u), result);
 		},
 
 		evaluateAffine : function(u, result){

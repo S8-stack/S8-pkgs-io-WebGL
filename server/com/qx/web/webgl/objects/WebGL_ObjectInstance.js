@@ -16,7 +16,7 @@ function WebGL_ObjectInstance(id, scene){
 	this.isDisposed = false;
 
 	// identity pattern
-	this.affine = new MathAffine3();
+	this.affine = new Math3d_Affine();
 }
 
 // single position pattern

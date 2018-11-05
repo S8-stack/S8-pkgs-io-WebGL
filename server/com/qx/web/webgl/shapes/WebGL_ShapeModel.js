@@ -62,7 +62,7 @@ WebGL_WireModel.prototype = {
 
 			// vertex
 			for(let vertex of this.vertices){
-				transformedVertex = new MathVector3d();
+				transformedVertex = new Math3d_Vector();
 				affine.transformVertex(vertex, transformedVertex);
 				targetVertices.push(transformedVertex);
 			}
@@ -131,14 +131,14 @@ WebGL_SurfaceModel.prototype = {
 
 			// vertex
 			for(let vertex of this.vertices){
-				transformedVertex = new MathVector3d();
+				transformedVertex = new Math3d_Vector();
 				affine.transformPoint(vertex, transformedVertex);
 				targetVertices.push(transformedVertex);
 			}
 
 			// normals
 			for(let normal of this.normals){
-				transformedNormal = new MathVector3d();
+				transformedNormal = new Math3d_Vector();
 				affine.transformVector(vertex, transformedNormal);
 				targetNormals.push(transformedNormal);
 			}

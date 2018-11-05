@@ -22,20 +22,20 @@ function CAD3d_Revolve(affine3d, affine2d, theta0, theta1, n){
 	this.affines = new Array(this.nbSections);
 
 	var sectionAffine;
-	var curvePoint = new MathMatrix3();
-	var rotationMatrix = new MathMatrix3();
+	var curvePoint = new Math3d_Matrix();
+	var rotationMatrix = new Math3d_Matrix();
 	
 	var vector2d = this.affine2d.vector;
-	var sketchVector = new MathVector3(vector2d.x, vector2d.y);
+	var sketchVector = new Math3d_Vector(vector2d.x, vector2d.y);
 	
 	var matrix2d = this.affine2d.matrix;
-	var sketchMatrix = new MathMatrix3();
+	var sketchMatrix = new Math3d_Matrix();
 	sketchMatrix.set(matrix2d.c0, matrix2d.c1, 0.0, matrix2d.c2, matrix2d.c3, 0.0, 0.0, 0.0, 0.0);
-	var sketchAffine = new MathAffine3(sketchVector, sketchMatrix);
+	var sketchAffine = new Math3d_Affine(sketchVector, sketchMatrix);
 	
 	// sections
 	for(var i=0; i<this.nbSections; i++){
-		sectionAffine = new MathAffine3();
+		sectionAffine = new Math3d_Affine();
 		this.affine3d.copy(sectionAffine)
 		rotationMatrix.xRotation(this.theta0+i*dTheta);
 		sectionAffine.matrix.multiply(rotationMatrix, sectionAffine.matrix);
@@ -55,7 +55,7 @@ CAD3d_Revolve.prototype = {
 			this.affine3d
 			result.vector.radial(this.r, theta);
 			this.affine.transformVertex(result.vector, result.vector);
-			var rotationMatrix = new MathMatrix3();
+			var rotationMatrix = new Math3d_Matrix();
 			rotationMatrix.zRotation(theta+Math.PI/2.0);
 			affine.matrix.multiply(rotationMatrix, result.matrix);
 		},

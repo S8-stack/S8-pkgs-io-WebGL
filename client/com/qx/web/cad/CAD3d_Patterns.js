@@ -6,7 +6,7 @@ var CAD3d_Patterns = {};
 //classical XY pattern
 CAD3d_Patterns.pattern_XY = function(affine, nx, xPitch, ny, yPitch){
 
-	var itemAffine = new MathAffine3();
+	var itemAffine = new Math3d_Affine();
 	affine.copy(itemAffine);
 
 	var func = function(targetMatrix, mode, callback){
@@ -19,7 +19,7 @@ CAD3d_Patterns.pattern_XY = function(affine, nx, xPitch, ny, yPitch){
 			for(var ix=0; ix<nx; ix++){
 				for(var iy=0; iy<ny; iy++){
 					// affine
-					affine.vector.add(new MathVector3(ix*xPitch, iy*yPitch, 0.0), itemAffine.vector);
+					affine.vector.add(new Math3d_Vector(ix*xPitch, iy*yPitch, 0.0), itemAffine.vector);
 					itemAffine.copy(targetMatrix);
 					callback();
 				}
@@ -33,7 +33,7 @@ CAD3d_Patterns.pattern_XY = function(affine, nx, xPitch, ny, yPitch){
 			//iy=0
 			for(var ix=0; ix<nx; ix++){
 				// affine
-				affine.vector.add(new MathVector3(ix*xPitch, 0.0, 0.0), itemAffine.vector);
+				affine.vector.add(new Math3d_Vector(ix*xPitch, 0.0, 0.0), itemAffine.vector);
 				itemAffine.copy(targetMatrix);
 				callback();
 			}
@@ -41,7 +41,7 @@ CAD3d_Patterns.pattern_XY = function(affine, nx, xPitch, ny, yPitch){
 			// iy=ny-1
 			for(var ix=0; ix<nx; ix++){
 				// affine
-				affine.vector.add(new MathVector3(ix*xPitch, (ny-1)*yPitch, 0.0), itemAffine.vector);
+				affine.vector.add(new Math3d_Vector(ix*xPitch, (ny-1)*yPitch, 0.0), itemAffine.vector);
 				itemAffine.copy(targetMatrix);
 				callback();
 			}
@@ -49,7 +49,7 @@ CAD3d_Patterns.pattern_XY = function(affine, nx, xPitch, ny, yPitch){
 			//ix=0
 			for(var iy=0; iy<ny; iy++){
 				// affine
-				affine.vector.add(new MathVector3(0.0, iy*yPitch, 0.0), itemAffine.vector);
+				affine.vector.add(new Math3d_Vector(0.0, iy*yPitch, 0.0), itemAffine.vector);
 				itemAffine.copy(targetMatrix);
 				callback();
 			}
@@ -57,7 +57,7 @@ CAD3d_Patterns.pattern_XY = function(affine, nx, xPitch, ny, yPitch){
 			//ix=nx-1
 			for(var iy=0; iy<ny; iy++){
 				// affine
-				affine.vector.add(new MathVector3((nx-1)*xPitch, iy*yPitch, 0.0), itemAffine.vector);
+				affine.vector.add(new Math3d_Vector((nx-1)*xPitch, iy*yPitch, 0.0), itemAffine.vector);
 				itemAffine.copy(targetMatrix);
 				callback();
 			}
@@ -95,8 +95,8 @@ CAD3d_Patterns.pattern_STHxTubes_Staggered = function(baseAffine,
 
 			for(var ix=0; ix<nx; ix++){
 				// affine
-				affine = new MathAffine3();
-				affine.vector = new MathVector3(xOffset+ix*xPitch, yOffset+iy*yPitch, 0.0);
+				affine = new Math3d_Affine();
+				affine.vector = new Math3d_Vector(xOffset+ix*xPitch, yOffset+iy*yPitch, 0.0);
 				baseAffine.multiply(affine, affine);
 				affines[index] = affine;
 				index++;
@@ -112,8 +112,8 @@ CAD3d_Patterns.pattern_STHxTubes_Staggered = function(baseAffine,
 		//iy=0
 		xOffset = xEvenOffset;
 		for(var ix=0; ix<nx; ix++){
-			affine = new MathAffine3();
-			affine.vector = new MathVector3(xOffset+ix*xPitch, yOffset, 0.0);
+			affine = new Math3d_Affine();
+			affine.vector = new Math3d_Vector(xOffset+ix*xPitch, yOffset, 0.0);
 			baseAffine.multiply(affine, affine);
 			affines[index] = affine;
 			index++;
@@ -122,8 +122,8 @@ CAD3d_Patterns.pattern_STHxTubes_Staggered = function(baseAffine,
 		// iy=ny-1
 		xOffset=((ny-1)%2==0)?xEvenOffset:xOddOffset;
 		for(var ix=0; ix<nx; ix++){
-			affine = new MathAffine3();
-			affine.vector = new MathVector3(xOffset+ix*xPitch, yOffset+(ny-1)*yPitch, 0.0);
+			affine = new Math3d_Affine();
+			affine.vector = new Math3d_Vector(xOffset+ix*xPitch, yOffset+(ny-1)*yPitch, 0.0);
 			baseAffine.multiply(affine, affine);
 			affines[index] = affine;
 			index++;
@@ -132,8 +132,8 @@ CAD3d_Patterns.pattern_STHxTubes_Staggered = function(baseAffine,
 		//ix=0
 		for(var iy=0; iy<ny; iy++){
 			xOffset=(iy%2==0)?xEvenOffset:xOddOffset;
-			affine = new MathAffine3();
-			affine.vector = new MathVector3(xOffset, yOffset+iy*yPitch, 0.0);
+			affine = new Math3d_Affine();
+			affine.vector = new Math3d_Vector(xOffset, yOffset+iy*yPitch, 0.0);
 			baseAffine.multiply(affine, affine);
 			affines[index] = affine;
 			index++;
@@ -143,8 +143,8 @@ CAD3d_Patterns.pattern_STHxTubes_Staggered = function(baseAffine,
 		for(var iy=0; iy<ny; iy++){
 			// affine
 			xOffset=(iy%2==0)?xEvenOffset:xOddOffset;
-			affine = new MathAffine3();
-			affine.vector = new MathVector3(xOffset+(nx-1)*xPitch, yOffset+iy*yPitch, 0.0);
+			affine = new Math3d_Affine();
+			affine.vector = new Math3d_Vector(xOffset+(nx-1)*xPitch, yOffset+iy*yPitch, 0.0);
 			baseAffine.multiply(affine, affine);
 			affines[index] = affine;
 			index++;

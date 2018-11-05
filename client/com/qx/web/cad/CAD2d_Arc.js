@@ -22,12 +22,12 @@ function CAD2d_Arc(affine, r, theta0, theta1, n){
 		theta = this.theta0+i*dTheta;
 
 		// vertex
-		vertex = new MathVector2();
+		vertex = new Math2d_Vector();
 		this.evaluateVertex(theta, vertex);
 		this.vertices[i]=vertex;
 
 		// normal
-		normal = new MathVector2();
+		normal = new Math2d_Vector();
 		this.evaluateNormal(theta, normal);
 		this.normals[i]=normal;
 	}
@@ -50,7 +50,7 @@ CAD2d_Arc.prototype = {
 		evaluateAffine : function(theta, result){
 			result.vector.radial(this.r, theta);
 			this.affine.transformVertex(result.vector, result.vector);
-			var rotationMatrix = new MathMatrix2();
+			var rotationMatrix = new Math2d_Matrix();
 			rotationMatrix.rotation(theta+Math.PI/2.0);
 			affine.matrix.multiply(rotationMatrix, result.matrix);
 		},
@@ -71,7 +71,7 @@ CAD2d_Arc.prototype = {
 			var offset = vertices.length;
 			var vertex;
 			for(var i=0; i<this.nbVertices; i++){
-				vertex = new MathVector3();
+				vertex = new Math3d_Vector();
 				this.vertices[i].integrate(this.normals[i], shift, vertex);
 				affine.transformVertex(vertex, vertex);
 				vertices.push(vertex);
@@ -99,27 +99,27 @@ CAD2d_Arc.prototype = {
 			for(var i=0; i<this.nbVertices; i++){
 
 				// vertex 0
-				vertex = new MathVector3();
+				vertex = new Math3d_Vector();
 				this.vertices[i].copy(vertex); // copy only x, y
 				vertex.z = z0;
 				affine.transformVertex(vertex, vertex);
 				vertices.push(vertex);
 
 				// normal 0
-				normal = new MathVector3();
+				normal = new Math3d_Vector();
 				this.normals[i].copy(normal); // copy only x, y
 				affine.transformVector(normal, normal);
 				normals.push(normal);
 
 				// vertex 1
-				vertex = new MathVector3();
+				vertex = new Math3d_Vector();
 				this.vertices[i].copy(vertex); // copy only x, y
 				vertex.z = z1;
 				affine.transformVertex(vertex, vertex);
 				vertices.push(vertex);
 
 				// normal 1
-				normal = new MathVector3();
+				normal = new Math3d_Vector();
 				this.normals[i].copy(normal); // copy only x, y
 				affine.transformVector(normal, normal);
 				normals.push(normal);
@@ -172,8 +172,8 @@ CAD2d_Arc.prototype = {
 			var vertices = surface.vertices;
 			var offset = vertices.length();
 			var normals = surface.normals;
-			var sectionAffine = new MathAffine3();
-			var rotationMatrix = new MathMatrix3();
+			var sectionAffine = new Math3d_Affine();
+			var rotationMatrix = new Math3d_Matrix();
 			var vertex2, normal2, vertex3, normal3;
 
 			// sections
@@ -186,13 +186,13 @@ CAD2d_Arc.prototype = {
 
 					// vertex
 					invAffine2.transformVertex(this.vertices[j], vertex2);
-					vertex3 = new MathVector3(vertex2.x, vertex2.y, 0.0);
+					vertex3 = new Math3d_Vector(vertex2.x, vertex2.y, 0.0);
 					sectionAffine.transformVertex(vertex3, vertex3);
 					vertices.push(vertex3);
 
 					// normal
 					invAffine2.transformVector(this.normals[j], normal2);
-					normal3 = new MathVector3(normal2.x, normal2.y, 0.0);
+					normal3 = new Math3d_Vector(normal2.x, normal2.y, 0.0);
 					sectionAffine.transformVector(normal3, normal3);
 					normals.push(normal3);
 				}

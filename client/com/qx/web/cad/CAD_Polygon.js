@@ -8,7 +8,7 @@ function CAD_Polygon(data, isClosed){
 	var nbVertices = data.length/2;
 	this.vertices = new Array();
 	for(var i=0; i<nbVertices; i++){
-		this.vertices.push(new MathVector2(data[2*i+0], data[2*i+1]));
+		this.vertices.push(new Math2d_Vector(data[2*i+0], data[2*i+1]));
 	}
 	
 	// indicate if closed or not
@@ -28,7 +28,7 @@ function CAD_Polygon(data, isClosed){
 	
 	var normal;
 	for(let vertex of this.vertices){
-		normal = new MathVector2();
+		normal = new Math2d_Vector();
 		if(vertex.previous!=undefined){
 			CAD_Toolbox.segmentNormal(vertex.previous, vertex).add(normal, normal);
 		}
@@ -52,7 +52,7 @@ CAD_Polygon.prototype = {
 		var vertex;
 
 		// wire
-		var normal = new MathVector2(), vertex = new MathVector2();
+		var normal = new Math2d_Vector(), vertex = new Math2d_Vector();
 		for(var i=0; i<nbVertices-1; i++){
 			
 			this.vertices[i].copy(vertex);
