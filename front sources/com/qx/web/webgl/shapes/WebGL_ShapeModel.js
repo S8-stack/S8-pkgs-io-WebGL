@@ -75,6 +75,10 @@ WebGL_WireModel.prototype = {
 
 		pattern : WebGL_ShapeModel.prototype.pattern,
 
+		pushVertex : function(vertex){
+			this.vertices.push(vertex);
+		},
+		
 		pushSegment : function(i0, i1){
 			this.elements.push(i0);
 			this.elements.push(i1);
@@ -151,10 +155,19 @@ WebGL_SurfaceModel.prototype = {
 
 		pattern : WebGL_ShapeModel.prototype.pattern,
 
+
+		pushVertex : function(vertex){
+			this.vertices.push(vertex);
+		},
+
+		pushNormal : function(normal){
+			this.normals.push(normal);
+		},
+		
 		pushTriangle : function(i0, i1, i2){
-			this.segments.push(i0);
-			this.segments.push(i1);
-			this.segments.push(i2);
+			this.elements.push(i0);
+			this.elements.push(i1);
+			this.elements.push(i2);
 		},
 
 		compile : function(){
