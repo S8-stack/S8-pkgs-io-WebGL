@@ -39,7 +39,7 @@ WebGL_ShapeInstance.prototype = {
 
 			// render according to lod (level of details) if OK
 			if(this.isInitialized){
-				this.model.render(matrixStack, program, this.objectInstance.affines);
+				this.model.render(matrixStack, program, this.objectInstance.affine);
 			}
 		},
 

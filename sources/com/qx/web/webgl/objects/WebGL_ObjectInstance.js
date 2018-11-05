@@ -16,7 +16,7 @@ function WebGL_ObjectInstance(id, scene){
 	this.isDisposed = false;
 
 	// identity pattern
-	this.affines = [new MathAffine3()];
+	this.affine = new MathAffine3();
 }
 
 // single position pattern
@@ -50,7 +50,7 @@ WebGL_ObjectInstance.prototype = {
 					 */
 					
 					// single position pattern
-					instance.affines[0].setCoefficients(positionCoefficients, 0);
+					instance.affine.setCoefficients(positionCoefficients, 0);
 
 					// build model
 					instance.model = scene.objectModels.get(modelId);
@@ -63,7 +63,6 @@ WebGL_ObjectInstance.prototype = {
 		
 		setStyles : function(styles){
 			
-
 			// build renderables
 			this.shapes = new Array();
 			for(var index in styles){

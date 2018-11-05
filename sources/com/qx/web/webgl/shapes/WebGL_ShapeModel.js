@@ -9,7 +9,7 @@ function WebGL_ShapeModel(){
 
 WebGL_ShapeModel.prototype = {
 
-		render : function(matrixStack, program, affines){
+		render : function(matrixStack, program, affine){
 
 			// bind vertex attributes buffer handles (program is doing the
 			// picking of the appropriate vertices attributes)
@@ -18,19 +18,16 @@ WebGL_ShapeModel.prototype = {
 			// bind elements buffer (only one element buffer)
 			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.elementBufferHandle);
 
-			for(let affine of affines){
+			// update stack
+			matrixStack.setModel(affine);
 
-				// update stack
-				matrixStack.setModel(affine);
+			// bind matrices
+			program.bindMatrixStack(matrixStack);
 
-				// bind matrices
-				program.bindMatrixStack(matrixStack);
-
-				// trigger render by drawing elements
-				gl.drawElements(this.elementType, this.nbElements, gl.UNSIGNED_SHORT, 0);
-			}
+			// trigger render by drawing elements
+			gl.drawElements(this.elementType, this.nbElements, gl.UNSIGNED_SHORT, 0);
 		},
-		
+
 		pattern : function(affines, target){
 			for(let affine of affines){
 				this.transform(affine, target);
@@ -62,7 +59,7 @@ WebGL_WireModel.prototype = {
 
 			var transformedVertex;
 			var offset = targetVertices.length;
-			
+
 			// vertex
 			for(let vertex of this.vertices){
 				transformedVertex = new MathVector3d();
@@ -77,7 +74,7 @@ WebGL_WireModel.prototype = {
 		},
 
 		pattern : WebGL_ShapeModel.prototype.pattern,
-		
+
 		pushSegment : function(i0, i1){
 			this.elements.push(i0);
 			this.elements.push(i1);
@@ -94,7 +91,7 @@ WebGL_WireModel.prototype = {
 		},
 
 		render : WebGL_ShapeModel.prototype.render,
-		
+
 		dispose : function(){
 			gl.deleteBuffer(this.vertexBufferHandle);
 			gl.deleteBuffer(this.elementBufferHandle);
@@ -123,7 +120,7 @@ function WebGL_SurfaceModel(){
 
 
 WebGL_SurfaceModel.prototype = {
-		
+
 		transform : function(affine, target){
 			var targetVertices = target.vertices;
 			var targetNormals = target.normals;
@@ -131,14 +128,14 @@ WebGL_SurfaceModel.prototype = {
 
 			var transformedVertex, transformedNormal;
 			var offset = targetVertices.length;
-			
+
 			// vertex
 			for(let vertex of this.vertices){
 				transformedVertex = new MathVector3d();
 				affine.transformPoint(vertex, transformedVertex);
 				targetVertices.push(transformedVertex);
 			}
-			
+
 			// normals
 			for(let normal of this.normals){
 				transformedNormal = new MathVector3d();
@@ -153,7 +150,7 @@ WebGL_SurfaceModel.prototype = {
 		},
 
 		pattern : WebGL_ShapeModel.prototype.pattern,
-		
+
 		pushTriangle : function(i0, i1, i2){
 			this.segments.push(i0);
 			this.segments.push(i1);
@@ -164,7 +161,7 @@ WebGL_SurfaceModel.prototype = {
 
 			// vertex buffer handle
 			this.vertexBufferHandle = WebGL_ArrayBuffer.createVector3dBuffer(this.vertices);
-			
+
 			// vertex buffer handle
 			this.normalBufferHandle = WebGL_ArrayBuffer.createVector3dBuffer(this.normals);
 
@@ -172,7 +169,7 @@ WebGL_SurfaceModel.prototype = {
 			this.nbElements = this.elements.length;
 			this.elementBufferHandle = WebGL_ArrayBuffer.createElementBuffer(this.elements);
 		},
-		
+
 		render : WebGL_ShapeModel.prototype.render,
 
 		dispose : function(){

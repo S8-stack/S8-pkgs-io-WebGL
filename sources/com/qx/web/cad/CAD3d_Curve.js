@@ -9,8 +9,6 @@ function CAD3d_Curve(){
 
 CAD3d_Curve.prototype = {
 
-		
-		
 		sweepLoop : function(loop, surface, wire, shift){
 
 			var nbCurves = loop.curves.length;
@@ -105,7 +103,7 @@ CAD3d_Curve.prototype = {
 			// </wire>
 		},
 
-
+		
 		sweepPoint : function(point, wire){
 
 			// <surface>
@@ -123,14 +121,12 @@ CAD3d_Curve.prototype = {
 				vertices.push(vertex);
 			}
 
-			// elements
-			var elements = wire.elements;
 			// sections
 			for(var i=0; i<this.nbSections-1; i++){
-				elements.push(offset+i, offset+i+1);
+				wire.pushSegment(offset+i, offset+i+1);
 			}
 			if(this.isClosed){
-				elements.push(offset+this.nbSections-1, offset+0);
+				wire.pushSegment(offset+this.nbSections-1, offset+0);
 			}
 		}
 };
