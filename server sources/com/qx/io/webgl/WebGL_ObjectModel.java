@@ -20,5 +20,7 @@ public abstract class WebGL_ObjectModel {
 	public abstract String[][] getDefaultModeStyles();
 	
 	
+	
+	
 }
 

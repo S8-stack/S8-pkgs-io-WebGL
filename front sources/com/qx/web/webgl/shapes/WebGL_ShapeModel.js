@@ -41,18 +41,14 @@ WebGL_ShapeModel.prototype = {
  */
 function WebGL_WireModel(){
 	WebGL_ShapeModel.call(this);
-
-	// vertices
 	this.vertices = new Array();
-
-	// elements
 	this.elementType = gl.LINES;
 	this.elements = new Array();
 }
 
 
 WebGL_WireModel.prototype = {
-
+		
 		transform : function(affine, target){
 			var targetVertices = target.vertices;
 			var targetSegments = target.segments;
@@ -77,6 +73,24 @@ WebGL_WireModel.prototype = {
 
 		pushVertex : function(vertex){
 			this.vertices.push(vertex);
+		},
+		
+		setVertices : function(buffer){
+			var n = buffer.length/3;
+			this.vertices = new Array(n);
+			var index = 0;
+			for(var i=0; i<n; i++){
+				this.vertices[i] = new Math3d_Vector(buffer[index+0], buffer[index+1], buffer[index+2]);
+				index+=3;
+			}
+		},
+		
+		setIndices : function(buffer){
+			var n = buffer.length;
+			this.indices = new Array(n);
+			for(var i=0; i<n; i++){
+				this.indices[i] = buffer[i];
+			}
 		},
 		
 		pushSegment : function(i0, i1){
@@ -109,21 +123,15 @@ WebGL_WireModel.prototype = {
  */
 function WebGL_SurfaceModel(){
 	WebGL_ShapeModel.call(this);
-
-	// vertices
 	this.vertices = new Array();
-
-	// vertices
 	this.normals = new Array();
-
-	// elements
 	this.elementType = gl.TRIANGLES;
 	this.elements = new Array();
-
 }
 
 
 WebGL_SurfaceModel.prototype = {
+
 
 		transform : function(affine, target){
 			var targetVertices = target.vertices;

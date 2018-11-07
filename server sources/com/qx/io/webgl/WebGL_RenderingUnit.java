@@ -44,7 +44,7 @@ public abstract class WebGL_RenderingUnit {
 	
 
 	public void addVertex(MathVector3d vertex){
-		vertices.add(affine.applyToPoint(vertex));
+		vertices.add(affine.transformPoint(vertex));
 	}
 	
 
