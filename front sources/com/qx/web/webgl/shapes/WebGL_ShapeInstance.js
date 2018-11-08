@@ -5,7 +5,7 @@
  * a model must be defined
  * an instance must be defined
  */
-function WebGL_ShapeInstance(objectInstance, index, styles){
+function WebGL_ShapeInstance(objectInstance, index){
 
 	// keep tracking of wrapping object instance
 	this.objectInstance = objectInstance;
@@ -18,12 +18,6 @@ function WebGL_ShapeInstance(objectInstance, index, styles){
 
 	// flag 
 	this.isInitialized = false;
-
-	// mode styles
-	this.styles = styles;
-	
-	// model
-	this.model  = null;
 }
 
 
@@ -39,7 +33,22 @@ WebGL_ShapeInstance.prototype = {
 
 			// render according to lod (level of details) if OK
 			if(this.isInitialized){
-				this.model.render(matrixStack, program, this.objectInstance.affine);
+				
+				// bind vertex attributes buffer handles (program is doing the
+				// picking of the appropriate vertices attributes)
+				program.bindShape(this);
+				
+				for(let affine of this.objectInstance.affines){
+					// update stack
+					matrixStack.setModel(affine);
+					
+					// bind matrices
+					program.bindMatrixStack(matrixStack);
+
+					// trigger render by drawing elements
+					//gl.drawElements(this.elementType, this.nbElements, gl.UNSIGNED_SHORT, 0);
+					this.elements.draw();
+				}
 			}
 		},
 
@@ -66,3 +75,13 @@ WebGL_ShapeInstance.prototype = {
 			}
 		}
 };
+
+
+function WebGL_RenderableWire(objectInstance, index, styles){
+	WebGL_ShapeInstance.call(objectInstance, index, styles);
+}
+
+function WebGL_RenderableSurface(){
+	
+}
+

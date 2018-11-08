@@ -61,6 +61,16 @@ WebGL_ObjectInstance.prototype = {
 			});
 		},
 		
+		
+		initialize : function(){
+			if(!this.isInitialized){
+				
+				
+				this.isInitialized = true;
+			}
+			return this.isInitialized;
+		},
+		
 		setStyles : function(styles){
 			
 			// build renderables
@@ -107,10 +117,12 @@ WebGL_ObjectInstance.prototype = {
 
 
 function WebGL_ObjectInstances(scene){
+	
+	// map
+	this.map = new Map();
+	this.toBeInitialized = new STRUCT_Chain();
 
 	// keep reference of scene
-	this.chain = new Chain();
-	
 	this.scene = scene;
 }
 
@@ -121,16 +133,23 @@ WebGL_ObjectInstances.prototype = {
 		 * update all instances
 		 */
 		update : function(){
-			this.chain.crawl(function(instance){
-				instance.update();
+			var isInitialized;
+			this.toBeInitialized.iterate(function(instance){
+				if(instance.initialize()){
+					instance.entry.isRemoved = true;
+				}
 			});
 		},
 		
 		
+		/**
+		 * 
+		 */
 		push(instance){
-			this.chain.append(instance.id, instance);
+			this.toBeBuilt.append(instance.id, instance);
 		},
 
+		
 		/**
 		 * get shape
 		 */

@@ -38,10 +38,11 @@ program.bindStyle = function(style){
 };
 
 
-program.bindVertexAttributes = function(renderable){
-	gl.bindBuffer(gl.ARRAY_BUFFER, renderable.vertexBufferHandle);
-	gl.vertexAttribPointer(this.loc_Attribute_vertex, 3, gl.FLOAT, false, 0, 0);
+program.bindShape = function(shape){
+	shape.vertices.bind(this.loc_Attribute_vertex);
+	shape.elements.bind();
 };
+
 
 program.bindMatrixStack = function(stack){
 	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, stack.matrix_ProjectionViewModel.c);

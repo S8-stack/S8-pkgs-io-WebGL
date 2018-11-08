@@ -65,15 +65,10 @@ program.bindStyle = function(style){
 };
 
 
-program.bindVertexAttributes = function(model){
-	
-	// bind vertices
-	gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexBufferHandle);
-	gl.vertexAttribPointer(this.loc_Attribute_vertex, 3, gl.FLOAT, false, 0, 0);
-	
-	// bind normals
-	gl.bindBuffer(gl.ARRAY_BUFFER, model.normalBufferHandle);
-	gl.vertexAttribPointer(this.loc_Attribute_normal, 3, gl.FLOAT, false, 0, 0);
+program.bindShape = function(shape){
+	shape.vertices.bind(this.loc_Attribute_vertex);
+	shape.normals.bind(this.loc_Attribute_normal);
+	shape.elements.bind();
 };
 
 program.bindMatrixStack = function(stack){
@@ -83,9 +78,9 @@ program.bindMatrixStack = function(stack){
 };
 
 
-program.unbindVertexAttributes = function(model){
-	surface.model.vertices.unbind(this.loc_Attribute_vertex);
-	surface.model.normals.unbind(this.loc_Attribute_normal);
+program.unbindVertexAttributes = function(shape){
+	//surface.model.vertices.unbind(this.loc_Attribute_vertex);
+	//surface.model.normals.unbind(this.loc_Attribute_normal);
 };
 
 

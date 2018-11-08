@@ -92,7 +92,7 @@ WebGL_Scene.prototype = {
 			// gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
 
-			//this.shapeInstances.update();
+			this.objectInstances.update();
 			
 			this.programs.render(this.view, this.environment, this.matrixStack, lod);
 			// Recommended pattern for frame animation
