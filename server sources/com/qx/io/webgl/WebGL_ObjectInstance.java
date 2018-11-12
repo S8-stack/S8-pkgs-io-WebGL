@@ -15,12 +15,12 @@ public class WebGL_ObjectInstance {
 
 	private MathAffine3d position;
 
-	private WebGL_ObjectModel model;
+	private String modelId;
 
-	public WebGL_ObjectInstance(MathAffine3d position, WebGL_ObjectModel model) {
+	public WebGL_ObjectInstance(MathAffine3d position, String modelId) {
 		super();
 		this.position = position;
-		this.model = model;
+		this.modelId = modelId;
 	}
 
 
@@ -42,7 +42,7 @@ public class WebGL_ObjectInstance {
 		builder.append(";\n");
 
 		// model id
-		builder.append("var modelId =\""+model.id+"\";\n");
+		builder.append("var modelId =\""+modelId+"\";\n");
 
 		return builder.toString();
 	}

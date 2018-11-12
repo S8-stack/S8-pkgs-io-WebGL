@@ -16,11 +16,6 @@ public abstract class WebGL_ObjectModel {
 	}
 
 	public abstract byte[] getModel() throws IOException;
-
-	//public abstract String[][] getDefaultModeStyles();
-	
-	
-	
 	
 }
 

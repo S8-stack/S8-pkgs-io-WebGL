@@ -15,7 +15,7 @@ function WebGL_ShapeModel(){
 	// wire
 	this.wireVertices = new WebGL_VertexBuffer();
 	this.wireElements = new WebGL_LineBuffer();
-	
+
 	// surface
 	this.surfaceVertices = new WebGL_VertexBuffer();
 	this.surfaceNormals = new WebGL_NormalBuffer();
@@ -25,15 +25,15 @@ function WebGL_ShapeModel(){
 
 
 WebGL_ShapeModel.prototype = {
-		
+
 		transform : function(affine, target){
 			var offset;
-			
+
 			// wire
 			offset = target.wireVertices.length();
 			this.wireVertices.transform(affine, target.wireVertices);
 			this.wireElements.shift(offset, target.wireElements);
-			
+
 			// surface
 			offset = target.surfaceVertices.length();
 			this.surfaceVertices.transform(affine, target.surfaceVertices);
@@ -46,7 +46,7 @@ WebGL_ShapeModel.prototype = {
 				this.transform(affine, target);
 			}
 		},
-		
+
 		compile : function(){
 			this.wireVertices.compile();
 			this.wireElements.compile();
@@ -54,7 +54,7 @@ WebGL_ShapeModel.prototype = {
 			this.surfaceNormals.compile();
 			this.surfaceElements.compile();
 		},
-		
+
 		dispose : function(){
 			this.wireVertices.dispose();
 			this.wireElements.dispose();
@@ -81,7 +81,7 @@ WebGL_Vector2dBuffer.prototype = {
 		push : function(vector){
 			this.vectors.push(vector);
 		},
-		
+
 		length : function(){
 			return this.vectors.length;
 		},
@@ -130,7 +130,7 @@ WebGL_TexCoordBuffer.prototype = {
 		compile : WebGL_Vector2dBuffer.prototype.compile,
 		bind : WebGL_Vector2dBuffer.prototype.bind,
 		dispose : WebGL_Vector2dBuffer.prototype.dispose,
-		
+
 		transform : function(target){
 			for(let vector of this.vectors){
 				target.push(vector);
@@ -153,7 +153,7 @@ WebGL_Vector3dBuffer.prototype = {
 		length : function(){
 			return this.vectors.length;
 		},
-		
+
 		compile : function(){
 			// create array
 			var array = new Float32Array(3*this.vectors.length);
@@ -201,11 +201,11 @@ WebGL_VertexBuffer.prototype = {
 		compile : WebGL_Vector3dBuffer.prototype.compile,
 		bind : WebGL_Vector3dBuffer.prototype.bind,
 		dispose : WebGL_Vector3dBuffer.prototype.dispose,
-		
+
 		transform : function(affine, target){
 			var transformedVertex;
 			for(let vertex of this.vectors){
-				transformedVertex = new Math3d_Vector();
+				transformedVertex = new MathVector3d();
 				affine.transformVertex(vertex, transformedVertex);
 				target.push(transformedVertex);
 			}
@@ -223,11 +223,11 @@ WebGL_NormalBuffer.prototype = {
 		compile : WebGL_Vector3dBuffer.prototype.compile,
 		bind : WebGL_Vector3dBuffer.prototype.bind,
 		dispose : WebGL_Vector3dBuffer.prototype.dispose,
-		
+
 		transform : function(affine, target){
 			var transformedNormal;
 			for(let normal of this.vectors){
-				transformedNormal = new Math3d_Vector();
+				transformedNormal = new MathVector3d();
 				affine.transformVector(normal, transformedNormal);
 				target.push(transformedNormal);
 			}
@@ -240,38 +240,38 @@ function WebGL_ElementBuffer(){
 }
 
 WebGL_ElementBuffer.prototype = {
-		
-	shift : function(offset, target){
-		for(let index of this.indices){
-			target.indices.push(offset+index);
+
+		shift : function(offset, target){
+			for(let index of this.indices){
+				target.indices.push(offset+index);
+			}
+		},
+
+		compile : function(){
+			// create and populate array
+			this.length = this.indices.length;
+			var array = new Uint16Array(this.length);
+			array.set(this.indices);
+
+			// Create buffer handle
+			this.bufferHandle = gl.createBuffer();
+
+			// Bind buffer handle to current buffer
+			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
+
+			// bind buffer data
+			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, array, gl.STATIC_DRAW);
+		},
+
+		bind : function(){
+
+			// Bind buffer handle to current buffer
+			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
+		},
+
+		dispose : function(){
+			gl.deleteBuffer(this.bufferHandle);	
 		}
-	},
-	
-	compile : function(){
-		// create and populate array
-		this.length = this.indices.length;
-		var array = new Uint16Array(this.length);
-		array.set(this.indices);
-
-		// Create buffer handle
-		this.bufferHandle = gl.createBuffer();
-
-		// Bind buffer handle to current buffer
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
-
-		// bind buffer data
-		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, array, gl.STATIC_DRAW);
-	},
-	
-	bind : function(){
-		
-		// Bind buffer handle to current buffer
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
-	},
-	
-	dispose : function(){
-		gl.deleteBuffer(this.bufferHandle);	
-	}
 };
 
 function WebGL_LineBuffer(){
@@ -279,21 +279,22 @@ function WebGL_LineBuffer(){
 }
 
 WebGL_LineBuffer.prototype = {
-	compile : WebGL_ElementBuffer.prototype.compile,
-	bind : WebGL_ElementBuffer.prototype.bind,
-	dispose : WebGL_ElementBuffer.prototype.dispose,
-	
-	push : function(i0, i1){
-		this.indices.push(i0);
-		this.indices.push(i1);
-	},
-	
-	draw : function(){
-		// trigger render by drawing elements
-		gl.drawElements(gl.LINES, this.length, gl.UNSIGNED_SHORT, 0);
-	}
-	
-	
+		shift : WebGL_ElementBuffer.prototype.shift,
+		compile : WebGL_ElementBuffer.prototype.compile,
+		bind : WebGL_ElementBuffer.prototype.bind,
+		dispose : WebGL_ElementBuffer.prototype.dispose,
+
+		push : function(i0, i1){
+			this.indices.push(i0);
+			this.indices.push(i1);
+		},
+
+		draw : function(){
+			// trigger render by drawing elements
+			gl.drawElements(gl.LINES, this.length, gl.UNSIGNED_SHORT, 0);
+		}
+
+
 };
 
 
@@ -302,19 +303,20 @@ function WebGL_TriangleBuffer(){
 }
 
 WebGL_TriangleBuffer.prototype = {
-	compile : WebGL_ElementBuffer.prototype.compile,
-	bind : WebGL_ElementBuffer.prototype.bind,
-	dispose : WebGL_ElementBuffer.prototype.dispose,
-	
-	push : function(i0, i1, i2){
-		this.indices.push(i0);
-		this.indices.push(i1);
-		this.indices.push(i2);
-	},
-	
-	draw : function(){
-		// trigger render by drawing elements
-		gl.drawElements(gl.TRIANGLES, this.length, gl.UNSIGNED_SHORT, 0);
-	}
-	
+		shift : WebGL_ElementBuffer.prototype.shift,
+		compile : WebGL_ElementBuffer.prototype.compile,
+		bind : WebGL_ElementBuffer.prototype.bind,
+		dispose : WebGL_ElementBuffer.prototype.dispose,
+
+		push : function(i0, i1, i2){
+			this.indices.push(i0);
+			this.indices.push(i1);
+			this.indices.push(i2);
+		},
+
+		draw : function(){
+			// trigger render by drawing elements
+			gl.drawElements(gl.TRIANGLES, this.length, gl.UNSIGNED_SHORT, 0);
+		}
+
 };
