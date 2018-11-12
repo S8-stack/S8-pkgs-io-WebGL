@@ -16,7 +16,7 @@ function WebGL_ObjectInstance(id, scene){
 	this.isDisposed = false;
 
 	// identity pattern
-	this.affines = [new Math3d_Affine()];
+	this.affines = [new MathAffine3d()];
 
 	// model
 	this.model = null;
@@ -52,7 +52,7 @@ WebGL_ObjectInstance.prototype = {
 					 */
 
 					// single position pattern
-					var affine = new Math3d_Affine();
+					var affine = new MathAffine3d();
 					affine.setCoefficients(positionCoefficients, 0);
 					instance.affines = [affine];
 
