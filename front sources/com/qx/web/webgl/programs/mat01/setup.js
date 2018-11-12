@@ -37,19 +37,14 @@ program.initialize = function(){
 	
 };
 
-program.bindSettings = function(){
+program.bindProgram = function(view, environment){
 	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
 	gl.enableVertexAttribArray(this.loc_Attribute_normal);
-};
-
-
-program.bindView = function(view){
-	// nothing to do
-};
-
-program.bindEnvironment = function(environment){
 	
+	// nothing to do for view	
 	var light;
+	
+	// setup lights
 	for(var i=0; i<this.nbLights; i++){
 		environment.lights[i].bind(this.lightHandles[i]);
 	}
@@ -66,25 +61,26 @@ program.bindStyle = function(style){
 
 
 program.bindShape = function(shape){
-	shape.vertices.bind(this.loc_Attribute_vertex);
-	shape.normals.bind(this.loc_Attribute_normal);
-	shape.elements.bind();
+	shape.surfaceVertices.bind(this.loc_Attribute_vertex);
+	shape.surfaceNormals.bind(this.loc_Attribute_normal);
+	shape.surfaceElements.bind();
 };
 
-program.bindMatrixStack = function(stack){
+program.draw = function(stack, shape){
 	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, stack.matrix_ProjectionViewModel.c);
 	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MV, false, stack.matrix_ViewModel.c);
 	gl.uniformMatrix3fv(this.loc_Uniform_matrix_N, false, stack.matrix_Normal.c);
+	shape.surfaceElements.draw();
 };
 
 
-program.unbindVertexAttributes = function(shape){
+program.unbindShape = function(shape){
 	//surface.model.vertices.unbind(this.loc_Attribute_vertex);
 	//surface.model.normals.unbind(this.loc_Attribute_normal);
 };
 
 
-program.unbindSettings = function(){
+program.unbindProgram = function(){
 	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
 	gl.disableVertexAttribArray(this.loc_Attribute_normal);
 };

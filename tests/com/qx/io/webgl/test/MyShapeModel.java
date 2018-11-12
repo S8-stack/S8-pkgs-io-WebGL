@@ -18,7 +18,7 @@ public class MyShapeModel extends WebGL_ObjectModel {
 	}
 
 	@Override
-	public String getConstructionScript() throws IOException{
+	public String getModel() throws IOException{
 
 		String definition = 
 				"var profile = new WebGL_Polygon([-0.25, .5, 0.25, .5, 0.25, 2.0, -.25, 2.0], true);"

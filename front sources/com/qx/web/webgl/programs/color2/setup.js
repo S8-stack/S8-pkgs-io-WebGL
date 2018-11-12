@@ -17,18 +17,10 @@ program.initialize = function(){
 };
 
 
-program.bindSettings = function(){
+program.bindProgram = function(){
 
 	// enable location
 	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
-};
-
-
-program.bindView = function(view){
-};
-
-
-program.bindEnvironment = function(environment){
 };
 
 
@@ -39,18 +31,18 @@ program.bindStyle = function(style){
 
 
 program.bindShape = function(shape){
-	shape.vertices.bind(this.loc_Attribute_vertex);
-	shape.elements.bind();
+	shape.wireVertices.bind(this.loc_Attribute_vertex);
+	shape.wireElements.bind();
 };
 
 
-program.bindMatrixStack = function(stack){
+program.draw = function(stack, shape){
 	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, stack.matrix_ProjectionViewModel.c);
+	shape.wireElements.draw();
 };
 
 
-
-program.unbindSettings = function(){
+program.unbindProgram = function(){
 	// disable location
 	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
 };

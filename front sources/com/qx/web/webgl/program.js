@@ -67,13 +67,7 @@ WebGL_Program.prototype = {
 				gl.useProgram(this.handle);
 				
 				// setup settings
-				this.bindSettings();
-				
-				// use view if necessary
-				this.bindView(view);
-				
-				// load context uniforms
-				this.bindEnvironment(environment);
+				this.bindProgram(view, environment);
 			
 				// render renderables
 				for(var i in this.displayList){
@@ -81,7 +75,7 @@ WebGL_Program.prototype = {
 				}
 				
 				// reset to default
-				this.unbindSettings();
+				this.unbindProgram();
 				
 				// unbind program
 				//gl.useProgram(0);

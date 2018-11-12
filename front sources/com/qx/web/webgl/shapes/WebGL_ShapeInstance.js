@@ -5,19 +5,26 @@
  * a model must be defined
  * an instance must be defined
  */
-function WebGL_ShapeInstance(objectInstance, index){
+function WebGL_ShapeInstance(objectInstance, shapeModel){
 
 	// keep tracking of wrapping object instance
 	this.objectInstance = objectInstance;
 
-	// build id
-	this.id = objectInstance.id+'-'+index;
+	// wire
+	this.wireColor = shapeModel.wireColor;
+	
+	this.wireVertices = shapeModel.wireVertices;
+	this.wireElements = shapeModel.wireElements;
 
-	// index
-	this.index = index;
-
-	// flag 
-	this.isInitialized = false;
+	// surface
+	this.surfaceRoughness = shapeModel.surfaceRoughness;
+	this.surfaceSpecularity = shapeModel.surfaceSpecularity;
+	this.surfaceSpecularColor = shapeModel.surfaceSpecularColor;
+	this.surfaceDiffuseColor = shapeModel.surfaceDiffuseColor;
+	
+	this.surfaceVertices = shapeModel.surfaceVertices;
+	this.surfaceNormals = shapeModel.surfaceNormals;
+	this.surfaceElements = shapeModel.surfaceElements;
 }
 
 
@@ -25,47 +32,35 @@ WebGL_ShapeInstance.prototype = {
 
 		render : function(matrixStack, program){
 
-			// try to initialize if not already done
-			if(!this.isInitialized && this.objectInstance.model.isInitialized){
-				this.model = this.objectInstance.model.shapes[this.index];
-				this.isInitialized = true;
-			}
+			// bind vertex attributes buffer handles (program is doing the
+			// picking of the appropriate vertices attributes)
+			program.bindShape(this);
 
-			// render according to lod (level of details) if OK
-			if(this.isInitialized){
+			// affine
+			for(let affine of this.objectInstance.affines){
 				
-				// bind vertex attributes buffer handles (program is doing the
-				// picking of the appropriate vertices attributes)
-				program.bindShape(this);
-				
-				for(let affine of this.objectInstance.affines){
-					// update stack
-					matrixStack.setModel(affine);
-					
-					// bind matrices
-					program.bindMatrixStack(matrixStack);
+				// update stack
+				matrixStack.setModel(affine);
 
-					// trigger render by drawing elements
-					//gl.drawElements(this.elementType, this.nbElements, gl.UNSIGNED_SHORT, 0);
-					this.elements.draw();
-				}
+				// bind matrices
+				// trigger render by drawing elements
+				//gl.drawElements(this.elementType, this.nbElements, gl.UNSIGNED_SHORT, 0);
+				program.draw(matrixStack, this);
 			}
 		},
 
 		/**
 		 * setStyle to a shape
 		 */
-		setMode : function(mode){
-
-			// detach form current style if any
-			if(this.style!=undefined){
-				this.style.remove(this.id);	
-			}
+		start : function(mode){
 
 			// append to new style
-			var styleId = this.styles[mode];
-			this.style = scene.styles.get(styleId);
-			this.style.append(this);
+			var style = scene.styles.get("darkWire");
+			style.append(this);
+			
+			// append to new style
+			style = scene.styles.get("shinyBluePlastic");
+			style.append(this);
 		},
 
 		dispose : function(){
@@ -75,13 +70,3 @@ WebGL_ShapeInstance.prototype = {
 			}
 		}
 };
-
-
-function WebGL_RenderableWire(objectInstance, index, styles){
-	WebGL_ShapeInstance.call(objectInstance, index, styles);
-}
-
-function WebGL_RenderableSurface(){
-	
-}
-

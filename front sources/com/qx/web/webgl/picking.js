@@ -15,7 +15,7 @@ function WebGL_PickingModule(scene){
 	this.scene = scene;
 	this.matrixStack = scene.matrixStack;
 
-	this.pickables = new Chain();
+	this.pickables = new STRUCT_Chain();
 
 	// program
 	this.program = new WebGL_Program("picking");

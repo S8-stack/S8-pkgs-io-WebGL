@@ -8,7 +8,7 @@ function WebGL_ObjectInstance(id, scene){
 
 	// id
 	this.id = id;
-	
+
 	// mode
 	this.mode = 0;
 
@@ -16,10 +16,13 @@ function WebGL_ObjectInstance(id, scene){
 	this.isDisposed = false;
 
 	// identity pattern
-	this.affine = new Math3d_Affine();
+	this.affines = [new Math3d_Affine()];
+
+	// model
+	this.model = null;
 }
 
-// single position pattern
+//single position pattern
 function createSinglePattern(positionCoefficients){
 	var affine = new MathAffine3();
 	affine.setCoefficients(positionCoefficients, 0);
@@ -31,48 +34,55 @@ function createSinglePattern(positionCoefficients){
 
 
 WebGL_ObjectInstance.prototype = {
-		
-		
+
+
 		load : function(){
 			var instance = this;
 			ctx.request("webGL.getObjectInstance:id="+instance.id, function (response){
 
 				if(!instance.isDisposed){
-					
+
 					eval(response.responseText);
-					
+
 					/*
 					 * eval must define:
 					 * var modelId
 					 * var position (float[16])
-					 * var styles (String[8][nbRenderables])
 					 * 
 					 */
-					
+
 					// single position pattern
-					instance.affine.setCoefficients(positionCoefficients, 0);
+					var affine = new Math3d_Affine();
+					affine.setCoefficients(positionCoefficients, 0);
+					instance.affines = [affine];
 
 					// build model
 					instance.model = scene.objectModels.get(modelId);
-					
-					// set styles
-					instance.setStyles(styles);
+
+					// refresh
+					scene.render();
 				}
 			});
 		},
-		
-		
+
+
 		initialize : function(){
-			if(!this.isInitialized){
-				
-				
+			if(!this.isInitialized && this.model!=null && this.model.isInitialized){
+
+				this.shapes = new Array();
+				var shape;
+				for(let shapeModel of this.model.shapes){
+					shape = new WebGL_ShapeInstance(this, shapeModel);
+					this.shapes.push(shape);
+					shape.start();
+				}
 				this.isInitialized = true;
 			}
 			return this.isInitialized;
 		},
-		
+
 		setStyles : function(styles){
-			
+
 			// build renderables
 			this.shapes = new Array();
 			for(var index in styles){
@@ -81,12 +91,12 @@ WebGL_ObjectInstance.prototype = {
 
 			// done...
 			this.isInitialized = true;
-			
+
 			// update modes for display
 			for(let shape of this.shapes){
 				shape.setMode(this.mode);
 			}
-			
+
 			// update picking
 			scene.picking.append(this);
 		},
@@ -102,7 +112,7 @@ WebGL_ObjectInstance.prototype = {
 				scene.render();
 			}
 		},
-		
+
 
 		dispose : function(){
 			if(this.isInitialized){
@@ -117,7 +127,7 @@ WebGL_ObjectInstance.prototype = {
 
 
 function WebGL_ObjectInstances(scene){
-	
+
 	// map
 	this.map = new Map();
 	this.toBeInitialized = new STRUCT_Chain();
@@ -133,40 +143,40 @@ WebGL_ObjectInstances.prototype = {
 		 * update all instances
 		 */
 		update : function(){
-			var isInitialized;
 			this.toBeInitialized.iterate(function(instance){
 				if(instance.initialize()){
 					instance.entry.isRemoved = true;
 				}
 			});
 		},
-		
-		
+
+
 		/**
 		 * 
 		 */
-		push(instance){
-			this.toBeBuilt.append(instance.id, instance);
+		push : function(instance){
+			this.map.set(instance.id, instance);
+			this.toBeInitialized.append(instance);
 		},
 
-		
+
 		/**
 		 * get shape
 		 */
 		get : function(id){
-			var instance = this.chain.get(id);
+			var instance = this.map.get(id);
 
 			// if shape is not present, we create it
 			if(instance==undefined){
 				instance = new WebGL_ObjectInstance(id, this.scene);
 				instance.load();
-				this.chain.append(id, instance);
+				this.push(instance);
 			}
 			return instance;
 		},
 
 		remove : function(id){
-			this.chain.remove(id);
+			this.map.remove(id);
 		},
 
 		clear : function(){

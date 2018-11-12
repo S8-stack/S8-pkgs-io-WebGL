@@ -10,7 +10,7 @@ function WebGL_Style(id){
 
 	this.id = id;
 
-	this.shapesInstances = new Chain();
+	this.shapesInstances = new STRUCT_Chain();
 
 	this.isInitialized = false;
 
@@ -42,14 +42,14 @@ WebGL_Style.prototype = {
 		/**
 		 * render the styles and shapes
 		 */
-		render : function(matrixStack, program, lod){
+		render : function(matrixStack, program){
 			if(this.isInitialized){
 				
 				// load style uniforms
 				program.bindStyle(this);
 
-				this.shapesInstances.crawl(function(renderable){
-					renderable.render(matrixStack, program, lod);	
+				this.shapesInstances.iterate(function(renderable){
+					renderable.render(matrixStack, program);	
 				});
 			}
 		},
@@ -61,7 +61,7 @@ WebGL_Style.prototype = {
 		append : function(renderable){
 			
 			// append to chain
-			this.shapesInstances.append(renderable.id, renderable);
+			this.shapesInstances.append(renderable);
 
 			// set current style
 			renderable.style = this;

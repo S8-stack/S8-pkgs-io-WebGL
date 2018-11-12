@@ -18,6 +18,10 @@ function WebGL_ObjectModel(){
 
 WebGL_ObjectModel.prototype = {
 	
+	/*
+	
+	model loading is to be defined by client
+	
 	load : function(id){
 		this.id = id;
 		var model = this;
@@ -29,6 +33,7 @@ WebGL_ObjectModel.prototype = {
 			model.compile();
 		});
 	},
+	*/
 		
 	compile : function(){
 		if(!this.isInitialized){

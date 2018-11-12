@@ -20,7 +20,7 @@ STRUCT_Chain.prototype = {
 			entry.isRemoved = false;
 			entry.previous=null;
 			entry.next=null;
-			object.entry = this;
+			object.entry = entry;
 
 			// if first element
 			if(this.head==null){
@@ -38,19 +38,10 @@ STRUCT_Chain.prototype = {
 			}
 		},
 
-		remove : function(id){
-			var entry = this.map.get(id);
-			entry.isEnabled = false;
-			
-
-			// update map
-			this.map.remove(id);
-		},
-
 		iterate : function(func){
 			var entry = this.head;
 			while(entry!=null){
-				if(!entry.isDeleted){
+				if(!entry.isRemoved){
 					func(entry.value);
 				}
 				else{
@@ -70,9 +61,5 @@ STRUCT_Chain.prototype = {
 				}	
 				entry = entry.next;
 			}
-		},
-
-		get : function(id){
-			return this.map.get(id);
 		}
 };

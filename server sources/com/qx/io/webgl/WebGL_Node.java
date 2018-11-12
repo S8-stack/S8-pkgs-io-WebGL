@@ -114,8 +114,8 @@ public class WebGL_Node implements HTTPS_POST_Node {
 	public synchronized void getShapeModel(HTTPS_Connection connection, @QueryParam(name="id") String id) throws Exception {
 
 		if(models.containsKey(id)){
-			String content = models.get(id).getConstructionScript();
-			connection.sendContent(MIME_Type.TEXT_PLAIN, content.getBytes());
+			byte[] content = models.get(id).getModel();
+			connection.sendContent(MIME_Type.APPLICATION_ARRAY_BUFFER, content);
 		}
 		else{
 			connection.respondNotOkStatus("Cannot find shape model with id="+id);

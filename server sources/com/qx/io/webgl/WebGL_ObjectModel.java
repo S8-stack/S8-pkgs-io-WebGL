@@ -15,9 +15,9 @@ public abstract class WebGL_ObjectModel {
 		super();
 	}
 
-	public abstract String getConstructionScript() throws IOException;
+	public abstract byte[] getModel() throws IOException;
 
-	public abstract String[][] getDefaultModeStyles();
+	//public abstract String[][] getDefaultModeStyles();
 	
 	
 	

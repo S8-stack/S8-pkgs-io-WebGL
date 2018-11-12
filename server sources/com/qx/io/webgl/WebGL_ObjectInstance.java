@@ -17,13 +17,10 @@ public class WebGL_ObjectInstance {
 
 	private WebGL_ObjectModel model;
 
-	private String[][] styles;
-
 	public WebGL_ObjectInstance(MathAffine3d position, WebGL_ObjectModel model) {
 		super();
 		this.position = position;
 		this.model = model;
-		this.styles = model.getDefaultModeStyles();
 	}
 
 
@@ -46,11 +43,6 @@ public class WebGL_ObjectInstance {
 
 		// model id
 		builder.append("var modelId =\""+model.id+"\";\n");
-
-		// mode styles
-		builder.append("var styles =");
-		write(builder, styles);
-		builder.append(";\n");
 
 		return builder.toString();
 	}

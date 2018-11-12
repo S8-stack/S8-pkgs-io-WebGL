@@ -5,10 +5,17 @@
 function WebGL_ShapeModel(){
 	// no affines
 
+	// material details (to be overriden by user)
+	this.wireColor = [63, 63, 64];
+	this.surfaceRoughness = 0.2;
+	this.surfaceSpecularity = 0.2;
+	this.surfaceSpecularColor = [255, 255, 255];
+	this.surfaceDiffuseColor = [255, 255, 255];
+
 	// wire
 	this.wireVertices = new WebGL_VertexBuffer();
 	this.wireElements = new WebGL_LineBuffer();
-
+	
 	// surface
 	this.surfaceVertices = new WebGL_VertexBuffer();
 	this.surfaceNormals = new WebGL_NormalBuffer();
@@ -120,7 +127,7 @@ function WebGL_TexCoordBuffer(){
 WebGL_TexCoordBuffer.prototype = {
 		push : WebGL_Vector2dBuffer.prototype.push,
 		length : WebGL_Vector2dBuffer.prototype.length,
-		compile : WebGL_Vector2dBuffer.prototype.push,
+		compile : WebGL_Vector2dBuffer.prototype.compile,
 		bind : WebGL_Vector2dBuffer.prototype.bind,
 		dispose : WebGL_Vector2dBuffer.prototype.dispose,
 		
@@ -191,7 +198,7 @@ function WebGL_VertexBuffer(){
 WebGL_VertexBuffer.prototype = {
 		push : WebGL_Vector3dBuffer.prototype.push,
 		length : WebGL_Vector3dBuffer.prototype.length,
-		compile : WebGL_Vector3dBuffer.prototype.push,
+		compile : WebGL_Vector3dBuffer.prototype.compile,
 		bind : WebGL_Vector3dBuffer.prototype.bind,
 		dispose : WebGL_Vector3dBuffer.prototype.dispose,
 		
@@ -213,7 +220,7 @@ function WebGL_NormalBuffer(){
 WebGL_NormalBuffer.prototype = {
 		push : WebGL_Vector3dBuffer.prototype.push,
 		length : WebGL_Vector3dBuffer.prototype.length,
-		compile : WebGL_Vector3dBuffer.prototype.push,
+		compile : WebGL_Vector3dBuffer.prototype.compile,
 		bind : WebGL_Vector3dBuffer.prototype.bind,
 		dispose : WebGL_Vector3dBuffer.prototype.dispose,
 		
@@ -257,7 +264,8 @@ WebGL_ElementBuffer.prototype = {
 	},
 	
 	bind : function(){
-		// bind elements buffer (only one element buffer)
+		
+		// Bind buffer handle to current buffer
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
 	},
 	
@@ -271,9 +279,9 @@ function WebGL_LineBuffer(){
 }
 
 WebGL_LineBuffer.prototype = {
-	compile : WebGL_ElementBuffer.compile,
-	bind : WebGL_ElementBuffer.bind,
-	dispose : WebGL_ElementBuffer.dispose,
+	compile : WebGL_ElementBuffer.prototype.compile,
+	bind : WebGL_ElementBuffer.prototype.bind,
+	dispose : WebGL_ElementBuffer.prototype.dispose,
 	
 	push : function(i0, i1){
 		this.indices.push(i0);
@@ -282,7 +290,7 @@ WebGL_LineBuffer.prototype = {
 	
 	draw : function(){
 		// trigger render by drawing elements
-		gl.drawElements(this.GL_LINE, this.length, gl.UNSIGNED_SHORT, 0);
+		gl.drawElements(gl.LINES, this.length, gl.UNSIGNED_SHORT, 0);
 	}
 	
 	
@@ -294,9 +302,9 @@ function WebGL_TriangleBuffer(){
 }
 
 WebGL_TriangleBuffer.prototype = {
-	compile : WebGL_ElementBuffer.compile,
-	bind : WebGL_ElementBuffer.bind,
-	dispose : WebGL_ElementBuffer.dispose,
+	compile : WebGL_ElementBuffer.prototype.compile,
+	bind : WebGL_ElementBuffer.prototype.bind,
+	dispose : WebGL_ElementBuffer.prototype.dispose,
 	
 	push : function(i0, i1, i2){
 		this.indices.push(i0);
@@ -306,7 +314,7 @@ WebGL_TriangleBuffer.prototype = {
 	
 	draw : function(){
 		// trigger render by drawing elements
-		gl.drawElements(this.GL_TRIANGLE, this.length, gl.UNSIGNED_SHORT, 0);
+		gl.drawElements(gl.TRIANGLES, this.length, gl.UNSIGNED_SHORT, 0);
 	}
 	
 };
