@@ -8,7 +8,7 @@ function WebGL_ShapeModel(){
 	// material details (to be overriden by user)
 	this.wireColor = [63, 63, 64];
 	this.surfaceRoughness = 0.2;
-	this.surfaceSpecularity = 0.2;
+	this.surfaceGlossiness = 0.2;
 	this.surfaceSpecularColor = [255, 255, 255];
 	this.surfaceDiffuseColor = [255, 255, 255];
 
@@ -206,7 +206,7 @@ WebGL_VertexBuffer.prototype = {
 			var transformedVertex;
 			for(let vertex of this.vectors){
 				transformedVertex = new MathVector3d();
-				affine.transformVertex(vertex, transformedVertex);
+				affine.transformPoint(vertex, transformedVertex);
 				target.push(transformedVertex);
 			}
 		}

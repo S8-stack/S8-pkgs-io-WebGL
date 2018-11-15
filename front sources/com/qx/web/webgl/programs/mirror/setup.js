@@ -28,7 +28,8 @@ program.initialize = function(){
 
 
 program.bind = function(view, environment){
-	gl.uniform3fv(this.loc_Uniform_eyePosition, view.eyePosition.c);
+	var eye = view.eyePosition;
+	gl.uniform3fv(this.loc_Uniform_eyePosition, [eye.x, eye.y, eye.z]);
 	environment.environmentTexture.bind(this.loc_Uniform_texture, 0);
 	
 	// enable location

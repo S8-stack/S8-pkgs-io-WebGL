@@ -121,64 +121,8 @@ WebGL_Texture.prototype = {
 
 
 
-function WebGL_TextureCubeMap(pathname, extension){
-	this.load(pathname, extension);
-	this.targets = [0,0,0,0,0,0];
-};
 
 
-WebGL_TextureCubeMap.prototype = {
-
-
-
-		load : function(pathname, extension) {
-
-			var targets = [gl.TEXTURE_CUBE_MAP_POSITIVE_X,
-				gl.TEXTURE_CUBE_MAP_NEGATIVE_X,
-				gl.TEXTURE_CUBE_MAP_POSITIVE_Y,
-				gl.TEXTURE_CUBE_MAP_NEGATIVE_Y,
-				gl.TEXTURE_CUBE_MAP_POSITIVE_Z,
-				gl.TEXTURE_CUBE_MAP_NEGATIVE_Z ];
-
-
-			var suffixes = [ "_negx", "_posx", "_posy", "_negy", "_posz", "_negz"];
-
-
-			this.cubeTexture = gl.createTexture();
-			gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.cubeTexture);
-			gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-			gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-			gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
-
-			for (var i = 0; i<6; i++) {
-				WebGL_TextureCubeMap.loadFace(pathname + suffixes[i] + extension, targets[i], this.cubeTexture);
-			}
-
-		},
-
-
-		bind : function(location, index){
-			gl.activeTexture(gl.TEXTURE0+index);
-			gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.cubeTexture);
-			gl.uniform1i(location, index);
-		},
-
-};
-
-
-WebGL_TextureCubeMap.loadFace = function(pathName, target, cubeTexture){
-	var cubeImage = new Image();
-	cubeImage.onload = function() {
-		WebGL_TextureCubeMap.loadImage(target, cubeImage, cubeTexture);
-	};
-	cubeImage.src = pathName;
-};
-
-WebGL_TextureCubeMap.loadImage = function(target, cubeImage, cubeTexture){
-	gl.bindTexture(gl.TEXTURE_CUBE_MAP, cubeTexture);
-	gl.texImage2D(target, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, cubeImage);
-	gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
-};
 
 
 

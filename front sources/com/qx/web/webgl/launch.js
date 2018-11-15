@@ -35,14 +35,16 @@ var WebGL_start = function(){
 
 
 	try {
-		gl = canvas.getContext("webgl", {stencil : true});
+		gl = canvas.getContext("webgl2", {stencil : true});
 		gl.viewportWidth = pxComputedWidth;
 		gl.viewportHeight = pxComputedHeight;
 		
+		/*
 		var ext = gl.getExtension("OES_element_index_uint");
 		if(ext==null){
 			alert("Do not support OES UINT");
 		}
+		*/
 
 	} catch (e) {
 		alert("Could not initialise WebGL, sorry :-("+e);

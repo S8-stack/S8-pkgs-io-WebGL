@@ -17,8 +17,8 @@ function WebGL_ShapeInstance(objectInstance, shapeModel){
 	this.wireElements = shapeModel.wireElements;
 
 	// surface
+	this.surfaceGlossiness = shapeModel.surfaceGlossiness;
 	this.surfaceRoughness = shapeModel.surfaceRoughness;
-	this.surfaceSpecularity = shapeModel.surfaceSpecularity;
 	this.surfaceSpecularColor = shapeModel.surfaceSpecularColor;
 	this.surfaceDiffuseColor = shapeModel.surfaceDiffuseColor;
 	
@@ -59,7 +59,7 @@ WebGL_ShapeInstance.prototype = {
 			style.append(this);
 			
 			// append to new style
-			style = scene.styles.get("shinyBluePlastic");
+			style = scene.styles.get("mirror");
 			style.append(this);
 		},
 

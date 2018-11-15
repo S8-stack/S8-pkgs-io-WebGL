@@ -2,7 +2,7 @@
 
 // definitions
 style.initialize = function(){
-	this.programId = "mirror";
+	this.programId = "standard";
 }
 
 // dispose callback function
