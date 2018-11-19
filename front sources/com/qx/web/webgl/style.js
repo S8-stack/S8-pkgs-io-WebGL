@@ -30,7 +30,7 @@ function WebGL_Style(id){
 		style.isInitialized = true;
 
 		// from now on, the program is ready to render!
-		scene.programs.get(style.programId).append(style);
+		scene.pipe.get(style.programId).append(style);
 
 		scene.render();
 	});
@@ -46,10 +46,10 @@ WebGL_Style.prototype = {
 			if(this.isInitialized){
 				
 				// load style uniforms
-				program.bindStyle(this);
+				program.attachStyle(this);
 
-				this.shapesInstances.iterate(function(renderable){
-					renderable.render(matrixStack, program);	
+				this.shapesInstances.iterate(function(entry){
+					entry.renderable.render(matrixStack, program);	
 				});
 			}
 		},
@@ -58,13 +58,8 @@ WebGL_Style.prototype = {
 		/*
 		 * append shape
 		 */
-		append : function(renderable){
-			
-			// append to chain
-			this.shapesInstances.append(renderable);
-
-			// set current style
-			renderable.style = this;
+		append : function(){
+			return this.shapesInstances.append();
 		},
 
 		remove : function(renderableId){

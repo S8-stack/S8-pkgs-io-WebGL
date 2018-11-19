@@ -12,15 +12,13 @@ function STRUCT_Chain(){
 
 STRUCT_Chain.prototype = {
 
-		append : function(object){
+		append : function(){
 
 			// define new entry
 			var entry = {};
-			entry.value=object;
 			entry.isRemoved = false;
 			entry.previous=null;
 			entry.next=null;
-			object.entry = entry;
 
 			// if first element
 			if(this.head==null){
@@ -36,13 +34,15 @@ STRUCT_Chain.prototype = {
 				entry.next = null;
 				this.tail = entry;
 			}
+			
+			return entry;
 		},
 
 		iterate : function(func){
 			var entry = this.head;
 			while(entry!=null){
 				if(!entry.isRemoved){
-					func(entry.value);
+					func(entry);
 				}
 				else{
 					if(entry.previous!=null){

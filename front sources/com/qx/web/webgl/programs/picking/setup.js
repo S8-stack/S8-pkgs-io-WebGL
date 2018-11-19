@@ -20,36 +20,40 @@ program.initialize = function(){
 
 
 
-program.bindSettings = function(view, environment){
+program.bind = function(view, environment){
+
+	// bind shader program
+	gl.useProgram(this.handle);
+	
 	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
 };
 
 
-program.bindView = function(view){
+
+program.attachStyle = function(style){
 	// nothing to do
 };
 
-program.bindEnvironment = function(environment){
-	// nothing to do
+program.attachShape = function(shape){
+	shape.surfaceVertices.bind(this.loc_Attribute_vertex);
+	shape.surfaceElements.bind();
 };
 
-program.bindStyle = function(style){
-	// nothing to do
-};
+program.draw = function(stack, shape){
 
-program.bindVertexAttributes = function(model){
-	gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexBufferHandle);
-	gl.vertexAttribPointer(this.loc_Attribute_vertex, 3, gl.FLOAT, false, 0, 0);
-};
-
-program.bindMatrixStack = function(stack){
+	// matrices
 	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, stack.matrix_ProjectionViewModel.c);
+	shape.surfaceElements.draw();
 };
 
 
-program.unbindVertexAttributes = function(model){
+
+program.detachShape = function(model){
+	shape.surfaceVertices.unbind(this.loc_Attribute_vertex);
 };
 
-program.unbindSettings = function(){
+
+program.unbind = function(){
+	// disable location
 	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
 };

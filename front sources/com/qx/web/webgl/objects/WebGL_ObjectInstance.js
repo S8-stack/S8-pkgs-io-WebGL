@@ -74,13 +74,18 @@ WebGL_ObjectInstance.prototype = {
 				for(let shapeModel of this.model.shapes){
 					shape = new WebGL_ShapeInstance(this, shapeModel);
 					this.shapes.push(shape);
-					shape.start();
+					shape.reset();
 				}
+				
+				// update picking
+				scene.picking.append(this);
+				
 				this.isInitialized = true;
 			}
 			return this.isInitialized;
 		},
 
+		/*
 		setStyles : function(styles){
 
 			// build renderables
@@ -97,9 +102,9 @@ WebGL_ObjectInstance.prototype = {
 				shape.setMode(this.mode);
 			}
 
-			// update picking
-			scene.picking.append(this);
+	
 		},
+		
 
 		setMode : function(mode){
 			if(mode!=this.mode){
@@ -112,7 +117,24 @@ WebGL_ObjectInstance.prototype = {
 				scene.render();
 			}
 		},
+		*/
 
+		reset : function(){
+			if(this.isInitialized){
+				for(let shape of this.shapes){
+					shape.reset();
+				}
+			}
+		},
+		
+		highlight : function(){
+			if(this.isInitialized){
+				for(let shape of this.shapes){
+					shape.highlight();
+				}
+			}
+		},
+		
 
 		dispose : function(){
 			if(this.isInitialized){
@@ -143,9 +165,9 @@ WebGL_ObjectInstances.prototype = {
 		 * update all instances
 		 */
 		update : function(){
-			this.toBeInitialized.iterate(function(instance){
-				if(instance.initialize()){
-					instance.entry.isRemoved = true;
+			this.toBeInitialized.iterate(function(handle){
+				if(handle.ref.initialize()){
+					handle.isRemoved = true;
 				}
 			});
 		},
@@ -156,7 +178,11 @@ WebGL_ObjectInstances.prototype = {
 		 */
 		push : function(instance){
 			this.map.set(instance.id, instance);
-			this.toBeInitialized.append(instance);
+			
+			// append to 
+			var handle = this.toBeInitialized.append();
+			handle.ref = instance;
+			instance.hInit = handle;
 		},
 
 

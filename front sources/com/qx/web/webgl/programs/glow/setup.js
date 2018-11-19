@@ -19,52 +19,42 @@ program.initialize = function(){
 
 };
 
-program.bindSettings = function(){
+program.bind = function(view, environment){
+
+	// bind shader program
+	gl.useProgram(this.handle);
+	
 	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
 	gl.enableVertexAttribArray(this.loc_Attribute_normal);
 };
 
 
-program.bindView = function(view){
-	// nothing to do
-};
 
-program.bindEnvironment = function(environment){
-
-};
-
-
-program.bindStyle = function(style){
+program.attachStyle = function(style){
 	gl.uniform4fv(this.loc_Uniform_glowColor, style.glowColor);
 	gl.uniform4fv(this.loc_Uniform_outlineColor, style.outlineColor);
 
 };
 
-program.bindVertexAttributes = function(model){
-	
-	// bind vertices
-	gl.bindBuffer(gl.ARRAY_BUFFER, model.vertexBufferHandle);
-	gl.vertexAttribPointer(this.loc_Attribute_vertex, 3, gl.FLOAT, false, 0, 0);
-	
-	// bind normals
-	gl.bindBuffer(gl.ARRAY_BUFFER, model.normalBufferHandle);
-	gl.vertexAttribPointer(this.loc_Attribute_normal, 3, gl.FLOAT, false, 0, 0);
+program.attachShape = function(shape){
+	shape.surfaceVertices.bind(this.loc_Attribute_vertex);
+	shape.surfaceNormals.bind(this.loc_Attribute_normal);
+	shape.surfaceElements.bind();
 };
 
-program.bindMatrixStack = function(stack){
+program.draw = function(stack, shape){
 	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, stack.matrix_ProjectionViewModel.c);
 	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MV, false, stack.matrix_ViewModel.c);
 	gl.uniformMatrix3fv(this.loc_Uniform_matrix_N, false, stack.matrix_Normal.c);
+	shape.surfaceElements.draw();
 };
 
 
-program.unbindVertexAttributes = function(model){
-	surface.model.vertices.unbind(this.loc_Attribute_vertex);
-	surface.model.normals.unbind(this.loc_Attribute_normal);
+program.detachShape = function(model){
 };
 
 
-program.unbindSettings = function(){
+program.unbind = function(){
 	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
 	gl.disableVertexAttribArray(this.loc_Attribute_normal);
 };

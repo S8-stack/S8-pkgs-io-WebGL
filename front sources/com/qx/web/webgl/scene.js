@@ -4,7 +4,7 @@
 function WebGL_Scene(){
 	
 	// list of programs
-	this.programs = new WebGL_Programs();
+	this.pipe = new WebGL_GraphicPipe();
 
 	// store of styles
 	this.styles = new WebGL_Styles();
@@ -39,7 +39,6 @@ function WebGL_Scene(){
 	
 	this.totalRenderingTime = 0;
 	this.nbRenderings = 0;
-	this.logNode = document.getElementById("log64");
 	
 	// create picking module and link it
 	this.picking = new WebGL_PickingModule(this);
@@ -78,7 +77,10 @@ WebGL_Scene.prototype = {
 		/**
 		 * Render
 		 */
-		render : function(lod=0){
+		render : function(){
+			
+			// unbind picking fbo if active
+			this.picking.unbind();
 			
 			// timer
 			var startTime = performance.now(); 
@@ -94,7 +96,7 @@ WebGL_Scene.prototype = {
 
 			this.objectInstances.update();
 			
-			this.programs.render(this.view, this.environment, this.matrixStack, lod);
+			this.pipe.render(this.view, this.environment, this.matrixStack);
 			// Recommended pattern for frame animation
 			
 			/*
@@ -106,7 +108,7 @@ WebGL_Scene.prototype = {
 			this.totalRenderingTime+=(performance.now() - startTime);
 			this.nbRenderings++;
 			var averareRenderingTime = this.totalRenderingTime/this.nbRenderings;
-			this.logNode.innerHTML = "rendering time: "+averareRenderingTime+" ms"
+			logNode.innerHTML = "rendering time: "+averareRenderingTime+" ms"
 			+"nb renderings: "+this.nbRenderings;
 		}
 

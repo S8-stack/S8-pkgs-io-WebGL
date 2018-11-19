@@ -10,51 +10,19 @@ function WebGL_PickingModule(scene){
 	this.pc0=this.indexOffset;
 	this.pc1=0;
 	this.pc2=0;
-	
+
 	// pointer to the scene
 	this.scene = scene;
 	this.matrixStack = scene.matrixStack;
 
 	this.pickables = new STRUCT_Chain();
+	this.map = new Map();
 
 	// program
 	this.program = new WebGL_Program("picking");
 	this.program.load(function(){
 		// nothing to on loaded
 	});
-
-	// style hack
-	this.program.draw = function(){
-
-		if(this.isInitialized){
-			// bind shader program
-			gl.useProgram(this.handle);
-			
-			_this.program.bindSettings();
-			
-			_this.pickables.crawl(function(instance){
-
-				/*
-				 * bind shape
-				 */
-				gl.uniform3fv(_this.program.loc_Uniform_pickingColor, instance.pickingColor);
-				
-				// go through renderables of the instance
-				for(let shape of instance.shapes){
-					// update
-					//shape.update();
-
-					// render if OK
-					if(shape.isInitialized){
-						shape.render(_this.matrixStack, _this.program);
-					}
-				}
-			});
-
-			// reset to default
-			_this.program.unbindSettings();
-		}
-	};
 
 
 	// setup FBO
@@ -162,6 +130,7 @@ function WebGL_PickingModule(scene){
 		}
 	}, false);
 
+	this.isPickable = false;
 }
 
 
@@ -170,30 +139,71 @@ WebGL_PickingModule.prototype = {
 
 		indexOffset : 32,
 
+		bind : function(){
+			gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+		},
+
+		unbind : function(){
+			/* return to the default frame buffer */ 
+			gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+			this.isPickable = false;
+		},
+
+		render : function(){
+			//gl.clearColor(0.0, 0.0, 0.0, 1.0);
+			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+			// render the shapes (in environment=null)
+			var _this = this, prgm = this.program;
+			if(prgm.isInitialized){
+
+				prgm.bind();
+
+				_this.pickables.iterate(function(handle){
+
+					var instance = handle.instance;
+					/*
+					 * bind shape
+					 */
+					gl.uniform3fv(prgm.loc_Uniform_pickingColor, instance.pickingColor);
+
+					// go through renderables of the instance
+					for(let shape of instance.shapes){
+						shape.render(_this.matrixStack, prgm);
+					}
+				});
+
+				// reset to default
+				prgm.unbind();
+
+				this.isPickable = true;	
+			}
+		},
+
 
 		/**
 		 * picking
 		 */
 		pick : function(x, y){
+			
+			if(!this.isPickable){
+				this.bind();
+				this.render();
+			}
+			
+			if(this.isPickable){
+				var pickedColor = new Uint8Array(4); 
+				gl.readPixels(x, gl.viewportHeight-y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pickedColor);
 
-			gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+				//alert("r="+pickedColor[0]+", g="+pickedColor[1]+", b="+pickedColor[2]);
+				var index = pickedColor[0]+pickedColor[1]*255+pickedColor[2]*65535-this.indexOffset;
+				return this.map.get(index);	
+			}
+			else{
+				return null;
+			}
+		},
 
-			//gl.clearColor(0.0, 0.0, 0.0, 1.0);
-			gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-			// render the shapes (in environment=null)
-			this.program.draw();
-
-			var pickedColor = new Uint8Array(4); 
-			gl.readPixels(x, gl.viewportHeight-y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pickedColor);
-
-			gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-
-			//alert("r="+pickedColor[0]+", g="+pickedColor[1]+", b="+pickedColor[2]);
-			var index = pickedColor[0]+pickedColor[1]*255+pickedColor[2]*65025-this.indexOffset;
-			return this.pickables.get(index);
-		},		
-		
 		incrementIndex : function(){
 			this.pc0++;
 			if(this.pc0==255){
@@ -213,14 +223,20 @@ WebGL_PickingModule.prototype = {
 			return [this.pc0/255.0, this.pc1/255.0, this.pc2/255.0];
 		},
 
-		
+
 		getPickingIndex : function(){
 			return this.pc0+this.pc1*255+this.pc2*65025-this.indexOffset;
 		},
-		
+
 		append : function(instance){
 			instance.pickingColor = this.getPickingColor();
-			this.pickables.append(this.getPickingIndex(), instance);
+
+			// append in the picking display list
+			var handle = this.pickables.append();
+			instance.hPicking = handle;
+			handle.instance = instance;
+
+			this.map.set(this.getPickingIndex(), instance);
 			this.incrementIndex();
 		}
 };

@@ -17,20 +17,23 @@ program.initialize = function(){
 };
 
 
-program.bindProgram = function(){
+program.bind = function(view, environment){
 
+	// bind shader program
+	gl.useProgram(this.handle);
+	
 	// enable location
 	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
 };
 
 
-program.bindStyle = function(style){
+program.attachStyle = function(style){
 	// material
 	gl.uniform4fv(this.loc_Uniform_color, style.color);
 };
 
 
-program.bindShape = function(shape){
+program.attachShape = function(shape){
 	shape.wireVertices.bind(this.loc_Attribute_vertex);
 	shape.wireElements.bind();
 };
@@ -42,8 +45,16 @@ program.draw = function(stack, shape){
 };
 
 
-program.unbindProgram = function(){
+program.detachShape = function(shape){
+	shape.wireVertices.bind(this.loc_Attribute_vertex);
+	shape.wireElements.bind();
+};
+
+program.unbind = function(){
 	// disable location
 	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
+
+	// bind shader program
+	//gl.useProgram(0);
 };
 

@@ -17,6 +17,7 @@ var gl;
 var scene;
 
 
+var logNode;
 
 /**
  * startup function
@@ -51,11 +52,13 @@ var WebGL_start = function(){
 	}
 
 
+	logNode = document.getElementById("log64");
 
 	/**
 	 * Scene
 	 */
 	scene = new WebGL_Scene();
 	scene.render();
+	
 
 }

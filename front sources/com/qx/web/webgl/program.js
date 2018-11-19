@@ -57,31 +57,6 @@ WebGL_Program.prototype = {
 			});
 		},
 		
-		/*
-		 * render the styles and shapes
-		 */
-		render : function(view, environment, matrixStack){
-			if(this.isInitialized){
-				
-				// bind shader program
-				gl.useProgram(this.handle);
-				
-				// setup settings
-				this.bindProgram(view, environment);
-			
-				// render renderables
-				for(var i in this.displayList){
-					this.displayList[i].render(matrixStack, this);
-				}
-				
-				// reset to default
-				this.unbindProgram();
-				
-				// unbind program
-				//gl.useProgram(0);
-			}
-		},
-		
 		
 		/*
 		 * get shape
@@ -141,14 +116,14 @@ WebGL_Shader.prototype = {
 
 
 
-function WebGL_Programs(){
+function WebGL_GraphicPipe(){
 
 	// map for allocation of styles
 	this.programs = new Array();
 }
 
 
-WebGL_Programs.prototype = {
+WebGL_GraphicPipe.prototype = {
 	
 	/**
 	 * get program
@@ -184,10 +159,24 @@ WebGL_Programs.prototype = {
 		this.programs = this.programs.sort(function(a, b){ return a.pass-b.pass; });
 	},
 	
-	render : function(view, environment, matrixStack, lod){
+	render : function(view, environment, matrixStack){
 		// render the programs -> styles -> shapes
-		for(var i in this.programs){
-			this.programs[i].render(view, environment, matrixStack, lod);
+		
+		for(let prgm of this.programs){
+			
+			if(prgm.isInitialized){
+				
+				// setup settings
+				prgm.bind(view, environment);
+			
+				// render renderables
+				for(let style of prgm.displayList){
+					style.render(matrixStack, prgm);
+				}
+				
+				// reset to default
+				prgm.unbind();
+			}
 		}
 	},
 	

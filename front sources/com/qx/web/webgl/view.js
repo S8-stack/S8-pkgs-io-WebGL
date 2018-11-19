@@ -41,6 +41,8 @@ function WebGL_View(scene){
 
 	
 	var that = this;
+
+	this.acquiredHoveredObject = null;
 	
 	//register event listener to take control of the canvas
 	canvas.addEventListener('mousedown', function(event) { that.handleMouseDown(event);}, false);
@@ -53,8 +55,10 @@ function WebGL_View(scene){
 
 	document.addEventListener('keyup', function(event) { that.handleKeyUp(event);}, false);
 	document.addEventListener('keydown', function(event) { that.handleKeyDown(event);}, false);
+	
 }
 
+var hc=0;
 
 WebGL_View.prototype = {
 
@@ -66,7 +70,7 @@ WebGL_View.prototype = {
 			this.lastMouseX = event.clientX;
 			this.lastMouseY = event.clientY;
 
-			this.scene.render(0);
+			this.scene.render();
 		},
 
 
@@ -74,7 +78,7 @@ WebGL_View.prototype = {
 		handleMouseUp : function(event){
 			this.mouseDown = false;
 
-			this.scene.render(0);
+			this.scene.render();
 		},
 
 
@@ -100,13 +104,34 @@ WebGL_View.prototype = {
 
 				//this.updateView();
 
-				this.scene.render(1);
+				this.scene.render();
+			}
+			else{
+				var currentHoveredObject = scene.picking.pick(event.clientX, event.clientY);
+				if(currentHoveredObject!=this.acquiredHoveredObject){
+					var isRenderingRequired = false;
+					if(this.acquiredHoveredObject!=null){
+						this.acquiredHoveredObject.reset();
+						isRenderingRequired = true;
+					}
+					this.acquiredHoveredObject = currentHoveredObject;
+					if(this.acquiredHoveredObject!=null){
+						this.acquiredHoveredObject.highlight();
+						isRenderingRequired = true;
+					}
+					
+					if(isRenderingRequired){
+						scene.render();	
+					}
+				}
+				logNode.innerHTML = "Now hovering "+this.acquiredHoveredObject+ " ["+hc+"]";
+				hc++;
 			}
 		},
 		
 		/** called on mouse move @param event */
 		handleMouseMoveEnd : function(event) {
-			this.scene.render(0);
+			this.scene.render();
 		},
 
 		handleMouseWheel : function(event) {
@@ -118,7 +143,6 @@ WebGL_View.prototype = {
 
 			this.scene.render(1);
 		},
-
 
 
 		handleKeyDown : function(event) {

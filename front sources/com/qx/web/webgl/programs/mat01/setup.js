@@ -37,7 +37,7 @@ program.initialize = function(){
 	
 };
 
-program.bindProgram = function(view, environment){
+program.bind = function(view, environment){
 	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
 	gl.enableVertexAttribArray(this.loc_Attribute_normal);
 	
@@ -51,7 +51,7 @@ program.bindProgram = function(view, environment){
 };
 
 
-program.bindStyle = function(style){
+program.attachStyle = function(style){
 	gl.uniform4fv(this.loc_Uniform_material_ambient, style.ambient);
 	gl.uniform4fv(this.loc_Uniform_material_diffuse, style.diffuse);
 	gl.uniform4fv(this.loc_Uniform_material_specular, style.specular);
@@ -60,7 +60,7 @@ program.bindStyle = function(style){
 };
 
 
-program.bindShape = function(shape){
+program.attachShape = function(shape){
 	shape.surfaceVertices.bind(this.loc_Attribute_vertex);
 	shape.surfaceNormals.bind(this.loc_Attribute_normal);
 	shape.surfaceElements.bind();
@@ -74,13 +74,13 @@ program.draw = function(stack, shape){
 };
 
 
-program.unbindShape = function(shape){
+program.detachShape = function(shape){
 	//surface.model.vertices.unbind(this.loc_Attribute_vertex);
 	//surface.model.normals.unbind(this.loc_Attribute_normal);
 };
 
 
-program.unbindProgram = function(){
+program.unbind = function(){
 	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
 	gl.disableVertexAttribArray(this.loc_Attribute_normal);
 };

@@ -25,6 +25,10 @@ function WebGL_ShapeInstance(objectInstance, shapeModel){
 	this.surfaceVertices = shapeModel.surfaceVertices;
 	this.surfaceNormals = shapeModel.surfaceNormals;
 	this.surfaceElements = shapeModel.surfaceElements;
+	
+	
+	this.wireStyleHandle = null;
+	this.surfaceStyleHandle = null;
 }
 
 
@@ -34,7 +38,7 @@ WebGL_ShapeInstance.prototype = {
 
 			// bind vertex attributes buffer handles (program is doing the
 			// picking of the appropriate vertices attributes)
-			program.bindShape(this);
+			program.attachShape(this);
 
 			// affine
 			for(let affine of this.objectInstance.affines){
@@ -46,21 +50,39 @@ WebGL_ShapeInstance.prototype = {
 				// trigger render by drawing elements
 				//gl.drawElements(this.elementType, this.nbElements, gl.UNSIGNED_SHORT, 0);
 				program.draw(matrixStack, this);
+			}			
+		},
+		
+		
+		setWireStyle : function(id){
+			if(this.wireStyleHandle!=null){
+				this.wireStyleHandle.isRemoved = true;
 			}
+			var handle = scene.styles.get(id).append();
+			this.wireStyleHandle = handle;
+			handle.renderable = this;	
+		},
+
+		setSurfaceStyle : function(id){
+			if(this.surfaceStyleHandle!=null){
+				this.surfaceStyleHandle.isRemoved = true;
+			}
+			var handle = scene.styles.get(id).append();
+			this.surfaceStyleHandle = handle;
+			handle.renderable = this;	
 		},
 
 		/**
 		 * setStyle to a shape
 		 */
-		start : function(mode){
-
-			// append to new style
-			var style = scene.styles.get("darkWire");
-			style.append(this);
-			
-			// append to new style
-			style = scene.styles.get("mirror");
-			style.append(this);
+		reset : function(){
+			this.setWireStyle("darkWire");
+			this.setSurfaceStyle("mirror");
+		},
+		
+		highlight : function(){
+			//this.setWireStyle("darkWire");
+			this.setSurfaceStyle("yellowGlow");
 		},
 
 		dispose : function(){
