@@ -39,8 +39,8 @@ program.attachShape = function(shape){
 };
 
 
-program.draw = function(stack, shape){
-	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, stack.matrix_ProjectionViewModel.c);
+program.draw = function(view, shape){
+	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, view.matrix_ProjectionViewModel.c);
 	shape.wireElements.draw();
 };
 

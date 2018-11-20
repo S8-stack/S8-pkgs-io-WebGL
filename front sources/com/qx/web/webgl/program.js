@@ -159,7 +159,7 @@ WebGL_GraphicPipe.prototype = {
 		this.programs = this.programs.sort(function(a, b){ return a.pass-b.pass; });
 	},
 	
-	render : function(view, environment, matrixStack){
+	render : function(view, environment){
 		// render the programs -> styles -> shapes
 		
 		for(let prgm of this.programs){
@@ -171,7 +171,7 @@ WebGL_GraphicPipe.prototype = {
 			
 				// render renderables
 				for(let style of prgm.displayList){
-					style.render(matrixStack, prgm);
+					style.render(view, prgm);
 				}
 				
 				// reset to default

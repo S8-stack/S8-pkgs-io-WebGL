@@ -15,9 +15,13 @@ function WebGL_Scene(){
 	// store of shapes instances
 	this.objectInstances = new WebGL_ObjectInstances(this);
 
-	//create view
-	this.view = new WebGL_View(this);
-
+	//create MVP view
+	this.view = new WebGL_ProjectionViewModel();
+	
+	// create control
+	this.control = new WebGL_MouseControl(this, this.view);
+	this.control.start();
+	
 	//create environment
 	this.environment = new WebGL_Environment(this);
 
@@ -34,8 +38,6 @@ function WebGL_Scene(){
 	gl.enable(gl.DEPTH_TEST);
 
 	// </initialize rendering>
-	
-	this.matrixStack = new WebGL_MatrixStack(this.view);
 	
 	this.totalRenderingTime = 0;
 	this.nbRenderings = 0;

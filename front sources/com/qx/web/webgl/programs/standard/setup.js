@@ -70,11 +70,11 @@ program.attachShape = function(shape){
 	shape.surfaceElements.bind();
 };
 
-program.draw = function(stack, shape){
+program.draw = function(view, shape){
 
 	// matrices
-	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, stack.matrix_ProjectionViewModel.c);
-	gl.uniformMatrix4fv(this.loc_Uniform_matrix_M, false, stack.matrix_Model.c);
+	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, view.matrix_ProjectionViewModel.c);
+	gl.uniformMatrix4fv(this.loc_Uniform_matrix_M, false, view.matrix_Model.c);
 	
 	shape.surfaceElements.draw();
 };

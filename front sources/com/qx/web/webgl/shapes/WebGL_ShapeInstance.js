@@ -34,7 +34,7 @@ function WebGL_ShapeInstance(objectInstance, shapeModel){
 
 WebGL_ShapeInstance.prototype = {
 
-		render : function(matrixStack, program){
+		render : function(view, program){
 
 			// bind vertex attributes buffer handles (program is doing the
 			// picking of the appropriate vertices attributes)
@@ -44,12 +44,12 @@ WebGL_ShapeInstance.prototype = {
 			for(let affine of this.objectInstance.affines){
 				
 				// update stack
-				matrixStack.setModel(affine);
+				view.setModel(affine);
 
 				// bind matrices
 				// trigger render by drawing elements
 				//gl.drawElements(this.elementType, this.nbElements, gl.UNSIGNED_SHORT, 0);
-				program.draw(matrixStack, this);
+				program.draw(view, this);
 			}			
 		},
 		

@@ -42,14 +42,14 @@ WebGL_Style.prototype = {
 		/**
 		 * render the styles and shapes
 		 */
-		render : function(matrixStack, program){
+		render : function(view, program){
 			if(this.isInitialized){
 				
 				// load style uniforms
 				program.attachStyle(this);
 
 				this.shapesInstances.iterate(function(entry){
-					entry.renderable.render(matrixStack, program);	
+					entry.renderable.render(view, program);	
 				});
 			}
 		},
