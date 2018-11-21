@@ -1,21 +1,75 @@
 
 
+
+
+function WebGL_RenderingPipe(scene, id){
+	this.scene = scene;
+	this.program = WebGL_programs.get(id);
+	this.program.appendListener(scene);
+	this.program.load();
+	this.list = new STRUCT_Chain();
+}
+
+WebGL_RenderingPipe.prototype = {
+
+		render : function(view, environment){
+			var prgm = this.program;
+			if(prgm.isInitialized){
+
+				// setup settings
+				prgm.bind(view, environment);
+
+				// render renderables
+				this.list.iterate(function(entry){ 
+					entry.renderable.render(view, prgm);
+				});
+
+				// reset to default
+				prgm.unbind();
+			}
+		},
+		
+		append : function(renderable){
+			var entry = this.list.append();
+			entry.renderable = renderable;
+			return entry;
+		}
+}
+
+
+/*
+ * prgm DB
+ */
+var WebGL_programs = {
+		map : new Map(),
+		get : function(id){
+			var program = this.map.get(id);
+			if(program==undefined){
+				var program = new WebGL_Program(id);
+				// add the newly created program to the list
+				this.map.set(id, program);
+			}
+			return program;
+		}
+};
+
+
 /*
  * an id is required to build the program
  */
 function WebGL_Program(id){
 	this.id = id;
 	this.isInitialized = false;
-	this.displayList = [];
+	this.toBeNotified = new STRUCT_Chain();
 }
 
 WebGL_Program.prototype = {
-		
-		load : function(onload){
+
+		load : function(){
 			var program = this;
-			
+
 			ctx.request("webGL.getProgram:id="+this.id, function (response){
-				
+
 				eval(response.responseText);
 				/*
 				 * eval must define:
@@ -24,8 +78,8 @@ WebGL_Program.prototype = {
 				 *      (function) this.loadContext()
 				 * 		(function) this.loadStyle()	
 				 */
-				
-				
+
+
 				// Build vertex shader
 				program.vertexShader = new WebGL_Shader(gl.VERTEX_SHADER, vertex_shader_source);
 
@@ -46,33 +100,33 @@ WebGL_Program.prototype = {
 				if (!gl.getProgramParameter(program.handle, gl.LINK_STATUS)) {
 					alert("Could not initialise shaders : linking problem");
 				}
-				
+
 				// setup
 				program.initialize();
-				
+
 				// program is ready to render!
 				program.isInitialized = true;
-				
-				onload();
+
+				// notify to listener
+				program.notify();
+				//onload();
 			});
 		},
 		
-		
-		/*
-		 * get shape
-		 */
-		append : function(style){
-			this.displayList.push(style);
+		/* notify load to instances */
+		notify : function(){
+			this.toBeNotified.iterate(function(entry){
+				entry.ref.render();
+				entry.isRemoved = true;
+			})
 		},
 		
-		
-		clear : function(){
-			for(var i in this.displayList){
-				this.displayList[i].clear();
-			}
+		appendListener : function(scene){
+			var entry = this.toBeNotified.append();
+			entry.ref = scene;
 		},
+		
 
-		
 		/* dispose program-related disposable */
 		dispose : function() {
 			this.vertexShader.dispose();
@@ -115,7 +169,7 @@ WebGL_Shader.prototype = {
 };
 
 
-
+/*
 function WebGL_GraphicPipe(){
 
 	// map for allocation of styles
@@ -124,70 +178,68 @@ function WebGL_GraphicPipe(){
 
 
 WebGL_GraphicPipe.prototype = {
-	
-	/**
-	 * get program
-	 */
-	get : function(id){
-		for(var i in this.programs){
-			if(this.programs[i].id == id){
-				return this.programs[i];
-			}
-		}
-	
-		// if style is not present, we create it
-		var program = new WebGL_Program(id);
-		var that = this;
-		
-		program.load(function(){
-			// sort programs
-			that.sort();
-			
-			// trigger a render to refresh
-			scene.render();
-		});
-		
-		// add the newly created program to the list
-		this.programs.push(program);
-		
-		return program;
-	},
-	
-	
-	sort : function(){
-		// sort the programs by pass index
-		this.programs = this.programs.sort(function(a, b){ return a.pass-b.pass; });
-	},
-	
-	render : function(view, environment){
-		// render the programs -> styles -> shapes
-		
-		for(let prgm of this.programs){
-			
-			if(prgm.isInitialized){
-				
-				// setup settings
-				prgm.bind(view, environment);
-			
-				// render renderables
-				for(let style of prgm.displayList){
-					style.render(view, prgm);
+
+		get : function(id){
+			for(var i in this.programs){
+				if(this.programs[i].id == id){
+					return this.programs[i];
 				}
-				
-				// reset to default
-				prgm.unbind();
+			}
+
+			// if style is not present, we create it
+			var program = new WebGL_Program(id);
+			var that = this;
+
+			program.load(function(){
+				// sort programs
+				that.sort();
+
+				// trigger a render to refresh
+				scene.render();
+			});
+
+			// add the newly created program to the list
+			this.programs.push(program);
+
+			return program;
+		},
+
+
+		sort : function(){
+			// sort the programs by pass index
+			this.programs = this.programs.sort(function(a, b){ return a.pass-b.pass; });
+		},
+
+		render : function(view, environment){
+			// render the programs -> styles -> shapes
+
+			for(let prgm of this.programs){
+
+				if(prgm.isInitialized){
+
+					// setup settings
+					prgm.bind(view, environment);
+
+					// render renderables
+					for(let style of prgm.displayList){
+						style.render(view, prgm);
+					}
+
+					// reset to default
+					prgm.unbind();
+				}
+			}
+		},
+
+		clear : function(){
+			// render the programs -> styles -> shapes
+			for(var i in this.programs){
+				this.programs[i].clear();
 			}
 		}
-	},
-	
-	clear : function(){
-		// render the programs -> styles -> shapes
-		for(var i in this.programs){
-			this.programs[i].clear();
-		}
-	}
 
 };
+*/
 
 
 

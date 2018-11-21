@@ -17,24 +17,24 @@ program.initialize = function(){
 	this.loc_Attribute_vertex = gl.getAttribLocation(this.handle, "vertex");
 	this.loc_Attribute_normal = gl.getAttribLocation(this.handle, "normal");
 
+//	setup
+	this.glowColor = [1.0, 1.0, 0.2, 0.0];
+	this.outlineColor = [0.2, 0.2, 0.4, 0.0];
 };
 
 program.bind = function(view, environment){
 
 	// bind shader program
 	gl.useProgram(this.handle);
-	
+
 	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
 	gl.enableVertexAttribArray(this.loc_Attribute_normal);
+	
+	// setup style
+	gl.uniform4fv(this.loc_Uniform_glowColor, this.glowColor);
+	gl.uniform4fv(this.loc_Uniform_outlineColor, this.outlineColor);
 };
 
-
-
-program.attachStyle = function(style){
-	gl.uniform4fv(this.loc_Uniform_glowColor, style.glowColor);
-	gl.uniform4fv(this.loc_Uniform_outlineColor, style.outlineColor);
-
-};
 
 program.attachShape = function(shape){
 	shape.surfaceVertices.bind(this.loc_Attribute_vertex);

@@ -50,9 +50,6 @@ program.bind = function(view, environment){
 }
 
 
-program.attachStyle = function(style){
-	
-}
 
 /**
  * Shape uniforms and attributes loading

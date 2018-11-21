@@ -29,11 +29,6 @@ program.bind = function(view, environment){
 };
 
 
-
-program.attachStyle = function(style){
-	// nothing to do
-};
-
 program.attachShape = function(shape){
 	shape.surfaceVertices.bind(this.loc_Attribute_vertex);
 	shape.surfaceElements.bind();

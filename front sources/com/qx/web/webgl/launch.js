@@ -5,7 +5,6 @@
  */
 var canvas;
 
-
 /**
  * WebGL context
  */

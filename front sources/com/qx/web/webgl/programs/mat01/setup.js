@@ -55,8 +55,7 @@ program.attachStyle = function(style){
 	gl.uniform4fv(this.loc_Uniform_material_ambient, style.ambient);
 	gl.uniform4fv(this.loc_Uniform_material_diffuse, style.diffuse);
 	gl.uniform4fv(this.loc_Uniform_material_specular, style.specular);
-	gl.uniform1f(this.loc_Uniform_material_shininess, style.shininess);
-	
+	gl.uniform1f(this.loc_Uniform_material_shininess, style.shininess);	
 };
 
 

@@ -27,13 +27,11 @@ program.bind = function(view, environment){
 };
 
 
-program.attachStyle = function(style){
-	// material
-	gl.uniform4fv(this.loc_Uniform_color, style.color);
-};
-
-
 program.attachShape = function(shape){
+
+	// material
+	gl.uniform4fv(this.loc_Uniform_color, shape.wireColor);
+	
 	shape.wireVertices.bind(this.loc_Attribute_vertex);
 	shape.wireElements.bind();
 };

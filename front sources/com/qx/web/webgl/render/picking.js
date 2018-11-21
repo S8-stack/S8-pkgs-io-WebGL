@@ -20,10 +20,6 @@ function WebGL_PickingModule(scene){
 
 	// program
 	this.program = new WebGL_Program("picking");
-	this.program.load(function(){
-		// nothing to on loaded
-	});
-
 
 	// setup FBO
 	this.fbo = new WebGL_FrameBufferObject(gl.viewportWidth, gl.viewportHeight);

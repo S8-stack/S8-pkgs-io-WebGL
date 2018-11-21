@@ -3,7 +3,7 @@
 /**
  * view for the scene
  */
-function WebGL_ProjectionViewModel(up=new MathVector3d(0,0,1)){
+function WebGL_ProjectionViewModel(width, height, up=new MathVector3d(0,0,1)){
 	
 	this.up = up;
 	
@@ -15,7 +15,7 @@ function WebGL_ProjectionViewModel(up=new MathVector3d(0,0,1)){
 	
 	// Projection matrix
 	this.matrix_Projection = new WebGL_Matrix4();
-	this.matrix_Projection.perspectiveProjection(45, gl.viewportWidth / gl.viewportHeight, 0.1, 10000.0);
+	this.matrix_Projection.perspectiveProjection(45, width / height, 0.1, 10000.0);
 	
 	// View matrix 
 	this.matrix_View = new WebGL_Matrix4();

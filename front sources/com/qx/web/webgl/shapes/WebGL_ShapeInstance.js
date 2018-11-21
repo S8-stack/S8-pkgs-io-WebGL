@@ -8,8 +8,9 @@
 function WebGL_ShapeInstance(objectInstance, shapeModel){
 
 	// keep tracking of wrapping object instance
-	this.objectInstance = objectInstance;
-
+	this.scene = objectInstance.scene;
+	this.affines = objectInstance.affines;
+	
 	// wire
 	this.wireColor = shapeModel.wireColor;
 	
@@ -26,7 +27,7 @@ function WebGL_ShapeInstance(objectInstance, shapeModel){
 	this.surfaceNormals = shapeModel.surfaceNormals;
 	this.surfaceElements = shapeModel.surfaceElements;
 	
-	
+	// rendering pipe handles
 	this.wireStyleHandle = null;
 	this.surfaceStyleHandle = null;
 }
@@ -41,7 +42,7 @@ WebGL_ShapeInstance.prototype = {
 			program.attachShape(this);
 
 			// affine
-			for(let affine of this.objectInstance.affines){
+			for(let affine of this.affines){
 				
 				// update stack
 				view.setModel(affine);
@@ -58,37 +59,35 @@ WebGL_ShapeInstance.prototype = {
 			if(this.wireStyleHandle!=null){
 				this.wireStyleHandle.isRemoved = true;
 			}
-			var handle = scene.styles.get(id).append();
-			this.wireStyleHandle = handle;
-			handle.renderable = this;	
+			this.wireStyleHandle = this.scene.getPipe(id).append(this);
 		},
 
 		setSurfaceStyle : function(id){
 			if(this.surfaceStyleHandle!=null){
 				this.surfaceStyleHandle.isRemoved = true;
 			}
-			var handle = scene.styles.get(id).append();
-			this.surfaceStyleHandle = handle;
-			handle.renderable = this;	
+			this.surfaceStyleHandle = this.scene.getPipe(id).append(this);
 		},
 
 		/**
 		 * setStyle to a shape
 		 */
 		reset : function(){
-			this.setWireStyle("darkWire");
-			this.setSurfaceStyle("mirror");
+			this.setWireStyle("color2");
+			this.setSurfaceStyle("standard");
 		},
 		
 		highlight : function(){
 			//this.setWireStyle("darkWire");
-			this.setSurfaceStyle("yellowGlow");
+			this.setSurfaceStyle("glow");
 		},
 
 		dispose : function(){
-			// detach form current style if any
-			if(this.style!=undefined){
-				this.style.remove(this.id);	
+			if(this.wireStyleHandle!=null){
+				this.wireStyleHandle.isRemoved = true;
+			}
+			if(this.surfaceStyleHandle!=null){
+				this.surfaceStyleHandle.isRemoved = true;
 			}
 		}
 };

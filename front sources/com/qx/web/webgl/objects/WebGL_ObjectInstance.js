@@ -8,9 +8,8 @@ function WebGL_ObjectInstance(id, scene){
 
 	// id
 	this.id = id;
+	this.scene = scene;
 
-	// mode
-	this.mode = 0;
 
 	this.isInitialized = false;
 	this.isDisposed = false;
@@ -57,14 +56,26 @@ WebGL_ObjectInstance.prototype = {
 					instance.affines = [affine];
 
 					// build model
-					instance.model = scene.objectModels.get(modelId);
+					var model = WebGL_objectModels.get(modelId);
 
+					// register for listen
+					model.appendListener(instance);
+					
+					// trigger load if needed
+					model.load();
+					
+					// set model
+					instance.model = model;
+					
 					// refresh
-					scene.render();
+					instance.render();
 				}
 			});
 		},
 
+		render : function(){
+			this.scene.render();
+		},
 
 		initialize : function(){
 			if(!this.isInitialized && this.model!=null && this.model.isInitialized){
@@ -78,7 +89,9 @@ WebGL_ObjectInstance.prototype = {
 				}
 				
 				// update picking
-				scene.picking.append(this);
+				if(this.scene.picking!=undefined){
+					this.scene.picking.append(this);	
+				}
 				
 				this.isInitialized = true;
 			}

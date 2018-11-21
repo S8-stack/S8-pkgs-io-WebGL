@@ -41,7 +41,7 @@ function WebGL_Environment(scene){
 	this.irradiance = new WebGL_TextureCubeMap("/webgl/graphics/skycube/std2/irradiance/face", ".png", 1);
 
 	// keep pointer to the view matrix
-	this.matrix_View = scene.view.matrix_View;
+	this.matrix_View = this.scene.view.matrix_View;
 }
 
 
@@ -56,9 +56,6 @@ WebGL_Environment.prototype = {
 			}
 		},
 		
-		setBackgroundColor : function(){
-			gl.clearColor(1.0, 1.0, 1.0, 1.0);
-		},
 		
 		dim : function(factor){
 			
