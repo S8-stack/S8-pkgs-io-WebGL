@@ -5,8 +5,14 @@
 function WebGL_ShapeModel(isWisNormalEnabled = true, isTexCoordEnabled = false){
 	// no affines
 
+	/** the default program for wire rendering */
+	this.wireProgram = "color2";
+	
 	/** default value for shape material */
 	this.wireColor = [0.12, 0.12, 0.12, 0.0];
+	
+	/** the default program for wire rendering */
+	this.surfaceProgram = "standard";
 
 	/** default value for shape material -> "Standard" Unity-style shading */
 	this.surfaceGlossiness = 0.7;
@@ -164,7 +170,9 @@ WebGL_ShapeModel.prototype = {
 						
 			/* <wire> */
 			if(this.isWireEnabled){
+				
 				// material
+				instance.wireProgram = this.wireProgram;
 				instance.wireColor = this.wireColor;
 				
 				// attributes
@@ -178,7 +186,9 @@ WebGL_ShapeModel.prototype = {
 			
 			/* <surface> */
 			if(this.isSurfaceEnabled){
+				
 				// material
+				instance.surfaceProgram = this.surfaceProgram;
 				instance.surfaceGlossiness = this.surfaceGlossiness;
 				instance.surfaceRoughness = this.surfaceRoughness;
 				instance.surfaceShininess = this.surfaceShininess;

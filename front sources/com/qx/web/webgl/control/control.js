@@ -100,20 +100,18 @@ WebGL_MouseControl.prototype = {
 				//this.updateView();
 
 				this.refresh();
-			
-			
 			}
 			else{
 				var currentHoveredObject = scene.picking.pick(event.clientX, event.clientY);
 				if(currentHoveredObject!=this.acquiredHoveredObject){
 					var isRenderingRequired = false;
 					if(this.acquiredHoveredObject!=null){
-						this.acquiredHoveredObject.reset();
+						this.acquiredHoveredObject.display(0);
 						isRenderingRequired = true;
 					}
 					this.acquiredHoveredObject = currentHoveredObject;
 					if(this.acquiredHoveredObject!=null){
-						this.acquiredHoveredObject.highlight();
+						this.acquiredHoveredObject.display(1);
 						isRenderingRequired = true;
 					}
 					

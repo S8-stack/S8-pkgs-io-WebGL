@@ -93,7 +93,7 @@ WebGL_ObjectInstance.prototype = {
 					// register
 					this.shapes.push(shape);
 					
-					shape.reset();
+					shape.display();
 				}
 				
 				// update picking
@@ -140,18 +140,10 @@ WebGL_ObjectInstance.prototype = {
 		},
 		*/
 
-		reset : function(){
+		display : function(mode=0){
 			if(this.isInitialized){
 				for(let shape of this.shapes){
-					shape.reset();
-				}
-			}
-		},
-		
-		highlight : function(){
-			if(this.isInitialized){
-				for(let shape of this.shapes){
-					shape.highlight();
+					shape.display(mode);
 				}
 			}
 		},

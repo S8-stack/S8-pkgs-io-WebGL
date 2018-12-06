@@ -5,9 +5,17 @@
  */
 function WebGL_ShapeConfiguration(){
 
+	// Material
+	
+	/** the default program for wire rendering */
+	this.wireProgram = "color2";
+	
 	/** default value for shape material */
 	this.wireColor = [0.12, 0.12, 0.12, 0.0];
 
+	/** the default program for wire rendering */
+	this.surfaceProgram = "standard";
+	
 	/** default value for shape material -> "Standard" Unity-style shading */
 	this.surfaceGlossiness = 0.7;
 	
@@ -25,6 +33,9 @@ function WebGL_ShapeConfiguration(){
 
 	/** default value for shape material -> multi-purposes */
 	this.surfaceAmbientColor = [0.1, 0.1, 0.1, 0.0];
+	
+	
+	// Geometry Attributes
 	
 	/** wire */
 	this.isWireEnabled = true;
@@ -55,7 +66,10 @@ WebGL_ShapeConfiguration.prototype = {
 		apply : function(shape){
 			
 			// material part
+			shape.wireProgram = this.wireProgram;
 			shape.wireColor = this.wireColor;
+
+			shape.surfaceProgram = this.surfaceProgram;
 			shape.surfaceGlossiness = this.surfaceGlossiness;
 			shape.surfaceRoughness = this.surfaceRoughness;
 			shape.surfaceShininess = this.surfaceShininess;
@@ -66,6 +80,7 @@ WebGL_ShapeConfiguration.prototype = {
 			// geometry attributes
 			shape.isWireEnabled = this.isWireEnabled;
 			shape.isWireColorAttributeEnabled = this.isWireColorAttributeEnabled;
+			
 			shape.isSurfaceEnabled = this.isSurfaceEnabled;
 			shape.isSurfaceNormalAttributeEnabled = this.isSurfaceNormalAttributeEnabled;
 			shape.isSurfaceTexCoordAttributeEnabled = this.isSurfaceTexCoordAttributeEnabled;

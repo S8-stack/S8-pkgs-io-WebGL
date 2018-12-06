@@ -43,28 +43,38 @@ WebGL_ShapeInstance.prototype = {
 			if(this.wireStyleHandle!=null){
 				this.wireStyleHandle.isRemoved = true;
 			}
-			this.wireStyleHandle = this.scene.getPipe(id).append(this);
+			if(id!=null){
+				this.wireStyleHandle = this.scene.getPipe(id).append(this);	
+			}
 		},
 
 		setSurfaceStyle : function(id){
 			if(this.surfaceStyleHandle!=null){
 				this.surfaceStyleHandle.isRemoved = true;
 			}
-			this.surfaceStyleHandle = this.scene.getPipe(id).append(this);
+			if(id!=null){
+				this.surfaceStyleHandle = this.scene.getPipe(id).append(this);	
+			}
 		},
 
 		/**
 		 * setStyle to a shape
 		 */
-		reset : function(){
-			this.setWireStyle("color2");
-			this.setSurfaceStyle("standard");
+		display : function(mode=0){
+			switch(mode){
+			
+			case 0: // normal
+				this.setWireStyle(this.wireProgram);
+				this.setSurfaceStyle(this.surfaceProgram);
+				break;
+				
+			case 1: // highlight
+				this.setWireStyle(this.wireProgram);
+				this.setSurfaceStyle("glow");
+				break;
+			}
 		},
 		
-		highlight : function(){
-			//this.setWireStyle("darkWire");
-			this.setSurfaceStyle("glow");
-		},
 
 		dispose : function(){
 			if(this.wireStyleHandle!=null){
