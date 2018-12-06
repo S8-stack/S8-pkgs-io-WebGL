@@ -5,28 +5,12 @@
  * a model must be defined
  * an instance must be defined
  */
-function WebGL_ShapeInstance(objectInstance, shapeModel){
+function WebGL_ShapeInstance(objectInstance){
 
 	// keep tracking of wrapping object instance
 	this.scene = objectInstance.scene;
 	this.affines = objectInstance.affines;
-	
-	// wire
-	this.wireColor = shapeModel.wireColor;
-	
-	this.wireVertices = shapeModel.wireVertices;
-	this.wireElements = shapeModel.wireElements;
 
-	// surface
-	this.surfaceGlossiness = shapeModel.surfaceGlossiness;
-	this.surfaceRoughness = shapeModel.surfaceRoughness;
-	this.surfaceSpecularColor = shapeModel.surfaceSpecularColor;
-	this.surfaceDiffuseColor = shapeModel.surfaceDiffuseColor;
-	
-	this.surfaceVertices = shapeModel.surfaceVertices;
-	this.surfaceNormals = shapeModel.surfaceNormals;
-	this.surfaceElements = shapeModel.surfaceElements;
-	
 	// rendering pipe handles
 	this.wireStyleHandle = null;
 	this.surfaceStyleHandle = null;

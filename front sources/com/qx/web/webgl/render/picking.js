@@ -19,7 +19,10 @@ function WebGL_PickingModule(scene){
 	this.map = new Map();
 
 	// program
-	this.program = new WebGL_Program("picking");
+	var prgm = WebGL_programs.get("picking");
+	prgm.appendListener(this);
+	prgm.load();
+	this.program = prgm;
 
 	// setup FBO
 	this.fbo = new WebGL_FrameBufferObject(gl.viewportWidth, gl.viewportHeight);

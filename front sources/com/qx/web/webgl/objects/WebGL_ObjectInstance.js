@@ -83,8 +83,16 @@ WebGL_ObjectInstance.prototype = {
 				this.shapes = new Array();
 				var shape;
 				for(let shapeModel of this.model.shapes){
-					shape = new WebGL_ShapeInstance(this, shapeModel);
+					
+					// instantiate
+					shape = new WebGL_ShapeInstance(this);
+					
+					// apply model
+					shapeModel.apply(shape);
+					
+					// register
 					this.shapes.push(shape);
+					
 					shape.reset();
 				}
 				
