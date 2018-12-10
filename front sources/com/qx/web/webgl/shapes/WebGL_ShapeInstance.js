@@ -5,12 +5,11 @@
  * a model must be defined
  * an instance must be defined
  */
-function WebGL_ShapeInstance(objectInstance){
-
-	// keep tracking of wrapping object instance
-	this.scene = objectInstance.scene;
-	this.affines = objectInstance.affines;
-
+function WebGL_ShapeInstance(scene, affines){
+	
+	this.scene = scene;
+	this.affines = affines;
+	
 	// rendering pipe handles
 	this.wireStyleHandle = null;
 	this.surfaceStyleHandle = null;
@@ -35,25 +34,29 @@ WebGL_ShapeInstance.prototype = {
 				// trigger render by drawing elements
 				//gl.drawElements(this.elementType, this.nbElements, gl.UNSIGNED_SHORT, 0);
 				program.draw(view, this);
-			}			
+			}
 		},
 		
 		
 		setWireStyle : function(id){
-			if(this.wireStyleHandle!=null){
-				this.wireStyleHandle.isRemoved = true;
-			}
-			if(id!=null){
-				this.wireStyleHandle = this.scene.getPipe(id).append(this);	
+			if(this.isWireEnabled){
+				if(this.wireStyleHandle!=null){
+					this.wireStyleHandle.isRemoved = true;
+				}
+				if(id!=null){
+					this.wireStyleHandle = this.scene.getPipe(id).append(this);	
+				}	
 			}
 		},
 
 		setSurfaceStyle : function(id){
-			if(this.surfaceStyleHandle!=null){
-				this.surfaceStyleHandle.isRemoved = true;
-			}
-			if(id!=null){
-				this.surfaceStyleHandle = this.scene.getPipe(id).append(this);	
+			if(this.isSurfaceEnabled){
+				if(this.surfaceStyleHandle!=null){
+					this.surfaceStyleHandle.isRemoved = true;
+				}
+				if(id!=null){
+					this.surfaceStyleHandle = this.scene.getPipe(id).append(this);	
+				}	
 			}
 		},
 
@@ -70,7 +73,7 @@ WebGL_ShapeInstance.prototype = {
 				
 			case 1: // highlight
 				this.setWireStyle(this.wireProgram);
-				this.setSurfaceStyle("glow");
+				this.setSurfaceStyle("lit");
 				break;
 			}
 		},

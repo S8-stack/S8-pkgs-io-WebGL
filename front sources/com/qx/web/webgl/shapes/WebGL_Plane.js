@@ -8,13 +8,14 @@ function WebGL_Plane(){
 	this.y1 = 0.5;
 	this.z = 0.0;
 	this.shift = 0.0001;
-
 	this.texCoordScale = 1.0;
 }
 
 WebGL_Plane.prototype = {
 
 		build : function(shape){
+			
+			var vertices, normals, texCoords, texCoordScale, elements, offset;
 
 			// dimensions
 			var x0=this.x0, x1=this.x1, y0=this.y0, y1=this.y1, z=this.z;
@@ -22,20 +23,20 @@ WebGL_Plane.prototype = {
 			// <surface>
 			if(shape.isSurfaceEnabled){
 
-				var vertices = shape.surfaceVertices;
-
+				vertices = shape.surfaceVertices;
+				
 				var isSurfaceNormalAttributeEnabled = shape.isSurfaceNormalAttributeEnabled;
 				if(isSurfaceNormalAttributeEnabled){
-					var normals = shape.surfaceNormals;	
+					normals = shape.surfaceNormals;	
 				}
 				
 				var isSurfaceTexCoordAttributeEnabled = shape.isSurfaceTexCoordAttributeEnabled;
 				if(isSurfaceTexCoordAttributeEnabled){
-					var texCoords = shape.texCoords;	
-					var texCoordScale = this.texCoordScale;
+					texCoords = shape.surfaceTexCoords;	
+					texCoordScale = this.texCoordScale;
 				}
-				var elements = shape.surfaceElements;
-				var offset = vertices.length();
+				elements = shape.surfaceElements;
+				offset = vertices.length();
 
 				// vertices
 				vertices.push(new MathVector3d(x0, y0, z));
@@ -53,10 +54,10 @@ WebGL_Plane.prototype = {
 				
 				// texCoords
 				if(isSurfaceTexCoordAttributeEnabled){
-					normals.push(new MathVector2d(0.0, 0.0));
-					normals.push(new MathVector2d((x1-x0)/texCoordScale, 0.0));
-					normals.push(new MathVector2d((x1-x0)/texCoordScale, (y1-y0)/texCoordScale));
-					normals.push(new MathVector2d(0.0, (y1-y0)/texCoordScale));
+					texCoords.push(new MathVector2d(0.0, 0.0));
+					texCoords.push(new MathVector2d((x1-x0)/texCoordScale, 0.0));
+					texCoords.push(new MathVector2d((x1-x0)/texCoordScale, (y1-y0)/texCoordScale));
+					texCoords.push(new MathVector2d(0.0, (y1-y0)/texCoordScale));
 				}
 				
 				elements.push(offset+0, offset+1, offset+2);
@@ -70,9 +71,9 @@ WebGL_Plane.prototype = {
 				x0-=this.shift; x1+=this.shift;
 				y0-=this.shift; y1+=this.shift;
 
-				var vertices = shape.wireVertices;
-				var elements = shape.wireElements;
-				var offset = vertices.length();
+				vertices = shape.wireVertices;
+				elements = shape.wireElements;
+				offset = vertices.length();
 
 				// surface vertices
 				vertices.push(new MathVector3d(x0, y0, z));

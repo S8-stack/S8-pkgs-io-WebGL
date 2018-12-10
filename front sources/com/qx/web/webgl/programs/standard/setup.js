@@ -67,6 +67,10 @@ program.attachShape = function(shape){
 	shape.surfaceElements.bind();
 };
 
+
+/**
+ * 
+ */
 program.draw = function(view, shape){
 
 	// matrices
@@ -77,6 +81,9 @@ program.draw = function(view, shape){
 };
 
 
+/**
+ * 
+ */
 program.detachShape = function(shape){	
 	
 	/* unbind attributes */

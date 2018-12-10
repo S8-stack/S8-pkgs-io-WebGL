@@ -9,16 +9,19 @@ function WebGL_Sphere(){
 WebGL_Sphere.prototype = {
 
 		build : function(shape){
+			
+
+			var vertices, normals, texCoords, texCoordScale, elements, offset;
 
 			// <surface>
 			if(shape.isSurfaceEnabled){
 				var r = this.radius;
 				var n = this.nPerPi;
 
-				var vertices = shape.surfaceVertices;
-				var normals = shape.surfaceNormals;
-				var elements = shape.surfaceElements;
-				var offset = vertices.length();
+				vertices = shape.surfaceVertices;
+				normals = shape.surfaceNormals;
+				elements = shape.surfaceElements;
+				offset = vertices.length();
 
 				var matrix = new MathMatrix3d();
 				var theta, dTheta = Math.PI/(n-1), phi, dPhi = 2.0*Math.PI/(2*n);

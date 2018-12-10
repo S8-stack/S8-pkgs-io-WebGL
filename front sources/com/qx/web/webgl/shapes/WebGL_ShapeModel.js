@@ -169,6 +169,8 @@ WebGL_ShapeModel.prototype = {
 		apply : function(instance){
 						
 			/* <wire> */
+			instance.isWireEnabled = this.isWireEnabled;
+			
 			if(this.isWireEnabled){
 				
 				// material
@@ -185,6 +187,8 @@ WebGL_ShapeModel.prototype = {
 			/* </wire> */
 			
 			/* <surface> */
+			instance.isSurfaceEnabled = this.isSurfaceEnabled;
+			
 			if(this.isSurfaceEnabled){
 				
 				// material
@@ -204,6 +208,11 @@ WebGL_ShapeModel.prototype = {
 				}
 				if(this.isSurfaceTexCoordAttributeEnabled){
 					instance.surfaceTexCoords = this.surfaceTexCoords;
+					// textures
+					instance.surfaceTexture0 = this.surfaceTexture0;
+					instance.surfaceTexture1 = this.surfaceTexture1;
+					instance.surfaceTexture2 = this.surfaceTexture2;
+					instance.surfaceTexture3 = this.surfaceTexture3;
 				}
 				if(this.isSurfaceColorAttributeEnabled){
 					instance.surfaceColors = this.surfaceColors;
@@ -305,7 +314,7 @@ WebGL_Vector2dBuffer.prototype = {
 		},
 		
 		// default transform: let vectors untouched
-		copy : function(affine, target){
+		copy : function(target){
 			var vertexCopy;
 			for(let vertex of this.vectors){
 				vertexCopy = new MathVector2d();
@@ -325,6 +334,7 @@ WebGL_TexCoordBuffer.prototype = {
 		compile : WebGL_Vector2dBuffer.prototype.compile,
 		bind : WebGL_Vector2dBuffer.prototype.bind,
 		dispose : WebGL_Vector2dBuffer.prototype.dispose,
+		copy : WebGL_Vector2dBuffer.prototype.copy,
 };
 
 

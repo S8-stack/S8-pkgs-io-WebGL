@@ -169,77 +169,63 @@ WebGL_Shader.prototype = {
 };
 
 
+
 /*
-function WebGL_GraphicPipe(){
-
-	// map for allocation of styles
-	this.programs = new Array();
-}
-
-
-WebGL_GraphicPipe.prototype = {
-
-		get : function(id){
-			for(var i in this.programs){
-				if(this.programs[i].id == id){
-					return this.programs[i];
-				}
+ * prgm DB
+ */
+var WebGL_textures = {
+		map : new Map(),
+		get : function(pathname){
+			var texture = this.map.get(pathname);
+			if(texture==undefined){
+				var texture = new WebGL_Texture(pathname);
+				// add the newly created program to the list
+				this.map.set(pathname, texture);
 			}
-
-			// if style is not present, we create it
-			var program = new WebGL_Program(id);
-			var that = this;
-
-			program.load(function(){
-				// sort programs
-				that.sort();
-
-				// trigger a render to refresh
-				scene.render();
-			});
-
-			// add the newly created program to the list
-			this.programs.push(program);
-
-			return program;
-		},
-
-
-		sort : function(){
-			// sort the programs by pass index
-			this.programs = this.programs.sort(function(a, b){ return a.pass-b.pass; });
-		},
-
-		render : function(view, environment){
-			// render the programs -> styles -> shapes
-
-			for(let prgm of this.programs){
-
-				if(prgm.isInitialized){
-
-					// setup settings
-					prgm.bind(view, environment);
-
-					// render renderables
-					for(let style of prgm.displayList){
-						style.render(view, prgm);
-					}
-
-					// reset to default
-					prgm.unbind();
-				}
-			}
-		},
-
-		clear : function(){
-			// render the programs -> styles -> shapes
-			for(var i in this.programs){
-				this.programs[i].clear();
-			}
+			return texture;
 		}
-
 };
-*/
 
 
+
+
+/**
+ * Texture
+ */
+
+function WebGL_Texture(pathname){
+	this.isInitialized = false;
+	this.texture = gl.createTexture();
+	this.image = new Image();
+	var that = this;
+	this.image.onload = function() {
+		that.initialize();
+	};
+	this.image.src = pathname;
+};
+
+WebGL_Texture.prototype = {
+
+		initialize : function(){
+			gl.bindTexture(gl.TEXTURE_2D, this.texture);
+			gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+			gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.image);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+			gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+			gl.bindTexture(gl.TEXTURE_2D, null);
+			this.isInitialized = true;
+		},
+
+		bind : function(location, index){
+			if(this.isInitialized){
+				gl.activeTexture(gl.TEXTURE0+index);
+				gl.bindTexture(gl.TEXTURE_2D, this.texture);
+				gl.uniform1i(location, index);	
+			}
+		},
+
+		dispose : function(){
+			gl.deleteTexture(this.texture);
+		}
+};
 

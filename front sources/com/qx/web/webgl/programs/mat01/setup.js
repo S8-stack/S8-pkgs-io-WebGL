@@ -41,8 +41,6 @@ program.bind = function(view, environment){
 	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
 	gl.enableVertexAttribArray(this.loc_Attribute_normal);
 	
-	// nothing to do for view	
-	var light;
 	
 	// setup lights
 	for(var i=0; i<this.nbLights; i++){

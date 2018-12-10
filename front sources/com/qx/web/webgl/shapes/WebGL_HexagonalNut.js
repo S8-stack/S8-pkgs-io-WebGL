@@ -10,6 +10,9 @@ WebGL_HexagonalNut.prototype = {
 
 		build : function(shape){
 
+
+			var vertices, normals, texCoords, texCoordScale, elements, offset;
+			
 			// dimensions
 			var s = this.wrenchSize/2.0;
 			var halfWidth = s*Math.tan(Math.PI/6.0);
@@ -20,14 +23,14 @@ WebGL_HexagonalNut.prototype = {
 			// <surface>
 			if(shape.isSurfaceEnabled){
 
-				var vertices = shape.surfaceVertices;
+				vertices = shape.surfaceVertices;
 
 				var isSurfaceNormalAttributeEnabled = shape.isSurfaceNormalAttributeEnabled;
 				if(isSurfaceNormalAttributeEnabled){
-					var normals = shape.surfaceNormals;	
+					normals = shape.surfaceNormals;	
 				}
-				var elements = shape.surfaceElements;
-				var offset = vertices.length();
+				elements = shape.surfaceElements;
+				offset = vertices.length();
 
 				var matrix = new MathMatrix3d();
 				var dTheta = 2.0*Math.PI/6, theta0 = Math.PI/6.0;
@@ -118,9 +121,9 @@ WebGL_HexagonalNut.prototype = {
 			// <wire>
 			if(shape.isWireEnabled){
 
-				var vertices = shape.wireVertices;
-				var elements = shape.wireElements;
-				var offset = vertices.length();
+				vertices = shape.wireVertices;
+				elements = shape.wireElements;
+				offset = vertices.length();
 				for(var i=0; i<6; i++){
 					matrix.xRotation(theta0+i*dTheta);
 

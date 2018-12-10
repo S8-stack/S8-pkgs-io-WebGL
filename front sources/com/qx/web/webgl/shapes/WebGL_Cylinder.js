@@ -18,6 +18,8 @@ function WebGL_Cylinder(){
 WebGL_Cylinder.prototype = {
 
 		build : function(shape){
+			
+			var vertices, normals, texCoords, elements, offset;
 
 			// <surface>			
 			if(shape.isSurfaceEnabled){
@@ -27,15 +29,15 @@ WebGL_Cylinder.prototype = {
 				x1 = this.x1, 
 				shift = this.shift;
 
-				var vertices = shape.surfaceVertices;
-				var elements = shape.surfaceElements;
+				vertices = shape.surfaceVertices;
+				elements = shape.surfaceElements;
 				var isSurfaceNormalAttributeEnabled = shape.isSurfaceNormalAttributeEnabled;
 				if(isSurfaceNormalAttributeEnabled){
-					var normals = shape.surfaceNormals;	
+					normals = shape.surfaceNormals;	
 				}
 
 				// < lateral_surface>
-				var offset = vertices.length();
+				offset = vertices.length();
 				var theta, dTheta = 2.0*Math.PI/n;
 				var vertex, normal, i0, i1, i2, i3;
 

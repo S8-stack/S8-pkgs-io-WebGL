@@ -85,7 +85,7 @@ WebGL_ObjectInstance.prototype = {
 				for(let shapeModel of this.model.shapes){
 					
 					// instantiate
-					shape = new WebGL_ShapeInstance(this);
+					shape = new WebGL_ShapeInstance(this.scene, this.affines);
 					
 					// apply model
 					shapeModel.apply(shape);

@@ -11,7 +11,7 @@ function WebGL_ShapeConfiguration(){
 	this.wireProgram = "color2";
 	
 	/** default value for shape material */
-	this.wireColor = [0.12, 0.12, 0.12, 0.0];
+	this.wireColor = [0.12, 0.12, 0.12, 1.0];
 
 	/** the default program for wire rendering */
 	this.surfaceProgram = "standard";
@@ -26,13 +26,19 @@ function WebGL_ShapeConfiguration(){
 	this.surfaceShininess = 0.5;
 	
 	/** default value for shape material -> multi-purposes */
-	this.surfaceSpecularColor = [0.12, 0.8, 0.8, 0.0];
+	this.surfaceSpecularColor = [0.12, 0.8, 0.8, 1.0];
 
 	/** default value for shape material -> multi-purposes */
-	this.surfaceDiffuseColor = [0.12, 0.8, 0.8, 0.0];
+	this.surfaceDiffuseColor = [0.12, 0.8, 0.8, 1.0];
 
 	/** default value for shape material -> multi-purposes */
-	this.surfaceAmbientColor = [0.1, 0.1, 0.1, 0.0];
+	this.surfaceAmbientColor = [0.1, 0.1, 0.1, 1.0];
+	
+	/** the textures */
+	this.surfaceTexture0 = null;
+	this.surfaceTexture1 = null;
+	this.surfaceTexture2 = null;
+	this.surfaceTexture3 = null;
 	
 	
 	// Geometry Attributes
@@ -76,6 +82,12 @@ WebGL_ShapeConfiguration.prototype = {
 			shape.surfaceSpecularColor = this.surfaceSpecularColor;
 			shape.surfaceDiffuseColor = this.surfaceDiffuseColor;
 			shape.surfaceAmbientColor = this.surfaceAmbientColor;
+
+			// textures
+			shape.surfaceTexture0 = this.surfaceTexture0;
+			shape.surfaceTexture1 = this.surfaceTexture1;
+			shape.surfaceTexture2 = this.surfaceTexture2;
+			shape.surfaceTexture3 = this.surfaceTexture3;
 			
 			// geometry attributes
 			shape.isWireEnabled = this.isWireEnabled;
