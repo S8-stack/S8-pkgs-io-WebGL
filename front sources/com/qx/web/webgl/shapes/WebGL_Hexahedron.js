@@ -29,186 +29,215 @@ WebGL_Hexahedron.prototype = {
 			// <surface>
 			if(shape.isSurfaceEnabled){
 
-				vertices = shape.surfaceVertices;
+				var surfaceAttributes = shape.surfaceAttributes;
+				offset = surfaceAttributes.length;
 
 				var isSurfaceNormalAttributeEnabled = shape.isSurfaceNormalAttributeEnabled;
-				if(isSurfaceNormalAttributeEnabled){
-					normals = shape.surfaceNormals;	
-				}
+				
 				
 				var isSurfaceTexCoordAttributeEnabled = shape.isSurfaceTexCoordAttributeEnabled;
 				if(isSurfaceTexCoordAttributeEnabled){
-					texCoords = shape.surfaceTexCoords;
 					texCoordScale = this.texCoordScale;
 				}
-				elements = shape.surfaceElements;
-				offset = vertices.length();
+				indices = shape.surfaceIndices;
 
+				var va0, va1, va2, va3;
+				
 				// face ax+
-
+				va0 = new WebGL_VertexAttributes();
+				va1 = new WebGL_VertexAttributes();
+				va2 = new WebGL_VertexAttributes();
+				va3 = new WebGL_VertexAttributes();
+				surfaceAttributes.push(va0, va1, va2, va3);
+				
 				// vertices
-				vertices.push(new MathVector3d( ax,-ay,-az));
-				vertices.push(new MathVector3d( ax, ay,-az));
-				vertices.push(new MathVector3d( ax, ay, az));
-				vertices.push(new MathVector3d( ax,-ay, az));
+				va0.vertex = new MathVector3d( ax,-ay,-az);
+				va1.vertex = new MathVector3d( ax, ay,-az);
+				va2.vertex = new MathVector3d( ax, ay, az);
+				va3.vertex = new MathVector3d( ax,-ay, az);
 
 				// normals
 				if(isSurfaceNormalAttributeEnabled){
-					normals.push(new MathVector3d( 1.0, 0.0, 0.0));
-					normals.push(new MathVector3d( 1.0, 0.0, 0.0));
-					normals.push(new MathVector3d( 1.0, 0.0, 0.0));
-					normals.push(new MathVector3d( 1.0, 0.0, 0.0));		
+					va0.normal = new MathVector3d( 1.0, 0.0, 0.0);
+					va1.normal = new MathVector3d( 1.0, 0.0, 0.0);
+					va2.normal = new MathVector3d( 1.0, 0.0, 0.0);
+					va3.normal = new MathVector3d( 1.0, 0.0, 0.0);		
 				}
 				
 				// tex coords
 				if(isSurfaceTexCoordAttributeEnabled){
-					texCoords.push(new MathVector2d(0.0, 0.0));
-					texCoords.push(new MathVector2d(2*ay/texCoordScale, 0.0));
-					texCoords.push(new MathVector2d(2*ay/texCoordScale, 2*az/texCoordScale));
-					texCoords.push(new MathVector2d(0.0, 2*az/texCoordScale));
+					va0.texCoord = new MathVector2d(0.0, 0.0);
+					va1.texCoord = new MathVector2d(2*ay/texCoordScale, 0.0);
+					va2.texCoord = new MathVector2d(2*ay/texCoordScale, 2*az/texCoordScale);
+					va3.texCoord = new MathVector2d(0.0, 2*az/texCoordScale);
 				}
 
-				elements.push(offset+0, offset+1, offset+2);
-				elements.push(offset+2 ,offset+3, offset+0);
+				indices.push(offset+0, offset+1, offset+2);
+				indices.push(offset+2 ,offset+3, offset+0);
 				offset+=4;
 
 				// face ax-
+				va0 = new WebGL_VertexAttributes();
+				va1 = new WebGL_VertexAttributes();
+				va2 = new WebGL_VertexAttributes();
+				va3 = new WebGL_VertexAttributes();
+				surfaceAttributes.push(va0, va1, va2, va3);
 
 				// vertices
-				vertices.push(new MathVector3d(-ax, ay,-az));
-				vertices.push(new MathVector3d(-ax,-ay,-az));
-				vertices.push(new MathVector3d(-ax,-ay, az));
-				vertices.push(new MathVector3d(-ax, ay, az));
+				va0.vertex = new MathVector3d(-ax, ay,-az);
+				va1.vertex = new MathVector3d(-ax,-ay,-az);
+				va2.vertex = new MathVector3d(-ax,-ay, az);
+				va3.vertex = new MathVector3d(-ax, ay, az);
 
 				// normals
 				if(isSurfaceNormalAttributeEnabled){
-					normals.push(new MathVector3d(-1.0, 0.0, 0.0));
-					normals.push(new MathVector3d(-1.0, 0.0, 0.0));
-					normals.push(new MathVector3d(-1.0, 0.0, 0.0));
-					normals.push(new MathVector3d(-1.0, 0.0, 0.0));
+					va0.normal = new MathVector3d(-1.0, 0.0, 0.0);
+					va1.normal = new MathVector3d(-1.0, 0.0, 0.0);
+					va2.normal = new MathVector3d(-1.0, 0.0, 0.0);
+					va3.normal = new MathVector3d(-1.0, 0.0, 0.0);
 				}
 				
 				// tex coords
 				if(isSurfaceTexCoordAttributeEnabled){
-					texCoords.push(new MathVector2d(0.0, 0.0));
-					texCoords.push(new MathVector2d(2*ay/texCoordScale, 0.0));
-					texCoords.push(new MathVector2d(2*ay/texCoordScale, 2*az/texCoordScale));
-					texCoords.push(new MathVector2d(0.0, 2*az/texCoordScale));
+					va0.texCoord = new MathVector2d(0.0, 0.0);
+					va1.texCoord = new MathVector2d(2*ay/texCoordScale, 0.0);
+					va2.texCoord = new MathVector2d(2*ay/texCoordScale, 2*az/texCoordScale);
+					va3.texCoord = new MathVector2d(0.0, 2*az/texCoordScale);
 				}
 
-				elements.push(offset+0, offset+1, offset+2);
-				elements.push(offset+2 ,offset+3, offset+0);
+				indices.push(offset+0, offset+1, offset+2);
+				indices.push(offset+2 ,offset+3, offset+0);
 				offset+=4;
 
 				// face ay+
+				va0 = new WebGL_VertexAttributes();
+				va1 = new WebGL_VertexAttributes();
+				va2 = new WebGL_VertexAttributes();
+				va3 = new WebGL_VertexAttributes();
+				surfaceAttributes.push(va0, va1, va2, va3);
 
 				// vertices
-				vertices.push(new MathVector3d(-ax, ay,-az));
-				vertices.push(new MathVector3d( ax, ay,-az));
-				vertices.push(new MathVector3d( ax, ay, az));
-				vertices.push(new MathVector3d(-ax, ay, az));
+				va0.vertex = new MathVector3d(-ax, ay,-az);
+				va1.vertex = new MathVector3d( ax, ay,-az);
+				va2.vertex = new MathVector3d( ax, ay, az);
+				va3.vertex = new MathVector3d(-ax, ay, az);
 
 				// normals
 				if(isSurfaceNormalAttributeEnabled){
-					normals.push(new MathVector3d( 0.0, 1.0, 0.0));
-					normals.push(new MathVector3d( 0.0, 1.0, 0.0));
-					normals.push(new MathVector3d( 0.0, 1.0, 0.0));
-					normals.push(new MathVector3d( 0.0, 1.0, 0.0));
+					va0.normal = new MathVector3d( 0.0, 1.0, 0.0);
+					va1.normal = new MathVector3d( 0.0, 1.0, 0.0);
+					va2.normal = new MathVector3d( 0.0, 1.0, 0.0);
+					va3.normal = new MathVector3d( 0.0, 1.0, 0.0);
 				}
 				
 				// tex coords
 				if(isSurfaceTexCoordAttributeEnabled){
-					texCoords.push(new MathVector2d(0.0, 0.0));
-					texCoords.push(new MathVector2d(2*ax/texCoordScale, 0.0));
-					texCoords.push(new MathVector2d(2*ax/texCoordScale, 2*az/texCoordScale));
-					texCoords.push(new MathVector2d(0.0, 2*az/texCoordScale));
+					va0.texCoord = new MathVector2d(0.0, 0.0);
+					va1.texCoord = new MathVector2d(2*ax/texCoordScale, 0.0);
+					va2.texCoord = new MathVector2d(2*ax/texCoordScale, 2*az/texCoordScale);
+					va3.texCoord = new MathVector2d(0.0, 2*az/texCoordScale);
 				}
 
-				elements.push(offset+0, offset+1, offset+2);
-				elements.push(offset+2 ,offset+3, offset+0);
+				indices.push(offset+0, offset+1, offset+2);
+				indices.push(offset+2 ,offset+3, offset+0);
 				offset+=4;
 
 				// face ay-
-
+				va0 = new WebGL_VertexAttributes();
+				va1 = new WebGL_VertexAttributes();
+				va2 = new WebGL_VertexAttributes();
+				va3 = new WebGL_VertexAttributes();
+				surfaceAttributes.push(va0, va1, va2, va3);
+				
 				// vertices
-				vertices.push(new MathVector3d(-ax,-ay,-az));
-				vertices.push(new MathVector3d( ax,-ay,-az));
-				vertices.push(new MathVector3d( ax,-ay, az));
-				vertices.push(new MathVector3d(-ax,-ay, az));
+				va0.vertex = new MathVector3d(-ax,-ay,-az);
+				va1.vertex = new MathVector3d( ax,-ay,-az);
+				va2.vertex = new MathVector3d( ax,-ay, az);
+				va3.vertex = new MathVector3d(-ax,-ay, az);
 
 				// normals
 				if(isSurfaceNormalAttributeEnabled){
-					normals.push(new MathVector3d( 0.0,-1.0, 0.0));
-					normals.push(new MathVector3d( 0.0,-1.0, 0.0));
-					normals.push(new MathVector3d( 0.0,-1.0, 0.0));
-					normals.push(new MathVector3d( 0.0,-1.0, 0.0));
+					va0.normal = new MathVector3d( 0.0,-1.0, 0.0);
+					va1.normal = new MathVector3d( 0.0,-1.0, 0.0);
+					va2.normal = new MathVector3d( 0.0,-1.0, 0.0);
+					va3.normal = new MathVector3d( 0.0,-1.0, 0.0);
 				}
 				
 				// tex coords
 				if(isSurfaceTexCoordAttributeEnabled){
-					texCoords.push(new MathVector2d(0.0, 0.0));
-					texCoords.push(new MathVector2d(2*ax/texCoordScale, 0.0));
-					texCoords.push(new MathVector2d(2*ax/texCoordScale, 2*az/texCoordScale));
-					texCoords.push(new MathVector2d(0.0, 2*az/texCoordScale));
+					va0.texCoord = new MathVector2d(0.0, 0.0);
+					va1.texCoord = new MathVector2d(2*ax/texCoordScale, 0.0);
+					va2.texCoord = new MathVector2d(2*ax/texCoordScale, 2*az/texCoordScale);
+					va3.texCoord = new MathVector2d(0.0, 2*az/texCoordScale);
 				}
 
-				elements.push(offset+0, offset+1, offset+2);
-				elements.push(offset+2 ,offset+3, offset+0);
+				indices.push(offset+0, offset+1, offset+2);
+				indices.push(offset+2 ,offset+3, offset+0);
 				offset+=4;
 
 				// face az+
-
+				va0 = new WebGL_VertexAttributes();
+				va1 = new WebGL_VertexAttributes();
+				va2 = new WebGL_VertexAttributes();
+				va3 = new WebGL_VertexAttributes();
+				surfaceAttributes.push(va0, va1, va2, va3);
+				
 				// vertices
-				vertices.push(new MathVector3d(-ax,-ay, az));
-				vertices.push(new MathVector3d( ax,-ay, az));
-				vertices.push(new MathVector3d( ax, ay, az));
-				vertices.push(new MathVector3d(-ax, ay, az));
+				va0.vertex = new MathVector3d(-ax,-ay, az);
+				va1.vertex = new MathVector3d( ax,-ay, az);
+				va2.vertex = new MathVector3d( ax, ay, az);
+				va3.vertex = new MathVector3d(-ax, ay, az);
 
 				// normals
 				if(isSurfaceNormalAttributeEnabled){
-					normals.push(new MathVector3d( 0.0, 0.0, 1.0));
-					normals.push(new MathVector3d( 0.0, 0.0, 1.0));
-					normals.push(new MathVector3d( 0.0, 0.0, 1.0));
-					normals.push(new MathVector3d( 0.0, 0.0, 1.0));
+					va0.normal = new MathVector3d( 0.0, 0.0, 1.0);
+					va1.normal = new MathVector3d( 0.0, 0.0, 1.0);
+					va2.normal = new MathVector3d( 0.0, 0.0, 1.0);
+					va3.normal = new MathVector3d( 0.0, 0.0, 1.0);
 				}
 				
 				// tex coords
 				if(isSurfaceTexCoordAttributeEnabled){
-					texCoords.push(new MathVector2d(0.0, 0.0));
-					texCoords.push(new MathVector2d(2*ax/texCoordScale, 0.0));
-					texCoords.push(new MathVector2d(2*ax/texCoordScale, 2*ay/texCoordScale));
-					texCoords.push(new MathVector2d(0.0, 2*ay/texCoordScale));
+					va0.texCoord = new MathVector2d(0.0, 0.0);
+					va1.texCoord = new MathVector2d(2*ax/texCoordScale, 0.0);
+					va2.texCoord = new MathVector2d(2*ax/texCoordScale, 2*ay/texCoordScale);
+					va3.texCoord = new MathVector2d(0.0, 2*ay/texCoordScale);
 				}
 				
-				elements.push(offset+0, offset+1, offset+2);
-				elements.push(offset+2 ,offset+3, offset+0);
+				indices.push(offset+0, offset+1, offset+2);
+				indices.push(offset+2 ,offset+3, offset+0);
 				offset+=4;
 
 				// face az-
-
+				va0 = new WebGL_VertexAttributes();
+				va1 = new WebGL_VertexAttributes();
+				va2 = new WebGL_VertexAttributes();
+				va3 = new WebGL_VertexAttributes();
+				surfaceAttributes.push(va0, va1, va2, va3);
+				
 				// vertices
-				vertices.push(new MathVector3d(-ax,-ay,-az));
-				vertices.push(new MathVector3d(-ax, ay,-az));
-				vertices.push(new MathVector3d( ax, ay,-az));
-				vertices.push(new MathVector3d( ax,-ay,-az));
+				va0.vertex = new MathVector3d(-ax,-ay,-az);
+				va1.vertex = new MathVector3d(-ax, ay,-az);
+				va2.vertex = new MathVector3d( ax, ay,-az);
+				va3.vertex = new MathVector3d( ax,-ay,-az);
 
 				// normals
 				if(isSurfaceNormalAttributeEnabled){
-					normals.push(new MathVector3d( 0.0, 0.0,-1.0));
-					normals.push(new MathVector3d( 0.0, 0.0,-1.0));
-					normals.push(new MathVector3d( 0.0, 0.0,-1.0));
-					normals.push(new MathVector3d( 0.0, 0.0,-1.0));
+					va0.normal = new MathVector3d( 0.0, 0.0,-1.0);
+					va1.normal = new MathVector3d( 0.0, 0.0,-1.0);
+					va2.normal = new MathVector3d( 0.0, 0.0,-1.0);
+					va3.normal = new MathVector3d( 0.0, 0.0,-1.0);
 				}
 				// tex coords
 				if(isSurfaceTexCoordAttributeEnabled){
-					texCoords.push(new MathVector2d(0.0, 0.0));
-					texCoords.push(new MathVector2d(2*ax/texCoordScale, 0.0));
-					texCoords.push(new MathVector2d(2*ax/texCoordScale, 2*ay/texCoordScale));
-					texCoords.push(new MathVector2d(0.0, 2*ay/texCoordScale));
+					va0.texCoord = new MathVector2d(0.0, 0.0);
+					va1.texCoord = new MathVector2d(2*ax/texCoordScale, 0.0);
+					va2.texCoord = new MathVector2d(2*ax/texCoordScale, 2*ay/texCoordScale);
+					va3.texCoord = new MathVector2d(0.0, 2*ay/texCoordScale);
 				}
 				
-				elements.push(offset+0, offset+1, offset+2);
-				elements.push(offset+2 ,offset+3, offset+0);
+				indices.push(offset+0, offset+1, offset+2);
+				indices.push(offset+2 ,offset+3, offset+0);
 				offset+=4;
 			}
 			// </surface>
@@ -219,34 +248,34 @@ WebGL_Hexahedron.prototype = {
 				ay+=this.shift;
 				az+=this.shift;
 
-				vertices = shape.wireVertices;
-				elements = shape.wireElements;
-				offset = vertices.length();
+				var wireAttributes = shape.wireAttributes;
+				indices = shape.wireIndices;
+				offset = wireAttributes.length;
 
 				// surface vertices
-				vertices.push(new MathVector3d(-ax,-ay,-az));
-				vertices.push(new MathVector3d( ax,-ay,-az));
-				vertices.push(new MathVector3d( ax, ay,-az));
-				vertices.push(new MathVector3d(-ax, ay,-az));
-				vertices.push(new MathVector3d(-ax,-ay, az));
-				vertices.push(new MathVector3d( ax,-ay, az));
-				vertices.push(new MathVector3d( ax, ay, az));
-				vertices.push(new MathVector3d(-ax, ay, az));
+				wireAttributes.push(new WebGL_VertexAttributes(new MathVector3d(-ax,-ay,-az)));
+				wireAttributes.push(new WebGL_VertexAttributes(new MathVector3d( ax,-ay,-az)));
+				wireAttributes.push(new WebGL_VertexAttributes(new MathVector3d( ax, ay,-az)));
+				wireAttributes.push(new WebGL_VertexAttributes(new MathVector3d(-ax, ay,-az)));
+				wireAttributes.push(new WebGL_VertexAttributes(new MathVector3d(-ax,-ay, az)));
+				wireAttributes.push(new WebGL_VertexAttributes(new MathVector3d( ax,-ay, az)));
+				wireAttributes.push(new WebGL_VertexAttributes(new MathVector3d( ax, ay, az)));
+				wireAttributes.push(new WebGL_VertexAttributes(new MathVector3d(-ax, ay, az)));
 
-				elements.push(offset+0, offset+1);
-				elements.push(offset+1, offset+2);
-				elements.push(offset+2, offset+3);
-				elements.push(offset+3, offset+0);
+				indices.push(offset+0, offset+1);
+				indices.push(offset+1, offset+2);
+				indices.push(offset+2, offset+3);
+				indices.push(offset+3, offset+0);
 
-				elements.push(offset+4, offset+5);
-				elements.push(offset+5, offset+6);
-				elements.push(offset+6, offset+7);
-				elements.push(offset+7, offset+4);
+				indices.push(offset+4, offset+5);
+				indices.push(offset+5, offset+6);
+				indices.push(offset+6, offset+7);
+				indices.push(offset+7, offset+4);
 
-				elements.push(offset+0, offset+4);
-				elements.push(offset+1, offset+5);
-				elements.push(offset+2, offset+6);
-				elements.push(offset+3, offset+7);	
+				indices.push(offset+0, offset+4);
+				indices.push(offset+1, offset+5);
+				indices.push(offset+2, offset+6);
+				indices.push(offset+3, offset+7);	
 			}
 			// </wire>
 		}

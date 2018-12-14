@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.qx.maths.affine.MathAffine3d;
-import com.qx.maths.box.BoundingBox3d;
+import com.qx.maths.box.MathBoundingBox3d;
 import com.qx.maths.vector.MathVector3d;
 
 public abstract class WebGL_RenderingUnit {
@@ -73,7 +73,7 @@ public abstract class WebGL_RenderingUnit {
 		return vertices;
 	}
 	
-	public void update(BoundingBox3d boundingBox3d){
+	public void update(MathBoundingBox3d boundingBox3d){
 		for(MathVector3d vertex : vertices){
 			boundingBox3d.update(vertex);
 		}

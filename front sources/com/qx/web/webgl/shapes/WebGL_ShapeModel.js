@@ -7,22 +7,22 @@ function WebGL_ShapeModel(isWisNormalEnabled = true, isTexCoordEnabled = false){
 
 	/** the default program for wire rendering */
 	this.wireProgram = "color2";
-	
+
 	/** default value for shape material */
 	this.wireColor = [0.12, 0.12, 0.12, 0.0];
-	
+
 	/** the default program for wire rendering */
 	this.surfaceProgram = "standard";
 
 	/** default value for shape material -> "Standard" Unity-style shading */
 	this.surfaceGlossiness = 0.7;
-	
+
 	/** default value for shape material -> "Standard" Unity-style shading */
 	this.surfaceRoughness = 0.5;
-	
+
 	/** default value for shape material -> Phong shading */
 	this.surfaceShininess = 0.5;
-	
+
 	/** default value for shape material -> multi-purposes */
 	this.surfaceSpecularColor = [0.12, 0.8, 0.8, 0.0];
 
@@ -31,10 +31,10 @@ function WebGL_ShapeModel(isWisNormalEnabled = true, isTexCoordEnabled = false){
 
 	/** default value for shape material -> multi-purposes */
 	this.surfaceAmbientColor = [0.1, 0.1, 0.1, 0.0];
-	
+
 	/** wire */
 	this.isWireEnabled = true;
-	
+
 	/** wire */
 	this.isWireColorAttributeEnabled = false;
 
@@ -43,13 +43,13 @@ function WebGL_ShapeModel(isWisNormalEnabled = true, isTexCoordEnabled = false){
 
 	/** surface normal */
 	this.isSurfaceNormalAttributeEnabled = true;
-	
+
 	/** surface tex coord */
 	this.isSurfaceTexCoordAttributeEnabled = false;
-	
+
 	/** surface color */
 	this.isSurfaceColorAttributeEnabled = false;
-	
+
 	/** surface {U,V}-tangents */
 	this.isSurfaceTangentAttributeEnabled = false;
 
@@ -57,75 +57,135 @@ function WebGL_ShapeModel(isWisNormalEnabled = true, isTexCoordEnabled = false){
 
 
 WebGL_ShapeModel.prototype = {
-		
+
 		initialize : function(){
 			/* <wire> */
 			if(this.isWireEnabled){
-				this.wireVertices = new WebGL_VertexBuffer();		
-				this.wireElements = new WebGL_LineBuffer();
-				if(this.isWireColorAttributeEnabled){
-					this.wireColors = new WebGL_Vector3dBuffer();
-				}
+				this.wireAttributes = new Array();		
+				this.wireIndices = new Array();
 			}
 			/* </wire> */
-			
+
 			/* <surface> */
 			if(this.isSurfaceEnabled){
-				this.surfaceVertices = new WebGL_VertexBuffer();
-				this.surfaceElements = new WebGL_TriangleBuffer();
-				if(this.isSurfaceNormalAttributeEnabled){
-					this.surfaceNormals = new WebGL_NormalBuffer();
-				}
-				if(this.isSurfaceTexCoordAttributeEnabled){
-					this.surfaceTexCoords = new WebGL_TexCoordBuffer();
-				}
-				if(this.isSurfaceColorAttributeEnabled){
-					this.surfaceColors = new WebGL_Vector3dBuffer();
-				}
-				if(this.isSurfaceTangentAttributeEnabled){
-					this.surfaceUTangents = new WebGL_TangentBuffer();
-					this.surfaceVTangents = new WebGL_TangentBuffer();
-				}
+				this.surfaceAttributes = new Array();
+				this.surfaceIndices = new Array();
 			}
 			/* </surface> */
 		},
 
 		transform : function(affine, target){
-			var offset;
+			var offset, n, vertex, color, uTangent, vTangent, normal, texCoord;
+			var vertexAttributes, targetVertexAttributes;
 
 			/* <wire> */
 			if(this.isWireEnabled){
-				offset = target.wireVertices.length();
-				this.wireVertices.transform(affine, target.wireVertices);
-				this.wireElements.shift(offset, target.wireElements);
-				if(this.isWireColorAttributeEnabled){
-					this.wireColors.copy(target.wireColors);
+
+				/* <wire-attributes> */
+				var wireAttributes = this.wireAttributes, targetWireAttributes = target.wireAttributes;
+				offset = targetWireAttributes.length;
+				n = wireAttributes.length;
+				for(var i=0; i<n; i++){
+					vertexAttributes = wireAttributes[i];
+					targetVertexAttributes = new WebGL_VertexAttributes();
+
+					/* <vertex> */
+					vertex = new MathVector3d();
+					affine.transformPoint(vertexAttributes.vertex, vertex);
+					targetVertexAttributes.vertex = vertex;
+					/* </vertex> */
+
+					/* <color> */
+					if(this.isWireColorAttributeEnabled){
+						color = new MathVector3d();
+						vertexAttributes.color.copy(color);
+						targetVertexAttributes.color = color;	
+					}
+					/* </color> */
+
+					targetWireAttributes.push(targetVertexAttributes);
 				}
+				/* </wire-attributes> */
+
+				/* <wire-elements> */
+				var targetWireIndices = target.wireIndices;
+				for(let index of this.wireIndices){
+					targetWireIndices.push(offset+index);
+				}
+				/* <wire-elements> */
 			}
 			/* </wire> */
-			
+
 			/* <surface> */
 			if(this.isSurfaceEnabled){
-				offset = target.surfaceVertices.length();
-				this.surfaceVertices.transform(affine, target.surfaceVertices);
-				this.surfaceElements.shift(offset, target.surfaceElements);
-				
-				if(this.isSurfaceNormalAttributeEnabled){
-					this.surfaceNormals.transform(affine, target.surfaceNormals);
+
+				/* <surface-attributes> */
+				var surfaceAttributes = this.surfaceAttributes, targetSurfaceAttributes = target.surfaceAttributes;
+				offset = targetSurfaceAttributes.length;
+				n = surfaceAttributes.length;
+				for(var i=0; i<n; i++){
+					vertexAttributes = surfaceAttributes[i];
+					targetVertexAttributes = new WebGL_VertexAttributes();
+
+					/* <vertex> */
+					vertex = new MathVector3d();
+					affine.transformPoint(vertexAttributes.vertex, vertex);
+					targetVertexAttributes.vertex = vertex;
+					/* </vertex> */
+
+					/* <normal> */
+					if(this.isSurfaceNormalAttributeEnabled){
+						normal = new MathVector3d();
+						affine.transformVector(vertexAttributes.normal, normal);
+						targetVertexAttributes.normal = normal;
+					}
+					/* </normal> */
+
+					/* <tangents> */
+					if(this.isSurfaceTangentAttributeEnabled){
+
+						// u-tangent
+						uTangent = new MathVector3d();
+						affine.transformVector(vertexAttributes.uTangent, uTangent);
+						targetVertexAttributes.uTangent = uTangent;
+
+						// v-tangent
+						vTangent = new MathVector3d();
+						affine.transformVector(vertexAttributes.vTangent, vTangent);
+						targetVertexAttributes.vTangent = vTangent;
+					}
+					/* </tangents> */
+
+					/* <texCoord> */
+					if(this.isSurfaceTexCoordAttributeEnabled){
+						texCoord = new MathVector3d();
+						vertexAttributes.texCoord.copy(texCoord);
+						targetVertexAttributes.texCoord = texCoord;
+					}
+					/* </texCoord> */
+
+					/* <color> */
+					if(this.isSurfaceColorAttributeEnabled){
+						color = new MathVector3d();
+						vertexAttributes.color.copy(color);
+						targetVertexAttributes.color = color;
+					}
+					/* </color> */	
+					
+					targetSurfaceAttributes.push(targetVertexAttributes);
 				}
-				if(this.isSurfaceTexCoordAttributeEnabled){
-					this.surfaceTexCoords.copy(target.surfaceTexCoords);
+				/* </surface-attributes> */
+
+				/* <surface-elements> */
+				var targetSurfaceIndices = target.surfaceIndices;
+				for(let index of this.surfaceIndices){
+					targetSurfaceIndices.push(offset+index);
 				}
-				if(this.isSurfaceColorAttributeEnabled){
-					this.surfaceColors.copy(target.surfaceColors);
-				}
-				if(this.isSurfaceTangentAttributeEnabled){
-					this.surfaceUTangents.transform(affine, target.surfaceUTangents);
-					this.surfaceVTangents.transform(affine, target.surfaceVTangents);
-				}
+				/* <surface-elements> */
 			}
 			/* </surface> */
 		},
+
 
 		pattern : function(affines, target){
 			for(let affine of affines){
@@ -133,50 +193,135 @@ WebGL_ShapeModel.prototype = {
 			}
 		},
 
+
 		compile : function(){
+
 			/* <wire> */
 			if(this.isWireEnabled){
-				this.wireVertices.compile();
-				this.wireElements.compile();
-				if(this.isWireColorAttributeEnabled){
-					this.wireColors.compile();
+
+				/* <wire-attributes> */
+				var wireAttributes = this.wireAttributes;
+				var n = wireAttributes.length;
+
+				/* <wire-vertices> */
+				var wireVertices = new WebGL_Vector3dBuffer(n);
+				for(var i=0; i<n; i++){
+					wireVertices.set(i, wireAttributes[i].vertex);
 				}
+				wireVertices.compile();
+				this.wireVertices = wireVertices;
+				/* </wire-vertices> */
+
+				/* <wire-colors> */
+				if(this.isWireColorAttributeEnabled){
+					var wireColors = new WebGL_Vector3dBuffer(n);
+					for(var i=0; i<n; i++){
+						wireColors.set(i, wireAttributes[i].color);
+					}
+					wireColors.compile();
+					this.wireColors = wireColors;
+				}
+				/* </wire-colors> */
+
+				delete this.wireAttributes;
+				/* </wire-attributes> */
+
+				/* <wire-elements> */
+				this.wireElements = new WebGL_LineBuffer(this.wireIndices);
+				delete this.wireIndices;
+				/* </wire-elements> */
+
 			}
 			/* </wire> */
-			
+
 			/* <surface> */
 			if(this.isSurfaceEnabled){
-				this.surfaceVertices.compile();
-				this.surfaceElements.compile();
+
+				/* <surface-attributes> */
+				var surfaceAttributes = this.surfaceAttributes;
+				var n = surfaceAttributes.length;
+
+				/* <surface-vertices> */
+				var surfaceVertices = new WebGL_Vector3dBuffer(n);
+				for(var i=0; i<n; i++){
+					surfaceVertices.set(i, surfaceAttributes[i].vertex);
+				}
+				surfaceVertices.compile();
+				this.surfaceVertices = surfaceVertices;
+				/* </surface-vertices> */
+
+				/* <surface-normals> */
 				if(this.isSurfaceNormalAttributeEnabled){
-					this.surfaceNormals.compile();
+					var surfaceNormals = new WebGL_Vector3dBuffer(n);
+					for(var i=0; i<n; i++){
+						surfaceNormals.set(i, surfaceAttributes[i].normal);
+					}
+					surfaceNormals.compile();
+					this.surfaceNormals = surfaceNormals;
 				}
+				/* </surface-normals> */
+
+				/* <surface-tex-coords> */
 				if(this.isSurfaceTexCoordAttributeEnabled){
-					this.surfaceTexCoords.compile();
+					var surfaceTexCoords = new WebGL_Vector3dBuffer(n);
+					for(var i=0; i<n; i++){
+						surfaceTexCoords.set(i, surfaceAttributes[i].texCoord);
+					}
+					surfaceTexCoords.compile();
+					this.surfaceTexCoords = surfaceTexCoords;
 				}
+				/* </surface-tex-coords> */
+
+				/* <surface-colors> */
 				if(this.isSurfaceColorAttributeEnabled){
-					this.surfaceColors.compile();
+					var surfaceColors = new WebGL_Vector3dBuffer(n);
+					for(var i=0; i<n; i++){
+						surfaceColors.set(i, surfaceAttributes[i].color);
+					}
+					surfaceColors.compile();
+					this.surfaceColors = surfaceColors;
 				}
+				/* </surface-colors> */
+
+				/* <surface-tangents> */
 				if(this.isSurfaceTangentAttributeEnabled){
-					this.surfaceUTangents.compile();
-					this.surfaceVTangents.compile();
+					var surfaceUTangents = new WebGL_Vector3dBuffer(n);
+					var surfaceVTangents = new WebGL_Vector3dBuffer(n);
+					for(var i=0; i<n; i++){
+						surfaceUTangents.set(i, surfaceAttributes[i].uTangent);
+						surfaceVTangents.set(i, surfaceAttributes[i].vTangent);
+					}
+					surfaceUTangents.compile();
+					this.surfaceUTangents = surfaceUTangents;
+					surfaceVTangents.compile();
+					this.surfaceVTangents = surfaceVTangents;
 				}
+				/* </surface-tangents> */
+
+				delete this.surfaceAttributes;
+				/* </surface-attributes> */
+
+				/* <surface-elements> */
+				this.surfaceElements = new WebGL_TriangleBuffer(this.surfaceIndices);
+				delete this.surfaceIndices;
+				/* </surface-elements> */
+
 			}
 			/* </surface> */
 		},
-		
-		
+
+
 		apply : function(instance){
-						
+
 			/* <wire> */
 			instance.isWireEnabled = this.isWireEnabled;
-			
+
 			if(this.isWireEnabled){
-				
+
 				// material
 				instance.wireProgram = this.wireProgram;
 				instance.wireColor = this.wireColor;
-				
+
 				// attributes
 				instance.wireVertices = this.wireVertices
 				instance.wireElements = this.wireElements;
@@ -185,12 +330,12 @@ WebGL_ShapeModel.prototype = {
 				}
 			}
 			/* </wire> */
-			
+
 			/* <surface> */
 			instance.isSurfaceEnabled = this.isSurfaceEnabled;
-			
+
 			if(this.isSurfaceEnabled){
-				
+
 				// material
 				instance.surfaceProgram = this.surfaceProgram;
 				instance.surfaceGlossiness = this.surfaceGlossiness;
@@ -199,7 +344,7 @@ WebGL_ShapeModel.prototype = {
 				instance.surfaceSpecularColor = this.surfaceSpecularColor;
 				instance.surfaceDiffuseColor = this.surfaceDiffuseColor;
 				instance.surfaceAmbientColor = this.surfaceAmbientColor;
-				
+
 				// attributes
 				instance.surfaceVertices = this.surfaceVertices;
 				instance.surfaceElements = this.surfaceElements;
@@ -235,7 +380,7 @@ WebGL_ShapeModel.prototype = {
 				}
 			}
 			/* </wire> */
-			
+
 			/* <surface> */
 			if(this.isSurfaceEnabled){
 				this.surfaceVertices.dispose();
@@ -259,36 +404,32 @@ WebGL_ShapeModel.prototype = {
 };
 
 
+
+
+function WebGL_VertexAttributes(vertex=null){
+	this.vertex = vertex;
+}
+
+WebGL_VertexAttributes.prototype = {
+};
+
+
 /*
  * VBO objects
  */
 
-
-
-function WebGL_Vector2dBuffer(){
-	this.vectors = new Array();
+function WebGL_Vector2dBuffer(nbVectors){
+	this.array = new Float32Array(2*nbVectors);
 }
 
 WebGL_Vector2dBuffer.prototype = {
 
-
-		push : function(vector){
-			this.vectors.push(vector);
-		},
-
-		length : function(){
-			return this.vectors.length;
+		set : function(index, vector){
+			this.array[2*index+0] = vector.x;
+			this.array[2*index+1] = vector.y;
 		},
 
 		compile : function(){
-			// create array
-			var array = new Float32Array(2*this.vectors.length);
-			var offset = 0;
-			for(let vector of this.vectors){
-				array[offset+0] = vector.x;
-				array[offset+1] = vector.y;
-				offset+=2;
-			}
 
 			// Create buffer handle
 			this.bufferHandle = gl.createBuffer();
@@ -297,7 +438,9 @@ WebGL_Vector2dBuffer.prototype = {
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferHandle);
 
 			// store data in GPU
-			gl.bufferData(gl.ARRAY_BUFFER, array, gl.STATIC_DRAW);
+			gl.bufferData(gl.ARRAY_BUFFER, this.array, gl.STATIC_DRAW);
+
+			delete this.array;
 		},
 
 		bind : function(location){
@@ -311,58 +454,23 @@ WebGL_Vector2dBuffer.prototype = {
 
 		dispose : function(){
 			gl.deleteBuffer(this.bufferHandle);	
-		},
-		
-		// default transform: let vectors untouched
-		copy : function(target){
-			var vertexCopy;
-			for(let vertex of this.vectors){
-				vertexCopy = new MathVector2d();
-				vertex.copy(vertexCopy);
-				target.push(vertexCopy);
-			}
 		}
 };
 
-function WebGL_TexCoordBuffer(){
-	WebGL_Vector2dBuffer.call(this);
-}
 
-WebGL_TexCoordBuffer.prototype = {
-		push : WebGL_Vector2dBuffer.prototype.push,
-		length : WebGL_Vector2dBuffer.prototype.length,
-		compile : WebGL_Vector2dBuffer.prototype.compile,
-		bind : WebGL_Vector2dBuffer.prototype.bind,
-		dispose : WebGL_Vector2dBuffer.prototype.dispose,
-		copy : WebGL_Vector2dBuffer.prototype.copy,
-};
-
-
-function WebGL_Vector3dBuffer(){
-	this.vectors = new Array();
+function WebGL_Vector3dBuffer(nbVectors){
+	this.array = new Float32Array(3*nbVectors);
 }
 
 WebGL_Vector3dBuffer.prototype = {
 
-
-		push : function(vector){
-			this.vectors.push(vector);
-		},
-
-		length : function(){
-			return this.vectors.length;
+		set : function(index, vector){
+			this.array[3*index+0] = vector.x;
+			this.array[3*index+1] = vector.y;
+			this.array[3*index+2] = vector.z;
 		},
 
 		compile : function(){
-			// create array
-			var array = new Float32Array(3*this.vectors.length);
-			var offset = 0;
-			for(let vector of this.vectors){
-				array[offset+0] = vector.x;
-				array[offset+1] = vector.y;
-				array[offset+2] = vector.z;
-				offset+=3;
-			}
 
 			// Create buffer handle
 			this.bufferHandle = gl.createBuffer();
@@ -371,7 +479,9 @@ WebGL_Vector3dBuffer.prototype = {
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.bufferHandle);
 
 			// store data in GPU
-			gl.bufferData(gl.ARRAY_BUFFER, array, gl.STATIC_DRAW);
+			gl.bufferData(gl.ARRAY_BUFFER, this.array, gl.STATIC_DRAW);
+
+			delete this.array;
 		},
 
 		bind : function(location){
@@ -386,114 +496,28 @@ WebGL_Vector3dBuffer.prototype = {
 		dispose : function(){
 			gl.deleteBuffer(this.bufferHandle);	
 		},
-		
-		// default transform: let vectors untouched
-		copy : function(affine, target){
-			var vertexCopy;
-			for(let vertex of this.vectors){
-				vertexCopy = new MathVector3d();
-				vertex.copy(vertexCopy);
-				target.push(vertexCopy);
-			}
-		}
+
 };
 
 
+function WebGL_ElementBuffer(indices){
 
-function WebGL_VertexBuffer(){
-	WebGL_Vector3dBuffer.call(this);
-}
+	// create and populate array
+	this.length = indices.length;
+	var array = new Uint16Array(this.length);
+	array.set(indices);
 
-WebGL_VertexBuffer.prototype = {
-		push : WebGL_Vector3dBuffer.prototype.push,
-		length : WebGL_Vector3dBuffer.prototype.length,
-		compile : WebGL_Vector3dBuffer.prototype.compile,
-		bind : WebGL_Vector3dBuffer.prototype.bind,
-		dispose : WebGL_Vector3dBuffer.prototype.dispose,
+	// Create buffer handle
+	this.bufferHandle = gl.createBuffer();
 
-		transform : function(affine, target){
-			var transformedVertex;
-			for(let vertex of this.vectors){
-				transformedVertex = new MathVector3d();
-				affine.transformPoint(vertex, transformedVertex);
-				target.push(transformedVertex);
-			}
-		}
-};
+	// Bind buffer handle to current buffer
+	gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
 
-
-function WebGL_NormalBuffer(){
-	WebGL_Vector3dBuffer.call(this);
-}
-
-WebGL_NormalBuffer.prototype = {
-		push : WebGL_Vector3dBuffer.prototype.push,
-		length : WebGL_Vector3dBuffer.prototype.length,
-		compile : WebGL_Vector3dBuffer.prototype.compile,
-		bind : WebGL_Vector3dBuffer.prototype.bind,
-		dispose : WebGL_Vector3dBuffer.prototype.dispose,
-
-		transform : function(affine, target){
-			var transformedNormal;
-			for(let normal of this.vectors){
-				transformedNormal = new MathVector3d();
-				affine.transformVector(normal, transformedNormal);
-				target.push(transformedNormal);
-			}
-		}
-};
-
-
-
-function WebGL_TangentBuffer(){
-	WebGL_TangentBuffer.call(this);
-}
-
-WebGL_TangentBuffer.prototype = {
-		push : WebGL_Vector3dBuffer.prototype.push,
-		length : WebGL_Vector3dBuffer.prototype.length,
-		compile : WebGL_Vector3dBuffer.prototype.compile,
-		bind : WebGL_Vector3dBuffer.prototype.bind,
-		dispose : WebGL_Vector3dBuffer.prototype.dispose,
-
-		transform : function(affine, target){
-			var transformedNormal;
-			for(let normal of this.vectors){
-				transformedNormal = new MathVector3d();
-				affine.transformVector(normal, transformedNormal);
-				target.push(transformedNormal);
-			}
-		}
-};
-
-
-function WebGL_ElementBuffer(){
-	this.indices = new Array();
+	// bind buffer data
+	gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, array, gl.STATIC_DRAW);
 }
 
 WebGL_ElementBuffer.prototype = {
-
-		shift : function(offset, target){
-			for(let index of this.indices){
-				target.indices.push(offset+index);
-			}
-		},
-
-		compile : function(){
-			// create and populate array
-			this.length = this.indices.length;
-			var array = new Uint16Array(this.length);
-			array.set(this.indices);
-
-			// Create buffer handle
-			this.bufferHandle = gl.createBuffer();
-
-			// Bind buffer handle to current buffer
-			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.bufferHandle);
-
-			// bind buffer data
-			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, array, gl.STATIC_DRAW);
-		},
 
 		bind : function(){
 
@@ -506,45 +530,28 @@ WebGL_ElementBuffer.prototype = {
 		}
 };
 
-function WebGL_LineBuffer(){
-	WebGL_ElementBuffer.call(this);
+function WebGL_LineBuffer(indices){
+	WebGL_ElementBuffer.call(this, indices);
 }
 
 WebGL_LineBuffer.prototype = {
-		shift : WebGL_ElementBuffer.prototype.shift,
-		compile : WebGL_ElementBuffer.prototype.compile,
 		bind : WebGL_ElementBuffer.prototype.bind,
 		dispose : WebGL_ElementBuffer.prototype.dispose,
-
-		push : function(i0, i1){
-			this.indices.push(i0);
-			this.indices.push(i1);
-		},
 
 		draw : function(){
 			// trigger render by drawing elements
 			gl.drawElements(gl.LINES, this.length, gl.UNSIGNED_SHORT, 0);
 		}
-
-
 };
 
 
-function WebGL_TriangleBuffer(){
-	WebGL_ElementBuffer.call(this);
+function WebGL_TriangleBuffer(indices){
+	WebGL_ElementBuffer.call(this, indices);
 }
 
 WebGL_TriangleBuffer.prototype = {
-		shift : WebGL_ElementBuffer.prototype.shift,
-		compile : WebGL_ElementBuffer.prototype.compile,
 		bind : WebGL_ElementBuffer.prototype.bind,
 		dispose : WebGL_ElementBuffer.prototype.dispose,
-
-		push : function(i0, i1, i2){
-			this.indices.push(i0);
-			this.indices.push(i1);
-			this.indices.push(i2);
-		},
 
 		draw : function(){
 			// trigger render by drawing elements
