@@ -2,14 +2,14 @@
 /**
  * WebGL Shape constructor, methods and utilities
  */
-function WebGL_ShapeModel(isWisNormalEnabled = true, isTexCoordEnabled = false){
+function WebGL_ShapeModel(){
 	// no affines
 
 	/** the default program for wire rendering */
 	this.wireProgram = "color2";
 
 	/** default value for shape material */
-	this.wireColor = [0.12, 0.12, 0.12, 0.0];
+	this.wireColor = [0.12, 0.12, 0.12, 1.0];
 
 	/** the default program for wire rendering */
 	this.surfaceProgram = "standard";
@@ -18,19 +18,19 @@ function WebGL_ShapeModel(isWisNormalEnabled = true, isTexCoordEnabled = false){
 	this.surfaceGlossiness = 0.7;
 
 	/** default value for shape material -> "Standard" Unity-style shading */
-	this.surfaceRoughness = 0.5;
+	this.surfaceRoughness = 2.0;
 
 	/** default value for shape material -> Phong shading */
 	this.surfaceShininess = 0.5;
 
 	/** default value for shape material -> multi-purposes */
-	this.surfaceSpecularColor = [0.12, 0.8, 0.8, 0.0];
+	this.surfaceSpecularColor = [1.0, 1.0, 0.0, 1.0];
 
 	/** default value for shape material -> multi-purposes */
-	this.surfaceDiffuseColor = [0.12, 0.8, 0.8, 0.0];
+	this.surfaceDiffuseColor = [0.8, 0.8, 0.0, 1.0];
 
 	/** default value for shape material -> multi-purposes */
-	this.surfaceAmbientColor = [0.1, 0.1, 0.1, 0.0];
+	this.surfaceAmbientColor = [0.1, 0.1, 0.1, 1.0];
 
 	/** wire */
 	this.isWireEnabled = true;
@@ -171,7 +171,7 @@ WebGL_ShapeModel.prototype = {
 						targetVertexAttributes.color = color;
 					}
 					/* </color> */	
-					
+
 					targetSurfaceAttributes.push(targetVertexAttributes);
 				}
 				/* </surface-attributes> */
@@ -410,7 +410,67 @@ function WebGL_VertexAttributes(vertex=null){
 	this.vertex = vertex;
 }
 
+WebGL_VertexAttributes.build_VN = function(vertex, normal){
+	var va = new WebGL_VertexAttributes();
+	va.vertex = vertex;
+	va.normal = normal;
+	return va;
+};
+
+
 WebGL_VertexAttributes.prototype = {
+
+		constructor: WebGL_VertexAttributes,
+
+		interpolate : function(va0, va1, va2, u, v, w){
+
+			if(va0.vertex){
+				var vertex0 = va0.vertex, vertex1 = va1.vertex, vertex2 = va2.vertex;
+				this.vertex = new MathVector3d(
+						u*vertex0.x+v*vertex1.x+w*vertex2.x,
+						u*vertex0.y+v*vertex1.y+w*vertex2.y,
+						u*vertex0.z+v*vertex1.z+w*vertex2.z);	
+			}
+			
+			if(va0.normal){
+				var normal0 = va0.normal, normal1 = va1.normal, normal2 = va2.normal;
+				this.normal = new MathVector3d(
+						u*normal0.x+v*normal1.x+w*normal2.x,
+						u*normal0.y+v*normal1.y+w*normal2.y,
+						u*normal0.z+v*normal1.z+w*normal2.z);	
+			}
+			
+			if(va0.texCoord){
+				var texCoord0 = va0.texCoord, texCoord1 = va1.texCoord, texCoord2 = va2.texCoord;
+				this.texCoord = new MathVector2d(
+						u*texCoord0.x+v*texCoord1.x+w*texCoord2.x,
+						u*texCoord0.y+v*texCoord1.y+w*texCoord2.y);
+			}
+			
+			if(va0.color){
+				var color0 = va0.color, color1 = va1.color, color2 = va2.color;
+				this.color = new MathVector3d(
+						u*color0.x+v*color1.x+w*color2.x,
+						u*color0.y+v*color1.y+w*color2.y,
+						u*color0.z+v*color1.z+w*color2.z);	
+			}
+			
+			if(va0.uTangent){
+				var uTangent0 = va0.uTangent, uTangent1 = va1.uTangent, uTangent2 = va2.uTangent;
+				this.uTangent = new MathVector3d(
+						u*uTangent0.x+v*uTangent1.x+w*uTangent2.x,
+						u*uTangent0.y+v*uTangent1.y+w*uTangent2.y,
+						u*uTangent0.z+v*uTangent1.z+w*uTangent2.z);	
+			}
+			
+			if(va0.vTangent){
+				var vTangent0 = va0.vTangent, vTangent1 = va1.vTangent, vTangent2 = va2.vTangent;
+				this.vTangent = new MathVector3d(
+						u*vTangent0.x+v*vTangent1.x+w*vTangent2.x,
+						u*vTangent0.y+v*vTangent1.y+w*vTangent2.y,
+						u*vTangent0.z+v*vTangent1.z+w*vTangent2.z);	
+			}
+		}
 };
 
 

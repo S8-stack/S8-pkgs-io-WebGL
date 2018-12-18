@@ -8,7 +8,7 @@ function WebGL_Hexahedron(){
 	this.ax = 1.0;
 	this.ay = 1.0;
 	this.az = 1.0;
-	this.shift = 0.01;
+	this.shift = 0.001;
 	this.texCoordScale = 1.0;
 }
 
