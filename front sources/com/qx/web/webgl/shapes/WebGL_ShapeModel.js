@@ -417,12 +417,60 @@ WebGL_VertexAttributes.build_VN = function(vertex, normal){
 	return va;
 };
 
+WebGL_VertexAttributes.build_aVN = function(affine, vertex, normal){
+	var vertexAttributes = new WebGL_VertexAttributes();
+	var tVertex = new MathVector3d(); affine.transformPoint(vertex, tVertex);
+	var tNormal = new MathVector3d(); affine.transformVector(normal, tNormal);
+	vertexAttributes.vertex = tVertex;
+	vertexAttributes.normal = tNormal;
+	return vertexAttributes;
+};
+
 
 WebGL_VertexAttributes.prototype = {
 
 		constructor: WebGL_VertexAttributes,
+		
+		interpolateFrom2VA : function(va0, va1, u, v){
 
-		interpolate : function(va0, va1, va2, u, v, w){
+			if(va0.vertex){
+				var vertex0 = va0.vertex, vertex1 = va1.vertex;
+				this.vertex = new MathVector3d(u*vertex0.x+v*vertex1.x, u*vertex0.y+v*vertex1.y, u*vertex0.z+v*vertex1.z);	
+			}
+			
+			if(va0.normal){
+				var normal0 = va0.normal, normal1 = va1.normal;
+				this.normal = new MathVector3d(u*normal0.x+v*normal1.x, u*normal0.y+v*normal1.y, u*normal0.z+v*normal1.z);	
+			}
+			
+			if(va0.texCoord){
+				var texCoord0 = va0.texCoord, texCoord1 = va1.texCoord;
+				this.texCoord = new MathVector2d(u*texCoord0.x+v*texCoord1.x, u*texCoord0.y+v*texCoord1.y);
+			}
+			
+			if(va0.color){
+				var color0 = va0.color, color1 = va1.color;
+				this.color = new MathVector3d(u*color0.x+v*color1.x, u*color0.y+v*color1.y, u*color0.z+v*color1.z);	
+			}
+			
+			if(va0.uTangent){
+				var uTangent0 = va0.uTangent, uTangent1 = va1.uTangent;
+				this.uTangent = new MathVector3d(
+						u*uTangent0.x+v*uTangent1.x, 
+						u*uTangent0.y+v*uTangent1.y, 
+						u*uTangent0.z+v*uTangent1.z);	
+			}
+			
+			if(va0.vTangent){
+				var vTangent0 = va0.vTangent, vTangent1 = va1.vTangent;
+				this.vTangent = new MathVector3d(
+						u*vTangent0.x+v*vTangent1.x,
+						u*vTangent0.y+v*vTangent1.y,
+						u*vTangent0.z+v*vTangent1.z);	
+			}
+		},
+
+		interpolateFrom3VA : function(va0, va1, va2, u, v, w){
 
 			if(va0.vertex){
 				var vertex0 = va0.vertex, vertex1 = va1.vertex, vertex2 = va2.vertex;
