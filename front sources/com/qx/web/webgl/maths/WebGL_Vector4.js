@@ -1,16 +1,4 @@
 
-/*
- * Vector 4
- */
-
-
-
-/**
- * No argument constructor
- */
-function WebGL_Vector4(){
-	this.c = [];
-}
 
 
 /**
@@ -19,7 +7,7 @@ function WebGL_Vector4(){
  * @param z : the 3rd coordinate
  * @param w : the 4th coordinate
  */
-function WebGL_Vector4(x, y, z, w){
+function WebGL_Vector4(x=0, y=0, z=0, w=0){
 	this.c = [];
 	this.c[0] = x;
 	this.c[1] = y;

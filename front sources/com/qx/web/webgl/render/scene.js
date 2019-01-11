@@ -12,10 +12,6 @@ function WebGL_Scene(){
 	//create MVP view
 	this.view = new WebGL_ProjectionViewModel(gl.viewportWidth, gl.viewportHeight);
 
-	// create control
-	this.control = new WebGL_MouseControl(this, this.view);
-	this.control.start();
-
 	//create environment
 	this.environment = new WebGL_Environment(this);
 

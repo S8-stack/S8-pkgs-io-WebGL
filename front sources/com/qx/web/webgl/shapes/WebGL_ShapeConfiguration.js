@@ -47,7 +47,7 @@ function WebGL_ShapeConfiguration(){
 	this.isWireEnabled = true;
 	
 	/** wire */
-	this.isWireColorAttributeEnabled = true;
+	this.isWireColorAttributeEnabled = false;
 
 	/** surface */
 	this.isSurfaceEnabled = true;

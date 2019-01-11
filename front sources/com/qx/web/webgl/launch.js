@@ -60,4 +60,9 @@ var WebGL_start = function(){
 	scene.render();
 	
 
-}
+	// create control
+	var control = new WebGL_Controller(scene);
+	control.start();
+
+
+};

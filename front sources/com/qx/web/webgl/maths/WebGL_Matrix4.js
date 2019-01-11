@@ -221,6 +221,16 @@ WebGL_Matrix4.prototype = {
 			this.c[15] = a33;
 		},
 
+		
+		
+		transform : function(argument, target){
+			var x = argument[0], y = argument[1], z = argument[2], w = argument[3];
+			target[0] = this.c[0]*x + this.c[4]*y + this.c[8]*z + this.c[12]*w;
+			target[1] = this.c[1]*x + this.c[5]*y + this.c[9]*z + this.c[13]*w;
+			target[2] = this.c[2]*x + this.c[6]*y + this.c[10]*z+ this.c[14]*w;
+			target[3] = this.c[3]*x + this.c[7]*y + this.c[11]*z+ this.c[15]*w;
+		},
+		
 
 		dotVector4 : function(v) {
 			var r = [];
