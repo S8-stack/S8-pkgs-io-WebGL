@@ -1,6 +1,6 @@
-package com.qx.io.webgl;
+package com.qx.back.io.webgl;
 
-import com.qx.maths.vector.MathVector3d;
+import com.qx.back.maths.vector.MathVector3d;
 
 public class EngineeringColor {
 

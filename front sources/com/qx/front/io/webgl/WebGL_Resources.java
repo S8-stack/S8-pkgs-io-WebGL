@@ -1,4 +1,4 @@
-package com.qx.web.webgl;
+package com.qx.front.io.webgl;
 
 
 /**

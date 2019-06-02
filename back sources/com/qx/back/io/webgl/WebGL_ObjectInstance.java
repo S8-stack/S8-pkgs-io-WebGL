@@ -1,8 +1,8 @@
-package com.qx.io.webgl;
+package com.qx.back.io.webgl;
 
 import java.io.IOException;
 
-import com.qx.maths.affine.MathAffine3d;
+import com.qx.back.maths.affine.MathAffine3d;
 
 /**
  * Can only be created with factory include in the class as inner class
