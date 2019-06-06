@@ -4,10 +4,10 @@ import java.nio.ByteBuffer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.qx.back.base.bytes.BufferByteInflow;
-import com.qx.back.base.bytes.BufferByteOutflow;
-import com.qx.back.base.bytes.ByteInflow;
-import com.qx.back.base.bytes.ByteOutflow;
+import com.qx.back.base.bytes.BufferByteInput;
+import com.qx.back.base.bytes.BufferByteOutput;
+import com.qx.back.base.bytes.ByteInput;
+import com.qx.back.base.bytes.ByteOutput;
 import com.qx.back.blocks.base.BkBase;
 import com.qx.back.blocks.block.BkPath;
 import com.qx.back.blocks.block.Block;
@@ -39,10 +39,10 @@ public class WebGL_ProgramTesting {
 		WebGL_Service service = new WebGL_Service(block, Block.ROOT_INDEX);
 		
 		ByteBuffer buffer = ByteBuffer.allocate(1024);
-		ByteOutflow outflow = new BufferByteOutflow(buffer);
+		ByteOutput outflow = new BufferByteOutput(buffer);
 		outflow.putStringUTF8("standard");
 		buffer.flip();
-		ByteInflow inflow = new BufferByteInflow(buffer);
+		ByteInput inflow = new BufferByteInput(buffer);
 		
 		System.out.println(service.getProgram(inflow).getCode());
 	}

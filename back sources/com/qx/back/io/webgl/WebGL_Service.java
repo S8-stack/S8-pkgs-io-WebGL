@@ -1,6 +1,6 @@
 package com.qx.back.io.webgl;
 
-import com.qx.back.base.bytes.ByteInflow;
+import com.qx.back.base.bytes.ByteInput;
 import com.qx.back.blocks.BkException;
 import com.qx.back.blocks.BkMethod;
 import com.qx.back.blocks.BkType;
@@ -45,14 +45,14 @@ public class WebGL_Service extends BkObject {
 	}
 
 	@BkMethod(code=0x04)
-	public synchronized WebGL_Style getStyle(ByteInflow inflow) throws Exception{
+	public synchronized WebGL_Style getStyle(ByteInput inflow) throws Exception{
 		String id = inflow.getStringUTF8();
 		return styles.get(id);
 	}
 	
 	
 	@BkMethod(code=0x06)
-	public synchronized WebGL_Program getProgram(ByteInflow inflow) throws Exception{
+	public synchronized WebGL_Program getProgram(ByteInput inflow) throws Exception{
 		String id = inflow.getStringUTF8();
 		return programs.get(id);
 	}

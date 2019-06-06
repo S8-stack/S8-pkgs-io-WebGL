@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import com.qx.back.base.bytes.ByteOutflow;
+import com.qx.back.base.bytes.ByteOutput;
 import com.qx.back.io.bohr.BohrObject;
 import com.qx.back.io.bohr.BohrScope;
 import com.qx.back.lang.xml.annotation.XML_SetAttribute;
@@ -49,7 +49,7 @@ public class WebGL_Program extends BohrObject {
 	}
 
 	@Override
-	public void send(ByteOutflow ouflow) throws IOException {
+	public void send(ByteOutput ouflow) throws IOException {
 		load();
 		ouflow.putStringUTF8(code);
 	}
