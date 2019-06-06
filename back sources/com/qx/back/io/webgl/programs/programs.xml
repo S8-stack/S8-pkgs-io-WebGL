@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root:WebGL_Programs>
+	<programs>
+		<WebGL_Program path="color"/>
+		<WebGL_Program path="color2"/>
+		<WebGL_Program path="glow"/>
+		<WebGL_Program path="lit"/>
+		<WebGL_Program path="mat01"/>
+		<WebGL_Program path="matex01"/>
+		<WebGL_Program path="mirror"/>
+		<WebGL_Program path="picking"/>
+		<WebGL_Program path="standard"/>
+		<WebGL_Program path="tex01"/>
+	</programs>
+</root:WebGL_Programs>
