@@ -4,9 +4,9 @@ import com.qx.back.base.bytes.ByteInput;
 import com.qx.back.blocks.BkException;
 import com.qx.back.blocks.BkMethod;
 import com.qx.back.blocks.BkType;
-import com.qx.back.blocks.block.Block;
 import com.qx.back.blocks.object.BkIndex;
 import com.qx.back.blocks.object.BkObject;
+import com.qx.back.blocks.object.ObjectsBlock;
 import com.qx.back.io.webgl.programs.WebGL_Program;
 import com.qx.back.io.webgl.programs.WebGL_Programs;
 import com.qx.back.io.webgl.styles.WebGL_Style;
@@ -26,7 +26,7 @@ public class WebGL_Service extends BkObject {
 	 * @throws BkException 
 	 * 
 	 */
-	public WebGL_Service(Block block, BkIndex index) throws BkException {
+	public WebGL_Service(ObjectsBlock block, BkIndex index) throws BkException {
 		super(block, index);
 		
 		XML_Context context;
