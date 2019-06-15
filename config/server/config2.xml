@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root:QxServer-config>
+	<server-side>true</server-side>
+	<name>myServer</name>
+	<host>localhost</host>
+	<port>1024</port>
+	<timeout>200</timeout>
+	<huffman>true</huffman>
+	<SSL-verbose>false</SSL-verbose>
+	<HPACK-verbose>false</HPACK-verbose>
+	<HTTP2-verbose>true</HTTP2-verbose>
+	<verbose>true</verbose>
+	<ssl:SSL_configuration>
+		<encryption_protocol>TLSv1.3</encryption_protocol>
+		<keystore_pathname>config/server/keystore.ks</keystore_pathname>
+		<keystore_password>rDfe4_!xef</keystore_password>
+	</ssl:SSL_configuration>
+</root:QxServer-config>

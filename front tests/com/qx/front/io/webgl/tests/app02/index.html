@@ -1,0 +1,140 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+<link rel="stylesheet" href="style.css" type="text/css" media="screen"
+	charset="UTF-8" />
+
+<link rel="stylesheet" href="PtModalBox_style.css" type="text/css"
+	media="screen" charset="UTF-8" />
+
+
+
+<!-- base -->
+<script src="/base/ByteInflow.js" type="text/javascript"></script>
+<script src="/base/ByteOutflow.js" type="text/javascript"></script>
+<script src="/web/QxContext.js" type="text/javascript"></script>
+
+<!-- bohr -->
+<script src="/bohr/POST_BohrRequest.js" type="text/javascript"></script>
+<script src="/bohr/BohrParser.js" type="text/javascript"></script>
+<script src="/bohr/BohrWrappers.js" type="text/javascript"></script>
+<script src="/bohr/BohrExceptions.js" type="text/javascript"></script>
+<script src="/bohr/BohrCache.js" type="text/javascript"></script>
+
+<!-- maths -->
+<script type="text/javascript" src="/maths/MathVector2d.js"></script>
+<script type="text/javascript" src="/maths/MathMatrix2d.js"></script>
+<script type="text/javascript" src="/maths/MathAffine2d.js"></script>
+<script type="text/javascript" src="/maths/MathVector3d.js"></script>
+<script type="text/javascript" src="/maths/MathMatrix3d.js"></script>
+<script type="text/javascript" src="/maths/MathAffine3d.js"></script>
+<script type="text/javascript" src="/maths/MathRay3d.js"></script>
+<script type="text/javascript" src="/maths/MathPlane.js"></script>
+<script type="text/javascript" src="/maths/MathCylinder.js"></script>
+<script type="text/javascript" src="/maths/MathSegment3d.js"></script>
+<script type="text/javascript" src="/maths/MathFunction2t2d.js"></script>
+
+
+<script type="text/javascript" src="WebGL_boot.js"></script>
+
+<!-- WebGL utilities -->
+<script type="text/javascript" src="/webgl/util/utilities.js"></script>
+<script type="text/javascript" src="/webgl/util/STRUCT_Chain.js"></script>
+
+<!-- WebGL maths -->
+<script type="text/javascript" src="/webgl/maths/WebGL_Vector2.js"></script>
+<script type="text/javascript" src="/webgl/maths/WebGL_Vector3.js"></script>
+<script type="text/javascript" src="/webgl/maths/WebGL_Vector4.js"></script>
+<script type="text/javascript" src="/webgl/maths/WebGL_Matrix3.js"></script>
+<script type="text/javascript" src="/webgl/maths/WebGL_Matrix4.js"></script>
+<script type="text/javascript" src="/webgl/maths/WebGL_Matrix4.js"></script>
+
+<!-- WebGL shapes -->
+<script type="text/javascript" src="/webgl/shapes/WebGL_ShapeModel.js"></script>
+<script type="text/javascript"
+	src="/webgl/shapes/WebGL_ShapeInstance.js"></script>
+<script type="text/javascript" src="/webgl/shapes/WebGL_ShapeConfiguration.js"></script>
+<script type="text/javascript" src="/webgl/shapes/WebGL_Hexahedron.js"></script>
+<script type="text/javascript" src="/webgl/shapes/WebGL_HexagonalNut.js"></script>
+<script type="text/javascript" src="/webgl/shapes/WebGL_Cylinder.js"></script>
+<script type="text/javascript" src="/webgl/shapes/WebGL_Sphere.js"></script>
+<script type="text/javascript" src="/webgl/shapes/WebGL_Plane.js"></script>
+
+<!-- WebGL objects -->
+<script type="text/javascript" src="/webgl/objects/WebGL_ObjectModel.js"></script>
+<script type="text/javascript"
+	src="/webgl/objects/WebGL_ObjectInstance.js"></script>
+
+
+<!-- WebGL base -->
+<script type="text/javascript" src="/webgl/environment.js"></script>
+<script type="text/javascript" src="/webgl/launch.js"></script>
+<script type="text/javascript" src="/webgl/program.js"></script>
+<script type="text/javascript" src="/webgl/style.js"></script>
+<script type="text/javascript"
+	src="/webgl/view/WebGL_ProjectionViewModel.js"></script>
+<script type="text/javascript" src="/webgl/control/control.js"></script>
+
+
+<script type="text/javascript" src="/webgl/render/scene.js"></script>
+<script type="text/javascript" src="/webgl/render/offscreen.js"></script>
+<script type="text/javascript"
+	src="/webgl/render/WebGL_FrameBufferObject.js"></script>
+<script type="text/javascript" src="/webgl/render/picking.js"></script>
+
+
+
+<!-- page specific -->
+<script type="text/javascript"
+	src="https://unpkg.com/earcut@2.1.1/dist/earcut.min.js"></script>
+<script type="text/javascript" src="script.js"></script>
+<script type="text/javascript" src="live_extrude.js"></script>
+<script type="text/javascript" src="live_animate.js"></script>
+<script type="text/javascript" src="live_handle.js"></script>
+<script type="text/javascript" src="live_shapes.js"></script>
+
+</head>
+
+<body id="root" onload="CAD_WebGL_boot()">
+
+
+	<canvas id="WebGL_Canvas" class="screen"></canvas>
+
+	<div id="left-control">
+		<div class="grey" onclick="Sphere.start()">Demo</div>
+		<div class="grey" onclick="live00()">Start live 00</div>
+		<div class="grey" onclick="live01()">Start live 01</div>
+		<div class="grey" onclick="live_TestSweep()">Test sweep</div>
+		<div class="grey" onclick="live_TestMat()">Test mat</div>
+		<div class="grey" onclick="live_TestGeo()">Test geo</div>
+		<div class="grey" onclick="live_TestCube08()">Load cube</div>
+		<div class="grey" onclick="live_TexTest()">Test tex</div>
+		<div class="grey" onclick="live_ShowCursor()">Show cursor</div>
+		<div class="grey" onclick="live_GkMeshTest01()">Test GkMesh</div>
+	</div>
+
+	<div id="right-control">
+		<div class="grey" onclick="sceneFadeOut()">Scene Fade-out</div>
+		<div class="grey" onclick="sceneFadeIn()">Scene Fade-in</div>
+		<div class="grey" onclick="testBinary()">Button 02</div>
+		<div class="grey" onclick="testEngine()">Test engine</div>
+		<div class="grey" onclick="Sphere.start()">Button 04</div>
+		<div class="grey" onclick="Sphere.start()">Button 05</div>
+	</div>
+
+	<div class="output">
+		<div id="log64"></div>
+	</div>
+
+	<div class="output">
+		<div id="offscreen"></div>
+	</div>
+	<div id="action_bar">
+	</div>
+</body>
+</html>

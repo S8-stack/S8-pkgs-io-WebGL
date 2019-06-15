@@ -1,7 +1,5 @@
 
 
-
-
 function WebGL_RenderingPipe(scene, id){
 	this.scene = scene;
 	this.program = WebGL_programs.get(id);
@@ -28,7 +26,7 @@ WebGL_RenderingPipe.prototype = {
 				prgm.unbind();
 			}
 		},
-		
+
 		append : function(renderable){
 			var entry = this.list.append();
 			entry.renderable = renderable;
@@ -54,6 +52,36 @@ var WebGL_programs = {
 };
 
 
+function WebGL_Program_Sources(){
+}
+
+BOHR_TYPES.set(0x0a0002, WebGL_Program_Sources);
+
+WebGL_Program_Sources.prototype = {
+
+		parse : function(input){
+
+			// Build vertex shader
+			this.vertex_shader_source = input.getStringUTF8();
+
+			// Build fragment shader
+			this.fragment_shader_source = input.getStringUTF8();
+
+			// setup other functions
+			this.js_source = input.getStringUTF8();
+		},
+
+		resolve : function(objects){
+			// nothing to resolve
+		},
+
+		build : function(objects){
+			// nothing to resolve
+		}
+};
+
+
+
 /*
  * an id is required to build the program
  */
@@ -66,25 +94,29 @@ function WebGL_Program(id){
 WebGL_Program.prototype = {
 
 		load : function(){
+
 			var program = this;
 
-			ctx.request("webGL.getProgram:id="+this.id, function (response){
+			// WebGL_Service static address
+			var address = new Uint8Array(
+					[0x00, 0x00, 0x00, 0x00, 0x00, 0x12, 0x00, 0x0a, // path
+						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08]); // index	
 
-				eval(response.responseText);
-				/*
-				 * eval must define:
-				 *      (String) vertex_shader_source,
-				 *      (String) fragment_shader_source
-				 *      (function) this.loadContext()
-				 * 		(function) this.loadStyle()	
-				 */
+			let request = new POST_BohrRequest(ctx, address, 0x08, 64);
+			request.putStringUTF8(this.id);
 
+			request.send(function(response){
 
 				// Build vertex shader
-				program.vertexShader = new WebGL_Shader(gl.VERTEX_SHADER, vertex_shader_source);
+				program.vertexShader = 
+					new WebGL_Shader(gl.VERTEX_SHADER, response.vertex_shader_source);
 
 				// Build fragment shader
-				program.fragmentShader = new WebGL_Shader(gl.FRAGMENT_SHADER, fragment_shader_source);
+				program.fragmentShader = 
+					new WebGL_Shader(gl.FRAGMENT_SHADER, response.fragment_shader_source);
+
+				// add missing methods
+				eval(response.js_source);
 
 				// Create shader program
 				program.handle = gl.createProgram();
@@ -110,9 +142,10 @@ WebGL_Program.prototype = {
 				// notify to listener
 				program.notify();
 				//onload();
+
 			});
 		},
-		
+
 		/* notify load to instances */
 		notify : function(){
 			this.toBeNotified.iterate(function(entry){
@@ -120,12 +153,12 @@ WebGL_Program.prototype = {
 				entry.isRemoved = true;
 			})
 		},
-		
+
 		appendListener : function(scene){
 			var entry = this.toBeNotified.append();
 			entry.ref = scene;
 		},
-		
+
 
 		/* dispose program-related disposable */
 		dispose : function() {

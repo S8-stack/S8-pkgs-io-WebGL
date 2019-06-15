@@ -1,0 +1,153 @@
+
+/*
+main {
+	margin: 100px auto;
+	position: relative;
+	padding: 10px 5px;
+	font-size: 20px;
+	font-family: 'Lora', serif;
+	line-height: 1.5;
+	border-radius: 10px;
+	width: 60%;
+	box-shadow: 5px 3px 30px black;
+	overflow: hidden;
+}
+
+main::before {
+	content: '';
+	margin: -35px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	filter: blur(20px);
+	z-index: -1;
+}
+*/
+
+.pt_modal_box {
+	z-index: 2; /* Sit on top */
+	width: 620px;
+	position: relative;
+	margin: 10% auto;
+	padding: 5px 20px 13px 20px;
+	box-shadow: 0px 0px 8px #000;
+	border-radius: 12px;
+	/*
+	background: #fff;
+	background: -moz-linear-gradient(#fff, #999);
+	background: -webkit-linear-gradient(#fff, #999);
+	background: -o-linear-gradient(#fff, #999);
+	*/
+	background: hsla(0, 0%, 100%, .3);
+	/*-webkit-backdrop-filter: blur(5px);*/
+	filter: blur(5px);
+}
+
+
+.pt_modal_box::before {
+	content: '';
+	margin: -35px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	filter: blur(20px);
+	z-index: -1;
+}
+
+.qx_modal_box-close-old {
+	background: #606061;
+	color: #FFFFFF;
+	line-height: 25px;
+	position: absolute;
+	right: -12px;
+	text-align: center;
+	top: -10px;
+	width: 24px;
+	text-decoration: none;
+	font-weight: bold;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	border-radius: 12px;
+	-moz-box-shadow: 1px 1px 3px #000;
+	-webkit-box-shadow: 1px 1px 3px #000;
+	box-shadow: 1px 1px 3px #000;
+}
+
+.qx_modal_box-close {
+	background-image: url("icon_close2_24x24_grey.png");
+	line-height: 25px;
+	position: absolute;
+	right: -12px;
+	top: -10px;
+	width: 24px;
+	height: 24px;
+}
+
+.qx_modal_box-close:hover {
+	background-image: url("icon_close2_24x24_red.png");
+}
+
+.qx_modal_box input[type="text"], .qx_modal_box input[type="password"] {
+	border: 1px solid rgb(160, 160, 160);
+	background-color: rgb(248, 248, 248);
+	padding-left: 4px;
+	padding-right: 4px;
+	width: 80%;
+}
+
+.qx_modal_box input[type="text"]:focus, .qx_modal_box input[type="password"]:focus
+	{
+	background-color: rgb(250, 250, 20);
+}
+
+.qx_modal_box input[type="radio"] {
+	width: 2em;
+	height: 2em;
+}
+
+.qx_modal_box input[type="checkbox"] {
+	width: 24px;
+	height: 24px;
+	border-radius: 8px;
+}
+
+.qx_modal_box select {
+	background: -webkit-linear-gradient(-90deg, rgb(150, 150, 150) 0%,
+		rgb(120, 120, 120) 50%, rgb(60, 60, 60) 50%, rgb(105, 105, 105) 100%);
+	color: white;
+	font-size: 16px;
+	border: 0px;
+	box-shadow: 0px 1px 2px #000;
+	/* text-shadow: h-shadow v-shadow blur-radius color|none|initial|inherit; */
+	text-shadow: 0px 1px 3px #000;
+	margin-top: 4px;
+	margin-bottom: 4px;
+	width: 100%;
+	text-align: center;
+}
+
+.qx_Button {
+	/*border: 1px solid rgb(160, 160, 160);*/
+	border-radius: 6px;
+	background: -webkit-linear-gradient(#85FF8D, #4EF559);
+	background-color: #4EF559;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+	margin-top: 6px;
+	margin-bottom: 6px;
+	cursor: pointer;
+	box-shadow: 0px 1px 3px #000;
+	text-align: center;
+}
+
+.qx_Button:active {
+	background: -webkit-linear-gradient(#E9FF24, #E9FF24);
+	/*box-shadow: h-pos v-pos (blur) (spread) (color) (inset);*/
+	box-shadow: 0px 1px 4px 1px #000 inset;
+}

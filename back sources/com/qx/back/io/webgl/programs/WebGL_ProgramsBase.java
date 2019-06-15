@@ -12,23 +12,23 @@ import com.qx.back.lang.xml.annotation.XML_Type;
  *
  */
 @XML_Type(name="WebGL_Programs", sub= {})
-public class WebGL_Programs {
+public class WebGL_ProgramsBase {
 
-	private Map<String, WebGL_Program> programs;
+	private Map<String, WebGL_ProgramSources> programs;
 	
-	public WebGL_Programs() {
+	public WebGL_ProgramsBase() {
 		super();
 	}
 	
 	@XML_SetElement(name="programs")
-	public void setPrograms(WebGL_Program[] programsArray) {
+	public void setPrograms(WebGL_ProgramSources[] programsArray) {
 		this.programs = new HashMap<>();
-		for(WebGL_Program style : programsArray) {
+		for(WebGL_ProgramSources style : programsArray) {
 			programs.put(style.getPathname(), style);
 		}
 	}
 	
-	public WebGL_Program get(String id) {
+	public WebGL_ProgramSources get(String id) {
 		return programs.get(id);
 	}
 

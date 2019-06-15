@@ -1,0 +1,206 @@
+html {
+	height: 100%;
+}
+
+#left-control {
+	z-index: 1;
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	width: 150px;
+	height: 600px;
+	border-radius: 6px;
+	background-color: rgba(190, 190, 190, 0.5);
+}
+
+#right-control {
+	z-index: 1;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 150px;
+	padding-bottom: 4px;
+	border-radius: 6px;
+	background-color: rgba(190, 190, 190, 0.5);
+}
+
+/*
+.control:hover {
+	background-color: rgba(190,190,190, 0.9); 
+}
+*/
+.output {
+	z-index: 1;
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+	width: 300px;
+	height: 20%;
+	border-radius: 6px;
+	background-color: rgba(20, 200, 20, 0.7);
+}
+
+.screen {
+	z-index: 0;
+	display: block;
+	/*set the div in the top-left corner of the screen*/
+	position: absolute;
+	top: 0;
+	left: 0;
+	/*set the width and height to 100% of the screen*/
+	width: 100%;
+	height: 100%;
+	background-color: rgb(50, 70, 200);
+}
+
+#offscreen {
+	width: 128px;
+	height: 128px;
+	background-size: contain;
+	/*background-image: url(https://fr.freelogodesign.org/Content/img/logo-ex-7.png);*/
+}
+
+#action_bar {
+	z-index: 1;
+	display: block;
+	/*set the div in the top-left corner of the screen*/
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	/*set the width and height to 100% of the screen*/
+	width: 100%;
+	background-color: rgba(32, 32, 32, .8);
+}
+
+#action_bar>div {
+	display: inline-block;
+	margin-left: 4px;
+	margin-right: 4px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	padding: 4px;
+}
+
+#action_bar>div:hover {
+	background-color: rgb(255, 255, 32, 0.2);
+	/*border: 1px solid yellow;*/
+	border-radius: 6px;
+}
+
+#action_bar>div>div:NTH-CHILD(1) {
+	width: 128px;
+	height: 128px;
+	background-size: contain;
+}
+
+#action_bar>div>div:NTH-CHILD(2) {
+	font-family: Verdana, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	color : white;
+	text-align: center;
+	width: auto;
+	color: white;
+}
+
+
+#action_bar>div>div:NTH-CHILD(3) {
+	font-family: Verdana, sans-serif;
+	font-size: 16px;
+	font-weight: bold;
+	color : white;
+	text-align: center;
+	width: auto;
+	color: white;
+}
+
+.content_zone {
+	position: absolute;
+	top: 100px;
+	left: 100px;
+	background-color: white;
+	box-shadow: rgba(0, 0, 0, 0.347656) 0px 1px 3px 0px;
+	border-bottom-left-radius: 6px;
+	border-bottom-right-radius: 6px;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 20px;
+	padding-bottom: 20px;
+	padding-left: 30px;
+	padding-right: 30px;
+	padding-top: 20px;
+	/* dimensions */
+	width: 740px;
+	height: auto;
+	zIndex
+	=
+	1;
+}
+
+.dP table {
+	text-align: left;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-style: normal;
+	font-variant: normal;
+}
+
+.dP th {
+	font-size: 10px;
+	color: blue;
+	font-weight: normal;
+}
+
+.dP td {
+	font-size: 12px;
+	color: black;
+	font-weight: normal;
+}
+
+.grey {
+	width: auto;
+	height: 20px;
+	line-height: 20px;
+	display: block;
+	margin-left: 4px;
+	margin-right: 4px;
+	margin-top: 4px;
+}
+
+div.grey {
+	cursor: pointer;
+	/* Fonts*/
+	color: rgb(200, 200, 255);
+	text-decoration: none;
+	font-size: 12px;
+	font-family: helvetica, arial;
+	text-shadow: 0 1px 0 #4190AF;
+	font-weight: bold;
+	text-align: center;
+	position: relative;
+	background: rgb(20, 60, 80);
+	border-radius: 6px;
+	text-shadow: 1px 1px 1px rgb(10, 10, 10);
+}
+
+/* While being hovered */
+div.grey:hover {
+	background: #014464;
+	background: -moz-linear-gradient(top, #0c5f85, #0b5273 50%, #024869 51%, #003853);
+	background: -webkit-gradient(linear, left top, left bottombottom, color-stop(0,
+		#0c5f85), color-stop(.5, #0b5273), color-stop(.51, #024869),
+		to(#003853));
+}
+
+/* While being clicked */
+div.grey:active {
+	-webkit-box-shadow: 0 2px 6px black;
+}
+
+select.grey {
+	background: transparent;
+	font-size: 12px;
+	border: 1px solid rgb(100, 100, 100);
+}

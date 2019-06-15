@@ -9,13 +9,12 @@ import com.qx.back.base.bytes.BufferByteOutput;
 import com.qx.back.base.bytes.ByteInput;
 import com.qx.back.base.bytes.ByteOutput;
 import com.qx.back.blocks.base.BkBase;
+import com.qx.back.blocks.block.BkContext;
 import com.qx.back.blocks.block.BkPath;
 import com.qx.back.blocks.block.Block;
-import com.qx.back.blocks.block.BlocksContext;
 import com.qx.back.blocks.object.BkObjectsContext;
 import com.qx.back.blocks.object.ObjectsBlock;
 import com.qx.back.blocks.object.type.fields.PrimitiveBkFieldHandler;
-import com.qx.back.blocks.tests.example.MyPipeLine;
 import com.qx.back.blocks.tests.extensions.MathVector3dField;
 
 public class WebGL_ProgramTesting {
@@ -27,22 +26,27 @@ public class WebGL_ProgramTesting {
 		// getting FileChannel from file
 		Path root = Paths.get("data/");
 
-		
-		BlocksContext blocksContext = new BlocksContext(new Block.Prototype[] {
-				ObjectsBlock.PROTOTYPE		
-		});
 		BkObjectsContext objectContext = new BkObjectsContext(
 				new PrimitiveBkFieldHandler.Builder[] {
 						new MathVector3dField.Builder()
 				}, 
-				MyPipeLine.class);
-
-
-		BkBase base = new BkBase(blocksContext, objectContext, root, 4, true);
-
-		ObjectsBlock block = (ObjectsBlock) base.getBlock(new BkPath("0000000001000012"));
+				WebGL_Service.class);
 		
-		WebGL_Service service = new WebGL_Service(block, ObjectsBlock.ROOT_INDEX);
+		ObjectsBlock.Prototype proto = new ObjectsBlock.Prototype(objectContext);
+		
+		BkContext context = new BkContext(new Block.Prototype[] { proto });
+		
+		BkBase base = new BkBase(context, root, 4, true);
+
+		BkPath staticPath = WebGL_Back.SERVICE_ADDRESS.path;
+		ObjectsBlock block = proto.createBlock(base.getBlockHandler(staticPath));
+		
+		WebGL_Service service = new WebGL_Service(block, WebGL_Back.SERVICE_ADDRESS.index);
+		
+		base.save();
+		
+		block = (ObjectsBlock) base.getBlockHandler(WebGL_Back.SERVICE_ADDRESS.path).block;
+		service = (WebGL_Service) block.getObject(WebGL_Back.SERVICE_ADDRESS.index);
 		
 		ByteBuffer buffer = ByteBuffer.allocate(1024);
 		ByteOutput outflow = new BufferByteOutput(buffer);
@@ -50,6 +54,6 @@ public class WebGL_ProgramTesting {
 		buffer.flip();
 		ByteInput inflow = new BufferByteInput(buffer);
 		
-		System.out.println(service.getProgram(inflow).getCode());
+		System.out.println(service.getProgram(inflow).getVertexShaderSourceCode());
 	}
 }
