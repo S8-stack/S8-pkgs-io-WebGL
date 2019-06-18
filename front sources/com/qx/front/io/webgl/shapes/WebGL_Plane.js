@@ -14,6 +14,8 @@ function WebGL_Plane(){
 WebGL_Plane.prototype = {
 
 		build : function(shape){
+			// caching configuration
+			let config = shape.configuration;
 			
 			var vertexAttributes, vertex, normal, texCoord, texCoordScale, elements, offset, indices;
 
@@ -21,14 +23,14 @@ WebGL_Plane.prototype = {
 			var x0=this.x0, x1=this.x1, y0=this.y0, y1=this.y1, z=this.z;
 
 			// <surface>
-			if(shape.isSurfaceEnabled){
+			if(config.isSurfaceEnabled){
 
 				// <surface-attributes>
 				var surfaceAttributes = shape.surfaceAttributes;
 				offset = surfaceAttributes.length();
 				
-				var isSurfaceNormalAttributeEnabled = shape.isSurfaceNormalAttributeEnabled;
-				var isSurfaceTexCoordAttributeEnabled = shape.isSurfaceTexCoordAttributeEnabled;
+				var isSurfaceNormalAttributeEnabled = config.isSurfaceNormalAttributeEnabled;
+				var isSurfaceTexCoordAttributeEnabled = config.isSurfaceTexCoordAttributeEnabled;
 				
 				if(isSurfaceTexCoordAttributeEnabled){
 					texCoordScale = this.texCoordScale;
@@ -73,7 +75,7 @@ WebGL_Plane.prototype = {
 			// </surface>
 
 			// <wire>
-			if(shape.isWireEnabled){
+			if(config.isWireEnabled){
 				x0-=this.shift; x1+=this.shift;
 				y0-=this.shift; y1+=this.shift;
 

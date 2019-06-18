@@ -1,37 +1,25 @@
 
 function live00(){
 
-	var settings = new WebGL_GraphicSettings();
-
-
-	var model = new WebGL_ShapeModel("pipe");
-	var profile = new CAD_Polygon([1.0, 0.1, -1.0, 0.1], false);
-	var wire = new WebGL_WireModel();
-	var surface = new WebGL_SurfaceModel();
-	profile.fullyRevolve(MathAffine3.STD, wire, surface, settings);
-	model.renderables = [wire, surface];
-	model.compile();
-
-	var instance = new WebGL_ShapeInstance("pipe_instance", scene)
-
-	var affine = new MathAffine3();
+	// define new shape
+	let shape = new WebGL_Shape();
+	let hexahedron = new WebGL_Hexahedron();
+	hexahedron.build(shape);
+	shape.compile();
+	
+	// define new appearance
+	let appearance = new WebGL_Appearance();
+	
+	// define new instance and apply appearance and shape
+	let affine = new MathAffine3d();
 	affine.matrix.yRotation(0.1*Math.PI/2.0);
-	instance.matrix_Model = new WebGL_Matrix4();
-	instance.matrix_Model.setAffine(affine);
+	let instance = new WebGL_ShapeInstance(scene, [affine]);
+	shape.apply(instance);
+	appearance.apply(instance);
 
-	instance.model = model;
-
-	instance.setStyles([
-		["darkWire", "darkWire", "darkWire", "darkWire", "darkWire", "darkWire", "darkWire", "darkWire"],
-		["shinyBluePlastic", "shinyBluePlastic", "shinyBluePlastic", "shinyBluePlastic",
-			"shinyBluePlastic", "shinyBluePlastic", "shinyBluePlastic", "shinyBluePlastic"]
-		]);
-
-	scene.shapeInstances.push(instance);
-
-
-	// start drawing...
-	instance.setMode(0);
+	
+	// start rendering
+	instance.display(0);
 
 };
 

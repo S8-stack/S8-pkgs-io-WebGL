@@ -7,6 +7,7 @@ import com.qx.back.blocks.BkType;
 import com.qx.back.blocks.object.BkIndex;
 import com.qx.back.blocks.object.BkObject;
 import com.qx.back.blocks.object.ObjectsBlock;
+import com.qx.back.io.bohr.BohrObject;
 import com.qx.back.io.webgl.programs.WebGL_ProgramSources;
 import com.qx.back.io.webgl.programs.WebGL_ProgramsBase;
 import com.qx.back.io.webgl.styles.WebGL_Style;
@@ -45,15 +46,23 @@ public class WebGL_Service extends BkObject {
 	}
 
 	@BkMethod(code=0x04)
-	public synchronized WebGL_Style getStyle(ByteInput inflow) throws Exception{
+	public BohrObject getStyle(ByteInput inflow) throws Exception{
 		String id = inflow.getStringUTF8();
-		return styles.get(id);
+		WebGL_Style style = styles.get(id);
+		if(style==null){
+			throw new Exception("No style for id="+id);	
+		}
+		return style.toBohr();
 	}
 	
 	
 	@BkMethod(code=0x08)
-	public synchronized WebGL_ProgramSources getProgram(ByteInput inflow) throws Exception{
+	public BohrObject getProgram(ByteInput inflow) throws Exception{
 		String id = inflow.getStringUTF8();
-		return programs.get(id);
+		WebGL_ProgramSources programSources = programs.get(id);
+		if(programSources==null) {
+			throw new Exception("No prgm for id="+id);
+		}
+		return programSources.toBohr();
 	}
 }

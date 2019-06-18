@@ -8,7 +8,7 @@ public class WebGL_Front {
 	
 	public final static FrontResourceLoader LOADER = 
 			new FrontResourceLoader(WebGL_Front.class, "/webgl", new FrontResourceDescriptor[] {
-					new FrontFolder("")
+					new FrontFolder("", 8291, false)
 			});
 
 }

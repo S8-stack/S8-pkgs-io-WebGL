@@ -63,7 +63,7 @@ var CAD_WebGL_boot = function(){
 	
 
 	// create control
-	control = new BdController(scene);
+	control = new WebGL_Controller(scene);
 	control.start();
 
 };

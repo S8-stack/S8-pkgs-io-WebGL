@@ -11,8 +11,8 @@ function WebGL_ShapeInstance(scene, affines){
 	this.affines = affines;
 	
 	// rendering pipe handles
-	this.wireStyleHandle = null;
-	this.surfaceStyleHandle = null;
+	this.wirePipeHandle = null;
+	this.surfacePipeHandle = null;
 }
 
 
@@ -38,53 +38,36 @@ WebGL_ShapeInstance.prototype = {
 		},
 		
 		
-		setWireStyle : function(id){
-			if(this.isWireEnabled){
-				if(this.wireStyleHandle!=null){
-					this.wireStyleHandle.isRemoved = true;
+		setWireProgram : function(prgmId){
+			if(this.isWireEnabled && prgmId!=this.wireProgramId){
+				if(this.wirePipeHandle!=null){
+					this.wirePipeHandle.isRemoved = true;
 				}
-				if(id!=null){
-					this.wireStyleHandle = this.scene.getPipe(id).append(this);	
+				this.wireProgramId = prgmId;
+				if(prgmId!=null){
+					this.wirePipeHandle = this.scene.getPipe(prgmId).append(this);	
 				}	
 			}
 		},
 
-		setSurfaceStyle : function(id){
-			if(this.isSurfaceEnabled){
-				if(this.surfaceStyleHandle!=null){
-					this.surfaceStyleHandle.isRemoved = true;
+		setSurfaceProgram : function(prgmId){
+			if(this.isSurfaceEnabled && prgmId!=this.surfaceProgramId){
+				if(this.surfacePipeHandle!=null){
+					this.surfacePipeHandle.isRemoved = true;
 				}
-				if(id!=null){
-					this.surfaceStyleHandle = this.scene.getPipe(id).append(this);	
-				}	
+				this.surfaceProgramId = prgmId;
+				if(prgmId!=null){
+					this.surfacePipeHandle = this.scene.getPipe(prgmId).append(this);	
+				}
 			}
 		},
-
-		/**
-		 * setStyle to a shape
-		 */
-		display : function(mode=0){
-			switch(mode){
-			
-			case 0: // normal
-				this.setWireStyle(this.wireProgram);
-				this.setSurfaceStyle(this.surfaceProgram);
-				break;
-				
-			case 1: // highlight
-				this.setWireStyle(this.wireProgram);
-				this.setSurfaceStyle("lit");
-				break;
-			}
-		},
-		
 
 		dispose : function(){
-			if(this.wireStyleHandle!=null){
-				this.wireStyleHandle.isRemoved = true;
+			if(this.wirePipeHandle!=null){
+				this.wirePipeHandle.isRemoved = true;
 			}
-			if(this.surfaceStyleHandle!=null){
-				this.surfaceStyleHandle.isRemoved = true;
+			if(this.surfacePipeHandle!=null){
+				this.surfacePipeHandle.isRemoved = true;
 			}
 		}
 };

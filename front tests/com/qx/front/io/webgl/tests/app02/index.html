@@ -55,10 +55,10 @@
 <script type="text/javascript" src="/webgl/maths/WebGL_Matrix4.js"></script>
 
 <!-- WebGL shapes -->
-<script type="text/javascript" src="/webgl/shapes/WebGL_ShapeModel.js"></script>
+<script type="text/javascript" src="/webgl/shapes/WebGL_Shape.js"></script>
 <script type="text/javascript"
 	src="/webgl/shapes/WebGL_ShapeInstance.js"></script>
-<script type="text/javascript" src="/webgl/shapes/WebGL_ShapeConfiguration.js"></script>
+<script type="text/javascript" src="/webgl/shapes/WebGL_Appearance.js"></script>
 <script type="text/javascript" src="/webgl/shapes/WebGL_Hexahedron.js"></script>
 <script type="text/javascript" src="/webgl/shapes/WebGL_HexagonalNut.js"></script>
 <script type="text/javascript" src="/webgl/shapes/WebGL_Cylinder.js"></script>
@@ -93,11 +93,7 @@
 <script type="text/javascript"
 	src="https://unpkg.com/earcut@2.1.1/dist/earcut.min.js"></script>
 <script type="text/javascript" src="script.js"></script>
-<script type="text/javascript" src="live_extrude.js"></script>
-<script type="text/javascript" src="live_animate.js"></script>
-<script type="text/javascript" src="live_handle.js"></script>
-<script type="text/javascript" src="live_shapes.js"></script>
-
+<script type="text/javascript" src="demo_cube.js"></script>
 </head>
 
 <body id="root" onload="CAD_WebGL_boot()">
@@ -107,7 +103,7 @@
 
 	<div id="left-control">
 		<div class="grey" onclick="Sphere.start()">Demo</div>
-		<div class="grey" onclick="live00()">Start live 00</div>
+		<div class="grey" onclick="runDemoCube()">Run Demo Cube</div>
 		<div class="grey" onclick="live01()">Start live 01</div>
 		<div class="grey" onclick="live_TestSweep()">Test sweep</div>
 		<div class="grey" onclick="live_TestMat()">Test mat</div>

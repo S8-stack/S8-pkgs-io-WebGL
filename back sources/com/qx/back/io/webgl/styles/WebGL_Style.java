@@ -18,7 +18,7 @@ import com.qx.back.lang.xml.annotation.XML_Type;
  *
  */
 @XML_Type(name="WebGL_Style", sub= {})
-public class WebGL_Style extends BohrObject {
+public class WebGL_Style {
 
 	private String pathname;
 
@@ -42,22 +42,31 @@ public class WebGL_Style extends BohrObject {
 	public String getPathname() {
 		return pathname;
 	}
+	
+	public BohrObject toBohr() {
+		
+		return new BohrObject() {
+			
+			@Override
+			public int getTypeCode() {
+				return 0x10000123;
+			}
 
-	@Override
-	public int getTypeCode() {
-		return 0x10000123;
+			@Override
+			public void send(ByteOutput ouflow) throws IOException {
+				load();
+				ouflow.putStringUTF8(code);
+			}
+
+			@Override
+			public void getSubNodes(BohrScope scope) {
+				// no sub objects
+			}
+		};
+		
 	}
 
-	@Override
-	public void send(ByteOutput ouflow) throws IOException {
-		load();
-		ouflow.putStringUTF8(code);
-	}
-
-	@Override
-	public void getSubNodes(BohrScope scope) {
-		// no sub objects
-	}
+	
 
 
 	public void load() throws IOException{

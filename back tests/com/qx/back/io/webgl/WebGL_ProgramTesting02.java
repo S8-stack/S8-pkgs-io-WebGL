@@ -9,14 +9,13 @@ import com.qx.back.base.bytes.ByteInput;
 import com.qx.back.base.bytes.ByteOutput;
 import com.qx.back.blocks.base.BkBase;
 import com.qx.back.blocks.block.BkContext;
-import com.qx.back.blocks.block.BkPath;
 import com.qx.back.blocks.block.Block;
 import com.qx.back.blocks.object.BkObjectsContext;
 import com.qx.back.blocks.object.ObjectsBlock;
 import com.qx.back.blocks.object.type.fields.PrimitiveBkFieldHandler;
 import com.qx.back.blocks.tests.extensions.MathVector3dField;
 
-public class WebGL_ProgramTesting {
+public class WebGL_ProgramTesting02 {
 
 	public static void main(String[] args) throws Exception {
 		
@@ -37,15 +36,10 @@ public class WebGL_ProgramTesting {
 		
 		BkBase base = new BkBase(context, root, 4, true);
 
-		BkPath staticPath = WebGL_Back.SERVICE_ADDRESS.path;
-		ObjectsBlock block = proto.createBlock(base.getBlockHandler(staticPath));
 		
-		WebGL_Service service = new WebGL_Service(block, WebGL_Back.SERVICE_ADDRESS.index);
-		
-		base.save();
-		
-		block = (ObjectsBlock) base.getBlockHandler(WebGL_Back.SERVICE_ADDRESS.path).block;
-		service = (WebGL_Service) block.getObject(WebGL_Back.SERVICE_ADDRESS.index);
+		System.out.println("Look-up at: "+WebGL_Back.SERVICE_ADDRESS);
+		ObjectsBlock block = (ObjectsBlock) base.getBlockHandler(WebGL_Back.SERVICE_ADDRESS.path).block;
+		WebGL_Service service = (WebGL_Service) block.getObject(WebGL_Back.SERVICE_ADDRESS.index);
 		
 		ByteBuffer buffer = ByteBuffer.allocate(1024);
 		ByteOutput outflow = new BufferByteOutput(buffer);

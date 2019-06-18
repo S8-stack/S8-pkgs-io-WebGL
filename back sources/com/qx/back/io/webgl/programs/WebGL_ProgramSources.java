@@ -19,7 +19,7 @@ import com.qx.back.lang.xml.annotation.XML_Type;
  *
  */
 @XML_Type(name="WebGL_Program", sub= {})
-public class WebGL_ProgramSources extends BohrObject {
+public class WebGL_ProgramSources {
 
 	private String pathname;
 
@@ -47,24 +47,30 @@ public class WebGL_ProgramSources extends BohrObject {
 	public String getPathname() {
 		return pathname;
 	}
+	
+	
+	public BohrObject toBohr() {
+		
+		return new BohrObject() {
+			
+			@Override
+			public int getTypeCode() {
+				return WebGL_Back.WEBGL_BOHR_PREFIX+0x0002;
+			}
 
-	@Override
-	public int getTypeCode() {
-		return WebGL_Back.WEBGL_BOHR_PREFIX+0x0002;
-	}
+			@Override
+			public void send(ByteOutput ouflow) throws IOException {
+				load();
+				ouflow.putStringUTF8(vertexShaderSourceCode);
+				ouflow.putStringUTF8(fragmentShaderSourceCode);
+				ouflow.putStringUTF8(javascriptSourceCode);
+			}
 
-	@Override
-	public void send(ByteOutput ouflow) throws IOException {
-		load();
-		ouflow.putStringUTF8(vertexShaderSourceCode);
-		ouflow.putStringUTF8(fragmentShaderSourceCode);
-		ouflow.putStringUTF8(javascriptSourceCode);
-
-	}
-
-	@Override
-	public void getSubNodes(BohrScope scope) {
-		// no subnodes
+			@Override
+			public void getSubNodes(BohrScope scope) {
+				// no subnodes
+			}
+		};
 	}
 
 

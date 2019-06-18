@@ -4,12 +4,12 @@
  */
 
 
-function WebGL_Hexahedron(){
-	this.ax = 1.0;
-	this.ay = 1.0;
-	this.az = 1.0;
-	this.shift = 0.001;
-	this.texCoordScale = 1.0;
+function WebGL_Hexahedron(ax=1.0, ay=1.0, az=1.0, shift=0.001, texCoordScale=1.0){
+	this.ax = ax;
+	this.ay = ay;
+	this.az = az;
+	this.shift = shift;
+	this.texCoordScale = texCoordScale;
 }
 
 
@@ -17,8 +17,10 @@ WebGL_Hexahedron.prototype = {
 
 
 		build : function(shape){
-			
 
+			// caching configuration
+			let config = shape.configuration;
+			
 			var vertices, normals, texCoords, texCoordScale, elements, offset;
 
 			// dimensions
@@ -27,15 +29,15 @@ WebGL_Hexahedron.prototype = {
 			var az = this.az/2.0;
 
 			// <surface>
-			if(shape.isSurfaceEnabled){
+			if(config.isSurfaceEnabled){
 
 				var surfaceAttributes = shape.surfaceAttributes;
 				offset = surfaceAttributes.length;
 
-				var isSurfaceNormalAttributeEnabled = shape.isSurfaceNormalAttributeEnabled;
+				var isSurfaceNormalAttributeEnabled = config.isSurfaceNormalAttributeEnabled;
 				
 				
-				var isSurfaceTexCoordAttributeEnabled = shape.isSurfaceTexCoordAttributeEnabled;
+				var isSurfaceTexCoordAttributeEnabled = config.isSurfaceTexCoordAttributeEnabled;
 				if(isSurfaceTexCoordAttributeEnabled){
 					texCoordScale = this.texCoordScale;
 				}
@@ -243,7 +245,7 @@ WebGL_Hexahedron.prototype = {
 			// </surface>
 
 			// <wire>
-			if(shape.isWireEnabled){
+			if(config.isWireEnabled){
 				ax+=this.shift;
 				ay+=this.shift;
 				az+=this.shift;

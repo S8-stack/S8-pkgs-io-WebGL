@@ -9,7 +9,8 @@ function WebGL_HexagonalNut(){
 WebGL_HexagonalNut.prototype = {
 
 		build : function(shape){
-
+			// caching configuration
+			let config = shape.configuration;
 
 			var vertices, normals, texCoords, texCoordScale, elements, offset;
 			
@@ -21,11 +22,11 @@ WebGL_HexagonalNut.prototype = {
 			var x1 = this.height;
 
 			// <surface>
-			if(shape.isSurfaceEnabled){
+			if(config.isSurfaceEnabled){
 
 				vertices = shape.surfaceVertices;
 
-				var isSurfaceNormalAttributeEnabled = shape.isSurfaceNormalAttributeEnabled;
+				var isSurfaceNormalAttributeEnabled = config.isSurfaceNormalAttributeEnabled;
 				if(isSurfaceNormalAttributeEnabled){
 					normals = shape.surfaceNormals;	
 				}
@@ -119,7 +120,7 @@ WebGL_HexagonalNut.prototype = {
 			// </surface>
 
 			// <wire>
-			if(shape.isWireEnabled){
+			if(config.isWireEnabled){
 
 				vertices = shape.wireVertices;
 				elements = shape.wireElements;
