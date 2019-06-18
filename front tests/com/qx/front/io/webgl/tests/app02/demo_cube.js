@@ -11,13 +11,13 @@ function runDemoCube(){
 	// define new instance and apply appearance and shape
 	let affine = new MathAffine3d();
 	affine.matrix.yRotation(0.1*Math.PI/2.0);
-	let instance = new WebGL_ShapeInstance(scene, [affine]);
-	shape.apply(instance);
-
+	
+	let object = new WebGL_Object(scene, shape, [affine]);
+	
 	// define new appearance
 	let appearance = new WebGL_Appearance();
 	
 	// start rendering by applying appearance to instance
-	appearance.apply(instance);
+	object.setAppearance(appearance);
 
 };

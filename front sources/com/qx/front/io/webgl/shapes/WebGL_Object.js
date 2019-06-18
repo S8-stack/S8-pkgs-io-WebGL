@@ -1,67 +1,85 @@
 
 
 /**
- * WebGL Surface object. Sub-part of a shape
+ * WebGL_Object. Building blocks for more complex 3D scenes.
  * a model must be defined
  * an instance must be defined
  */
-function WebGL_ShapeInstance(scene, affines){
-	
+function WebGL_Object(scene, shape, affines){
+
 	this.scene = scene;
+	this.shape = shape;
 	this.affines = affines;
-	
+
 	// rendering pipe handles
 	this.wirePipeHandle = null;
 	this.surfacePipeHandle = null;
 }
 
 
-WebGL_ShapeInstance.prototype = {
+WebGL_Object.prototype = {
 
 		render : function(view, program){
 
 			// bind vertex attributes buffer handles (program is doing the
 			// picking of the appropriate vertices attributes)
-			program.attachShape(this);
+			program.setShape(this.shape);
 
 			// affine
 			for(let affine of this.affines){
-				
+
 				// update stack
 				view.setModel(affine);
+				
+				// set appearance
+				program.setAppearance(this.appearance);
 
 				// bind matrices
 				// trigger render by drawing elements
 				//gl.drawElements(this.elementType, this.nbElements, gl.UNSIGNED_SHORT, 0);
-				program.draw(view, this);
+				program.draw(view, this.shape);
 			}
 		},
-		
-		
-		setWireProgram : function(prgmId){
-			if(this.isWireEnabled && prgmId!=this.wireProgramId){
+
+
+		setShape : function(shape){
+			this.shape = shape;
+		},
+
+		setAppearance : function(appearance){
+
+			// material part
+			let config = this.shape.configuration;
+			
+			this.appearance = appearance;
+			
+			let prgmId = null;
+			
+			// wire
+			prgmId = appearance.wireProgramId;
+			if(config.isWireEnabled && this.wireProgramId!=prgmId){
 				if(this.wirePipeHandle!=null){
 					this.wirePipeHandle.isRemoved = true;
 				}
 				this.wireProgramId = prgmId;
-				if(prgmId!=null){
+				if(prgmId){
 					this.wirePipeHandle = this.scene.getPipe(prgmId).append(this);	
 				}	
 			}
-		},
 
-		setSurfaceProgram : function(prgmId){
-			if(this.isSurfaceEnabled && prgmId!=this.surfaceProgramId){
+			// surface
+			prgmId = appearance.surfaceProgramId;
+			if(config.isSurfaceEnabled && this.surfaceProgramId!=prgmId){
 				if(this.surfacePipeHandle!=null){
 					this.surfacePipeHandle.isRemoved = true;
 				}
 				this.surfaceProgramId = prgmId;
-				if(prgmId!=null){
+				if(prgmId){
 					this.surfacePipeHandle = this.scene.getPipe(prgmId).append(this);	
 				}
 			}
 		},
-
+		
 		dispose : function(){
 			if(this.wirePipeHandle!=null){
 				this.wirePipeHandle.isRemoved = true;

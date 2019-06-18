@@ -15,26 +15,26 @@ program.initialize = function(){
 };
 
 
-
-
 program.bind = function(view, environment){
+	// bind shader program
+	gl.useProgram(this.handle);
+	
 	// enable location
 	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
 	gl.enableVertexAttribArray(this.loc_Attribute_color);
 };
 
-program.unbind = function(){
 
-	// enable location
-	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
-	gl.disableVertexAttribArray(this.loc_Attribute_color);
-};
-
-program.loadStyle = function(style){
-};
+program.setView = function(view){
+	// nothing to set from view
+}
 
 
-program.bindShape = function(shape){
+program.setEnvironment = function(environment){
+	// nothing to set-yp from enviornment
+}
+
+program.setShape = function(shape){
 	
 	// matrices
 	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, shape.matrix_ProjectionViewModel.c);
@@ -44,10 +44,11 @@ program.bindShape = function(shape){
 	shape.color.bind(this.loc_Attribute_color);
 };
 
-program.unbindShape = function(shape){	
-	
-	/* unbind attributes */
-	shape.vertex.unbind(this.loc_Attribute_vertex);
-	shape.color.unbind(this.loc_Attribute_texCoord);
+program.unbind = function(){
+
+	// enable location
+	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
+	gl.disableVertexAttribArray(this.loc_Attribute_color);
 };
+
 

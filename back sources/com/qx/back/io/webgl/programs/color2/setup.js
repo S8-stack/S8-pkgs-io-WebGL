@@ -26,12 +26,20 @@ program.bind = function(view, environment){
 	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
 };
 
+program.setView = function(view){
+	// nothing to set from view
+}
 
-program.attachShape = function(shape){
+program.setEnvironment = function(environment){
+	// nothing to set-yp from enviornment
+}
 
+program.setAppearance = function(appearance){
 	// material
-	gl.uniform4fv(this.loc_Uniform_color, shape.wireColor);
-	
+	gl.uniform4fv(this.loc_Uniform_color, appearance.wireColor);
+}
+
+program.setShape = function(shape){
 	shape.wireVertices.bind(this.loc_Attribute_vertex);
 	shape.wireElements.bind();
 };

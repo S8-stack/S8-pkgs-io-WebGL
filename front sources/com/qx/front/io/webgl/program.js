@@ -14,8 +14,14 @@ WebGL_RenderingPipe.prototype = {
 			var prgm = this.program;
 			if(prgm.isInitialized){
 
-				// setup settings
-				prgm.bind(view, environment);
+				// bind
+				prgm.bind();
+				
+				// set view
+				prgm.setView(view);
+				
+				// set env
+				prgm.setEnvironment(environment);
 
 				// render renderables
 				this.list.iterate(function(entry){ 
@@ -55,7 +61,7 @@ var WebGL_programs = {
 function WebGL_Program_Sources(){
 }
 
-BOHR_TYPES.set(0x0a0002, WebGL_Program_Sources);
+BOHR_TYPES.set(WEBGL_BOHR_PREFIX+0x2, WebGL_Program_Sources);
 
 WebGL_Program_Sources.prototype = {
 

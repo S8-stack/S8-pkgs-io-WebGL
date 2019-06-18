@@ -36,7 +36,17 @@ program.bind = function(view, environment){
 };
 
 
-program.attachShape = function(shape){
+program.setView = function(view){
+	// nothing to set from view
+}
+
+
+program.setEnvironment = function(environment){
+	// nothing to set-yp from enviornment
+}
+
+
+program.setShape = function(shape){
 	shape.surfaceVertices.bind(this.loc_Attribute_vertex);
 	shape.surfaceNormals.bind(this.loc_Attribute_normal);
 	shape.surfaceElements.bind();
@@ -49,9 +59,6 @@ program.draw = function(view, shape){
 	shape.surfaceElements.draw();
 };
 
-
-program.detachShape = function(model){
-};
 
 
 program.unbind = function(){

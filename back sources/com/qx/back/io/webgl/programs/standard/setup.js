@@ -39,29 +39,36 @@ program.bind = function(view, environment){
 	// bind shader program
 	gl.useProgram(this.handle);
 	
-	var eye = view.eyePosition;
-	gl.uniform3fv(this.loc_Uniform_eyePosition, [eye.x, eye.y, eye.z]);
-	environment.radiance.bind(this.loc_Uniform_radiance, 0);
-	environment.irradiance.bind(this.loc_Uniform_irradiance, 1);
-	
 	// enable location
 	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
 	gl.enableVertexAttribArray(this.loc_Attribute_normal);
 }
 
 
+program.setView = function(view){
+	var eye = view.eyePosition;
+	gl.uniform3fv(this.loc_Uniform_eyePosition, [eye.x, eye.y, eye.z]);
+}
+
+program.setEnvironment = function(environment){
+	environment.radiance.bind(this.loc_Uniform_radiance, 0);
+	environment.irradiance.bind(this.loc_Uniform_irradiance, 1);
+}
+
+
+program.setAppearance = function(appearance){
+	// material
+	gl.uniform1f(this.loc_Uniform_material_glossiness, appearance.surfaceGlossiness);
+	gl.uniform1f(this.loc_Uniform_material_roughness, appearance.surfaceRoughness);
+	gl.uniform4fv(this.loc_Uniform_material_specularColor, appearance.surfaceSpecularColor);
+	gl.uniform4fv(this.loc_Uniform_material_diffuseColor, appearance.surfaceDiffuseColor);
+}
+
 
 /**
  * Shape uniforms and attributes loading
  */
-program.attachShape = function(shape){
-
-	// material
-	gl.uniform1f(this.loc_Uniform_material_glossiness, shape.surfaceGlossiness);
-	gl.uniform1f(this.loc_Uniform_material_roughness, shape.surfaceRoughness);
-	gl.uniform4fv(this.loc_Uniform_material_specularColor, shape.surfaceSpecularColor);
-	gl.uniform4fv(this.loc_Uniform_material_diffuseColor, shape.surfaceDiffuseColor);
-	
+program.setShape = function(shape){
 	shape.surfaceVertices.bind(this.loc_Attribute_vertex);
 	shape.surfaceNormals.bind(this.loc_Attribute_normal);
 	shape.surfaceElements.bind();
@@ -78,17 +85,6 @@ program.draw = function(view, shape){
 	gl.uniformMatrix4fv(this.loc_Uniform_matrix_M, false, view.matrix_Model.c);
 	
 	shape.surfaceElements.draw();
-};
-
-
-/**
- * 
- */
-program.detachShape = function(shape){	
-	
-	/* unbind attributes */
-	shape.surfaceVertices.unbind(this.loc_Attribute_vertex);
-	shape.surfaceNormals.unbind(this.loc_Attribute_normal);
 };
 
 

@@ -28,29 +28,27 @@ program.initialize = function(){
 
 
 program.bind = function(view, environment){
-	var eye = view.eyePosition;
-	gl.uniform3fv(this.loc_Uniform_eyePosition, [eye.x, eye.y, eye.z]);
-	environment.environmentTexture.bind(this.loc_Uniform_texture, 0);
+	// bind shader program
+	gl.useProgram(this.handle);
 	
 	// enable location
 	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
 	gl.enableVertexAttribArray(this.loc_Attribute_normal);
 }
 
-program.unbind = function(){
-	// disable location
-	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
-	gl.disableVertexAttribArray(this.loc_Attribute_normal);
-};
+program.setView = function(view){
+	var eye = view.eyePosition;
+	gl.uniform3fv(this.loc_Uniform_eyePosition, [eye.x, eye.y, eye.z]);
+}
 
-
-program.loadStyle = function(style){
-};
+program.setEnvironment = function(environment){
+	environment.environmentTexture.bind(this.loc_Uniform_texture, 0);
+}
 
 /**
  * Shape uniforms and attributes loading
  */
-program.bindShape = function(shape){
+program.setShape = function(shape){
 
 	// matrices
 	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, shape.matrix_ProjectionViewModel.c);
@@ -63,10 +61,11 @@ program.bindShape = function(shape){
 	shape.normal.bind(this.loc_Attribute_normal);
 };
 
-program.unbindShape = function(shape){	
-	
-	/* unbind attributes */
-	shape.vertex.unbind(this.loc_Attribute_vertex);
-	shape.normal.unbind(this.loc_Attribute_normal);
+
+program.unbind = function(){
+	// disable location
+	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
+	gl.disableVertexAttribArray(this.loc_Attribute_normal);
 };
+
 

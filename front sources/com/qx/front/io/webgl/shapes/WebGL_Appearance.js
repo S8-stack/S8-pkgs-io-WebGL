@@ -45,34 +45,5 @@ function WebGL_Appearance(){
 
 WebGL_Appearance.prototype = {
 
-		apply : function(instance){
-			
-			// material part
-			if(instance.isWireEnabled){
-				instance.wireColor = this.wireColor;		
-				
-				// finally set program
-				instance.setWireProgram(this.wireProgramId);
-			}
-
-			// surface
-			if(instance.isSurfaceEnabled){
-				
-				instance.surfaceGlossiness = this.surfaceGlossiness;
-				instance.surfaceRoughness = this.surfaceRoughness;
-				instance.surfaceShininess = this.surfaceShininess;
-				instance.surfaceSpecularColor = this.surfaceSpecularColor;
-				instance.surfaceDiffuseColor = this.surfaceDiffuseColor;
-				instance.surfaceAmbientColor = this.surfaceAmbientColor;
-
-				// textures
-				instance.surfaceTexture0 = this.surfaceTexture0;
-				instance.surfaceTexture1 = this.surfaceTexture1;
-				instance.surfaceTexture2 = this.surfaceTexture2;
-				instance.surfaceTexture3 = this.surfaceTexture3;	
-				
-				// prgm
-				instance.setSurfaceProgram(this.surfaceProgramId);
-			}
-		}
+		
 };

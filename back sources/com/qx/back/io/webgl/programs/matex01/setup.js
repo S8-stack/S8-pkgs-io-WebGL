@@ -40,18 +40,10 @@ program.initialize = function(){
 
 
 
-
-
-
-program.bind = function(view, environment){
+program.bind = function(){
 
 	// bind shader program
 	gl.useProgram(this.handle);
-
-	// setup lights
-	for(var i=0; i<this.nbLights; i++){
-		environment.lights[i].bind(this.lightHandles[i]);
-	}
 
 	// enable location
 	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
@@ -60,21 +52,35 @@ program.bind = function(view, environment){
 };
 
 
+program.setView = function(view){
+	// nothing to set from view
+}
 
+
+program.setEnvironment = function(environment){
+	// setup lights
+	for(var i=0; i<this.nbLights; i++){
+		environment.lights[i].bind(this.lightHandles[i]);
+	}
+}
+
+
+program.setAppearance(appearance){
+	
+	// material
+	gl.uniform4fv(this.loc_Uniform_material_ambient, appearance.surfaceAmbientColor);
+	gl.uniform4fv(this.loc_Uniform_material_diffuse, appearance.surfaceDiffuseColor);
+	gl.uniform4fv(this.loc_Uniform_material_specular, appearance.surfaceSpecularColor);
+	gl.uniform1f(this.loc_Uniform_material_shininess, appearance.surfaceShininess);
+
+	// texture
+	appearance.surfaceTexture0.bind(this.loc_Uniform_texture, 0);
+}
 
 /**
  * Shape uniforms and attributes loading
  */
-program.attachShape = function(shape){
-	
-	// material
-	gl.uniform4fv(this.loc_Uniform_material_ambient, shape.surfaceAmbientColor);
-	gl.uniform4fv(this.loc_Uniform_material_diffuse, shape.surfaceDiffuseColor);
-	gl.uniform4fv(this.loc_Uniform_material_specular, shape.surfaceSpecularColor);
-	gl.uniform1f(this.loc_Uniform_material_shininess, shape.surfaceShininess);
-
-	// texture
-	shape.surfaceTexture0.bind(this.loc_Uniform_texture, 0);
+program.setShape = function(shape){
 	
 	// bind attribute buffers
 	shape.surfaceVertices.bind(this.loc_Attribute_vertex);
@@ -101,18 +107,6 @@ program.draw = function(view, shape){
 	shape.surfaceElements.draw();
 };
 
-
-
-/**
- * 
- */
-program.detachShape = function(shape){	
-	
-	/* unbind attributes */
-	shape.surfaceVertices.unbind(this.loc_Attribute_vertex);
-	shape.surfaceNormals.unbind(this.loc_Attribute_normal);
-	shape.surfaceTexCoords.unbind(this.loc_Attribute_texCoord);
-};
 
 
 program.unbind = function(){

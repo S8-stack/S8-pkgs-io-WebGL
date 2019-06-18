@@ -57,7 +57,7 @@ program.attachStyle = function(style){
 };
 
 
-program.attachShape = function(shape){
+program.setShapeModel = function(shape){
 	shape.surfaceVertices.bind(this.loc_Attribute_vertex);
 	shape.surfaceNormals.bind(this.loc_Attribute_normal);
 	shape.surfaceElements.bind();
