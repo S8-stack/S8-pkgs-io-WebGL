@@ -17,9 +17,9 @@ function WebGL_Cylinder(){
 
 WebGL_Cylinder.prototype = {
 
-		build : function(shape){
+		build : function(mesh){
 			// caching configuration
-			let config = shape.configuration;
+			let config = mesh.configuration;
 			
 			var vertices, normals, texCoords, elements, offset;
 
@@ -31,11 +31,11 @@ WebGL_Cylinder.prototype = {
 				x1 = this.x1, 
 				shift = this.shift;
 
-				vertices = shape.surfaceVertices;
-				elements = shape.surfaceElements;
+				vertices = mesh.surfaceVertices;
+				elements = mesh.surfaceElements;
 				var isSurfaceNormalAttributeEnabled = config.isSurfaceNormalAttributeEnabled;
 				if(isSurfaceNormalAttributeEnabled){
-					normals = shape.surfaceNormals;	
+					normals = mesh.surfaceNormals;	
 				}
 
 				// < lateral_surface>
@@ -192,8 +192,8 @@ WebGL_Cylinder.prototype = {
 
 				r+=shift;
 
-				vertices = shape.wireVertices;
-				elements = shape.wireElements;
+				vertices = mesh.wireVertices;
+				elements = mesh.wireElements;
 
 				// <start_wire> 
 				if(this.isStartWireEnabled){

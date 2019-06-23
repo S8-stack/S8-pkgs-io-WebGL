@@ -5,10 +5,10 @@
  * a model must be defined
  * an instance must be defined
  */
-function WebGL_Object(scene, shape, affines){
+function WebGL_Object(appearance, mesh, affines){
 
-	this.scene = scene;
-	this.shape = shape;
+	this.appearance = appearance;
+	this.mesh = mesh;
 	this.affines = affines;
 
 	// rendering pipe handles
@@ -23,7 +23,7 @@ WebGL_Object.prototype = {
 
 			// bind vertex attributes buffer handles (program is doing the
 			// picking of the appropriate vertices attributes)
-			program.setShape(this.shape);
+			program.setShape(this.mesh);
 
 			// affine
 			for(let affine of this.affines){
@@ -37,7 +37,7 @@ WebGL_Object.prototype = {
 				// bind matrices
 				// trigger render by drawing elements
 				//gl.drawElements(this.elementType, this.nbElements, gl.UNSIGNED_SHORT, 0);
-				program.draw(view, this.shape);
+				program.draw(view, this.mesh);
 			}
 		},
 
@@ -47,11 +47,15 @@ WebGL_Object.prototype = {
 		},
 
 		setAppearance : function(appearance){
+			this.appearance = appearance;
+		},
+		
+		update : function(scene){
 
 			// material part
-			let config = this.shape.configuration;
+			let config = this.mesh.configuration;
 			
-			this.appearance = appearance;
+			let appearance = this.appearance;
 			
 			let prgmId = null;
 			
@@ -63,7 +67,7 @@ WebGL_Object.prototype = {
 				}
 				this.wireProgramId = prgmId;
 				if(prgmId){
-					this.wirePipeHandle = this.scene.getPipe(prgmId).append(this);	
+					this.wirePipeHandle = scene.getPipe(prgmId).append(this);	
 				}	
 			}
 
@@ -75,7 +79,7 @@ WebGL_Object.prototype = {
 				}
 				this.surfaceProgramId = prgmId;
 				if(prgmId){
-					this.surfacePipeHandle = this.scene.getPipe(prgmId).append(this);	
+					this.surfacePipeHandle = scene.getPipe(prgmId).append(this);	
 				}
 			}
 		},

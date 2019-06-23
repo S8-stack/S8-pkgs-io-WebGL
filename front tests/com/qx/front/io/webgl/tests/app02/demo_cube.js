@@ -1,23 +1,23 @@
 
 function runDemoCube(){
 
-	// define new shape
-	let shape = new WebGL_Shape();
-	shape.initialize();
+	// define new mesh
+	let mesh = new WebGL_Mesh();
+	mesh.initialize();
 	let hexahedron = new WebGL_Hexahedron();
-	hexahedron.build(shape);
-	shape.compile();
+	hexahedron.build(mesh);
+	mesh.compile();
 	
 	// define new instance and apply appearance and shape
 	let affine = new MathAffine3d();
 	affine.matrix.yRotation(0.1*Math.PI/2.0);
-	
-	let object = new WebGL_Object(scene, shape, [affine]);
-	
+
 	// define new appearance
 	let appearance = new WebGL_Appearance();
 	
+	let object = new WebGL_Object(appearance, mesh, [affine]);
+	
 	// start rendering by applying appearance to instance
-	object.setAppearance(appearance);
+	object.update(scene);
 
 };

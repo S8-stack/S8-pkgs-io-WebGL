@@ -8,9 +8,9 @@ function WebGL_HexagonalNut(){
 
 WebGL_HexagonalNut.prototype = {
 
-		build : function(shape){
+		build : function(mesh){
 			// caching configuration
-			let config = shape.configuration;
+			let config = mesh.configuration;
 
 			var vertices, normals, texCoords, texCoordScale, elements, offset;
 			
@@ -24,13 +24,13 @@ WebGL_HexagonalNut.prototype = {
 			// <surface>
 			if(config.isSurfaceEnabled){
 
-				vertices = shape.surfaceVertices;
+				vertices = mesh.surfaceVertices;
 
 				var isSurfaceNormalAttributeEnabled = config.isSurfaceNormalAttributeEnabled;
 				if(isSurfaceNormalAttributeEnabled){
-					normals = shape.surfaceNormals;	
+					normals = mesh.surfaceNormals;	
 				}
-				elements = shape.surfaceElements;
+				elements = mesh.surfaceElements;
 				offset = vertices.length();
 
 				var matrix = new MathMatrix3d();
@@ -122,8 +122,8 @@ WebGL_HexagonalNut.prototype = {
 			// <wire>
 			if(config.isWireEnabled){
 
-				vertices = shape.wireVertices;
-				elements = shape.wireElements;
+				vertices = mesh.wireVertices;
+				elements = mesh.wireElements;
 				offset = vertices.length();
 				for(var i=0; i<6; i++){
 					matrix.xRotation(theta0+i*dTheta);

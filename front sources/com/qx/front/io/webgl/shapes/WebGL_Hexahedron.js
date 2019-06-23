@@ -16,10 +16,10 @@ function WebGL_Hexahedron(ax=1.0, ay=1.0, az=1.0, shift=0.001, texCoordScale=1.0
 WebGL_Hexahedron.prototype = {
 
 
-		build : function(shape){
+		build : function(mesh){
 
 			// caching configuration
-			let config = shape.configuration;
+			let config = mesh.configuration;
 			
 			var vertices, normals, texCoords, texCoordScale, elements, offset;
 
@@ -31,7 +31,7 @@ WebGL_Hexahedron.prototype = {
 			// <surface>
 			if(config.isSurfaceEnabled){
 
-				var surfaceAttributes = shape.surfaceAttributes;
+				var surfaceAttributes = mesh.surfaceAttributes;
 				offset = surfaceAttributes.length;
 
 				var isSurfaceNormalAttributeEnabled = config.isSurfaceNormalAttributeEnabled;
@@ -41,7 +41,7 @@ WebGL_Hexahedron.prototype = {
 				if(isSurfaceTexCoordAttributeEnabled){
 					texCoordScale = this.texCoordScale;
 				}
-				indices = shape.surfaceIndices;
+				indices = mesh.surfaceIndices;
 
 				var va0, va1, va2, va3;
 				
@@ -250,8 +250,8 @@ WebGL_Hexahedron.prototype = {
 				ay+=this.shift;
 				az+=this.shift;
 
-				var wireAttributes = shape.wireAttributes;
-				indices = shape.wireIndices;
+				var wireAttributes = mesh.wireAttributes;
+				indices = mesh.wireIndices;
 				offset = wireAttributes.length;
 
 				// surface vertices

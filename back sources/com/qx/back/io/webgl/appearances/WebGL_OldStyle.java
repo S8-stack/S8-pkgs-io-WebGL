@@ -1,4 +1,4 @@
-package com.qx.back.io.webgl.styles;
+package com.qx.back.io.webgl.appearances;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import com.qx.back.lang.xml.annotation.XML_Type;
  *
  */
 @XML_Type(name="WebGL_Style", sub= {})
-public class WebGL_Style {
+public class WebGL_OldStyle {
 
 	private String pathname;
 
@@ -28,7 +28,7 @@ public class WebGL_Style {
 
 	private Object lock;
 
-	public WebGL_Style() {
+	public WebGL_OldStyle() {
 		super();
 		lock = new Object();
 		isLoaded = false;
@@ -74,7 +74,7 @@ public class WebGL_Style {
 			synchronized (lock) {
 				if(!isLoaded) {
 					StringBuilder builder = new StringBuilder();
-					InputStream inputStream = WebGL_Style.class.getResourceAsStream(pathname+".js");
+					InputStream inputStream = WebGL_OldStyle.class.getResourceAsStream(pathname+".js");
 					if(inputStream==null){
 						throw new IOException("cannot find "+pathname);
 					}

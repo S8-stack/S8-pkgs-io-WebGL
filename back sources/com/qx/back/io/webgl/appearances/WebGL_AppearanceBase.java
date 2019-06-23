@@ -1,4 +1,4 @@
-package com.qx.back.io.webgl.styles;
+package com.qx.back.io.webgl.appearances;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,23 +12,23 @@ import com.qx.back.lang.xml.annotation.XML_Type;
  *
  */
 @XML_Type(name="WebGL_Styles", sub= {})
-public class WebGL_Styles {
+public class WebGL_AppearanceBase {
 
-	private Map<String, WebGL_Style> styles;
+	private Map<String, WebGL_OldStyle> styles;
 	
-	public WebGL_Styles() {
+	public WebGL_AppearanceBase() {
 		super();
 	}
 	
 	@XML_SetElement(name="styles")
-	public void setStyles(WebGL_Style[] stylesArray) {
+	public void setStyles(WebGL_OldStyle[] stylesArray) {
 		this.styles = new HashMap<>();
-		for(WebGL_Style style : stylesArray) {
+		for(WebGL_OldStyle style : stylesArray) {
 			styles.put(style.getPathname(), style);
 		}
 	}
 	
-	public WebGL_Style get(String id) {
+	public WebGL_OldStyle get(String id) {
 		return styles.get(id);
 	}
 

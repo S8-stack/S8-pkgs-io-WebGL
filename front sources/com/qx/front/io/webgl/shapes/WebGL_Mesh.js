@@ -2,7 +2,7 @@
 /**
  * WebGL Shape constructor, methods and utilities
  */
-function WebGL_Shape(configuration = new WebGL_ShapeConfiguration()){
+function WebGL_Mesh(configuration = new WebGL_MeshOptions()){
 	// no affines
 
 	/** Shape configuration */
@@ -11,7 +11,7 @@ function WebGL_Shape(configuration = new WebGL_ShapeConfiguration()){
 }
 
 
-WebGL_Shape.prototype = {
+WebGL_Mesh.prototype = {
 
 		initialize : function(){
 			
@@ -29,6 +29,61 @@ WebGL_Shape.prototype = {
 			if(config.isSurfaceEnabled){
 				this.surfaceAttributes = new Array();
 				this.surfaceIndices = new Array();
+			}
+			/* </surface> */
+		},
+		
+		
+		/*
+		 * Using same verticeAttirbutes two times: in source and detination
+		 */
+		append : function(target){
+			let config = this.configuration;
+			
+			var offset, n, vertex, color, uTangent, vTangent, normal, texCoord;
+			var vertexAttributes, targetVertexAttributes;
+
+			/* <wire> */
+			if(config.isWireEnabled){
+
+				/* <wire-attributes> */
+				let wireAttributes = this.wireAttributes, targetWireAttributes = target.wireAttributes;
+				offset = targetWireAttributes.length;
+				n = wireAttributes.length;
+				for(var i=0; i<n; i++){
+					targetWireAttributes.push(wireAttributes[i]);
+				}
+				/* </wire-attributes> */
+
+				/* <wire-elements> */
+				var targetWireIndices = target.wireIndices;
+				for(let index of this.wireIndices){
+					targetWireIndices.push(offset+index);
+				}
+				/* <wire-elements> */
+			}
+			/* </wire> */
+
+			/* <surface> */
+			if(config.isSurfaceEnabled){
+
+				/* <surface-attributes> */
+				let surfaceAttributes = this.surfaceAttributes, 
+				targetSurfaceAttributes = target.surfaceAttributes;
+			
+				offset = targetSurfaceAttributes.length;
+				n = surfaceAttributes.length;
+				for(var i=0; i<n; i++){
+					targetSurfaceAttributes.push(surfaceAttributes[i]);
+				}
+				/* </surface-attributes> */
+
+				/* <surface-elements> */
+				var targetSurfaceIndices = target.surfaceIndices;
+				for(let index of this.surfaceIndices){
+					targetSurfaceIndices.push(offset+index);
+				}
+				/* <surface-elements> */
 			}
 			/* </surface> */
 		},
@@ -283,50 +338,6 @@ WebGL_Shape.prototype = {
 			/* </surface> */
 		},
 
-
-		apply : function(instance){
-			// caching configuration
-			let config = this.configuration;
-			
-			/* <wire> */
-			instance.isWireEnabled = config.isWireEnabled;
-
-			if(config.isWireEnabled){
-
-				// attributes
-				instance.wireVertices = this.wireVertices
-				instance.wireElements = this.wireElements;
-				if(config.isWireColorAttributeEnabled){
-					instance.wireColors = this.wireColors;
-				}
-			}
-			/* </wire> */
-
-			/* <surface> */
-			instance.isSurfaceEnabled = config.isSurfaceEnabled;
-
-			if(config.isSurfaceEnabled){
-
-				// attributes
-				instance.surfaceVertices = this.surfaceVertices;
-				instance.surfaceElements = this.surfaceElements;
-				if(config.isSurfaceNormalAttributeEnabled){
-					instance.surfaceNormals = this.surfaceNormals;
-				}
-				if(config.isSurfaceTexCoordAttributeEnabled){
-					instance.surfaceTexCoords = this.surfaceTexCoords;
-				}
-				if(config.isSurfaceColorAttributeEnabled){
-					instance.surfaceColors = this.surfaceColors;
-				}
-				if(config.isSurfaceTangentAttributeEnabled){
-					instance.surfaceUTangents = this.surfaceUTangents;
-					instance.surfaceVTangents = this.surfaceVTangents;
-				}
-			}
-			/* </surface> */
-		},
-
 		dispose : function(){
 			// caching configuration
 			let config = this.configuration;
@@ -362,43 +373,6 @@ WebGL_Shape.prototype = {
 			/* </surface> */
 		}
 };
-
-
-
-
-function WebGL_ShapeConfiguration(){
-	// no affines (see WebGL_Object for space positioned model)
-
-	/* <wire> */
-	
-	/** wire */
-	this.isWireEnabled = true;
-
-	/** wire */
-	this.isWireColorAttributeEnabled = false;
-	/* </wire> */
-	
-	/* <surface> */
-	
-	/** surface */
-	this.isSurfaceEnabled = true;
-
-	/** surface normal */
-	this.isSurfaceNormalAttributeEnabled = true;
-
-	/** surface tex coord */
-	this.isSurfaceTexCoordAttributeEnabled = false;
-
-	/** surface color */
-	this.isSurfaceColorAttributeEnabled = false;
-
-	/** surface {U,V}-tangents */
-	this.isSurfaceTangentAttributeEnabled = false;
-
-	/* </surface> */
-}
-
-
 
 
 
