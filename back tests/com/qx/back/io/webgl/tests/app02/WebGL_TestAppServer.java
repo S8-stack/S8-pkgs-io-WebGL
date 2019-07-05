@@ -7,7 +7,7 @@ import com.qx.back.base.resources.FrontResourceBase;
 import com.qx.back.blocks.BkBase;
 import com.qx.back.blocks.Block;
 import com.qx.back.blocks.BlockContext;
-import com.qx.back.blocks.objects.ObjectsBucket;
+import com.qx.back.blocks.objects.ObjectsBlock;
 import com.qx.back.blocks.objects.type.BkTypesContext;
 import com.qx.back.blocks.objects.type.fields.PrimitiveFieldHandler;
 import com.qx.back.blocks.tests.extensions.MathVector3dField;
@@ -52,7 +52,7 @@ public class WebGL_TestAppServer {
 				}, 
 				WebGL_Service.class);
 
-		ObjectsBucket.Prototype proto = new ObjectsBucket.Prototype(objectsContext);
+		ObjectsBlock.Prototype proto = new ObjectsBlock.Prototype(objectsContext);
 
 		BlockContext context = new BlockContext(new Block.Prototype[] { proto });
 

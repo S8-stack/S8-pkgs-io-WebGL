@@ -10,7 +10,7 @@ import com.qx.back.base.bytes.ByteOutput;
 import com.qx.back.blocks.BkBase;
 import com.qx.back.blocks.Block;
 import com.qx.back.blocks.BlockContext;
-import com.qx.back.blocks.objects.ObjectsBucket;
+import com.qx.back.blocks.objects.ObjectsBlock;
 import com.qx.back.blocks.objects.type.BkTypesContext;
 import com.qx.back.blocks.objects.type.fields.PrimitiveFieldHandler;
 import com.qx.back.blocks.tests.extensions.MathVector3dField;
@@ -30,7 +30,7 @@ public class WebGL_ProgramTesting02 {
 				}, 
 				WebGL_Service.class);
 		
-		ObjectsBucket.Prototype proto = new ObjectsBucket.Prototype(objectContext);
+		ObjectsBlock.Prototype proto = new ObjectsBlock.Prototype(objectContext);
 		
 		BlockContext context = new BlockContext(new Block.Prototype[] { proto });
 		
@@ -38,7 +38,7 @@ public class WebGL_ProgramTesting02 {
 
 		
 		System.out.println("Look-up at: "+WebGL_Back.SERVICE_ADDRESS);
-		ObjectsBucket block = (ObjectsBucket) base.getBucketHandler(WebGL_Back.SERVICE_ADDRESS.path).block;
+		ObjectsBlock block = (ObjectsBlock) base.getBlockHandler(WebGL_Back.SERVICE_ADDRESS.path).block;
 		WebGL_Service service = (WebGL_Service) block.getObject(WebGL_Back.SERVICE_ADDRESS.index);
 		
 		ByteBuffer buffer = ByteBuffer.allocate(1024);
