@@ -4,12 +4,12 @@ import java.nio.file.Path;
 import java.util.concurrent.Executors;
 
 import com.qx.back.base.resources.FrontResourceBase;
-import com.qx.back.blocks.base.BkBase;
-import com.qx.back.blocks.block.BkContext;
-import com.qx.back.blocks.block.Block;
-import com.qx.back.blocks.object.BkObjectsContext;
-import com.qx.back.blocks.object.ObjectsBlock;
-import com.qx.back.blocks.object.type.fields.PrimitiveBkFieldHandler;
+import com.qx.back.blocks.BkBase;
+import com.qx.back.blocks.Block;
+import com.qx.back.blocks.BlockContext;
+import com.qx.back.blocks.objects.ObjectsBucket;
+import com.qx.back.blocks.objects.type.BkTypesContext;
+import com.qx.back.blocks.objects.type.fields.PrimitiveFieldHandler;
 import com.qx.back.blocks.tests.extensions.MathVector3dField;
 import com.qx.back.io.http2.messages.HTTP2_Message;
 import com.qx.back.io.webgl.WebGL_Service;
@@ -46,15 +46,15 @@ public class WebGL_TestAppServer {
 				Executors.newSingleThreadExecutor());
 
 
-		BkObjectsContext objectsContext = new BkObjectsContext(
-				new PrimitiveBkFieldHandler.Builder[] {
+		BkTypesContext objectsContext = new BkTypesContext(
+				new PrimitiveFieldHandler.Builder[] {
 						new MathVector3dField.Builder()
 				}, 
 				WebGL_Service.class);
 
-		ObjectsBlock.Prototype proto = new ObjectsBlock.Prototype(objectsContext);
+		ObjectsBucket.Prototype proto = new ObjectsBucket.Prototype(objectsContext);
 
-		BkContext context = new BkContext(new Block.Prototype[] { proto });
+		BlockContext context = new BlockContext(new Block.Prototype[] { proto });
 
 
 

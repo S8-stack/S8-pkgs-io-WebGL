@@ -4,9 +4,9 @@ import com.qx.back.base.bytes.ByteInput;
 import com.qx.back.blocks.BkException;
 import com.qx.back.blocks.BkMethod;
 import com.qx.back.blocks.BkType;
-import com.qx.back.blocks.object.BkIndex;
-import com.qx.back.blocks.object.BkObject;
-import com.qx.back.blocks.object.ObjectsBlock;
+import com.qx.back.blocks.objects.BkIndex;
+import com.qx.back.blocks.objects.BkObject;
+import com.qx.back.blocks.objects.ObjectsBucket;
 import com.qx.back.io.bohr.BohrObject;
 import com.qx.back.io.webgl.appearances.WebGL_OldStyle;
 import com.qx.back.io.webgl.appearances.WebGL_AppearanceBase;
@@ -27,7 +27,7 @@ public class WebGL_Service extends BkObject {
 	 * @throws BkException 
 	 * 
 	 */
-	public WebGL_Service(ObjectsBlock block, BkIndex index) throws BkException {
+	public WebGL_Service(ObjectsBucket block, BkIndex index) throws BkException {
 		super(block, index);
 		
 		XML_Context context;
