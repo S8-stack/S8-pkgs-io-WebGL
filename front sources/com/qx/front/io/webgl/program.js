@@ -103,12 +103,7 @@ WebGL_Program.prototype = {
 
 			var program = this;
 
-			// WebGL_Service static address
-			var address = new Uint8Array(
-					[0x00, 0x00, 0x00, 0x00, 0x00, 0x12, 0x00, 0x0a, // path
-						0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x08]); // index	
-
-			let request = new POST_BohrRequest(ctx, address, 0x08, 64);
+			let request = new POST_BohrRequest(ctx, glBkAddress, 0x08, 64);
 			request.putStringUTF8(this.id);
 
 			request.send(function(response){

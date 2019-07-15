@@ -8,9 +8,9 @@ import com.qx.back.blocks.BkBase;
 import com.qx.back.blocks.Block;
 import com.qx.back.blocks.BlockContext;
 import com.qx.back.blocks.objects.ObjectsBlock;
+import com.qx.back.blocks.objects.extensions.MathVector3dField;
 import com.qx.back.blocks.objects.type.BkTypesContext;
-import com.qx.back.blocks.objects.type.fields.PrimitiveFieldHandler;
-import com.qx.back.blocks.tests.extensions.MathVector3dField;
+import com.qx.back.blocks.objects.type.fields.PrimitiveBkFieldHandler;
 import com.qx.back.io.http2.messages.HTTP2_Message;
 import com.qx.back.io.webgl.WebGL_Service;
 import com.qx.back.web.server.WebServer;
@@ -47,7 +47,7 @@ public class WebGL_TestAppServer {
 
 
 		BkTypesContext objectsContext = new BkTypesContext(
-				new PrimitiveFieldHandler.Builder[] {
+				new PrimitiveBkFieldHandler.Builder[] {
 						new MathVector3dField.Builder()
 				}, 
 				WebGL_Service.class);

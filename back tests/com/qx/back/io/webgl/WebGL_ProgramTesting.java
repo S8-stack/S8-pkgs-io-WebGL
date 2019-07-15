@@ -13,8 +13,7 @@ import com.qx.back.blocks.BlockContext;
 import com.qx.back.blocks.BlockPath;
 import com.qx.back.blocks.objects.ObjectsBlock;
 import com.qx.back.blocks.objects.type.BkTypesContext;
-import com.qx.back.blocks.objects.type.fields.PrimitiveFieldHandler;
-import com.qx.back.blocks.tests.extensions.MathVector3dField;
+import com.qx.back.blocks.objects.type.fields.BkFieldHandlerFactory;
 
 public class WebGL_ProgramTesting {
 
@@ -24,12 +23,10 @@ public class WebGL_ProgramTesting {
 
 		// getting FileChannel from file
 		Path root = BkBase.DEBUG_UNIFIED_DB_ROOT;
+		
+		BkFieldHandlerFactory factory = new BkFieldHandlerFactory();
 
-		BkTypesContext objectContext = new BkTypesContext(
-				new PrimitiveFieldHandler.Builder[] {
-						new MathVector3dField.Builder()
-				}, 
-				WebGL_Service.class);
+		BkTypesContext objectContext = new BkTypesContext(factory, WebGL_Back.class);
 		
 		ObjectsBlock.Prototype proto = new ObjectsBlock.Prototype(objectContext);
 		

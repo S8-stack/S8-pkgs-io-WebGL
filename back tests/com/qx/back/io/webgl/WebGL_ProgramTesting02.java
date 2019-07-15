@@ -11,9 +11,9 @@ import com.qx.back.blocks.BkBase;
 import com.qx.back.blocks.Block;
 import com.qx.back.blocks.BlockContext;
 import com.qx.back.blocks.objects.ObjectsBlock;
+import com.qx.back.blocks.objects.extensions.MathVector3dField;
 import com.qx.back.blocks.objects.type.BkTypesContext;
-import com.qx.back.blocks.objects.type.fields.PrimitiveFieldHandler;
-import com.qx.back.blocks.tests.extensions.MathVector3dField;
+import com.qx.back.blocks.objects.type.fields.PrimitiveBkFieldHandler;
 
 public class WebGL_ProgramTesting02 {
 
@@ -25,7 +25,7 @@ public class WebGL_ProgramTesting02 {
 		Path root = BkBase.DEBUG_UNIFIED_DB_ROOT;
 
 		BkTypesContext objectContext = new BkTypesContext(
-				new PrimitiveFieldHandler.Builder[] {
+				new PrimitiveBkFieldHandler.Builder[] {
 						new MathVector3dField.Builder()
 				}, 
 				WebGL_Service.class);

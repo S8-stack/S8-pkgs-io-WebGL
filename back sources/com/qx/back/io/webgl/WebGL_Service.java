@@ -5,8 +5,8 @@ import com.qx.back.blocks.BkException;
 import com.qx.back.blocks.objects.BkIndex;
 import com.qx.back.blocks.objects.BkMethod;
 import com.qx.back.blocks.objects.BkObject;
-import com.qx.back.blocks.objects.BkType;
 import com.qx.back.blocks.objects.ObjectsBlock;
+import com.qx.back.blocks.objects.type.BkTypeHandler;
 import com.qx.back.io.bohr.BohrObject;
 import com.qx.back.io.webgl.appearances.WebGL_OldStyle;
 import com.qx.back.io.webgl.appearances.WebGL_AppearanceBase;
@@ -15,9 +15,12 @@ import com.qx.back.io.webgl.programs.WebGL_ProgramsBase;
 import com.qx.back.lang.xml.XML_Context;
 
 
-@BkType(code=0x00001200, sub= {})
 public class WebGL_Service extends BkObject {
 
+	/** prototype for type handling */
+	public final static BkTypeHandler PROTOTYPE = new BkTypeHandler(WebGL_Service.class);
+	public @Override BkTypeHandler getPrototype() { return PROTOTYPE; }
+	
 	private WebGL_ProgramsBase programs;
 	
 	private WebGL_AppearanceBase styles;
@@ -65,4 +68,5 @@ public class WebGL_Service extends BkObject {
 		}
 		return programSources.toBohr();
 	}
+
 }
