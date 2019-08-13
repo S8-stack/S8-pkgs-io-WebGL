@@ -1,0 +1,35 @@
+package com.qx.io.webgl.programs;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import com.qx.lang.xml.annotation.XML_SetElement;
+import com.qx.lang.xml.annotation.XML_Type;
+
+/**
+ * 
+ * @author pc
+ *
+ */
+@XML_Type(name="WebGL_Programs", sub= {})
+public class WebGL_ProgramsBase {
+
+	private Map<String, WebGL_ProgramSources> programs;
+	
+	public WebGL_ProgramsBase() {
+		super();
+	}
+	
+	@XML_SetElement(name="programs")
+	public void setPrograms(WebGL_ProgramSources[] programsArray) {
+		this.programs = new HashMap<>();
+		for(WebGL_ProgramSources style : programsArray) {
+			programs.put(style.getPathname(), style);
+		}
+	}
+	
+	public WebGL_ProgramSources get(String id) {
+		return programs.get(id);
+	}
+
+}
