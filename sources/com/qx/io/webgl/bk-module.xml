@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root:module code="0x00080000">
-	<root>com.qx.back.io.webgl</root>
+	<root>com.qx.io.webgl</root>
 	<types>
 		<type code="0x0008">WebGL_Service</type>
 	</types>
