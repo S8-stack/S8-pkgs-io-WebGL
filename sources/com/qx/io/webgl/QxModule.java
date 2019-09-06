@@ -16,7 +16,7 @@ public class QxModule {
 
 		@Override
 		public URL getResource(String pathname) {
-			return QxModule.class.getResource(pathname);
+			return getClass().getResource(pathname);
 		}
 		
 	};
