@@ -17,5 +17,5 @@ module com.qx.io.webgl {
 	requires transitive com.qx.blocks;
 	requires transitive com.qx.lang.xml;
 	requires transitive com.qx.maths;
-	requires transitive com.qx.web;
+	requires transitive com.qx.web.io.bohr;
 }

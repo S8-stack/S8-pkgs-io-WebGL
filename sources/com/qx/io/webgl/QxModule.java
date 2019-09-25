@@ -1,6 +1,6 @@
 package com.qx.io.webgl;
 
-import java.net.URL;
+import java.io.InputStream;
 
 import com.qx.base.loader.QxModuleResourceLoader;
 
@@ -15,8 +15,13 @@ public class QxModule {
 	public final static QxModuleResourceLoader LOADER = new QxModuleResourceLoader() {
 
 		@Override
-		public URL getResource(String pathname) {
-			return getClass().getResource(pathname);
+		public InputStream getResource(String pathname) {
+			return QxModule.class.getResourceAsStream(pathname);
+		}
+
+		@Override
+		public String getTargetName() {
+			return QxModule.class.getPackageName();
 		}
 		
 	};
