@@ -1,8 +1,8 @@
 package com.qx.io.webgl.tests;
 
-import com.qx.base.resources.WebResourcesBase;
-import com.qx.base.resources.QxModuleResourceLoader;
+import com.qx.base.loader.QxModuleResourceLoader;
 import com.qx.io.webgl.QxModule;
+import com.qx.web.resources.WebResourcesBase;
 
 public class TestLoading {
 

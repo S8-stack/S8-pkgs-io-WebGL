@@ -7,12 +7,12 @@ import com.qx.blocks.objects.BkMethod;
 import com.qx.blocks.objects.BkObject;
 import com.qx.blocks.objects.ObjectsBlock;
 import com.qx.blocks.objects.type.BkTypeHandler;
-import com.qx.io.bohr.BohrObject;
 import com.qx.io.webgl.appearances.WebGL_AppearanceBase;
 import com.qx.io.webgl.appearances.WebGL_OldStyle;
 import com.qx.io.webgl.programs.WebGL_ProgramSources;
 import com.qx.io.webgl.programs.WebGL_ProgramsBase;
 import com.qx.lang.xml.XML_Context;
+import com.qx.web.io.bohr.BohrObject;
 
 
 public class WebGL_Service extends BkObject {

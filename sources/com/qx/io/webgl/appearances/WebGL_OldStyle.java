@@ -6,10 +6,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import com.qx.base.bytes.ByteOutput;
-import com.qx.io.bohr.BohrObject;
-import com.qx.io.bohr.BohrScope;
 import com.qx.lang.xml.annotation.XML_SetAttribute;
 import com.qx.lang.xml.annotation.XML_Type;
+import com.qx.web.io.bohr.BohrObject;
+import com.qx.web.io.bohr.BohrScope;
 
 
 /**

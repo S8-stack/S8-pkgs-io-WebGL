@@ -3,8 +3,8 @@ package com.qx.io.webgl;
 import java.io.IOException;
 
 import com.qx.base.bytes.ByteOutput;
-import com.qx.io.bohr.BohrObject;
-import com.qx.io.bohr.BohrScope;
+import com.qx.web.io.bohr.BohrObject;
+import com.qx.web.io.bohr.BohrScope;
 
 public class WebGL_Appearance extends BohrObject {
 

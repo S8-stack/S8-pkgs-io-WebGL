@@ -2,7 +2,7 @@ package com.qx.io.webgl;
 
 import java.net.URL;
 
-import com.qx.base.resources.QxModuleResourceLoader;
+import com.qx.base.loader.QxModuleResourceLoader;
 
 /**
  * Root point for computing path to further load client-side resources.
