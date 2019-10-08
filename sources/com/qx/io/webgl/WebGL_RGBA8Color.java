@@ -2,7 +2,7 @@ package com.qx.io.webgl;
 
 import java.io.IOException;
 
-import com.qx.base.bytes.ByteOutput;
+import com.qx.base.bytes.ByteOutflow;
 
 public class WebGL_RGBA8Color {
 
@@ -24,7 +24,7 @@ public class WebGL_RGBA8Color {
 	}
 
 
-	public void write(ByteOutput outflow) throws IOException {
+	public void write(ByteOutflow outflow) throws IOException {
 		outflow.putUInt8(red);
 		outflow.putUInt8(green);
 		outflow.putUInt8(blue);

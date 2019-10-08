@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import com.qx.base.bytes.ByteOutput;
+import com.qx.base.bytes.ByteOutflow;
 import com.qx.lang.xml.annotation.XML_SetAttribute;
 import com.qx.lang.xml.annotation.XML_Type;
 import com.qx.web.io.bohr.BohrObject;
@@ -53,9 +53,9 @@ public class WebGL_OldStyle {
 			}
 
 			@Override
-			public void send(ByteOutput ouflow) throws IOException {
+			public void send(ByteOutflow ouflow) throws IOException {
 				load();
-				ouflow.putStringUTF8(code);
+				ouflow.putString(code);
 			}
 
 			@Override

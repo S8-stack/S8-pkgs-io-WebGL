@@ -2,7 +2,7 @@ package com.qx.io.webgl;
 
 import java.io.IOException;
 
-import com.qx.base.bytes.ByteOutput;
+import com.qx.base.bytes.ByteOutflow;
 import com.qx.web.io.bohr.BohrObject;
 import com.qx.web.io.bohr.BohrScope;
 
@@ -64,7 +64,7 @@ public class WebGL_MeshOptions extends BohrObject {
 	}
 
 	@Override
-	public void send(ByteOutput output) throws IOException {
+	public void send(ByteOutflow output) throws IOException {
 
 		// geometry attributes
 		boolean[] options = new boolean[8];

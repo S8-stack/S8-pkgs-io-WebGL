@@ -2,7 +2,7 @@ package com.qx.io.webgl;
 
 import java.io.IOException;
 
-import com.qx.base.bytes.ByteOutput;
+import com.qx.base.bytes.ByteOutflow;
 import com.qx.web.io.bohr.BohrObject;
 import com.qx.web.io.bohr.BohrScope;
 
@@ -90,17 +90,17 @@ public class WebGL_Appearance extends BohrObject {
 	}
 
 	@Override
-	public void send(ByteOutput output) throws IOException {
+	public void send(ByteOutflow output) throws IOException {
 
 		// material
 
 		// <wire>
-		output.putStringUTF8(wireProgram);
+		output.putString(wireProgram);
 		wireColor.write(output);
 		// </wire>
 
 		// <surface>
-		output.putStringUTF8(surfaceProgram);
+		output.putString(surfaceProgram);
 		output.putFloat32((float) surfaceGlossiness);
 		output.putFloat32((float) surfaceRoughness);
 		output.putFloat32((float) surfaceShininess);
@@ -109,10 +109,10 @@ public class WebGL_Appearance extends BohrObject {
 		surfaceAmbientColor.write(output);
 
 		// textures
-		output.putStringUTF8(surfaceTexture0);
-		output.putStringUTF8(surfaceTexture1);
-		output.putStringUTF8(surfaceTexture2);
-		output.putStringUTF8(surfaceTexture3);
+		output.putString(surfaceTexture0);
+		output.putString(surfaceTexture1);
+		output.putString(surfaceTexture2);
+		output.putString(surfaceTexture3);
 		// </surface>
 	}
 
