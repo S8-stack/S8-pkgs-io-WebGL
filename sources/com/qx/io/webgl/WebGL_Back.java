@@ -1,7 +1,7 @@
 package com.qx.io.webgl;
 
 import com.qx.blocks.BkAddress;
-import com.qx.blocks.BlockPath;
+import com.qx.blocks.BkPath;
 import com.qx.blocks.objects.BkIndex;
 
 public class WebGL_Back {
@@ -11,6 +11,6 @@ public class WebGL_Back {
 	public final static long WEBGL_BK_ZONE = 0x120000;
 
 	public final static BkAddress SERVICE_ADDRESS = new BkAddress(
-			new BlockPath(WEBGL_BK_ZONE+0x0a), // path
+			new BkPath(WEBGL_BK_ZONE+0x0a), // path
 			new BkIndex(0x08)); // index
 }
