@@ -1,6 +1,6 @@
 package com.qx.io.webgl.tests;
 
-import com.qx.web.sources.WebSources;
+import com.qx.level0.web.sources.WebSources;
 
 public class WebGL_UnitTest03 {
 

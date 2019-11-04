@@ -2,9 +2,9 @@ package com.qx.level1.io.webgl;
 
 import java.io.IOException;
 
-import com.qx.base.bytes.ByteOutflow;
-import com.qx.web.io.bohr.BohrObject;
-import com.qx.web.io.bohr.BohrScope;
+import com.qx.level0.utilities.bytes.ByteOutflow;
+import com.qx.level1.io.bohr.BohrObject;
+import com.qx.level1.io.bohr.BohrScope;
 
 /**
  * 

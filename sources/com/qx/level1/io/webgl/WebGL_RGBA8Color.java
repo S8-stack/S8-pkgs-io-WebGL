@@ -2,7 +2,7 @@ package com.qx.level1.io.webgl;
 
 import java.io.IOException;
 
-import com.qx.base.bytes.ByteOutflow;
+import com.qx.level0.utilities.bytes.ByteOutflow;
 
 public class WebGL_RGBA8Color {
 
