@@ -1,4 +1,4 @@
-package com.qx.io.webgl;
+package com.qx.level1.io.webgl;
 
 import com.qx.base.bytes.ByteInflow;
 import com.qx.blocks.BkException;
@@ -7,11 +7,11 @@ import com.qx.blocks.objects.BkMethod;
 import com.qx.blocks.objects.BkObject;
 import com.qx.blocks.objects.ObjectsBlock;
 import com.qx.blocks.objects.type.BkTypeHandler;
-import com.qx.io.webgl.appearances.WebGL_AppearanceBase;
-import com.qx.io.webgl.appearances.WebGL_OldStyle;
-import com.qx.io.webgl.programs.WebGL_ProgramSources;
-import com.qx.io.webgl.programs.WebGL_ProgramsBase;
-import com.qx.lang.xml.XML_Context;
+import com.qx.level0.lang.xml.XML_Context;
+import com.qx.level1.io.webgl.appearances.WebGL_AppearanceBase;
+import com.qx.level1.io.webgl.appearances.WebGL_OldStyle;
+import com.qx.level1.io.webgl.programs.WebGL_ProgramSources;
+import com.qx.level1.io.webgl.programs.WebGL_ProgramsBase;
 import com.qx.web.io.bohr.BohrObject;
 
 

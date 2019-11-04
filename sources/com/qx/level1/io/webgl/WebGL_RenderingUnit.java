@@ -1,13 +1,13 @@
-package com.qx.io.webgl;
+package com.qx.level1.io.webgl;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.qx.maths.affine.MathAffine3D;
-import com.qx.maths.box.MathBoundingBox3D;
-import com.qx.maths.vector.MathVector3D;
+import com.qx.level0.maths.MathVector3D;
+import com.qx.level1.maths.affine.MathAffine3D;
+import com.qx.level1.maths.box.MathBoundingBox3D;
 
 public abstract class WebGL_RenderingUnit {
 

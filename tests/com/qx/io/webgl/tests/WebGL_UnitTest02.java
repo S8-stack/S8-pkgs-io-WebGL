@@ -1,6 +1,6 @@
 package com.qx.io.webgl.tests;
 
-import com.qx.io.webgl.WebGL_Back;
+import com.qx.level1.io.webgl.WebGL_Back;
 
 public class WebGL_UnitTest02 {
 

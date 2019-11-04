@@ -6,7 +6,7 @@ public class WebGL_UnitTest03 {
 
 	public static void main(String[] args) throws Exception {
 		
-		WebSources sources = new com.qx.io.webgl.WebSources();
+		WebSources sources = new com.qx.level1.io.webgl.WebSources();
 		System.out.println(sources.JS_getCatalog());
 		System.out.println(sources);
 	}

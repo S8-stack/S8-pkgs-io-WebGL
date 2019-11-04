@@ -1,10 +1,10 @@
-package com.qx.io.webgl.programs;
+package com.qx.level1.io.webgl.programs;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.qx.lang.xml.annotation.XML_SetElement;
-import com.qx.lang.xml.annotation.XML_Type;
+import com.qx.level0.lang.xml.annotation.XML_SetElement;
+import com.qx.level0.lang.xml.annotation.XML_Type;
 
 /**
  * 

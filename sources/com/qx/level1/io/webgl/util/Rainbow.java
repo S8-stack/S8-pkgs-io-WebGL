@@ -1,8 +1,8 @@
-package com.qx.io.webgl.util;
+package com.qx.level1.io.webgl.util;
 
 import java.util.Hashtable;
 
-import com.qx.maths.vector.MathVector3D;
+import com.qx.level0.maths.MathVector3D;
 
 
 

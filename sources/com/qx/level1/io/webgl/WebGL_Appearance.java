@@ -1,4 +1,4 @@
-package com.qx.io.webgl;
+package com.qx.level1.io.webgl;
 
 import java.io.IOException;
 
