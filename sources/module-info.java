@@ -18,6 +18,6 @@ module com.qx.io.webgl {
 	requires transitive com.qx.level0.lang.xml;
 	requires transitive com.qx.level0.maths;
 	requires transitive com.qx.level1.maths;
-	requires transitive com.qx.web.io.bohr;
+	requires transitive com.qx.level1.io.bohr;
 	requires com.qx.level0.web;
 }
