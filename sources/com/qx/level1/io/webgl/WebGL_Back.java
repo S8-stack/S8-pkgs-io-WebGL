@@ -1,8 +1,8 @@
 package com.qx.level1.io.webgl;
 
-import com.qx.blocks.BkAddress;
-import com.qx.blocks.BkPath;
-import com.qx.blocks.objects.BkIndex;
+import com.qx.level0.blocks.BkAddress;
+import com.qx.level0.blocks.BkPath;
+import com.qx.level0.blocks.objects.BkIndex;
 
 public class WebGL_Back {
 
