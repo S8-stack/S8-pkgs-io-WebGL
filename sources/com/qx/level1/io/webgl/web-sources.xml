@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root:bundle>
-	<package>/com/qx/io/webgl</package>
-	<web>/webgl</web>
+	<package>com/qx/level1/io/webgl</package>
+	<web>webgl</web>
 	<sources>
 		<js>environment.js</js>
 		<js>launch.js</js>
