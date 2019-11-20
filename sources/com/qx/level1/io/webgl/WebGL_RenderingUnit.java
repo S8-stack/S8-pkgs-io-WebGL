@@ -5,7 +5,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.qx.level0.maths.MathVector3D;
+import com.qx.level0.maths.MathVector3d;
 import com.qx.level1.maths.affine.MathAffine3D;
 import com.qx.level1.maths.box.MathBoundingBox3D;
 
@@ -23,7 +23,7 @@ public abstract class WebGL_RenderingUnit {
 	/**
 	 * vertices
 	 */
-	public List<MathVector3D> vertices;
+	public List<MathVector3d> vertices;
 	
 	/**
 	 * offset for patches
@@ -43,7 +43,7 @@ public abstract class WebGL_RenderingUnit {
 	}
 	
 
-	public void addVertex(MathVector3D vertex){
+	public void addVertex(MathVector3d vertex){
 		vertices.add(affine.transformPoint(vertex));
 	}
 	
@@ -69,12 +69,12 @@ public abstract class WebGL_RenderingUnit {
 
 
 
-	public List<MathVector3D> getVertices() {
+	public List<MathVector3d> getVertices() {
 		return vertices;
 	}
 	
 	public void update(MathBoundingBox3D boundingBox3d){
-		for(MathVector3D vertex : vertices){
+		for(MathVector3d vertex : vertices){
 			boundingBox3d.update(vertex);
 		}
 	}
