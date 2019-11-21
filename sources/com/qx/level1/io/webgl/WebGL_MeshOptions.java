@@ -75,7 +75,7 @@ public class WebGL_MeshOptions extends BohrObject {
 		options[4] = isSurfaceTexCoordAttributeEnabled;
 		options[5] = isSurfaceColorAttributeEnabled;
 		options[6] = isSurfaceTangentAttributeEnabled;
-		output.putFlags(options);
+		output.putFlags8(options);
 	}
 
 	@Override

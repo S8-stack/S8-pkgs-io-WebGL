@@ -1,11 +1,11 @@
 package com.qx.level1.io.webgl;
 
-import com.qx.level0.blocks.BkException;
-import com.qx.level0.blocks.objects.BkIndex;
-import com.qx.level0.blocks.objects.BkMethod;
-import com.qx.level0.blocks.objects.BkObject;
-import com.qx.level0.blocks.objects.ObjectsBlock;
-import com.qx.level0.blocks.objects.type.BkTypeHandler;
+import com.qx.level0.db.blocks.BkException;
+import com.qx.level0.db.blocks.objects.BkIndex;
+import com.qx.level0.db.blocks.objects.BkMethod;
+import com.qx.level0.db.blocks.objects.BkObject;
+import com.qx.level0.db.blocks.objects.ObjectsBlock;
+import com.qx.level0.db.blocks.objects.type.BkTypeHandler;
 import com.qx.level0.lang.xml.XML_Context;
 import com.qx.level0.utilities.bytes.ByteInflow;
 import com.qx.level1.io.bohr.BohrObject;
@@ -19,7 +19,7 @@ public class WebGL_Service extends BkObject {
 
 	/** prototype for type handling */
 	public final static BkTypeHandler PROTOTYPE = new BkTypeHandler(WebGL_Service.class);
-	public @Override BkTypeHandler getPrototype() { return PROTOTYPE; }
+	public @Override BkTypeHandler getType() { return PROTOTYPE; }
 
 	private WebGL_ProgramsBase programs;
 
