@@ -18,8 +18,8 @@ import com.qx.level1.io.webgl.programs.WebGL_ProgramsBase;
 public class WebGL_Service extends BkObject {
 
 	/** prototype for type handling */
-	public final static BkTypeHandler PROTOTYPE = new BkTypeHandler(WebGL_Service.class);
-	public @Override BkTypeHandler getType() { return PROTOTYPE; }
+	public final static BkTypeHandler TYPE = new BkTypeHandler(WebGL_Service.class);
+	public @Override BkTypeHandler getType() { return TYPE; }
 
 	private WebGL_ProgramsBase programs;
 

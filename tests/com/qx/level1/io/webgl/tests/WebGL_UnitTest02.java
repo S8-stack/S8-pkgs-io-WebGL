@@ -1,4 +1,4 @@
-package com.qx.io.webgl.tests;
+package com.qx.level1.io.webgl.tests;
 
 import com.qx.level1.io.webgl.WebGL_Back;
 
