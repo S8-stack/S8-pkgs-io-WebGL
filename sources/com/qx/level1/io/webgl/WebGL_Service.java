@@ -1,11 +1,10 @@
 package com.qx.level1.io.webgl;
 
 import com.qx.level0.db.blocks.BkException;
-import com.qx.level0.db.blocks.objects.BkIndex;
 import com.qx.level0.db.blocks.objects.BkMethod;
 import com.qx.level0.db.blocks.objects.BkObject;
-import com.qx.level0.db.blocks.objects.ObjectsBlock;
-import com.qx.level0.db.blocks.objects.type.BkTypeHandler;
+import com.qx.level0.db.blocks.objects.BkObjectInstanceHandler;
+import com.qx.level0.db.blocks.objects.type.BkObjectTypeHandler;
 import com.qx.level0.lang.xml.XML_Context;
 import com.qx.level0.utilities.bytes.ByteInflow;
 import com.qx.level1.io.bohr.BohrObject;
@@ -14,13 +13,20 @@ import com.qx.level1.io.webgl.appearances.WebGL_OldStyle;
 import com.qx.level1.io.webgl.programs.WebGL_ProgramSources;
 import com.qx.level1.io.webgl.programs.WebGL_ProgramsBase;
 
-
-public class WebGL_Service extends BkObject {
+/**
+ * 
+ * @author pc
+ *
+ */
+public class WebGL_Service implements BkObject {
 
 	/** prototype for type handling */
-	public final static BkTypeHandler TYPE = new BkTypeHandler(WebGL_Service.class);
-	public @Override BkTypeHandler getType() { return TYPE; }
+	public final static BkObjectTypeHandler TYPE = new BkObjectTypeHandler(WebGL_Service.class);
+	public @Override BkObjectTypeHandler getBkTypeHandler() { return TYPE; }
 
+	private BkObjectInstanceHandler handler;
+	public @Override BkObjectInstanceHandler getBkInstanceHandler() { return handler; }
+	
 	private WebGL_ProgramsBase programs;
 
 	private WebGL_AppearanceBase styles;
@@ -30,9 +36,10 @@ public class WebGL_Service extends BkObject {
 	 * @throws BkException 
 	 * 
 	 */
-	public WebGL_Service(ObjectsBlock block, BkIndex index) throws BkException {
-		super(block, index);
-
+	public WebGL_Service() {
+		super();
+		handler = new BkObjectInstanceHandler(this);
+		
 		XML_Context context;
 		try {
 			context = new XML_Context(WebGL_ProgramsBase.class);
@@ -67,6 +74,18 @@ public class WebGL_Service extends BkObject {
 			throw new Exception("No prgm for id="+id);
 		}
 		return programSources.toBohr();
+	}
+
+	@Override
+	public void postBkDeserial() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void preBkSerial() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
