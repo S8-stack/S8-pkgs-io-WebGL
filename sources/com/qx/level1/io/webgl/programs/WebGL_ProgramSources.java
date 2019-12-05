@@ -59,7 +59,7 @@ public class WebGL_ProgramSources {
 			}
 
 			@Override
-			public void send(ByteOutflow ouflow) throws IOException {
+			public void compose(ByteOutflow ouflow) throws IOException {
 				load();
 				ouflow.putString(vertexShaderSourceCode);
 				ouflow.putString(fragmentShaderSourceCode);

@@ -90,7 +90,7 @@ public class WebGL_Appearance extends BohrObject {
 	}
 
 	@Override
-	public void send(ByteOutflow output) throws IOException {
+	public void compose(ByteOutflow output) throws IOException {
 
 		// material
 

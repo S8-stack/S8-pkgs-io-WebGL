@@ -53,7 +53,7 @@ public class WebGL_OldStyle {
 			}
 
 			@Override
-			public void send(ByteOutflow ouflow) throws IOException {
+			public void compose(ByteOutflow ouflow) throws IOException {
 				load();
 				ouflow.putString(code);
 			}

@@ -64,7 +64,7 @@ public class WebGL_MeshOptions extends BohrObject {
 	}
 
 	@Override
-	public void send(ByteOutflow output) throws IOException {
+	public void compose(ByteOutflow output) throws IOException {
 
 		// geometry attributes
 		boolean[] options = new boolean[8];
