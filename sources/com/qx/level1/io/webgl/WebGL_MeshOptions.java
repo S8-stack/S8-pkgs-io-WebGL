@@ -2,9 +2,8 @@ package com.qx.level1.io.webgl;
 
 import java.io.IOException;
 
-import com.qx.level0.utilities.bytes.ByteOutflow;
 import com.qx.level1.io.bohr.BohrObject;
-import com.qx.level1.io.bohr.BohrScope;
+import com.qx.level1.io.bohr.BohrOutflow;
 
 /**
  * 
@@ -64,7 +63,7 @@ public class WebGL_MeshOptions extends BohrObject {
 	}
 
 	@Override
-	public void compose(ByteOutflow output) throws IOException {
+	public void composeBody(BohrOutflow output) throws IOException {
 
 		// geometry attributes
 		boolean[] options = new boolean[8];
@@ -76,11 +75,6 @@ public class WebGL_MeshOptions extends BohrObject {
 		options[5] = isSurfaceColorAttributeEnabled;
 		options[6] = isSurfaceTangentAttributeEnabled;
 		output.putFlags8(options);
-	}
-
-	@Override
-	public void getSubNodes(BohrScope scope) {
-		// none
 	}
 
 

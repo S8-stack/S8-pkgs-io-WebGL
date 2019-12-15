@@ -3,8 +3,8 @@ package com.qx.level1.io.webgl;
 import com.qx.level0.db.blocks.BkException;
 import com.qx.level0.db.blocks.objects.BkMethod;
 import com.qx.level0.db.blocks.objects.BkObject;
-import com.qx.level0.db.blocks.objects.BkObjectInstanceHandler;
-import com.qx.level0.db.blocks.objects.type.BkObjectTypeHandler;
+import com.qx.level0.db.blocks.objects.BkObjectHandle;
+import com.qx.level0.db.blocks.objects.type.BkObjectType;
 import com.qx.level0.lang.xml.XML_Context;
 import com.qx.level0.utilities.bytes.ByteInflow;
 import com.qx.level1.io.bohr.BohrObject;
@@ -18,14 +18,12 @@ import com.qx.level1.io.webgl.programs.WebGL_ProgramsBase;
  * @author pc
  *
  */
-public class WebGL_Service implements BkObject {
+public class WebGL_Service extends BkObject {
 
 	/** prototype for type handling */
-	public final static BkObjectTypeHandler TYPE = new BkObjectTypeHandler(WebGL_Service.class);
-	public @Override BkObjectTypeHandler getBkTypeHandler() { return TYPE; }
+	public final static BkObjectType TYPE = new BkObjectType(WebGL_Service.class);
+	public @Override BkObjectType getBkType() { return TYPE; }
 
-	private BkObjectInstanceHandler handler;
-	public @Override BkObjectInstanceHandler getBkInstanceHandler() { return handler; }
 	
 	private WebGL_ProgramsBase programs;
 
@@ -36,9 +34,8 @@ public class WebGL_Service implements BkObject {
 	 * @throws BkException 
 	 * 
 	 */
-	public WebGL_Service() {
-		super();
-		handler = new BkObjectInstanceHandler(this);
+	public WebGL_Service(BkObjectHandle handle) {
+		super(handle);
 		
 		XML_Context context;
 		try {
@@ -77,14 +74,12 @@ public class WebGL_Service implements BkObject {
 	}
 
 	@Override
-	public void postBkDeserial() {
-		// TODO Auto-generated method stub
+	public void runBkPostDeserial() {
 		
 	}
 
 	@Override
-	public void preBkSerial() {
-		// TODO Auto-generated method stub
+	public void runBkPreSerial() {
 		
 	}
 

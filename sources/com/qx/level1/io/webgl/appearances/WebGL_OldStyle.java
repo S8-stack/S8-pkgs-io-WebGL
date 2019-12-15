@@ -7,9 +7,8 @@ import java.io.InputStreamReader;
 
 import com.qx.level0.lang.xml.annotation.XML_SetAttribute;
 import com.qx.level0.lang.xml.annotation.XML_Type;
-import com.qx.level0.utilities.bytes.ByteOutflow;
 import com.qx.level1.io.bohr.BohrObject;
-import com.qx.level1.io.bohr.BohrScope;
+import com.qx.level1.io.bohr.BohrOutflow;
 
 
 /**
@@ -53,15 +52,11 @@ public class WebGL_OldStyle {
 			}
 
 			@Override
-			public void compose(ByteOutflow ouflow) throws IOException {
+			public void composeBody(BohrOutflow ouflow) throws IOException {
 				load();
 				ouflow.putString(code);
 			}
 
-			@Override
-			public void getSubNodes(BohrScope scope) {
-				// no sub objects
-			}
 		};
 		
 	}

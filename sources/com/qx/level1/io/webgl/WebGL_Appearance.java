@@ -2,9 +2,8 @@ package com.qx.level1.io.webgl;
 
 import java.io.IOException;
 
-import com.qx.level0.utilities.bytes.ByteOutflow;
 import com.qx.level1.io.bohr.BohrObject;
-import com.qx.level1.io.bohr.BohrScope;
+import com.qx.level1.io.bohr.BohrOutflow;
 
 public class WebGL_Appearance extends BohrObject {
 
@@ -90,7 +89,7 @@ public class WebGL_Appearance extends BohrObject {
 	}
 
 	@Override
-	public void compose(ByteOutflow output) throws IOException {
+	public void composeBody(BohrOutflow output) throws IOException {
 
 		// material
 
@@ -114,11 +113,6 @@ public class WebGL_Appearance extends BohrObject {
 		output.putString(surfaceTexture2);
 		output.putString(surfaceTexture3);
 		// </surface>
-	}
-
-	@Override
-	public void getSubNodes(BohrScope scope) {
-		// none
 	}
 
 }

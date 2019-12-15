@@ -7,9 +7,8 @@ import java.io.InputStreamReader;
 
 import com.qx.level0.lang.xml.annotation.XML_SetAttribute;
 import com.qx.level0.lang.xml.annotation.XML_Type;
-import com.qx.level0.utilities.bytes.ByteOutflow;
 import com.qx.level1.io.bohr.BohrObject;
-import com.qx.level1.io.bohr.BohrScope;
+import com.qx.level1.io.bohr.BohrOutflow;
 import com.qx.level1.io.webgl.WebGL_Back;
 
 
@@ -59,16 +58,11 @@ public class WebGL_ProgramSources {
 			}
 
 			@Override
-			public void compose(ByteOutflow ouflow) throws IOException {
+			public void composeBody(BohrOutflow ouflow) throws IOException {
 				load();
 				ouflow.putString(vertexShaderSourceCode);
 				ouflow.putString(fragmentShaderSourceCode);
 				ouflow.putString(javascriptSourceCode);
-			}
-
-			@Override
-			public void getSubNodes(BohrScope scope) {
-				// no subnodes
 			}
 		};
 	}
