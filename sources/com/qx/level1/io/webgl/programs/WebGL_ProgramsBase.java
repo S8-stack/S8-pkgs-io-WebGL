@@ -11,7 +11,7 @@ import com.qx.level0.lang.xml.annotation.XML_Type;
  * @author pc
  *
  */
-@XML_Type(name="WebGL_Programs", sub= {})
+@XML_Type(name="WebGL_Programs", sub= {}, isRoot = true)
 public class WebGL_ProgramsBase {
 
 	private Map<String, WebGL_ProgramSources> programs;
@@ -20,7 +20,7 @@ public class WebGL_ProgramsBase {
 		super();
 	}
 	
-	@XML_SetElement(name="programs")
+	@XML_SetElement(tag="programs")
 	public void setPrograms(WebGL_ProgramSources[] programsArray) {
 		this.programs = new HashMap<>();
 		for(WebGL_ProgramSources style : programsArray) {

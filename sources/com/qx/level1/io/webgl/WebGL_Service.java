@@ -22,7 +22,7 @@ public class WebGL_Service extends BkObject {
 
 	/** prototype for type handling */
 	public final static BkObjectType TYPE = new BkObjectType(WebGL_Service.class);
-	public @Override BkObjectType getBkType() { return TYPE; }
+	public @Override BkObjectType getType() { return TYPE; }
 
 	
 	private WebGL_ProgramsBase programs;
@@ -74,12 +74,12 @@ public class WebGL_Service extends BkObject {
 	}
 
 	@Override
-	public void runBkPostDeserial() {
+	public void runPostDeserial() {
 		
 	}
 
 	@Override
-	public void runBkPreSerial() {
+	public void runPreSerial() {
 		
 	}
 

@@ -33,7 +33,7 @@ public class WebGL_OldStyle {
 		isLoaded = false;
 	}
 
-	@XML_SetAttribute(name="path")
+	@XML_SetAttribute(tag="path")
 	public void setPathname(String pathname) {
 		this.pathname = pathname;
 	}

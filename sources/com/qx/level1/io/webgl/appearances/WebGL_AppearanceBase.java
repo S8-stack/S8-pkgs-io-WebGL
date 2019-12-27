@@ -11,7 +11,7 @@ import com.qx.level0.lang.xml.annotation.XML_Type;
  * @author pc
  *
  */
-@XML_Type(name="WebGL_Styles", sub= {})
+@XML_Type(name="WebGL_Styles", sub= {}, isRoot = true)
 public class WebGL_AppearanceBase {
 
 	private Map<String, WebGL_OldStyle> styles;
@@ -20,7 +20,7 @@ public class WebGL_AppearanceBase {
 		super();
 	}
 	
-	@XML_SetElement(name="styles")
+	@XML_SetElement(tag="styles")
 	public void setStyles(WebGL_OldStyle[] stylesArray) {
 		this.styles = new HashMap<>();
 		for(WebGL_OldStyle style : stylesArray) {
