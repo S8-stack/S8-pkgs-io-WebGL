@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.qx.level0.maths.MathVector3d;
-import com.qx.level1.maths.affine.MathAffine3D;
+import com.qx.level1.maths.affine.MathAffine3d;
 import com.qx.level1.maths.box.MathBoundingBox3D;
 
 public abstract class WebGL_RenderingUnit {
@@ -17,7 +17,7 @@ public abstract class WebGL_RenderingUnit {
 	/**
 	 * current affine transformation
 	 */
-	public MathAffine3D affine;
+	public MathAffine3d affine;
 	
 
 	/**
@@ -36,7 +36,7 @@ public abstract class WebGL_RenderingUnit {
 		this.name = name;
 
 		// transformation
-		affine = MathAffine3D.STANDARD;
+		affine = MathAffine3d.STANDARD;
 
 		// vertex attributes
 		vertices = new ArrayList<>();
@@ -52,7 +52,7 @@ public abstract class WebGL_RenderingUnit {
 	 * 
 	 * @param affine
 	 */
-	public void setAffine(MathAffine3D affine){
+	public void setAffine(MathAffine3d affine){
 		this.affine = affine;
 	}
 	

@@ -2,7 +2,7 @@ package com.qx.level1.io.webgl;
 
 import java.io.IOException;
 
-import com.qx.level1.maths.affine.MathAffine3D;
+import com.qx.level1.maths.affine.MathAffine3d;
 
 /**
  * Can only be created with factory include in the class as inner class
@@ -13,11 +13,11 @@ public class WebGL_ObjectInstance {
 
 	public final static int NB_MODES = 8;
 
-	private MathAffine3D position;
+	private MathAffine3d position;
 
 	private String modelId;
 
-	public WebGL_ObjectInstance(MathAffine3D position, String modelId) {
+	public WebGL_ObjectInstance(MathAffine3d position, String modelId) {
 		super();
 		this.position = position;
 		this.modelId = modelId;
@@ -66,7 +66,7 @@ public class WebGL_ObjectInstance {
 	 * @param affine
 	 * @throws IOException 
 	 */
-	public static void write(StringBuilder builder, MathAffine3D affine) throws IOException{
+	public static void write(StringBuilder builder, MathAffine3d affine) throws IOException{
 		double[] coefficients = new double[12];
 
 		affine.getCoefficient(coefficients, 0);
