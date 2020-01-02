@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root:module code="0x00080000">
 	<root>com.qx.level1.io.webgl</root>
-	<types>
-		<type code="0x0008">WebGL_Service</type>
-	</types>
+	<object-types>
+		<object code="0x0008">WebGL_Service</object>
+	</object-types>
 </root:module>

@@ -10,7 +10,7 @@ import java.io.InputStream;
  * @author pc
  *
  */
-public class QxLoader implements com.qx.level0.utilities.loader.QxLoader {
+public class QxLoader implements com.qx.level0.utilities.loader.QxModuleLoader {
 
 	@Override
 	public InputStream getResource(String pathname) {
