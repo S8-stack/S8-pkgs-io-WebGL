@@ -10,7 +10,7 @@ import com.qx.level1.io.bohr.BohrOutflow;
  * @author pc
  *
  */
-public class WebGL_MeshOptions extends BohrObject {
+public class WebGL_MeshOptions implements BohrObject {
 
 
 

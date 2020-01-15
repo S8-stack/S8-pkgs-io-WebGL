@@ -38,7 +38,7 @@ public class WebGL_ProgramSources {
 		isLoaded = false;
 	}
 
-	@XML_SetAttribute(tag="path")
+	@XML_SetAttribute(name="path")
 	public void setPathname(String pathname) {
 		this.pathname = pathname;
 	}

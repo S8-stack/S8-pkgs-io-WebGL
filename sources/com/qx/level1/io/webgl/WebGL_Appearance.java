@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.qx.level1.io.bohr.BohrObject;
 import com.qx.level1.io.bohr.BohrOutflow;
 
-public class WebGL_Appearance extends BohrObject {
+public class WebGL_Appearance implements BohrObject {
 
 	/**
 	 * default program for wire rendering 

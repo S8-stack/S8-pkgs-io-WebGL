@@ -9,7 +9,7 @@
 		<js>style.js</js>
 		<js>utilities.js</js>
 		<js>webgl-bohr.js</js>
-		<bundle cache="false">
+		<bundle load="ONCE">
 			<package>control</package>
 			<web>control</web>
 			<sources>
@@ -20,7 +20,7 @@
 				<js>control.js</js>
 			</sources>
 		</bundle>
-		<bundle cache="true">
+		<bundle load="ONCE">
 			<package>graphics/skycube/mountain</package>
 			<web>graphics/skycube/mountain</web>
 			<sources>
@@ -32,7 +32,7 @@
 				<bytes>mountain_posz.jpg</bytes>
 			</sources>
 		</bundle>
-		<bundle cache="true">
+		<bundle load="ONCE">
 			<package>graphics/skycube/std</package>
 			<web>graphics/skycube/std</web>
 			<sources>
@@ -44,7 +44,7 @@
 				<bytes>std_0_posz.png</bytes>
 			</sources>
 		</bundle>
-		<bundle cache="true">
+		<bundle load="ONCE">
 			<package>graphics/skycube/std2/irradiance</package>
 			<web>graphics/skycube/std2/irradiance</web>
 			<sources>
@@ -56,7 +56,7 @@
 				<bytes>face_0_posz.png</bytes>
 			</sources>
 		</bundle>
-		<bundle cache="true">
+		<bundle load="ONCE">
 			<package>graphics/skycube/std2/radiance</package>
 			<web>graphics/skycube/std2/radiance</web>
 			<sources>
@@ -98,7 +98,7 @@
 				<bytes>face_5_posz.png</bytes>
 			</sources>
 		</bundle>
-		<bundle cache="true">
+		<bundle load="ONCE">
 			<package>graphics/tex2d</package>
 			<web>graphics/tex2d</web>
 			<sources>
@@ -112,7 +112,7 @@
 				<bytes>wood.jpg</bytes>
 			</sources>
 		</bundle>
-		<bundle cache="true">
+		<bundle load="ONCE">
 			<package>maths</package>
 			<web>maths</web>
 			<sources>
@@ -123,7 +123,7 @@
 				<js>WebGL_Vector4.js</js>
 			</sources>
 		</bundle>
-		<bundle cache="true">
+		<bundle load="ONCE">
 			<package>objects</package>
 			<web>objects</web>
 			<sources>
@@ -131,7 +131,7 @@
 				<js>WebGL_ObjectModel.js</js>
 			</sources>
 		</bundle>
-		<bundle cache="true">
+		<bundle load="ONCE">
 			<package>render</package>
 			<web>render</web>
 			<sources>
@@ -141,7 +141,7 @@
 				<js>WebGL_FrameBufferObject.js</js>
 			</sources>
 		</bundle>
-		<bundle cache="true">
+		<bundle load="ONCE">
 			<package>shapes</package>
 			<web>shapes</web>
 			<sources>
@@ -156,7 +156,7 @@
 				<js>WebGL_Sphere.js</js>
 			</sources>
 		</bundle>
-		<bundle cache="true">
+		<bundle load="ONCE">
 			<package>util</package>
 			<web>util</web>
 			<sources>
@@ -165,7 +165,7 @@
 				<js>utilities.js</js>
 			</sources>
 		</bundle>
-		<bundle cache="true">
+		<bundle load="ONCE">
 			<package>view</package>
 			<web>view</web>
 			<sources>

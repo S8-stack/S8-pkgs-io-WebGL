@@ -19,4 +19,5 @@ module com.qx.level1.io.webgl {
 	requires transitive com.qx.level1.io.bohr;
 	requires transitive com.qx.level0.web;
 	requires transitive com.qx.level0.db.blocks;
+	requires transitive com.qx.level1.ng;
 }

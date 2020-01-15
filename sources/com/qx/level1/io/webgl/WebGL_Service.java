@@ -1,28 +1,29 @@
 package com.qx.level1.io.webgl;
 
+import static com.qx.level1.ng.nanos.NgMethodRole.LOOK_UP;
+
 import com.qx.level0.db.blocks.BkException;
-import com.qx.level0.db.blocks.objects.BkMethod;
-import com.qx.level0.db.blocks.objects.BkObject;
 import com.qx.level0.db.blocks.objects.BkObjectHandle;
-import com.qx.level0.db.blocks.objects.type.BkObjectType;
 import com.qx.level0.lang.xml.XML_Context;
-import com.qx.level0.utilities.bytes.ByteInflow;
 import com.qx.level1.io.bohr.BohrObject;
 import com.qx.level1.io.webgl.appearances.WebGL_AppearanceBase;
 import com.qx.level1.io.webgl.appearances.WebGL_OldStyle;
 import com.qx.level1.io.webgl.programs.WebGL_ProgramSources;
 import com.qx.level1.io.webgl.programs.WebGL_ProgramsBase;
+import com.qx.level1.ng.NgNano;
+import com.qx.level1.ng.objects.NgObject;
+import com.qx.level1.ng.objects.NgObjectType;
 
 /**
  * 
  * @author pc
  *
  */
-public class WebGL_Service extends BkObject {
+public class WebGL_Service extends NgObject {
 
 	/** prototype for type handling */
-	public final static BkObjectType TYPE = new BkObjectType(WebGL_Service.class);
-	public @Override BkObjectType getType() { return TYPE; }
+	public final static NgObjectType TYPE = new NgObjectType(WebGL_Service.class);
+	public @Override NgObjectType getType() { return TYPE; }
 
 	
 	private WebGL_ProgramsBase programs;
@@ -52,9 +53,7 @@ public class WebGL_Service extends BkObject {
 
 	}
 
-	@BkMethod(code=0x04, rights=0x0)
-	public BohrObject getStyle(ByteInflow inflow) throws Exception{
-		String id = inflow.getString();
+	public @NgNano(code=0x04, method = LOOK_UP) BohrObject getStyle(String id) throws Exception {
 		WebGL_OldStyle style = styles.get(id);
 		if(style==null){
 			throw new Exception("No style for id="+id);	
@@ -63,9 +62,7 @@ public class WebGL_Service extends BkObject {
 	}
 
 
-	@BkMethod(code=0x08, rights=0x0)
-	public BohrObject getProgram(ByteInflow inflow) throws Exception{
-		String id = inflow.getString();
+	public @NgNano(code=0x06, method = LOOK_UP) BohrObject getProgram(String id) throws Exception{
 		WebGL_ProgramSources programSources = programs.get(id);
 		if(programSources==null) {
 			throw new Exception("No prgm for id="+id);
