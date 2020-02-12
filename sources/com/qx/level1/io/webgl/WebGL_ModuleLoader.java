@@ -10,11 +10,11 @@ import java.io.InputStream;
  * @author pc
  *
  */
-public class QxLoader implements com.qx.level0.utilities.loader.QxModuleLoader {
+public class WebGL_ModuleLoader implements com.qx.level0.meta.loader.QxModuleLoader {
 
 	@Override
 	public InputStream getResource(String pathname) {
-		return QxLoader.class.getResourceAsStream(pathname);
+		return WebGL_ModuleLoader.class.getResourceAsStream(pathname);
 	}
 
 	@Override

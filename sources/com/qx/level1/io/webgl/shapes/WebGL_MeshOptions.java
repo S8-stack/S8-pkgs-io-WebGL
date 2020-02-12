@@ -1,9 +1,10 @@
-package com.qx.level1.io.webgl;
+package com.qx.level1.io.webgl.shapes;
 
 import java.io.IOException;
 
-import com.qx.level1.io.bohr.BohrObject;
-import com.qx.level1.io.bohr.BohrOutflow;
+import com.qx.level0.io.bohr.BohrObject;
+import com.qx.level0.io.bohr.BohrObjectPrototype;
+import com.qx.level0.io.bohr.BohrOutflow;
 
 /**
  * 
@@ -12,6 +13,9 @@ import com.qx.level1.io.bohr.BohrOutflow;
  */
 public class WebGL_MeshOptions implements BohrObject {
 
+	public final static BohrObjectPrototype BOHR_PROTOTYPE = new BohrObjectPrototype();
+	public @Override BohrObjectPrototype getBohrPrototype() { return BOHR_PROTOTYPE; }
+	
 
 
 	/**
@@ -55,12 +59,6 @@ public class WebGL_MeshOptions implements BohrObject {
 	 */
 	public boolean isSurfaceTangentAttributeEnabled = false;
 
-	public final static int TYPE_CODE = 200;
-
-	@Override
-	public int getTypeCode() {
-		return WebGL_Back.WEBGL_BOHR_PREFIX+TYPE_CODE;
-	}
 
 	@Override
 	public void composeBody(BohrOutflow output) throws IOException {

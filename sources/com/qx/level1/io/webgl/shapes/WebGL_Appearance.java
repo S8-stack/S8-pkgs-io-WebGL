@@ -1,11 +1,17 @@
-package com.qx.level1.io.webgl;
+package com.qx.level1.io.webgl.shapes;
 
 import java.io.IOException;
 
-import com.qx.level1.io.bohr.BohrObject;
-import com.qx.level1.io.bohr.BohrOutflow;
+import com.qx.level0.io.bohr.BohrObject;
+import com.qx.level0.io.bohr.BohrObjectPrototype;
+import com.qx.level0.io.bohr.BohrOutflow;
+import com.qx.level1.io.webgl.WebGL_RGBA8Color;
 
 public class WebGL_Appearance implements BohrObject {
+	
+	public final static BohrObjectPrototype BOHR_PROTOTYPE = new BohrObjectPrototype();
+	public @Override BohrObjectPrototype getBohrPrototype() { return BOHR_PROTOTYPE; }
+	
 
 	/**
 	 * default program for wire rendering 
@@ -79,14 +85,6 @@ public class WebGL_Appearance implements BohrObject {
 	public String surfaceTexture3 = null;
 
 
-
-
-	public final static int TYPE_CODE = 201;
-
-	@Override
-	public int getTypeCode() {
-		return WebGL_Back.WEBGL_BOHR_PREFIX+TYPE_CODE;
-	}
 
 	@Override
 	public void composeBody(BohrOutflow output) throws IOException {

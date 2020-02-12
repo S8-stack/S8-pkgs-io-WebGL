@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import com.qx.level0.io.bohr.BohrObject;
+import com.qx.level0.io.bohr.BohrObjectPrototype;
+import com.qx.level0.io.bohr.BohrOutflow;
 import com.qx.level0.lang.xml.annotation.XML_SetAttribute;
 import com.qx.level0.lang.xml.annotation.XML_Type;
-import com.qx.level1.io.bohr.BohrObject;
-import com.qx.level1.io.bohr.BohrOutflow;
-
 
 /**
  * 
@@ -46,16 +46,20 @@ public class WebGL_OldStyle {
 		
 		return new BohrObject() {
 			
-			@Override
-			public int getTypeCode() {
-				return 0x10000123;
-			}
+		
 
 			@Override
 			public void composeBody(BohrOutflow ouflow) throws IOException {
 				load();
 				ouflow.putString(code);
 			}
+
+			@Override
+			public BohrObjectPrototype getBohrPrototype() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
 
 		};
 		

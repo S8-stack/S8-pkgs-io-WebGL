@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root:module>
+	<js-bundle:JS_BundleMetaDescriptor verbose="true">
+		<web-path>/webgl</web-path>
+		<cache-control>max-age:3600</cache-control>
+	</js-bundle:JS_BundleMetaDescriptor>
+	<sources:folder>
+		<class-path>com.qx.level1.io.webgl</class-path>
+		<web-path>webgl/</web-path>
+		<bohr-properties code="0x01020000" />
+		<js>environment.js</js>
+		<js>launch.js</js>
+		<js>program.js</js>
+		<js>style.js</js>
+		<js>utilities.js</js>
+		<js>webgl-bohr.js</js>
+		<folder load="ONCE">
+			<class-path>control</class-path>
+			<web-path>control/</web-path>
+			<js>BdController.js</js>
+			<js>BdControlModes.js</js>
+			<js>BdCtrlPlanePositionner.js</js>
+			<js>BdCtrlPointer.js</js>
+			<js>control.js</js>
+		</folder>
+		<folder load="ONCE">
+			<class-path>graphics.skycube.mountain</class-path>
+			<web-path>graphics/skycube/mountain/</web-path>
+
+			<file>mountain_negx.jpg</file>
+			<file>mountain_negy.jpg</file>
+			<file>mountain_negz.jpg</file>
+			<file>mountain_posx.jpg</file>
+			<file>mountain_posy.jpg</file>
+			<file>mountain_posz.jpg</file>
+		</folder>
+		<folder load="ONCE">
+			<class-path>graphics.skycube.std</class-path>
+			<web-path>graphics/skycube/std/</web-path>
+			<file>std_0_negx.png</file>
+			<file>std_0_negy.png</file>
+			<file>std_0_negz.png</file>
+			<file>std_0_posx.png</file>
+			<file>std_0_posy.png</file>
+			<file>std_0_posz.png</file>
+		</folder>
+		<folder load="ONCE">
+			<class-path>graphics.skycube.std2.irradiance</class-path>
+			<web-path>graphics/skycube/std2/irradiance/</web-path>
+			<file>face_0_negx.png</file>
+			<file>face_0_negy.png</file>
+			<file>face_0_negz.png</file>
+			<file>face_0_posx.png</file>
+			<file>face_0_posy.png</file>
+			<file>face_0_posz.png</file>
+		</folder>
+		<folder load="ONCE">
+			<class-path>graphics.skycube.std2.radiance</class-path>
+			<web-path>graphics/skycube/std2/radiance/</web-path>
+			<file>face_0_negx.png</file>
+			<file>face_0_negy.png</file>
+			<file>face_0_negz.png</file>
+			<file>face_0_posx.png</file>
+			<file>face_0_posy.png</file>
+			<file>face_0_posz.png</file>
+			<file>face_1_negx.png</file>
+			<file>face_1_negy.png</file>
+			<file>face_1_negz.png</file>
+			<file>face_1_posx.png</file>
+			<file>face_1_posy.png</file>
+			<file>face_1_posz.png</file>
+			<file>face_2_negx.png</file>
+			<file>face_2_negy.png</file>
+			<file>face_2_negz.png</file>
+			<file>face_2_posx.png</file>
+			<file>face_2_posy.png</file>
+			<file>face_2_posz.png</file>
+			<file>face_3_negx.png</file>
+			<file>face_3_negy.png</file>
+			<file>face_3_negz.png</file>
+			<file>face_3_posx.png</file>
+			<file>face_3_posy.png</file>
+			<file>face_3_posz.png</file>
+			<file>face_4_negx.png</file>
+			<file>face_4_negy.png</file>
+			<file>face_4_negz.png</file>
+			<file>face_4_posx.png</file>
+			<file>face_4_posy.png</file>
+			<file>face_4_posz.png</file>
+			<file>face_5_negx.png</file>
+			<file>face_5_negy.png</file>
+			<file>face_5_negz.png</file>
+			<file>face_5_posx.png</file>
+			<file>face_5_posy.png</file>
+			<file>face_5_posz.png</file>
+		</folder>
+		<folder load="ONCE">
+			<class-path>graphics.tex2d</class-path>
+			<web-path>graphics/tex2d/</web-path>
+			<file>cooling_grid.png</file>
+			<file>cubeface0.jpg</file>
+			<file>desert_sand.jpg</file>
+			<file>desert02-color.jpg</file>
+			<file>desert02-normal.jpg</file>
+			<file>earth.jpg</file>
+			<file>grid-256.png</file>
+			<file>wood.jpg</file>
+		</folder>
+		<folder load="ONCE">
+			<class-path>maths</class-path>
+			<web-path>maths/</web-path>
+			<js>WebGL_Matrix3</js>
+			<js>WebGL_Matrix4</js>
+			<js>WebGL_Vector2</js>
+			<js>WebGL_Vector3</js>
+			<js>WebGL_Vector4</js>
+		</folder>
+		<folder load="ONCE">
+			<class-path>objects</class-path>
+			<web-path>objects/</web-path>
+			<js>WebGL_ObjectInstance</js>
+			<js>WebGL_ObjectModel</js>
+		</folder>
+		<folder>
+			<class-path>programs</class-path>
+			<web-path>programs/</web-path>
+			<glsh>color</glsh>
+			<glsh>color2</glsh>
+			<glsh>glow</glsh>
+			<glsh>lit</glsh>
+			<glsh>mat01</glsh>
+			<glsh>matex01</glsh>
+			<glsh>mirror</glsh>
+			<glsh>picking</glsh>
+			<glsh>standard</glsh>
+			<glsh>tex01</glsh>
+		</folder>
+		<folder load="ONCE">
+			<class-path>render</class-path>
+			<web-path>render/</web-path>
+			<js>offscreen</js>
+			<js>picking</js>
+			<js>scene</js>
+			<js>WebGL_FrameBufferObject</js>
+		</folder>
+		<folder load="ONCE">
+			<class-path>shapes</class-path>
+			<web-path>shapes/</web-path>
+			<bohr-properties code="0x0200" />
+			<bohr code="0x02">WebGL_Appearance</bohr>
+			<bohr code="0x04">WebGL_MeshOptions</bohr>
+			<js>WebGL_Cylinder</js>
+			<js>WebGL_HexagonalNut</js>
+			<js>WebGL_Hexahedron</js>
+			<js>WebGL_Mesh</js>
+			<js>WebGL_Object</js>
+			<js>WebGL_Plane</js>
+			<js>WebGL_Sphere</js>
+		</folder>
+		<folder load="ONCE">
+			<class-path>util</class-path>
+			<web-path>util/</web-path>
+			<js>STRUCT_Chain</js>
+			<js>STRUCT_MapChain</js>
+			<js>utilities</js>
+		</folder>
+		<folder load="ONCE">
+			<class-path>view</class-path>
+			<web-path>view/</web-path>
+			<js>WebGL_ProjectionViewModel</js>
+		</folder>
+	</sources:folder>
+</root:module>
