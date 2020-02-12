@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import com.qx.level0.meta.sources.Load;
-import com.qx.level0.meta.sources.Load.Status;
+import com.qx.level0.meta.sources.WebSourceLoad;
+import com.qx.level0.meta.sources.WebSourceLoad.Status;
 import com.qx.level0.meta.sources.SourceMetaLoader;
 import com.qx.level0.utilities.bytes.ChainByteOutflow;
 
@@ -24,7 +24,7 @@ public class WebGL_ProgramMetaSourceLoader implements SourceMetaLoader {
 		
 	
 	@Override
-	public Load load() {
+	public WebSourceLoad load() {
 		
 		try {
 			// write vertex shader source
@@ -41,10 +41,10 @@ public class WebGL_ProgramMetaSourceLoader implements SourceMetaLoader {
 			outflow.putString(fragmentShaderSourceCode);
 			outflow.putString(javascriptSourceCode);
 			
-			return new Load(Status.OK, outflow.getHead());
+			return new WebSourceLoad(Status.OK, outflow.getHead());
 		}
 		catch (IOException e) {
-			return new Load(Status.NOT_FOUND);
+			return new WebSourceLoad(Status.NOT_FOUND);
 		}
 	}
 	
