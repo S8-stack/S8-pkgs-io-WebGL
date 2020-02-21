@@ -86,13 +86,5 @@ WebGL_Appearance.prototype = {
 				this.surfaceTexture3 = WebGL_textures.get(texPathname);
 			}
 			// </material>
-		},
-
-		resolve : function(objects){
-			// nothing to resolve
-		},
-		
-		build : function(){
-			// nothing to build
 		}
 };

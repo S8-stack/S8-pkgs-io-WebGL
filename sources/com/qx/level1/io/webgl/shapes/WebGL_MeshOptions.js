@@ -52,9 +52,5 @@ WebGL_MeshOptions.prototype = {
 			this.isSurfaceTangentAttributeEnabled = options[6];
 			
 			// </geometry-attributes>
-		},
-
-		resolve : function(objects){
-			// nothing to resolve
 		}
 };
