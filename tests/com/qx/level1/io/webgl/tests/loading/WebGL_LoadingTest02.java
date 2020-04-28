@@ -10,11 +10,11 @@ import com.qx.level0.meta.ModuleMetaDescriptor;
 import com.qx.level0.meta.sources.WebSource;
 import com.qx.level0.meta.targets.MetaTarget;
 import com.qx.level0.meta.targets.WebSourcesTarget;
-import com.qx.level0.meta.variables.CacheControl;
+import com.qx.level0.meta.variables.CacheControlMetaVariable;
 import com.qx.level0.meta.variables.MetaScope;
 import com.qx.level0.meta.variables.MetaVariable;
 import com.qx.level0.meta.variables.PackageMetaVariable;
-import com.qx.level0.meta.variables.WebPathname;
+import com.qx.level0.meta.variables.WebPathnameMetaVariable;
 import com.qx.level1.io.webgl.WebGL_ModuleLoader;
 import com.qx.level1.io.webgl._meta.WebGL_ProgramMetaDescriptor;
 
@@ -34,8 +34,8 @@ public class WebGL_LoadingTest02 {
 
 		MetaScope.Prototype prototype = new MetaScope.Prototype(new MetaVariable.Prototype[] {
 				PackageMetaVariable.PROTOTYPE, 
-				WebPathname.PROTOTYPE, 
-				CacheControl.PROTOTYPE,
+				WebPathnameMetaVariable.PROTOTYPE, 
+				CacheControlMetaVariable.PROTOTYPE,
 				BohrObjectTypeCodeMetaVariable.PROTOTYPE
 		});
 
