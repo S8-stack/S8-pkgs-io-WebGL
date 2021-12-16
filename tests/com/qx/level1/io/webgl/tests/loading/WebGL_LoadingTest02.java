@@ -15,8 +15,8 @@ import com.qx.level0.meta.variables.MetaScope;
 import com.qx.level0.meta.variables.MetaVariable;
 import com.qx.level0.meta.variables.PackageMetaVariable;
 import com.qx.level0.meta.variables.WebPathnameMetaVariable;
-import com.qx.level1.io.webgl.WebGL_ModuleLoader;
-import com.qx.level1.io.webgl._meta.WebGL_ProgramMetaDescriptor;
+import com.s8.sets.poly3d.WebGL_ModuleLoader;
+import com.s8.sets.poly3d._meta.WebGL_ProgramMetaDescriptor;
 
 public class WebGL_LoadingTest02 {
 
