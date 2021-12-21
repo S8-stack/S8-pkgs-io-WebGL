@@ -1,66 +1,28 @@
+import { WebGL_Program } from "../program";
 
 
-program.initialize = function(){
-
-	// pass index for rendering sort (default is 1)
-	this.pass = 1;
-	
-	// matrices
-	this.loc_Uniform_matrix_MVP = gl.getUniformLocation(this.handle, "ModelViewProjection_Matrix");
-	
-	//attributes locations
-	this.loc_Attribute_vertex = gl.getAttribLocation(this.handle, "vertex");
-	
-	// material
-	this.loc_Uniform_color = gl.getUniformLocation(this.handle, "color");	
-	
-};
+export class Color2_WebGL_Program extends WebGL_Program {
 
 
-program.bind = function(view, environment){
+	constructor(id) {
+		super(id, "color2");
+		this.isModelViewProjectionMatrixEnabled = true;
+		this.isVertexAttributeEnabled = true;
+		this.isNormalAttributeEnabled = true;
+	}
 
-	// bind shader program
-	gl.useProgram(this.handle);
-	
-	// enable location
-	gl.enableVertexAttribArray(this.loc_Attribute_vertex);
-};
+	link() {
 
-program.setView = function(view){
-	// nothing to set from view
+		// override
+		super.link();
+
+		// material
+		this.loc_Uniform_color = gl.getUniformLocation(this.handle, "color");
+	}
+
+	setAppearance(appearance) {
+		// material
+		gl.uniform4fv(this.loc_Uniform_color, appearance.wireColor);
+	}
+
 }
-
-program.setEnvironment = function(environment){
-	// nothing to set-yp from enviornment
-}
-
-program.setAppearance = function(appearance){
-	// material
-	gl.uniform4fv(this.loc_Uniform_color, appearance.wireColor);
-}
-
-program.setShape = function(shape){
-	shape.wireVertices.bind(this.loc_Attribute_vertex);
-	shape.wireElements.bind();
-};
-
-
-program.draw = function(view, shape){
-	gl.uniformMatrix4fv(this.loc_Uniform_matrix_MVP, false, view.matrix_ProjectionViewModel.c);
-	shape.wireElements.draw();
-};
-
-
-program.detachShape = function(shape){
-	shape.wireVertices.bind(this.loc_Attribute_vertex);
-	shape.wireElements.bind();
-};
-
-program.unbind = function(){
-	// disable location
-	gl.disableVertexAttribArray(this.loc_Attribute_vertex);
-
-	// bind shader program
-	//gl.useProgram(0);
-};
-

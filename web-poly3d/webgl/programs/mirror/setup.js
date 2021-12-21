@@ -1,4 +1,22 @@
+import { WebGL_Program } from "../program";
 
+
+export class Mirror_WebGL_Program extends WebGL_Program {
+
+
+	constructor(id){
+		super(id, "mirror");
+		this.isModelViewProjectionMatrixEnabled;
+	}
+
+	link(){
+		super.link();
+	
+	}
+		
+
+
+}
 
 program.initialize = function(){
 	
