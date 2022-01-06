@@ -1,15 +1,31 @@
 
 import * as M4 from "../maths/NbMatrix4d";
+import * as M3 from "../maths/NbMatrix3d";
 import * as V3 from "../maths/NbVector3d";
+import * as V4 from "../maths/NbVector4d";
 
+
+
+export class NbRay3d {
+	constructor(eyePosition, rayVector){
+		this.eyePosition = eyePosition;
+		this.rayVector = rayVector;
+	}
+}
 
 
 /**
  * view for the scene
  */
-export class WebGL_ProjectionViewModel {
+export class NbView {
 
-	constructor(width, height, up=[0,0,1]) {
+	/**
+	 * 
+	 * @param {*} width 
+	 * @param {*} height 
+	 * @param {*} up 
+	 */
+	constructor(width, height, up = V3.create(0,0,1)) {
 		this.width = width;
 		this.height = height;
 		this.up = up;
@@ -43,60 +59,42 @@ export class WebGL_ProjectionViewModel {
 		this.matrix_ProjectionView = M4.create();
 		M4.multiply(this.matrix_Projection, this.matrix_View, this.matrix_ProjectionView);
 	
+
+		/* create useful matrices */
+
+		
 		// view model matrix
-		this.matrix_ViewModel = new WebGL_Matrix4();
+		this.matrix_ViewModel = M4.create();
 	
 		// projection view matrix
-		this.matrix_ProjectionViewModel = new WebGL_Matrix4();
+		this.matrix_ProjectionViewModel = M4.create();
 	
 		// normal matrix (for shader rendering of normals)
-		this.matrix_Normal = new WebGL_Matrix3();
+		this.matrix_Normal = M3.create();
 	
 		// model matrix
-		this.matrix_Model = new WebGL_Matrix4();
+		this.matrix_Model = M4.create();
 	}
-
-
-}
-
-
-function WebGL_ProjectionViewModel(width, height, up=new MathVector3d(0,0,1)){
-
-	
-}
-
-
-WebGL_ProjectionViewModel.prototype = {
 
 		/*
 		 * set eye vector and eye target
 		 */
-		update : function(){
+		update(){
 
 			// update view matrices
-			this.matrix_View.lookAt(this.eyePosition, this.eyeTarget, this.up);
-			this.matrix_ProjectionView.multiply(this.matrix_Projection, this.matrix_View);
-		},
+			M4.lookAt(this.eyePosition, this.eyeTarget, this.up, this.matrix_View);
+			M4.multiply(this.matrix_Projection, this.matrix_View, this.matrix_ProjectionView);
+		}
 
-
-		setModel : function(modelAffine){
-			// update model
-			this.matrix_Model.setAffine(modelAffine);
-
-			// re-compute everything...
-			this.matrix_ProjectionViewModel.multiply(this.matrix_ProjectionView, this.matrix_Model);
-			this.matrix_ViewModel.multiply(this.matrix_View, this.matrix_Model);
-			this.matrix_Normal.transposeInverse4(this.matrix_ViewModel);
-		},
 
 
 		/**
-		 * @param x : mouse coordinate in screen space
-		 * @param y : mouse coordinate in screen space
+		 * @param {number} x : mouse coordinate in screen space
+		 * @param {number} y : mouse coordinate in screen space
 		 * @return a MathRay3d modelling the ray cast from mouse position on the screen for a given 
 		 * Projection/View
 		 */
-		castRay : function(xMouse, yMouse){
+		castRay(xMouse, yMouse){
 
 
 			/* (Arguments)
@@ -117,8 +115,8 @@ WebGL_ProjectionViewModel.prototype = {
 			 * This should be in the ranges of x [-1:1] y [-1:1] and z [-1:1]. 
 			 * We have an x and y already, so we scale their range, and reverse the direction of y.
 			 */
-			var x = (2.0 * xMouse) / this.width - 1.0;
-			var y = 1.0 - (2.0 * yMouse) / this.height;
+			let x = (2.0 * xMouse) / this.width - 1.0;
+			let y = 1.0 - (2.0 * yMouse) / this.height;
 
 			/*
 			 * Step 2: 4d Homogeneous Clip Coordinates (range [-1:1, -1:1, -1:1, -1:1])
@@ -127,7 +125,7 @@ WebGL_ProjectionViewModel.prototype = {
 			 * Note: we do not need to reverse perspective division here because this is a ray with no intrinsic depth. 
 			 * Other tutorials on ray-casting will, incorrectly, tell you to do this.
 			 */
-			var rayClip = new WebGL_Vector4(x, y, -1.0, 1.0);
+			let rayClip = V4.create(x, y, -1.0, 1.0);
 
 
 			/* 
@@ -136,14 +134,14 @@ WebGL_ProjectionViewModel.prototype = {
 			 * We can go backwards by multiplying by the inverse of this matrix.
 			 * vec4 ray_eye = inverse(projection_matrix) * ray_clip;
 			 */
-			var rayEye = new WebGL_Vector4();
-			this.matrix_invProjection.transform(rayClip.c, rayEye.c)
+			let rayEye = V4.create();
+			M4.transformVector4d(this.matrix_invProjection, rayClip, rayEye)
 
 			/* Now, we only needed to un-project the x,y part, so let's 
 			 * manually set the z,w part to mean "forwards, and not a point".
 			 * ray_eye = vec4(ray_eye.xy, -1.0, 0.0);
 			 */
-			rayEye.c[2] = -1.0; rayEye.c[3] = 0.0;
+			rayEye[2] = -1.0; rayEye[3] = 0.0;
 
 			/*
 			 * Step 4: 4d World Coordinates (range [-x:x, -y:y, -z:z, -w:w])
@@ -162,55 +160,14 @@ WebGL_ProjectionViewModel.prototype = {
 			 * We now have a ray that we can compare with surfaces in world space.
 			 */
 
-			this.matrix_invView.inverse(this.matrix_View);
-			var rayWorld = new Array(4);
-			this.matrix_invView.transform(rayEye.c, rayWorld);
+			M4.inverse(this.matrix_View, this.matrix_invView);
+			let rayWorld = V4.create();
+			M4.transform(this.matrix_invView, rayEye, rayWorld);
 			
-			var rayVector = new MathVector3d(rayWorld[0], rayWorld[1], rayWorld[2]);
-			rayVector.normalize(rayVector);
+			let rayVector = V3.create(rayWorld[0], rayWorld[1], rayWorld[2]);
+			V3.normalize(rayVector, rayVector);
 			
-			return new MathRay3d(this.eyePosition, rayVector);
+			return new NbRay3d(this.eyePosition, rayVector);
 		}
-};
+}
 
-
-function WebGL_Camera(scene){
-	this.scene = scene;
-	this.view = scene.view;
-
-	// setup eye
-	this.phi = 135;
-	this.theta = 135;
-	this.r = 20;
-
-	//	eye vector
-	this.eyeVector = new MathVector3d();
-	this.eyeVector.eyeVector(this.r, this.phi*Math.PI/180.0, this.theta*Math.PI/180.0);
-
-	this.eyePosition = this.view.eyePosition;
-	this.eyeTarget = this.view.eyeTarget;
-
-	this.eyeTarget_Speed = new MathVector3d(0.0, 0.0, 0.0);
-	this.eyeTarget_Acceleration = new MathVector3d(0.0, 0.0, 0.0);
-};
-
-
-WebGL_Camera.prototype = {
-
-		refresh : function(){
-
-			// compute new eye target position
-			this.eyeTarget_Speed.add(this.eyeTarget_Acceleration, this.eyeTarget_Speed);
-			this.eyeTarget.add(this.eyeTarget_Speed, this.eyeTarget);
-
-			// compute new eye position
-			this.eyeVector.eyeVector(this.r, this.phi*Math.PI/180.0, this.theta*Math.PI/180.0);
-			this.eyeTarget.add(this.eyeVector, this.eyePosition);
-
-			// update view
-			this.view.update();
-
-			// render scene again
-			this.scene.render();
-		}
-};

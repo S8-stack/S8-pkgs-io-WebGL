@@ -501,9 +501,10 @@ export function orthographicProjection(left, right, bottom, top, near, far, targ
 /**
  * Generates a look-at matrix with the given eye position, focal point, and up axis
  *
- * @param {Vector3} eye Position of the viewer
- * @param {Vector3} center Point the viewer is looking at
- * @param {Vector3} up vec3 pointing "up"
+ * @param {Float32Array} eye Position of the viewer
+ * @param {Float32Array} center Point the viewer is looking at
+ * @param {Float32Array} up vec3 pointing "up"
+ * @param {Float32Array} target matrix
  */
 export function lookAt(eye, center, up, target) {
 

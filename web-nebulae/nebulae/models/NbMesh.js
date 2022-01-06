@@ -46,7 +46,7 @@ export class NbMeshProperties {
 /**
  * WebGL Shape constructor, methods and utilities
  */
-export class NbModel {
+export class NbMesh {
 
 
 	/**
@@ -189,7 +189,7 @@ export class NbModel {
 				this.colorsHandle = this.compileBuffer(this.colorAttributes);
 			}
 	
-			compileElements();
+			this.compileElements();
 
 			// is compiled
 			this.isCompiled = true;
@@ -289,8 +289,6 @@ export class NbModel {
 		gl.vertexAttribPointer(location, 4, gl.FLOAT, false, 0, 0);
 	}
 
-
-
 	draw() {
 		if(this.dimension == 2){
 			gl.drawElements(gl.LINES, this.indicesLength, gl.UNSIGNED_SHORT, 0);
@@ -380,6 +378,7 @@ export class Vector2dNbBuffer {
 };
 
 
+
 export class Vector3dNbBufferAttributes {
 
 	constructor(bufferData) {
@@ -410,9 +409,6 @@ export class Vector3dNbBufferAttributes {
 		// set to vertex attributes location
 		gl.vertexAttribPointer(location, 3, gl.FLOAT, false, 0, 0);
 	}
-
-
-
 };
 
 

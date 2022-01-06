@@ -1,10 +1,11 @@
 
-import { NbModel } from '../meshes/NbModel.js';
+import { NbModel } from '../models/NbModel.js';
 import { gl } from '../nebular.js';
 import * as M4 from '../maths/NbMatrix4d.js';
 import { ColorNbProgram } from './color/program.js';
 import { Color2NbProgram } from './color2/program.js';
 import { Mat01NbProgram } from './mat01/program.js';
+import { NbView } from '../view/NbView.js';
 
 
 class NbProgramLibrary {
@@ -493,9 +494,10 @@ export class NbAppearance {
 
 	/**
 	 * 
+	 * @param {NbView} view 
 	 * @param {NbProgram} program 
 	 */
-	render(program){
+	render(view, program){
 		let nModels = this.models.length;
 		for(let i=0; i<nModels; i++){
 	
@@ -503,7 +505,7 @@ export class NbAppearance {
 			let model = this.models[i];
 
 			// bind model
-			program.bindModel(model);
+			program.bindModel(view, model);
 
 			// draw it!
 			model.draw();

@@ -1,4 +1,5 @@
 
+import { NbView } from '../view/NbView.js';
 import { NbAppearance, NbProgram, NbPrograms } from './NbProgram.js';
 
 
@@ -27,7 +28,11 @@ export class NbRenderingPipe {
 	}
 
 
-	render() {
+	/**
+	 * 
+	 * @param {NbView} view 
+	 */
+	render(view) {
 		if (this.program.isReady) {
 			// enable program
 			this.program.enable();
@@ -43,7 +48,7 @@ export class NbRenderingPipe {
 				this.program.bindAppearance(appearance);
 
 				// render the appearance
-				appearance.render(this.program);
+				appearance.render(view, this.program);
 			}
 
 			// disable program
