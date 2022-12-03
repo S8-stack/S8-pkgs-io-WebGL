@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root:WebGL_Styles>
+	<styles>
+		<WebGL_Style path="blackWire"/>
+		<WebGL_Style path="boltSteel"/>
+		<WebGL_Style path="color"/>
+		<WebGL_Style path="darkWire"/>
+		<WebGL_Style path="earth"/>
+		<WebGL_Style path="grid"/>
+		<WebGL_Style path="markupLabel"/>
+		<WebGL_Style path="matAluminium"/>
+		<WebGL_Style path="matLowGlossDarkPlastic"/>
+		<WebGL_Style path="matYellowPlastic"/>
+		<WebGL_Style path="mirror"/>
+		<WebGL_Style path="redColor"/>
+		<WebGL_Style path="shinyBluePlastic"/>
+		<WebGL_Style path="shinyGreenPlastic"/>
+		<WebGL_Style path="shinyYellowPlastic"/>
+		<WebGL_Style path="transparentBluePlastic"/>
+		<WebGL_Style path="wood"/>
+		<WebGL_Style path="wool01"/>
+		<WebGL_Style path="yellowColor"/>
+		<WebGL_Style path="yellowGlow"/>
+	</styles>
+</root:WebGL_Styles>
