@@ -1,11 +1,12 @@
 
-import { gl } from '../nebulae.js';
+import { gl } from '/s8-io-swgl/swgl.js';
 
-import * as M4 from '../maths/NbMatrix4d.js';
-import * as V3 from '../maths/NbVector3d.js';
+import * as M4 from '/s8-io-swgl/maths/SWGL_Matrix4d.js';
+import * as V3 from '/s8-io-swgl/maths/SWGL_Vector3d.js';
+
 import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
 
-export class DirectionalNbLight extends NeObject {
+export class SWGL_DirectionalLight extends NeObject {
 
 
 

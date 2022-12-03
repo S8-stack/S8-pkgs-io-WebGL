@@ -4,7 +4,7 @@ package com.s8.io.swgl.material;
 import com.s8.io.bohr.neon.core.NeBranch;
 import com.s8.io.bohr.neon.core.NeObject;
 import com.s8.io.swgl.SWGL_Root;
-import com.s8.io.swgl.utilities.NbUtilities;
+import com.s8.io.swgl.utilities.SWGL_Utilities;
 
 
 /**
@@ -12,23 +12,23 @@ import com.s8.io.swgl.utilities.NbUtilities;
  * @author pierreconvert
  *
  */
-public class NbMaterial extends NeObject {
+public class SWGL_Material extends NeObject {
 
-	public NbMaterial(NeBranch branch) {
+	public SWGL_Material(NeBranch branch) {
 		super(branch, SWGL_Root.WEB+"materials/NbMaterial");
 	}
 
 	
 	public void setAmbientColor(double... color) {
-		vertex.setFloat32Array("ambient", NbUtilities.toFloatArray(color));
+		vertex.setFloat32Array("ambient", SWGL_Utilities.toFloatArray(color));
 	}
 	
 	public void setDiffuseColor(double... color) {
-		vertex.setFloat32Array("diffuse", NbUtilities.toFloatArray(color));
+		vertex.setFloat32Array("diffuse", SWGL_Utilities.toFloatArray(color));
 	}
 	
 	public void setSpecularColor(double... color) {
-		vertex.setFloat32Array("specular", NbUtilities.toFloatArray(color));
+		vertex.setFloat32Array("specular", SWGL_Utilities.toFloatArray(color));
 	}
 	
 	/**

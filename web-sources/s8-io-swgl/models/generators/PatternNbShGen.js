@@ -1,6 +1,6 @@
 
-import * as M4 from '../../maths/NbMatrix4d';
-import { NbScene } from '../../scene/NbScene';
+import * as M4 from '../../maths/SWGL_Matrix4d';
+import { SWGL_Scene } from '../../scene/SWGL_Scene';
 import { NbShGen } from './NbShGen';
 import { NbShape } from '../NbShape';
 
@@ -109,7 +109,7 @@ export class PatternNbShGen extends NbShGen {
   
 
     /**
-     * @param {NbScene} scene 
+     * @param {SWGL_Scene} scene 
      * @returns { NbShape }
      */
     generate(scene) {

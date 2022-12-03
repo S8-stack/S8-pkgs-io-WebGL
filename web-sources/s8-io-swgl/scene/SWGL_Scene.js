@@ -1,28 +1,28 @@
 
 
-import { gl, NbContext } from '../nebulae.js';
+import { gl, SWGL_CONTEXT } from '/s8-io-swgl/swgl.js';
 
-import { NbEnvironment } from '../environment/NbEnvironment.js';
-import { NbView } from "../view/NbView.js";
-import { StdNbViewController } from "../view/StdNbViewController.js";
-import { NbRenderer } from '../appearances/NbRenderer.js';
+import { SWGL_Environment } from '/s8-io-swgl/environment/SWGL_Environment.js';
+import { NbView } from "/s8-io-swgl/view/SWGL_View.js";
+import { StdNbViewController } from "/s8-io-swgl/view/StdNbViewController.js";
+import { SWGL_Renderer } from '/s8-io-swgl/appearances/SWGL_Renderer.js';
 import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
 
 
 /**
  * 
  */
-export class NbScene extends NeObject {
+export class SWGL_Scene extends NeObject {
 
 	/** 
-	 * @type {NbRenderer[]} the rendering pipes (performance-section) 
+	 * @type {SWGL_Renderer[]} the rendering pipes (performance-section) 
 	 */
 	renderers = new Array();
 
 	/**
-	 * @type {NbEnvironment} the view 
+	 * @type {SWGL_Environment} the view 
 	 */
-	environment = new NbEnvironment();
+	environment = new SWGL_Environment();
 
 
 	/** 
@@ -32,7 +32,7 @@ export class NbScene extends NeObject {
 
 
 	/**
-	 * @type {NbViewController} the centralized controller
+	 * @type {ViewController} the centralized controller
 	 */
 	controller = null;
 
@@ -61,7 +61,7 @@ export class NbScene extends NeObject {
 
 	/**
 	 * 
-	 * @param {NbRenderer[]} renderers 
+	 * @param {SWGL_Renderer[]} renderers 
 	 */
 	S8_set_renderers(renderers) {
 		this.renderers = renderers;
@@ -70,7 +70,7 @@ export class NbScene extends NeObject {
 
 	/**
 	 * 
-	 * @param {NbEnvironment} environment 
+	 * @param {SWGL_Environment} environment 
 	 */
 	S8_set_environment(environment) {
 		this.environment = environment;

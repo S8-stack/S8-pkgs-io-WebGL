@@ -1,10 +1,10 @@
-import { NbAppearance } from "../NbAppearance.js";
+import { SWGL_Appearance } from "../SWGL_Appearance.js";
 
 
 /**
  * 
  */
-export class Color2NbAppearance extends NbAppearance {
+export class Color2NbAppearance extends SWGL_Appearance {
 
 
     /**

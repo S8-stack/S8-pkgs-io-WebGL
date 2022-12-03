@@ -1,5 +1,5 @@
 
-import { NbScene } from '../../scene/NbScene';
+import { SWGL_Scene } from '../../scene/SWGL_Scene';
 import { NbShape } from '../NbShape';
 import { NbShapeProperties } from '../NbShapeProperties';
 import { NbShGen } from './NbShGen.js';
@@ -63,7 +63,7 @@ export class AssembleNbShGen extends NbShGen {
 
     /**
      * 
-     * @param {NbScene} scene 
+     * @param {SWGL_Scene} scene 
      * @returns {NbShape}
      */
     generate(scene) {

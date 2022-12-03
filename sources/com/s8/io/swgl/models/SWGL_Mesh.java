@@ -7,10 +7,10 @@ import com.s8.io.bohr.neon.core.NeObject;
 import com.s8.io.swgl.SWGL_Root;
 import com.s8.io.swgl.maths.SWGL_Vector;
 
-public class NbMesh extends NeObject {
+public class SWGL_Mesh extends NeObject {
 
 
-	public NbMesh(NeBranch branch) {
+	public SWGL_Mesh(NeBranch branch) {
 		super(branch, SWGL_Root.WEB+"models/NbMesh");
 	}
 

@@ -3,7 +3,7 @@
 /**
  * 
  */
-class BaseNbContext {
+class SWGL_Context {
 
 
 	/**
@@ -131,7 +131,7 @@ class BaseNbContext {
 		
 		
 		/* device pixel ratio */
-		let pixelRatio = window.devicePixelRatio || BaseNbContext.VIEWPORT_OVERSAMPLING_FACTOR;
+		let pixelRatio = window.devicePixelRatio || SWGL_Context.VIEWPORT_OVERSAMPLING_FACTOR;
 
 		// resize canavs drawing buffer
 		let drawingBufferWidth = Math.round(pixelRatio * width);
@@ -156,7 +156,7 @@ class BaseNbContext {
 }
 
 
-export const NbContext = new BaseNbContext();
+export const SWGL_CONTEXT = new SWGL_Context();
 
 
 
@@ -165,5 +165,5 @@ export const NbContext = new BaseNbContext();
  * @type {WebGL2RenderingContext}
  * Root context
  */
-export const gl = NbContext.gl;
+export const gl = SWGL_CONTEXT.gl;
 

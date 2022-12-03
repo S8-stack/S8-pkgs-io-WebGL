@@ -1,5 +1,5 @@
-import { NbMaterial } from "./NbMaterial.js";
-import { gl } from "/s8-ng-geo/nebulae/nebulae.js";
+import { SWGL_Material } from "./SWGL_Material.js";
+import { gl } from "/s8-io-swgl/swgl.js";
 
 
 /**
@@ -47,7 +47,7 @@ export class NbMaterialUniform {
 
     /**
      * 
-     * @param {NbMaterial} material 
+     * @param {SWGL_Material} material 
      */
     bind(material){
         gl.uniform4fv(this.loc_Uniform_material_ambient, material.ambient);

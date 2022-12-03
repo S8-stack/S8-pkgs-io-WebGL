@@ -1,10 +1,10 @@
 
 
 
-import * as M4 from '../maths/NbMatrix4d.js';
+import * as M4 from '/s8-io-swgl/maths/SWGL_Matrix4d.js';
 
 import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
-import { gl } from '/s8-ng-geo/nebulae/nebulae.js';
+import { gl } from '/s8-io-swgl/swgl.js';
 
 
 
@@ -13,7 +13,7 @@ import { gl } from '/s8-ng-geo/nebulae/nebulae.js';
 /**
  * WebGL Shape constructor, methods and utilities
  */
-export class NbMesh extends NeObject {
+export class SWGL_Mesh extends NeObject {
 
 	/** @type {Float32Array}  predefine matrix */
 	matrix = M4.createIdentity();
@@ -74,7 +74,7 @@ export class NbMesh extends NeObject {
 	static PATTERN_MESH_BUILD_MODE = 4;
 
 	/** @type {string} */
-	meshBuildMode = NbMesh.DIRECT_MESH_BUILD_MODE;
+	meshBuildMode = SWGL_Mesh.DIRECT_MESH_BUILD_MODE;
 
 
 	/**
@@ -83,7 +83,7 @@ export class NbMesh extends NeObject {
 	 */
 	WebGL_isRendered;
 
-	/** @type {NbMesh} */
+	/** @type {SWGL_Mesh} */
 	seedModel;
 
 	/** seed matrix */
@@ -125,8 +125,8 @@ export class NbMesh extends NeObject {
 	buildMesh() {
 		if (!this.isMeshBuilt) {
 			switch (this.meshBuildMode) {
-				case NbMesh.DIRECT_MESH_BUILD_MODE: /* do nothing, already loaded */ break;
-				case NbMesh.PATTERN_MESH_BUILD_MODE: throw "Not implemented yet";
+				case SWGL_Mesh.DIRECT_MESH_BUILD_MODE: /* do nothing, already loaded */ break;
+				case SWGL_Mesh.PATTERN_MESH_BUILD_MODE: throw "Not implemented yet";
 			}
 			this.isMeshBuilt = true;
 		}

@@ -3,7 +3,7 @@ package com.s8.io.swgl.appearances.color2;
 import com.s8.io.bohr.neon.core.NeBranch;
 import com.s8.io.swgl.SWGL_Root;
 import com.s8.io.swgl.appearances.SWGL_Appearance;
-import com.s8.io.swgl.utilities.NbUtilities;
+import com.s8.io.swgl.utilities.SWGL_Utilities;
 
 
 /**
@@ -20,7 +20,7 @@ public class Color2Appearance extends SWGL_Appearance {
 	 * @param typeName
 	 */
 	public Color2Appearance(NeBranch branch) {
-		super(branch, SWGL_Root.WEB+"color2/Color2NbAppearance");
+		super(branch, SWGL_Root.WEB+"color2/Color2Appearance");
 	}
 	
 	
@@ -30,7 +30,7 @@ public class Color2Appearance extends SWGL_Appearance {
 	 * @param material
 	 */
 	public void setColor(double... color) {
-		vertex.setFloat32Array("color", NbUtilities.toFloatArray(color));
+		vertex.setFloat32Array("color", SWGL_Utilities.toFloatArray(color));
 	}
 	
 

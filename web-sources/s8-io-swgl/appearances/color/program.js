@@ -1,15 +1,15 @@
 
-import { gl } from "../../nebulae";
-import { NbEnvironment } from "../../environment/NbEnvironment";
-import { NbView } from "../../view/NbView";
-import { NbMesh } from "../../models/NbMesh";
-import { NbAppearance } from "../NbAppearance";
-import { NbRenderer } from "../NbRenderer";
+import { gl } from "../../swgl";
+import { SWGL_Environment } from "../../environment/SWGL_Environment";
+import { NbView } from "../../view/SWGL_View";
+import { SWGL_Mesh } from "../../models/SWGL_Mesh";
+import { SWGL_Appearance } from "../SWGL_Appearance";
+import { SWGL_Renderer } from "../SWGL_Renderer";
 
 /**
  * 
  */
-export class ColorNbProgram extends NbRenderer {
+export class ColorNbProgram extends SWGL_Renderer {
 
 
 	/**
@@ -57,7 +57,7 @@ export class ColorNbProgram extends NbRenderer {
 
 	/**
 	 * 
-	 * @param {NbEnvironment} environment 
+	 * @param {SWGL_Environment} environment 
 	 */
 	bindEnvironment(environment) {
 		// nothing to do here...
@@ -66,7 +66,7 @@ export class ColorNbProgram extends NbRenderer {
 
 	/**
 	 * 
-	 * @param {NbAppearance} apperance 
+	 * @param {SWGL_Appearance} apperance 
 	 */
 	bindAppearance(apperance) {
 		// nothing to do here...
@@ -74,7 +74,7 @@ export class ColorNbProgram extends NbRenderer {
 
 	/**
 	 * @param {NbView} view 
-	 * @param {NbMesh} model 
+	 * @param {SWGL_Mesh} model 
 	 */
 	bindModel(view, model) {
 		/* <matrices> */

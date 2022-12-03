@@ -3,10 +3,10 @@
  * 
  */
 
-import { NbMesh } from "../NbMesh";
+import { SWGL_Mesh } from "../SWGL_Mesh";
 
-import * as V2 from '../../maths/NbVector2d';
-import * as V3 from '../../maths/NbVector3d';
+import * as V2 from '../../maths/SWGL_Vector2d';
+import * as V3 from '../../maths/SWGL_Vector3d';
 
 export class HexahedronNbMeshBuilder {
 
@@ -31,7 +31,7 @@ export class HexahedronNbMeshBuilder {
 
 	/**
 	 * 
-	 * @param {NbMesh} mesh 
+	 * @param {SWGL_Mesh} mesh 
 	 * @returns 
 	 */
 	buildSurface(mesh) {
@@ -214,7 +214,7 @@ export class HexahedronNbMeshBuilder {
 
 	/**
 	 * 
-	 * @param {NbMesh} mesh 
+	 * @param {SWGL_Mesh} mesh 
 	 */
 	buildWire(mesh) {
 

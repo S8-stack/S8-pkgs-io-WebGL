@@ -1,9 +1,9 @@
 
-import { NbView } from "./NbView.js";
+import { SWGL_View } from "./SWGL_View.js";
 
-import * as V3 from "../maths/NbVector3d.js";
-import { NbContext } from "/s8-ng-geo/nebulae/nebulae.js";
-import { NbScene } from "/s8-ng-geo/nebulae/scene/NbScene.js";
+import * as V3 from "/s8-io-swgl/maths/SWGL_Vector3d.js";
+import { SWGL_Scene } from "../scene/SWGL_Scene.js";
+import { SWGL_CONTEXT } from "/s8-io-swgl/swgl.js";
 
 
 /**
@@ -11,7 +11,7 @@ import { NbScene } from "/s8-ng-geo/nebulae/scene/NbScene.js";
  */
 class Control {
 
-	/** @type { StdNbViewController } the view attached to this control */
+	/** @type { StdViewController } the view attached to this control */
 	controller;
 
 	constructor(controller) { this.controller = controller; }
@@ -38,7 +38,7 @@ class Rotate extends Control {
 
 	/**
 	 * 
-	 * @param {StdNbViewController} controller 
+	 * @param {StdViewController} controller 
 	 */
 	constructor(controller) { super(controller); }
 
@@ -252,9 +252,9 @@ const DEG_to_RAD = Math.PI / 180.0;
 /**
  * 
  */
-export class StdNbViewController {
+export class StdViewController {
 
-	/** @type {NbView} view (Bound by scene) */
+	/** @type {SWGL_View} view (Bound by scene) */
 	view;
 
 
@@ -274,7 +274,7 @@ export class StdNbViewController {
 
 	/**
 	 * 
-	 * @param {NbView} view 
+	 * @param {SWGL_View} view 
 	 */
 	constructor(view) {
 		this.view = view;
@@ -376,7 +376,7 @@ export class StdNbViewController {
 	}
 
 	stop() {
-		NbContext.canvasNode.removeEventListener('mousedown', this.onMouseDown, false);
+		SWGL_CONTEXT.canvasNode.removeEventListener('mousedown', this.onMouseDown, false);
 		document.removeEventListener('mouseup', this.onMouseUp, false);
 		document.removeEventListener('mousemove', this.onMouseMove, false);
 		document.removeEventListener('mousewheel', this.onMouseWheel, false);

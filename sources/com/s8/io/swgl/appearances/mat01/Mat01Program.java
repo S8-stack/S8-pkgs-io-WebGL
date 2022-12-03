@@ -19,7 +19,7 @@ public class Mat01Program extends SWGL_Program {
 	 * @param typeName
 	 */
 	public Mat01Program(NeBranch branch) {
-		super(branch, SWGL_Root.WEB+"appearances/mat01/Mat01NbProgram");
+		super(branch, SWGL_Root.WEB+"appearances/mat01/Mat01Program");
 	}
 	
 	

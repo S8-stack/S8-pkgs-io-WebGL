@@ -2,10 +2,9 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
+      "/s8-io-swgl/*": [ "../../../com.s8.io.swgl/web-sources/s8-io-swgl/*" ],
       "/s8-io-bytes/*": [ "../../../com.s8.io.bytes/web-sources/s8-io-bytes/*" ],
-      "/s8-io-bohr/*": [ "../../../com.s8.io.bohr/web-sources/s8-io-bohr/*" ],
-      "/s8-stack-web/*": [ "../../../com.s8.stack.web/web-sources/s8-stack-web/*" ],
-      "/s8-ng-geo/*": [ "./*" ]
+      "/s8-io-bohr/*": [ "../../../com.s8.io.bohr/web-sources/s8-io-bohr/*" ]
     }
   }
 }

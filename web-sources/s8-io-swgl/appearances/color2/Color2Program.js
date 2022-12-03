@@ -5,9 +5,9 @@ import { Color2NbAppearance } from "/s8-ng-geo/nebulae/appearances/color2/Color2
 import { NbEnvironment } from "/s8-ng-geo/nebulae/environment/NbEnvironment.js";
 import { gl } from "/s8-ng-geo/nebulae/nebulae.js";
 
-import * as M4 from '../../maths/NbMatrix4d.js';
+import * as M4 from '../../maths/SWGL_Matrix4d.js';
 
-import { NbMesh, NbVertexAttributes } from "../../models/NbMesh.js";
+import { SWGL_Mesh, NbVertexAttributes } from "../../models/SWGL_Mesh.js";
 import { NbView } from "/s8-ng-geo/nebulae/view/NbView.js";
 
 
@@ -76,7 +76,7 @@ export class Color2NbProgram extends NbProgram {
 
 	/**
 	 * @param {NbView} view 
-	 * @param {NbMesh} model 
+	 * @param {SWGL_Mesh} model 
 	 */
 	bindModel(view, model) {
 		/* <matrices> */

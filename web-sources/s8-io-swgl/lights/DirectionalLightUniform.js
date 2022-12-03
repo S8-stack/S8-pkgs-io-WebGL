@@ -1,12 +1,12 @@
 
-import { DirectionalNbLight } from "/s8-ng-geo/nebulae/lights/DirectionalNbLight.js";
-import { gl } from "/s8-ng-geo/nebulae/nebulae.js";
+import { SWGL_DirectionalNight } from "/s8-io-swgl/lights/SWGL_DirectionalLight.js";
+import { gl } from "/s8-io-swgl/swgl.js";
 
 
 /**
  * 
  */
-export class DirectionalNbLightUniform {
+export class DirectionalLightUniform {
 
 	/**
 	 * @type {WebGLUniformLocation}
@@ -50,7 +50,7 @@ export class DirectionalNbLightUniform {
 
 	/**
 	 * 
-	 * @param {DirectionalNbLight} light 
+	 * @param {SWGL_DirectionalNight} light 
 	 */
 	bind(light) {
 		gl.uniform4fv(this.loc_Uniform_light_ambient, light.ambient);

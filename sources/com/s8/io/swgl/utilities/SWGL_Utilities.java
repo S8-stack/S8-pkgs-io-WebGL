@@ -1,6 +1,6 @@
-package com.s8.ng.geo.nebulae.utilities;
+package com.s8.io.swgl.utilities;
 
-public class NbUtilities {
+public class SWGL_Utilities {
 
 	
 	

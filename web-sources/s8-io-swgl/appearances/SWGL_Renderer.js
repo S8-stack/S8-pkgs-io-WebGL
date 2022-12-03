@@ -1,8 +1,8 @@
 
-import { NbView } from '../view/NbView.js';
-import { NbAppearance } from '/s8-ng-geo/nebulae/appearances/NbAppearance.js';
-import { NbProgram } from '/s8-ng-geo/nebulae/appearances/NbProgram.js';
-import { NbEnvironment } from '/s8-ng-geo/nebulae/environment/NbEnvironment.js';
+import { SWGL_View } from '../view/SWGL_View.js';
+import { SWGL_Appearance } from '/s8-io-swgl/appearances/SWGL_NbAppearance.js';
+import { SWGL_Program } from '/s8-io-swgl/appearances/SWGL_Program.js';
+import { SWGL_Environment } from '/s8-io-swgl/environment/NbEnvironment.js';
 import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
 
 
@@ -59,15 +59,15 @@ import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
  * even if several more instructions are needed. There are some cool bit-twiddling tricks you can do to 
  * compute things such as abs(), min(), and max() without branching.
  */
-export class NbRenderer extends NeObject {
+export class SWGL_Renderer extends NeObject {
 
 	/**
-	 * @type {NbProgram}
+	 * @type {SWGL_Program}
 	 */
 	program;
 
 	/** 
-	 * @type {Array<NbAppearance>}
+	 * @type {Array<SWGL_Appearance>}
 	 */
 	appearances = new Array();
 
@@ -102,7 +102,7 @@ export class NbRenderer extends NeObject {
 
 	/**
 	 * 
-	 * @param {NbProgram} program 
+	 * @param {SWGL_Program} program 
 	 */
 	S8_set_program(program){
 		this.program = program;
@@ -116,7 +116,7 @@ export class NbRenderer extends NeObject {
 
 
 	/** 
-	 * @param {NbAppearance[]} apperances 
+	 * @param {SWGL_Appearance[]} apperances 
 	 */
 	S8_set_appearances(appearances) {
 		this.appearances = appearances;
@@ -141,8 +141,8 @@ export class NbRenderer extends NeObject {
 
 	/**
 		 * 
-		 * @param {NbEnvironment} environment 
-		 * @param {NbView} view 
+		 * @param {SWGL_Environment} environment 
+		 * @param {SWGL_View} view 
 		 */
 	WebGL_render(environment, view) {
 		if(this.isReady) {

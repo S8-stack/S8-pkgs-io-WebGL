@@ -7,7 +7,7 @@ import java.util.Map;
 import com.s8.io.bohr.neon.core.NeBranch;
 import com.s8.io.bohr.neon.core.NeObject;
 import com.s8.io.swgl.SWGL_Root;
-import com.s8.io.swgl.models.NbMesh;
+import com.s8.io.swgl.models.SWGL_Mesh;
 
 
 /**
@@ -26,7 +26,7 @@ public class SWGL_Renderer<A extends SWGL_Appearance> extends NeObject {
 	 * @param typeName
 	 */
 	public SWGL_Renderer(NeBranch branch) {
-		super(branch, SWGL_Root.WEB+"appearances/NbRenderer");
+		super(branch, SWGL_Root.WEB+"appearances/SWGL_Renderer");
 	}
 	
 	
@@ -57,7 +57,7 @@ public class SWGL_Renderer<A extends SWGL_Appearance> extends NeObject {
 	
 	
 	
-	public void append(String name, NbMesh model) {
+	public void append(String name, SWGL_Mesh model) {
 		
 	}
 	

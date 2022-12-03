@@ -1,12 +1,12 @@
 
 import { NeObject } from "/s8-io-bohr/neon/NeObject.js";
-import { gl } from "/s8-ng-geo/nebulae/nebulae.js";
+import { gl } from "/s8-io-swgl/swgl.js";
 
 
 /**
  * 
  */
-export class NbTextureCubeMap extends NeObject {
+export class SWGL_TextureCubeMap extends NeObject {
 
 
 	/** @type {string} */
@@ -129,7 +129,7 @@ export class NbTextureCubeMap extends NeObject {
 	 * @returns 
 	 */
 	 static create(pathname, extension, nbLevels){
-		let cubeMap = new NbTextureCubeMap("PRESET");
+		let cubeMap = new SWGL_TextureCubeMap("PRESET");
 		cubeMap.pathname = pathname;
 		cubeMap.extension = extension;
 		cubeMap.nbLevels = nbLevels;

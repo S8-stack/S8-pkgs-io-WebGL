@@ -18,7 +18,7 @@ public class SWGL_Environment extends NeObject {
 	 * @param branch
 	 */
 	public SWGL_Environment(NeBranch branch) {
-		super(branch, SWGL_Root.WEB+"environment/NbEnvironment");
+		super(branch, SWGL_Root.WEB+"environment/SWGL_Environment");
 	}
 
 

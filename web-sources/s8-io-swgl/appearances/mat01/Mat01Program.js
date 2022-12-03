@@ -1,11 +1,11 @@
 
 
-import { gl } from '../../nebulae.js';
+import { gl } from '../../swgl.js';
 
-import * as M4 from '../../maths/NbMatrix4d.js';
+import * as M4 from '../../maths/SWGL_Matrix4d.js';
 
 
-import { NbMesh, NbVertexAttributes } from "../../models/NbMesh.js";
+import { SWGL_Mesh, NbVertexAttributes } from "../../models/SWGL_Mesh.js";
 import { NbMaterialUniform } from '/s8-ng-geo/nebulae/materials/NbMaterialUniform.js';
 import { NbEnvironment } from '/s8-ng-geo/nebulae/environment/NbEnvironment.js';
 import { NbView } from '/s8-ng-geo/nebulae/view/NbView.js';
@@ -107,7 +107,7 @@ export class Mat01NbProgram extends NbProgram {
 
 	/**
 	 * @param {NbView} view 
-	 * @param {NbMesh} model 
+	 * @param {SWGL_Mesh} model 
 	 */
 	bindModel(view, model) {
 		/* <matrices> */

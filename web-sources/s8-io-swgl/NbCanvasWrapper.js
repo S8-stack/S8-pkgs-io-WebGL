@@ -1,6 +1,6 @@
 import { S8 } from "/s8-io-bohr/atom/S8.js";
 import { NbContext as NbContext } from "/s8-ng-geo/nebulae/nebulae.js";
-import { NbScene } from "./scene/NbScene.js";
+import { SWGL_Scene } from "./scene/SWGL_Scene.js";
 
 
 import { CubeElement } from "/s8-stack-web/carbide/cube/CubeElement.js";
@@ -25,7 +25,7 @@ export class NbCanvasWrapper extends CubeElement {
     resizeObserver;
 
 	/**
-	 * @type {NbScene} the active scene
+	 * @type {SWGL_Scene} the active scene
 	 */
 	scene;
 
@@ -59,7 +59,7 @@ export class NbCanvasWrapper extends CubeElement {
 
     /**
      * 
-     * @param {NbScene} scene 
+     * @param {SWGL_Scene} scene 
      */
     S8_set_scene(scene){
         this.scene = scene;

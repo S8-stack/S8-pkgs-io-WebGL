@@ -19,7 +19,7 @@ public class StandardAppearance extends SWGL_Appearance {
 	 * @param typeName
 	 */
 	public StandardAppearance(NeBranch branch) {
-		super(branch, SWGL_Root.WEB+"appearances/standard/StandardNbAppearance");
+		super(branch, SWGL_Root.WEB+"appearances/standard/StandardAppearance");
 	}
 	
 	

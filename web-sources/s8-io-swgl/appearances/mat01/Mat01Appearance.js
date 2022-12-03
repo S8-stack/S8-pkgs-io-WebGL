@@ -1,11 +1,11 @@
-import { NbAppearance } from "../NbAppearance.js";
+import { SWGL_Appearance } from "../SWGL_Appearance.js";
 import { NbMaterial } from "/s8-ng-geo/nebulae/materials/NbMaterial.js";
 
 
 /**
  * 
  */
-export class Mat01NbAppearance extends NbAppearance {
+export class Mat01NbAppearance extends SWGL_Appearance {
 
 
     /**

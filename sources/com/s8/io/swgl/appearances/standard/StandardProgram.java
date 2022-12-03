@@ -19,7 +19,7 @@ public class StandardProgram extends SWGL_Program {
 	 * @param typeName
 	 */
 	public StandardProgram(NeBranch branch) {
-		super(branch, SWGL_Root.WEB+"appearances/standard/StandardNbProgram");
+		super(branch, SWGL_Root.WEB+"appearances/standard/StandardProgram");
 	}
 	
 	

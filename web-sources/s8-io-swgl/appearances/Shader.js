@@ -6,7 +6,7 @@ import { gl } from "/s8-ng-geo/nebulae/nebulae.js";
  * 
  * Copyright Pierre Convert (convert.pierre@gmail.com). All rights reserved.
  */
-export class NbShader {
+export class Shader {
 
 	/**
 	 * @type {string}

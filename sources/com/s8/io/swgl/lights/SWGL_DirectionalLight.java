@@ -13,7 +13,7 @@ import com.s8.io.swgl.SWGL_Root;
 public class SWGL_DirectionalLight extends NeObject {
 
 	public SWGL_DirectionalLight(NeBranch branch) {
-		super(branch, SWGL_Root.WEB+"lights/DirectionalNbLight");
+		super(branch, SWGL_Root.WEB+"lights/SWGL_DirectionalLight");
 	}
 
 	

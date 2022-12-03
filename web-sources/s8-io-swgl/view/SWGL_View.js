@@ -1,10 +1,10 @@
 
 
-import * as M4 from "../maths/NbMatrix4d.js";
-import * as V3 from "../maths/NbVector3d.js";
-import * as V4 from "../maths/NbVector4d.js";
-import { NbContext } from "/s8-ng-geo/nebulae/nebulae.js";
-import { NbScene } from "/s8-ng-geo/nebulae/scene/NbScene.js";
+import * as M4 from "s8-io-swgl/maths/SWGL_Matrix4d.js";
+import * as V3 from "s8-io-swgl/maths/SWGL_Vector3d.js";
+import * as V4 from "s8-io-swgl/maths/SWGL_Vector4d.js";
+import { SWGL_CONTEXT } from "/s8-io-swgl/swgl.js";
+import { SWGL_Scene } from "/s8-io-swgl/scene/SWGL_Scene.js";
 
 
 export class NbRay3d {
@@ -20,7 +20,7 @@ export class NbRay3d {
 /**
  * view for the scene
  */
-export class NbView {
+export class SWGL_View {
 
 	/** @type {NbScene} scene */
 	scene;
@@ -68,7 +68,7 @@ export class NbView {
 	sizeListener;
 
 	/**
-	 * @param {NbScene} scene
+	 * @param {SWGL_Scene} scene
 	 */
 	constructor(scene) {
 		this.scene = scene;
@@ -221,7 +221,7 @@ export class NbView {
 
 
 	dipose(){
-		NbContext.removeSizeListener(this.sizeListener);
+		SWGL_CONTEXT.removeSizeListener(this.sizeListener);
 	}
 }
 

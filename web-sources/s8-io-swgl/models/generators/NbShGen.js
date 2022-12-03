@@ -2,7 +2,7 @@
 
 import { S8Orbital } from '/s8/S8';
 
-import * as M4 from '../../maths/NbMatrix4d';
+import * as M4 from '../../maths/SWGL_Matrix4d';
 
 import { NbShape } from '../NbShape';
 

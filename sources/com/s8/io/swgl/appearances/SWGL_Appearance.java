@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.s8.io.bohr.neon.core.NeBranch;
 import com.s8.io.bohr.neon.core.NeObject;
-import com.s8.io.swgl.models.NbMesh;
+import com.s8.io.swgl.models.SWGL_Mesh;
 
 
 /**
@@ -26,7 +26,7 @@ public abstract class SWGL_Appearance extends NeObject {
 	
 	
 	
-	public void setModels(List<NbMesh> models) {
+	public void setModels(List<SWGL_Mesh> models) {
 		vertex.setObjList("models", models);
 	}
 	
@@ -34,7 +34,7 @@ public abstract class SWGL_Appearance extends NeObject {
 	 * 
 	 * @param model
 	 */
-	public void appendModel(NbMesh model) {
+	public void appendModel(SWGL_Mesh model) {
 		vertex.addObjToList("models", model);
 	}
 	
@@ -43,7 +43,7 @@ public abstract class SWGL_Appearance extends NeObject {
 	 * 
 	 * @param model
 	 */
-	public void remove(NbMesh model) {
+	public void remove(SWGL_Mesh model) {
 		vertex.removeObjFromList("models", model);
 	}
 

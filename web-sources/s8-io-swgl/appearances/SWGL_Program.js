@@ -1,10 +1,10 @@
 
 import { NeObject } from "/s8-io-bohr/neon/NeObject.js";
-import { NbShader } from "/s8-ng-geo/nebulae/appearances/NbShader.js";
-import { gl } from "/s8-ng-geo/nebulae/nebulae.js";
+import { Shader } from "/s8-io-swgl/appearances/Shader.js";
+import { gl } from "/s8-io-swgl/swgl.js";
 
 
-export class NbProgram extends NeObject {
+export class SWGL_Program extends NeObject {
 
     /**
      * 
@@ -18,12 +18,12 @@ export class NbProgram extends NeObject {
     handle;
 
     /**
-     * @type {NbShader}
+     * @type {Shader}
      */
     vertexShader;
 
     /**
-     * @type {NbShader}
+     * @type {Shader}
      */
     fragmentShader;
 
@@ -66,8 +66,8 @@ export class NbProgram extends NeObject {
 
         // pathname
         this.pathname = pathname;
-        this.vertexShader = new NbShader(pathname, "vertex");
-        this.fragmentShader = new NbShader(pathname, "fragment");
+        this.vertexShader = new Shader(pathname, "vertex");
+        this.fragmentShader = new Shader(pathname, "fragment");
 
     }
 

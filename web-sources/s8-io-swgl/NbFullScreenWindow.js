@@ -1,12 +1,12 @@
 
 
 import { S8, S8Orbital } from '/s8/S8';
-import { Mat01NbAppearance } from './appearances/mat01/Mat01NbAppearance';
-import { NbContext } from './nebulae';
+import { Mat01NbAppearance } from './appearances/mat01/Mat01Appearance';
+import { NbContext } from './swgl';
 import { NbGear } from './scene/NbGear';
-import { NbScene } from './scene/NbScene';
+import { SWGL_Scene } from './scene/SWGL_Scene';
 import { ElementaryNbShGen } from './models/generators/ElementaryNbShGen';
-import { NbMesh } from './models/NbMesh';
+import { SWGL_Mesh } from './models/SWGL_Mesh';
 import { HexahedronNbMeshBuilder } from './models/primitives/HexahedronNbMeshBuilder';
 
 
@@ -45,7 +45,7 @@ export class NbFullScreenWindow extends S8Orbital {
         
         console.log("");
 
-        let scene = new NbScene();
+        let scene = new SWGL_Scene();
 
         // appearance
         let matApp01 = new Mat01NbAppearance("(auto)");
@@ -58,7 +58,7 @@ export class NbFullScreenWindow extends S8Orbital {
         meshProps.vertexCapacity = 24;
         meshProps.elementCapacity = 12;
 
-        let cubeMesh = NbMesh.create(meshProps);
+        let cubeMesh = SWGL_Mesh.create(meshProps);
         h.buildSurface(cubeMesh);
 
         // build shape generator

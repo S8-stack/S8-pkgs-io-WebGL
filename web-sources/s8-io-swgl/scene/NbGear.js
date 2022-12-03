@@ -1,13 +1,13 @@
 
 
 import { S8Orbital } from '/s8/S8';
-import { NbAppearance } from '../appearances/NbAppearance';
+import { SWGL_Appearance } from '../appearances/SWGL_Appearance';
 
 import { NbShGen } from '../models/generators/NbShGen';
-import { NbMesh } from '../models/NbMesh';
+import { SWGL_Mesh } from '../models/SWGL_Mesh';
 import { NbScene } from '../utilities/demos/NbDemoWindow';
 
-import * as M4 from '../maths/NbMatrix4d';
+import * as M4 from '../maths/SWGL_Matrix4d';
 
 /**
  * 
@@ -33,7 +33,7 @@ export class NbGear extends S8Orbital {
     /** @type {Float32Array} modelMatrix for the model generated */
     modelMatrix = M4.createIdentity();
 
-    /** @type {Map<string, NbMesh>} */
+    /** @type {Map<string, SWGL_Mesh>} */
     models = null;
 
     constructor(id){
@@ -79,7 +79,7 @@ export class NbGear extends S8Orbital {
             // dispose previous models
             if(this.models){
                 this.models.forEach((model, appearanceName) => {
-                    /** @type {NbAppearance} */
+                    /** @type {SWGL_Appearance} */
                     let appearance = this.scene.getAppearance(appearanceName);
                     
                     // retrieve index
@@ -98,7 +98,7 @@ export class NbGear extends S8Orbital {
 
 
             this.models.forEach((model, appearanceName) => {
-                /** @type {NbAppearance} */
+                /** @type {SWGL_Appearance} */
                 let appearance = this.scene.getAppearance(appearanceName);
 
                 // bind matrix

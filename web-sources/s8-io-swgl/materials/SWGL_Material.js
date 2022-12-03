@@ -6,7 +6,7 @@ import { NeObject } from "/s8-io-bohr/neon/NeObject.js";
 /**
  * 
  */
-export class NbMaterial extends NeObject {
+export class SWGL_Material extends NeObject {
 
 
 

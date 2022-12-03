@@ -12,7 +12,7 @@ public class SWGL_TextureCubeMap extends NeObject {
 	 * @param branch
 	 */
 	public SWGL_TextureCubeMap(NeBranch branch) {
-		super(branch, SWGL_Root.WEB+"environment/NbTextureCubeMap");
+		super(branch, SWGL_Root.WEB+"environment/SWGL_TextureCubeMap");
 	}
 
 

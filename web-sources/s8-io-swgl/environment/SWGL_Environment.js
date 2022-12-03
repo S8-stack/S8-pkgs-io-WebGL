@@ -1,12 +1,11 @@
 
-import { S8Object } from '/s8-io-bohr/atom/S8Object.js';
 
-import * as V3 from '../maths/NbVector3d.js';
+import * as V3 from '/s8-io-swgl/maths/SWGL_Vector3d.js';
 
-import { DirectionalNbLight } from '../lights/DirectionalNbLight.js';
-import { NbTextureCubeMap } from './NbTextureCubeMap.js';
-import { NbView } from '../view/NbView.js';
-import { gl } from '/s8-ng-geo/nebulae/nebulae.js';
+import { SWGL_DirectionalLight } from '/s8-io-swgl/lights/SWGL_DirectionalLight.js';
+import { SWGL_TextureCubeMap } from './SWGL_TextureCubeMap.js';
+import { SWGL_View } from '/s8-io-swgl/view/SWGL_View.js';
+import { gl } from '/s8-io-swgl/swgl.js';
 import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
 
 
@@ -14,26 +13,26 @@ import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
 /**
  * WebGL Shape constructor, methods and utilities
  */
-export class NbEnvironment extends NeObject {
+export class SWGL_Environment extends NeObject {
 
 
-    /** @type {NbView} (Bound by scene) */
+    /** @type {SWGL_View} (Bound by scene) */
     view;
 
 
     /**
-     * @type {DirectionalNbLight[]} 
+     * @type {SWGL_DirectionalLight[]} 
      */
     directionalLights;
 
 
     /**
-     * @type {NbTextureCubeMap} 
+     * @type {SWGL_TextureCubeMap} 
      */
     radiance = null;
 
 /**
-     * @type {NbTextureCubeMap} 
+     * @type {SWGL_TextureCubeMap} 
      */
     irradiance = null;
 
@@ -55,7 +54,7 @@ export class NbEnvironment extends NeObject {
 
     /**
      * 
-     * @param {DirectionalNbLight[]} lights 
+     * @param {SWGL_DirectionalLight[]} lights 
      */
     S8_set_directionalLights(lights){
         this.directionalLights = lights;
@@ -64,7 +63,7 @@ export class NbEnvironment extends NeObject {
     
     /**
      * 
-     * @param {NbTextureCubeMap} cubeMap 
+     * @param {SWGL_TextureCubeMap} cubeMap 
      */
     S8_set_radiance(cubeMap){
         this.radiance = cubeMap;
@@ -73,7 +72,7 @@ export class NbEnvironment extends NeObject {
 
        /**
      * 
-     * @param {NbTextureCubeMap} cubeMap 
+     * @param {SWGL_TextureCubeMap} cubeMap 
      */
     S8_set_irradiance(cubeMap){
          this.irradiance = cubeMap;
@@ -109,7 +108,7 @@ export class NbEnvironment extends NeObject {
     }
 
     static initPreset(){
-        let environment = new NbEnvironment("PRESET");
+        let environment = new SWGL_Environment("PRESET");
     
         environment.directionalLights = new Array(8);
     
@@ -121,7 +120,7 @@ export class NbEnvironment extends NeObject {
         for(let i=0; i<5; i++){
             let direction = V3.create();
             V3.spherical_radial(1.0, i*dPhi, Math.PI*0.25, direction);
-            let light = new DirectionalNbLight("PRESET");
+            let light = new SWGL_DirectionalLight("PRESET");
             light.ambient = ambient;
             light.diffuse = diffuse;
             light.specular = specular;
@@ -137,7 +136,7 @@ export class NbEnvironment extends NeObject {
         for(let i=0; i<3; i++){
             let direction = V3.create();
             V3.spherical_radial(1.0, Math.PI*0.45+i*dPhi, Math.PI*0.65, direction);	
-            let light = new DirectionalNbLight("PRESET");
+            let light = new SWGL_DirectionalLight("PRESET");
             light.ambient = ambient;
             light.diffuse = diffuse;
             light.specular = specular;
@@ -147,8 +146,8 @@ export class NbEnvironment extends NeObject {
     
             // environment
         let rootPathname = "/nebulae/assets/skycube";
-        environment.radiance = NbTextureCubeMap.create(rootPathname+"/std2/radiance/face", ".png", 6);
-        environment.irradiance = NbTextureCubeMap.create(rootPathname+"/std2/irradiance/face", ".png", 1);
+        environment.radiance = SWGL_TextureCubeMap.create(rootPathname+"/std2/radiance/face", ".png", 6);
+        environment.irradiance = SWGL_TextureCubeMap.create(rootPathname+"/std2/irradiance/face", ".png", 1);
     
         return environment;
     }

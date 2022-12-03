@@ -1,24 +1,23 @@
 
-import { NbMesh } from '../models/NbMesh.js';
-import { NbProgram } from '/s8-ng-geo/nebulae/appearances/NbProgram.js';
+
+import { SWGL_Program } from './SWGL_Program.js';
+import { SWGL_Mesh } from '/s8-io-swgl/models/SWGL_Mesh.js';
 import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
-
-
 
 
 
 /**
  * appearance
  */
-export class NbAppearance extends NeObject {
+export class SWGL_Appearance extends NeObject {
 
 	/**
-	 * @type {NbProgram}
+	 * @type {SWGL_Program}
 	 */
 	program;
 
 	/**
-	 * @type {NbMesh[]}
+	 * @type {SWGL_Mesh[]}
 	 */
 	models;
 
@@ -39,7 +38,7 @@ export class NbAppearance extends NeObject {
 
 	/**
 	 * 
-	 * @param {NbMesh[]} models 
+	 * @param {SWGL_Mesh[]} models 
 	 */
 	S8_set_models(models) {
 		this.models = models;
@@ -89,7 +88,7 @@ export class NbAppearance extends NeObject {
 		let nModels = this.models.length;
 		for (let i = 0; i < nModels; i++) {
 
-			/** @type {NbMesh} model */
+			/** @type {SWGL_Mesh} model */
 			let model = this.models[i];
 
 			if (model.GPU_isLoaded) {
