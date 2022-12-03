@@ -1,11 +1,12 @@
-package com.s8.ng.geo.nebulae.scene;
+package com.s8.io.swgl.scene;
 
 import java.util.List;
 
 import com.s8.io.bohr.neon.core.NeBranch;
 import com.s8.io.bohr.neon.core.NeObject;
-import com.s8.io.swgl.appearances.NbRenderer;
-import com.s8.io.swgl.environment.NbEnvironment;
+import com.s8.io.swgl.SWGL_Root;
+import com.s8.io.swgl.appearances.SWGL_Renderer;
+import com.s8.io.swgl.environment.SWGL_Environment;
 
 /**
  * 
@@ -20,17 +21,17 @@ public class NbScene extends NeObject {
 	 * @param branch
 	 */
 	public NbScene(NeBranch branch) {
-		super(branch, "/s8-ng-geo/nebulae/scene/NbScene");
+		super(branch, SWGL_Root.WEB+"scene/NbScene");
 	}
 	
 	
-	public void setEnvironment(NbEnvironment environment) {
+	public void setEnvironment(SWGL_Environment environment) {
 		vertex.setObj("environment", environment);
 	}
 	
 	
 	
-	public void setRenderers(List<NbRenderer<?>> renderers) {
+	public void setRenderers(List<SWGL_Renderer<?>> renderers) {
 		vertex.setObjList("renderers", renderers);
 	}
 	
@@ -42,7 +43,7 @@ public class NbScene extends NeObject {
 	 * @param name
 	 * @param appearance
 	 */
-	public void define(String name, NbRenderer<?> prgm) {
+	public void define(String name, SWGL_Renderer<?> prgm) {
 		
 		// appearance
 		vertex.addObjToList("programs", prgm);

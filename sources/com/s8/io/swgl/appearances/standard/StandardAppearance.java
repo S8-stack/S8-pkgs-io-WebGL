@@ -1,33 +1,26 @@
-package com.s8.ng.geo.nebulae.appearances.standard;
+package com.s8.io.swgl.appearances.standard;
 
-public enum NbStdMaterial {
+import com.s8.io.bohr.neon.core.NeBranch;
+import com.s8.io.swgl.SWGL_Root;
+import com.s8.io.swgl.appearances.SWGL_Appearance;
 
-	STEEL();
+
+/**
+ * 
+ * @author pierreconvert
+ *
+ */
+public class StandardAppearance extends SWGL_Appearance {
+
 	
-	
-	
-	
-	public int diffuseRed;
-	
-	public int diffuseGreen;
-	
-	public int diffuseBlue;
-	
-	
-	public int diffuseRed;
-	
-	public int diffuseGreen;
-	
-	public int diffuseBlue;
-	
-	
-	public int diffuseRed;
-	
-	public int diffuseGreen;
-	
-	public int diffuseBlue;
-	
-	
+	/**
+	 * 
+	 * @param branch
+	 * @param typeName
+	 */
+	public StandardAppearance(NeBranch branch) {
+		super(branch, SWGL_Root.WEB+"appearances/standard/StandardNbAppearance");
+	}
 	
 	
 	public void setGlossiness(double value) {
@@ -53,4 +46,5 @@ public enum NbStdMaterial {
 	
 	
 	
+
 }

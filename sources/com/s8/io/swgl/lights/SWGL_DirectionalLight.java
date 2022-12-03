@@ -3,7 +3,6 @@ package com.s8.io.swgl.lights;
 import com.s8.io.bohr.neon.core.NeBranch;
 import com.s8.io.bohr.neon.core.NeObject;
 import com.s8.io.swgl.SWGL_Root;
-import com.s8.io.swgl.maths.SWGL_Vector3d;
 
 
 /**
@@ -11,9 +10,9 @@ import com.s8.io.swgl.maths.SWGL_Vector3d;
  * @author pierreconvert
  *
  */
-public class DirectionalNbLight extends NeObject {
+public class SWGL_DirectionalLight extends NeObject {
 
-	public DirectionalNbLight(NeBranch branch) {
+	public SWGL_DirectionalLight(NeBranch branch) {
 		super(branch, SWGL_Root.WEB+"lights/DirectionalNbLight");
 	}
 
@@ -40,8 +39,8 @@ public class DirectionalNbLight extends NeObject {
 	 * 
 	 * @param vector
 	 */
-	public void setDirectionVector(SWGL_Vector3d vector) {
-		vertex.setFloat32Array("direction", vector.toFloat32Array());
+	public void setDirectionVector(float[] vector) {
+		vertex.setFloat32Array("direction", vector);
 	}
 	
 }

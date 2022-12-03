@@ -1,4 +1,4 @@
-package com.s8.io.swgl.appearances.standard;
+package com.s8.io.swgl.appearances.mat01;
 
 import com.s8.io.bohr.neon.core.NeBranch;
 import com.s8.io.swgl.SWGL_Root;
@@ -10,7 +10,7 @@ import com.s8.io.swgl.appearances.SWGL_Program;
  * @author pierreconvert
  *
  */
-public class StandardNbProgram extends SWGL_Program {
+public class Mat01Program extends SWGL_Program {
 
 	
 	/**
@@ -18,8 +18,8 @@ public class StandardNbProgram extends SWGL_Program {
 	 * @param branch
 	 * @param typeName
 	 */
-	public StandardNbProgram(NeBranch branch) {
-		super(branch, SWGL_Root.WEB+"appearances/standard/StandardNbProgram");
+	public Mat01Program(NeBranch branch) {
+		super(branch, SWGL_Root.WEB+"appearances/mat01/Mat01NbProgram");
 	}
 	
 	

@@ -1,13 +1,11 @@
-package com.s8.ng.geo.nebulae.models;
+package com.s8.io.swgl.models;
 
 import java.util.List;
 
-import com.s8.core.maths.space2d.MathVector2d;
-import com.s8.core.maths.space3d.MathAffine3d;
-import com.s8.core.maths.space3d.MathVector3d;
 import com.s8.io.bohr.neon.core.NeBranch;
 import com.s8.io.bohr.neon.core.NeObject;
 import com.s8.io.swgl.SWGL_Root;
+import com.s8.io.swgl.maths.SWGL_Vector;
 
 public class NbMesh extends NeObject {
 
@@ -19,8 +17,8 @@ public class NbMesh extends NeObject {
 
 
 	/** @param {Float32Array} coefficients */
-	public void setMatrix(MathAffine3d affine) {
-		vertex.setFloat32Array("matrix", affine.toFloat32Array());
+	public void setMatrix(float[] affine) {
+		vertex.setFloat32Array("matrix", affine);
 	}
 
 
@@ -29,17 +27,17 @@ public class NbMesh extends NeObject {
 	 * 
 	 * @param points
 	 */
-	public void setPositionVertexAttributes(List<MathVector3d> points) {
+	public void setPositionVertexAttributes(List<SWGL_Vector> points) {
 		if(points != null) {
 			int nVertices = points.size();
-			float[] buffer = new float[3*nVertices];
-			MathVector3d vector;
+			float[] buffer = new float[3 * nVertices];
+			SWGL_Vector vector;
 			int i = 0;
 			for(int index = 0; index < nVertices; index ++) {
 				vector = points.get(index);
-				buffer[i++] = (float) vector.x;
-				buffer[i++] = (float) vector.y;
-				buffer[i++] = (float) vector.z;
+				buffer[i++] = vector.getXFloat();
+				buffer[i++] = vector.getYFloat();
+				buffer[i++] = vector.getZFloat();
 			}
 			vertex.setFloat32Array("positions", buffer);	
 		}
@@ -50,17 +48,17 @@ public class NbMesh extends NeObject {
 	 * 
 	 * @param normals
 	 */
-	public void setNormalVertexAttributes(List<MathVector3d> normals) {
+	public void setNormalVertexAttributes(List<SWGL_Vector> normals) {
 		if(normals != null) {
 			int nVertices = normals.size();
 			float[] buffer = new float[3*nVertices];
-			MathVector3d vector;
+			SWGL_Vector vector;
 			int i = 0;
 			for(int index = 0; index < nVertices; index ++) {
 				vector = normals.get(index);
-				buffer[i++] = (float) vector.x;
-				buffer[i++] = (float) vector.y;
-				buffer[i++] = (float) vector.z;
+				buffer[i++] = vector.getXFloat();
+				buffer[i++] = vector.getYFloat();
+				buffer[i++] = vector.getZFloat();
 			}
 			vertex.setFloat32Array("normals", buffer);	
 		}
@@ -72,17 +70,17 @@ public class NbMesh extends NeObject {
 	 * 
 	 * @param uTangents
 	 */
-	public void setUTangentVertexAttributes(List<MathVector3d> uTangents) {
+	public void setUTangentVertexAttributes(List<SWGL_Vector> uTangents) {
 		if(uTangents != null) {
 			int nVertices = uTangents.size();
 			float[] buffer = new float[3*nVertices];
-			MathVector3d vector;
+			SWGL_Vector vector;
 			int i = 0;
 			for(int index = 0; index < nVertices; index ++) {
 				vector = uTangents.get(index);
-				buffer[i++] = (float) vector.x;
-				buffer[i++] = (float) vector.y;
-				buffer[i++] = (float) vector.z;
+				buffer[i++] = vector.getXFloat();
+				buffer[i++] = vector.getYFloat();
+				buffer[i++] = vector.getZFloat();
 			}
 			vertex.setFloat32Array("uTangents", buffer);	
 		}
@@ -93,17 +91,17 @@ public class NbMesh extends NeObject {
 	 * 
 	 * @param vTangents
 	 */
-	public void setVTangentVertexAttributes(List<MathVector3d> vTangents) {
+	public void setVTangentVertexAttributes(List<SWGL_Vector> vTangents) {
 		if(vTangents != null) {
 			int nVertices = vTangents.size();
 			float[] buffer = new float[3*nVertices];
-			MathVector3d vector;
+			SWGL_Vector vector;
 			int i = 0;
 			for(int index = 0; index < nVertices; index ++) {
 				vector = vTangents.get(index);
-				buffer[i++] = (float) vector.x;
-				buffer[i++] = (float) vector.y;
-				buffer[i++] = (float) vector.z;
+				buffer[i++] = vector.getXFloat();
+				buffer[i++] = vector.getYFloat();
+				buffer[i++] = vector.getZFloat();
 			}
 			vertex.setFloat32Array("vTangents", buffer);
 		}
@@ -116,16 +114,16 @@ public class NbMesh extends NeObject {
 	 * 
 	 * @param texCoords
 	 */
-	public void setTexCoordVertexAttributes(List<MathVector2d> texCoords) {
+	public void setTexCoordVertexAttributes(List<SWGL_Vector> texCoords) {
 		if(texCoords != null) {
 			int nVertices = texCoords.size();
 			float[] buffer = new float[2 * nVertices];
-			MathVector2d vector;
+			SWGL_Vector vector;
 			int i = 0;
 			for(int index = 0; index < nVertices; index ++) {
 				vector = texCoords.get(index);
-				buffer[i++] = (float) vector.x;
-				buffer[i++] = (float) vector.y;
+				buffer[i++] = vector.getXFloat();
+				buffer[i++] = vector.getYFloat();
 			}
 			vertex.setFloat32Array("texCoords", buffer);	
 		}
@@ -135,17 +133,17 @@ public class NbMesh extends NeObject {
 	 * 
 	 * @param colors
 	 */
-	public void setColorVertexAttributes(List<MathVector3d> colors) {
+	public void setColorVertexAttributes(List<SWGL_Vector> colors) {
 		if(colors != null) {
 			int nVertices = colors.size();
 			float[] buffer = new float[3*nVertices];
-			MathVector3d vector;
+			SWGL_Vector vector;
 			int i = 0;
 			for(int index = 0; index < nVertices; index ++) {
 				vector = colors.get(index);
-				buffer[i++] = (float) vector.x;
-				buffer[i++] = (float) vector.y;
-				buffer[i++] = (float) vector.z;
+				buffer[i++] = vector.getXFloat();
+				buffer[i++] = vector.getYFloat();
+				buffer[i++] = vector.getZFloat();
 			}
 			vertex.setFloat32Array("colors", buffer);	
 		}
@@ -156,16 +154,16 @@ public class NbMesh extends NeObject {
 	 * 
 	 * @param colors
 	 */
-	public void setAppCoordsAttributes(List<MathVector2d> appCoords) {
+	public void setAppCoordsAttributes(List<SWGL_Vector> appCoords) {
 		if(appCoords != null) {
 			int nVertices = appCoords.size();
 			float[] buffer = new float[3*nVertices];
-			MathVector2d vector;
+			SWGL_Vector vector;
 			int i = 0;
 			for(int index = 0; index < nVertices; index ++) {
 				vector = appCoords.get(index);
-				buffer[i++] = (float) vector.x;
-				buffer[i++] = (float) vector.y;
+				buffer[i++] = vector.getXFloat();
+				buffer[i++] = vector.getYFloat();
 			}
 			vertex.setFloat32Array("appCoords", buffer);	
 		}

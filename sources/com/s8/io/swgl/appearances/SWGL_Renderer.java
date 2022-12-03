@@ -15,7 +15,7 @@ import com.s8.io.swgl.models.NbMesh;
  * @author pierreconvert
  *
  */
-public class NbRenderer<A extends SWGL_Appearance> extends NeObject {
+public class SWGL_Renderer<A extends SWGL_Appearance> extends NeObject {
 
 	private Map<String, A> map = new HashMap<String, A>();
 	
@@ -25,7 +25,7 @@ public class NbRenderer<A extends SWGL_Appearance> extends NeObject {
 	 * @param branch
 	 * @param typeName
 	 */
-	public NbRenderer(NeBranch branch) {
+	public SWGL_Renderer(NeBranch branch) {
 		super(branch, SWGL_Root.WEB+"appearances/NbRenderer");
 	}
 	

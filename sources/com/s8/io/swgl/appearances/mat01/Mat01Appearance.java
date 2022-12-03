@@ -11,7 +11,7 @@ import com.s8.io.swgl.material.NbMaterial;
  * @author pierreconvert
  *
  */
-public class Mat01NbAppearance extends SWGL_Appearance {
+public class Mat01Appearance extends SWGL_Appearance {
 
 	
 	/**
@@ -19,7 +19,7 @@ public class Mat01NbAppearance extends SWGL_Appearance {
 	 * @param branch
 	 * @param typeName
 	 */
-	public Mat01NbAppearance(NeBranch branch) {
+	public Mat01Appearance(NeBranch branch) {
 		super(branch, SWGL_Root.WEB+"appearances/mat01/Mat01NbAppearance");
 	}
 	
