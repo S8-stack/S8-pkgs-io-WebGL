@@ -15,7 +15,7 @@ import com.s8.io.swgl.utilities.SWGL_Utilities;
 public class SWGL_Material extends NeObject {
 
 	public SWGL_Material(NeBranch branch) {
-		super(branch, SWGL_Root.WEB+"materials/NbMaterial");
+		super(branch, SWGL_Root.WEB+"materials/SWGL_Material");
 	}
 
 	

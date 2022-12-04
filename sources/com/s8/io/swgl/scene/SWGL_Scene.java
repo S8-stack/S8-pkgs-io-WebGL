@@ -13,15 +13,15 @@ import com.s8.io.swgl.environment.SWGL_Environment;
  * @author pierreconvert
  *
  */
-public class NbScene extends NeObject {
+public class SWGL_Scene extends NeObject {
 
 	
 	/**
 	 * 
 	 * @param branch
 	 */
-	public NbScene(NeBranch branch) {
-		super(branch, SWGL_Root.WEB+"scene/NbScene");
+	public SWGL_Scene(NeBranch branch) {
+		super(branch, SWGL_Root.WEB+"scene/SWGL_Scene");
 	}
 	
 	

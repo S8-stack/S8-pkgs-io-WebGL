@@ -11,7 +11,7 @@ public class SWGL_Mesh extends NeObject {
 
 
 	public SWGL_Mesh(NeBranch branch) {
-		super(branch, SWGL_Root.WEB+"models/NbMesh");
+		super(branch, SWGL_Root.WEB+"models/SWGL_Mesh");
 	}
 
 

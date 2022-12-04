@@ -1,27 +1,10 @@
 package com.qx.level1.io.webgl.tests.loading;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.qx.level0.io.bohr._meta.BohrObjectMetaDescriptor;
-import com.qx.level0.io.bohr._meta.BohrObjectTypeCodeMetaVariable;
-import com.qx.level0.lang.xml.XML_Context;
-import com.qx.level0.meta.ModuleMetaDescriptor;
-import com.qx.level0.meta.sources.WebSource;
-import com.qx.level0.meta.targets.MetaTarget;
-import com.qx.level0.meta.targets.WebSourcesTarget;
-import com.qx.level0.meta.variables.CacheControlMetaVariable;
-import com.qx.level0.meta.variables.MetaScope;
-import com.qx.level0.meta.variables.MetaVariable;
-import com.qx.level0.meta.variables.PackageMetaVariable;
-import com.qx.level0.meta.variables.WebPathnameMetaVariable;
-import com.s8.sets.poly3d.WebGL_ModuleLoader;
-import com.s8.sets.poly3d._meta.WebGL_ProgramMetaDescriptor;
-
 public class WebGL_LoadingTest02 {
 
 	public static void main(String[] args) throws Exception {
 
+		/*
 		WebGL_ModuleLoader loader = new WebGL_ModuleLoader();
 
 		XML_Context context = new XML_Context(
@@ -51,6 +34,7 @@ public class WebGL_LoadingTest02 {
 		System.out.println(map);
 		WebSource src = map.get("/webgl/programs/standard.glsh");
 		System.out.println(src.load().head.unrollToString_UTF8());
+		*/
 	}
 
 }
