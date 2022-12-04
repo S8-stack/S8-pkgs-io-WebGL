@@ -1,8 +1,9 @@
 
-import { SWGL_View } from '../view/SWGL_View.js';
-import { SWGL_Appearance } from '/s8-io-swgl/appearances/SWGL_NbAppearance.js';
+import { SWGL_View } from '/s8-io-swgl/view/SWGL_View.js';
+import { SWGL_Appearance } from '/s8-io-swgl/appearances/SWGL_Appearance.js';
 import { SWGL_Program } from '/s8-io-swgl/appearances/SWGL_Program.js';
-import { SWGL_Environment } from '/s8-io-swgl/environment/NbEnvironment.js';
+import { SWGL_Environment } from '/s8-io-swgl/environment/SWGL_Environment.js';
+
 import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
 
 
@@ -160,7 +161,7 @@ export class SWGL_Renderer extends NeObject {
 
 			for (let i = 0; i < nAppearances; i++) {
 
-				/** @type {NbAppearance} appearance */
+				/** @type {SWGL_Appearance} appearance */
 				let appearance = this.appearances[i];
 
 				if (appearance.GPU_isLoaded) {

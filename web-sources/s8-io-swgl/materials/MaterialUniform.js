@@ -5,7 +5,7 @@ import { gl } from "/s8-io-swgl/swgl.js";
 /**
  * 
  */
-export class NbMaterialUniform {
+export class MaterialUniform {
 
 
     /**

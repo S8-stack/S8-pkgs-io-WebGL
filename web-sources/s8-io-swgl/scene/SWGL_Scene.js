@@ -3,8 +3,8 @@
 import { gl, SWGL_CONTEXT } from '/s8-io-swgl/swgl.js';
 
 import { SWGL_Environment } from '/s8-io-swgl/environment/SWGL_Environment.js';
-import { NbView } from "/s8-io-swgl/view/SWGL_View.js";
-import { StdNbViewController } from "/s8-io-swgl/view/StdNbViewController.js";
+import { SWGL_View } from "/s8-io-swgl/view/SWGL_View.js";
+import { StdViewController } from "../view/StdViewController.js";
 import { SWGL_Renderer } from '/s8-io-swgl/appearances/SWGL_Renderer.js';
 import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
 
@@ -26,7 +26,7 @@ export class SWGL_Scene extends NeObject {
 
 
 	/** 
-	 * @type {NbView} the view 
+	 * @type {SWGL_View} the view 
 	 */
 	view;
 
@@ -87,7 +87,7 @@ export class SWGL_Scene extends NeObject {
 
 			this.isRunning = true;
 
-			NbContext.initialize();
+			SWGL_CONTEXT.initialize();
 
 
 
@@ -104,14 +104,14 @@ export class SWGL_Scene extends NeObject {
 			/* <start> */
 
 			// initialize view and bind scene to view
-			this.view = new NbView(this);
+			this.view = new SWGL_View(this);
 
 			// environment
 			this.environment.view = this.view;
 
 
 			// start controller
-			this.controller = new StdNbViewController(this.view);
+			this.controller = new StdViewController(this.view);
 			this.controller.start();
 
 			// render

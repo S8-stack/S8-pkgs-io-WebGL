@@ -1,8 +1,8 @@
 
 
-import * as M4 from "s8-io-swgl/maths/SWGL_Matrix4d.js";
-import * as V3 from "s8-io-swgl/maths/SWGL_Vector3d.js";
-import * as V4 from "s8-io-swgl/maths/SWGL_Vector4d.js";
+import * as M4 from "/s8-io-swgl/maths/SWGL_Matrix4d.js";
+import * as V3 from "/s8-io-swgl/maths/SWGL_Vector3d.js";
+import * as V4 from "/s8-io-swgl/maths/SWGL_Vector4d.js";
 import { SWGL_CONTEXT } from "/s8-io-swgl/swgl.js";
 import { SWGL_Scene } from "/s8-io-swgl/scene/SWGL_Scene.js";
 
@@ -74,7 +74,7 @@ export class SWGL_View {
 		this.scene = scene;
 		let _this = this;
 		this.sizeListener = function(width, height){ _this.resize(width, height); };
-		NbContext.appendSizeListener(this.sizeListener);
+		SWGL_CONTEXT.appendSizeListener(this.sizeListener);
 	}
 
 

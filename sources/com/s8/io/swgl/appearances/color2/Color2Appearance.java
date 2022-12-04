@@ -20,7 +20,7 @@ public class Color2Appearance extends SWGL_Appearance {
 	 * @param typeName
 	 */
 	public Color2Appearance(NeBranch branch) {
-		super(branch, SWGL_Root.WEB+"color2/Color2Appearance");
+		super(branch, SWGL_Root.WEB+"appearances/color2/Color2Appearance");
 	}
 	
 	

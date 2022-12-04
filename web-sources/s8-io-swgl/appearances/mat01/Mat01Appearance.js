@@ -1,15 +1,15 @@
+import { SWGL_Material } from "/s8-io-swgl/materials/SWGL_Material.js";
 import { SWGL_Appearance } from "../SWGL_Appearance.js";
-import { NbMaterial } from "/s8-ng-geo/nebulae/materials/NbMaterial.js";
 
 
 /**
  * 
  */
-export class Mat01NbAppearance extends SWGL_Appearance {
+export class Mat01Appearance extends SWGL_Appearance {
 
 
     /**
-     * @type {NbMaterial}
+     * @type {SWGL_Material}
      */
     material;
 
@@ -22,7 +22,7 @@ export class Mat01NbAppearance extends SWGL_Appearance {
 
     /**
      * 
-     * @param {NbMaterial} material 
+     * @param {SWGL_Material} material 
      */
     S8_set_material(material) {
         this.material = material;

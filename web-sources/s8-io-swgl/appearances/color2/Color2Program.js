@@ -1,27 +1,27 @@
 
 
-import { NbProgram } from "/s8-ng-geo/nebulae/appearances/NbProgram.js";
-import { Color2NbAppearance } from "/s8-ng-geo/nebulae/appearances/color2/Color2NbAppearance.js";
-import { NbEnvironment } from "/s8-ng-geo/nebulae/environment/NbEnvironment.js";
-import { gl } from "/s8-ng-geo/nebulae/nebulae.js";
+import { SWGL_Program } from "/s8-io-swgl/appearances/SWGL_Program.js";
+import { Color2Appearance } from "/s8-io-swgl/appearances/color2/Color2Appearance.js";
+import { SWGL_Environment } from "/s8-io-swgl/environment/SWGL_Environment.js";
+import { gl } from "/s8-io-swgl/swgl.js";
 
-import * as M4 from '../../maths/SWGL_Matrix4d.js';
+import * as M4 from '/s8-io-swgl/maths/SWGL_Matrix4d.js';
 
-import { SWGL_Mesh, NbVertexAttributes } from "../../models/SWGL_Mesh.js";
-import { NbView } from "/s8-ng-geo/nebulae/view/NbView.js";
+import { SWGL_Mesh, VertexAttributes } from "/s8-io-swgl/models/SWGL_Mesh.js";
+import { SWGL_View } from "/s8-io-swgl/view/SWGL_View.js";
 
 
 /**
  * 
  */
-export class Color2NbProgram extends NbProgram {
+export class Color2Program extends SWGL_Program {
 
 
 	/**
 	 * 
 	 */
 	constructor() {
-		super("/s8-ng-geo/nebulae/appearances/color2");
+		super("/s8-io-swgl/appearances/color2");
 	}
 
 
@@ -57,7 +57,7 @@ export class Color2NbProgram extends NbProgram {
 	
 	/**
 	 * 
-	 * @param {NbEnvironment} environment 
+	 * @param {SWGL_Environment} environment 
 	 */
 	bindEnvironment(environment) {
 		// environment
@@ -66,7 +66,7 @@ export class Color2NbProgram extends NbProgram {
 
 	/**
 	 * 
-	 * @param {Color2NbAppearance} appearance 
+	 * @param {Color2Appearance} appearance 
 	 */
 	bindAppearance(appearance) {
 		// material
@@ -75,7 +75,7 @@ export class Color2NbProgram extends NbProgram {
 	
 
 	/**
-	 * @param {NbView} view 
+	 * @param {SWGL_View} view 
 	 * @param {SWGL_Mesh} model 
 	 */
 	bindModel(view, model) {
@@ -90,7 +90,7 @@ export class Color2NbProgram extends NbProgram {
 		/* </bind-uniforms> */
 
 		/* <bind-attributes> */
-		model.bindVertexAttributes(NbVertexAttributes.POSITIONS, this.pointAttributeLocation);
+		model.bindVertexAttributes(VertexAttributes.POSITIONS, this.pointAttributeLocation);
 		/* </bind-attributes> */
 
 		/* <bind-elements> */

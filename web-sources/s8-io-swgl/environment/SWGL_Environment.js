@@ -145,7 +145,7 @@ export class SWGL_Environment extends NeObject {
         }
     
             // environment
-        let rootPathname = "/nebulae/assets/skycube";
+        let rootPathname = "/s8-io-swgl/assets/skycube";
         environment.radiance = SWGL_TextureCubeMap.create(rootPathname+"/std2/radiance/face", ".png", 6);
         environment.irradiance = SWGL_TextureCubeMap.create(rootPathname+"/std2/irradiance/face", ".png", 1);
     

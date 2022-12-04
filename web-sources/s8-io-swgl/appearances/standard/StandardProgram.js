@@ -1,27 +1,27 @@
 
 
 
-import { gl } from '../../swgl.js';
+import { gl } from '/s8-io-swgl/swgl.js';
 
-import * as M4 from '../../maths/SWGL_Matrix4d.js';
+import * as M4 from '/s8-io-swgl/maths/SWGL_Matrix4d.js';
 
-import { SWGL_Mesh } from "../../models/SWGL_Mesh.js";
-import { NbEnvironment } from "/s8-ng-geo/nebulae/environment/NbEnvironment.js";
-import { NbProgram } from "/s8-ng-geo/nebulae/appearances/NbProgram.js";
-import { StandardNbAppearance } from "/s8-ng-geo/nebulae/appearances/standard/StandardNbAppearance.js";
-import { NbView } from "/s8-ng-geo/nebulae/view/NbView.js";
+import { SWGL_Mesh } from "/s8-io-swgl/models/SWGL_Mesh.js";
+import { SWGL_Environment } from "/s8-io-swgl/environment/SWGL_Environment.js";
+import { SWGL_Program } from "/s8-io-swgl/appearances/SWGL_Program.js";
+import { StandardAppearance } from "/s8-io-swgl/appearances/standard/StandardAppearance.js";
+import { SWGL_View } from "/s8-io-swgl/view/SWGL_View.js";
 
 
 /**
  * 
  */
-export class StandardNbProgram extends NbProgram {
+export class StandardProgram extends SWGL_Program {
 
 	/**
 	 * 
 	 */
 	constructor() {
-		super("/s8-ng-geo/nebulae/appearances/standard");
+		super("/s8-io-swgl/appearances/standard");
 	}
 
 	/**
@@ -68,7 +68,7 @@ export class StandardNbProgram extends NbProgram {
 
 	/**
 	 * 
-	 * @param {NbEnvironment} environment 
+	 * @param {SWGL_Environment} environment 
 	 */
 	bindEnvironment(environment) {
 		if(environment.radiance != null){
@@ -83,7 +83,7 @@ export class StandardNbProgram extends NbProgram {
 
 	/**
 	 * 
-	 * @param {StandardNbAppearance} appearance 
+	 * @param {StandardAppearance} appearance 
 	 */
 	bindAppearance(appearance) {
 		// material
@@ -96,7 +96,7 @@ export class StandardNbProgram extends NbProgram {
 
 
 	/**
-	 * @param {NbView} view 
+	 * @param {SWGL_View} view 
 	 * @param {SWGL_Mesh} model 
 	 */
 	bindModel(view, model) {

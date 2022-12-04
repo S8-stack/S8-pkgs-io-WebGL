@@ -310,7 +310,7 @@ export class StdViewController {
 				i++;
 			}
 		};
-		NbContext.canvasNode.addEventListener('mousedown', this.onMouseDown, false);
+		SWGL_CONTEXT.canvasNode.addEventListener('mousedown', this.onMouseDown, false);
 
 
 		this.onMouseUp = function (event) {

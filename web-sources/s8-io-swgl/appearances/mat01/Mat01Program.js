@@ -1,37 +1,37 @@
 
 
-import { gl } from '../../swgl.js';
+import { gl } from '/s8-io-swgl/swgl.js';
 
-import * as M4 from '../../maths/SWGL_Matrix4d.js';
+import * as M4 from '/s8-io-swgl/maths/SWGL_Matrix4d.js';
 
 
-import { SWGL_Mesh, NbVertexAttributes } from "../../models/SWGL_Mesh.js";
-import { NbMaterialUniform } from '/s8-ng-geo/nebulae/materials/NbMaterialUniform.js';
-import { NbEnvironment } from '/s8-ng-geo/nebulae/environment/NbEnvironment.js';
-import { NbView } from '/s8-ng-geo/nebulae/view/NbView.js';
-import { NbProgram } from "/s8-ng-geo/nebulae/appearances/NbProgram.js";
-import { Mat01NbAppearance } from "/s8-ng-geo/nebulae/appearances/mat01/Mat01NbAppearance.js";
-import { DirectionalNbLightUniform } from "/s8-ng-geo/nebulae/lights/DirectionalNbLightUniform.js";
+import { SWGL_Mesh, VertexAttributes } from "/s8-io-swgl/models/SWGL_Mesh.js";
+import { MaterialUniform } from '/s8-io-swgl/materials/MaterialUniform.js';
+import { SWGL_Environment } from '/s8-io-swgl/environment/SWGL_Environment.js';
+import { SWGL_View } from '/s8-io-swgl/view/SWGL_View.js';
+import { SWGL_Program } from "/s8-io-swgl/appearances/SWGL_Program.js";
+import { Mat01Appearance } from "/s8-io-swgl/appearances/mat01/Mat01Appearance.js";
+import { DirectionalLightUniform } from "/s8-io-swgl/lights/DirectionalLightUniform.js";
 
 
 
 /**
  * 
  */
-export class Mat01NbProgram extends NbProgram {
+export class Mat01Program extends SWGL_Program {
 
 
 	static NB_DIRECTIONAL_LIGHTS = 4;
 
 
 	/**
-	 * @type {DirectionalNbLightUniform[]}
+	 * @type {DirectionalLightUniform[]}
 	 */
 	lightUniforms;
 
 
 	/**
-	 * @type {NbMaterialUniform}
+	 * @type {MaterialUniform}
 	 */
 	materialUniform;
 
@@ -40,12 +40,12 @@ export class Mat01NbProgram extends NbProgram {
 	 * 
 	 */
 	constructor() {
-		super("/s8-ng-geo/nebulae/appearances/mat01");
+		super("/s8-io-swgl/appearances/mat01");
 		this.lightUniforms = new Array();
-		for (let i = 0; i < Mat01NbProgram.NB_DIRECTIONAL_LIGHTS; i++) {
-			this.lightUniforms[i] = new DirectionalNbLightUniform();
+		for (let i = 0; i < Mat01Program.NB_DIRECTIONAL_LIGHTS; i++) {
+			this.lightUniforms[i] = new DirectionalLightUniform();
 		}
-		this.materialUniform = new NbMaterialUniform();
+		this.materialUniform = new MaterialUniform();
 	}
 
 
@@ -58,7 +58,7 @@ export class Mat01NbProgram extends NbProgram {
 		this.loc_Uniform_matrix_MVP = gl.getUniformLocation(this.handle, "ModelViewProjection_Matrix");
 		this.loc_Uniform_matrix_MV = gl.getUniformLocation(this.handle, "ModelView_Matrix");
 		this.loc_Uniform_matrix_N = gl.getUniformLocation(this.handle, "Normal_Matrix");
-		for (let i = 0; i < Mat01NbProgram.NB_DIRECTIONAL_LIGHTS; i++) {
+		for (let i = 0; i < Mat01Program.NB_DIRECTIONAL_LIGHTS; i++) {
 			this.lightUniforms[i].link(this.handle, `lights[${i}]`);
 		}
 		this.materialUniform.link(this.handle, "material");
@@ -87,10 +87,10 @@ export class Mat01NbProgram extends NbProgram {
 
 	/**
 	 * 
-	 * @param {NbEnvironment} environment 
+	 * @param {SWGL_Environment} environment 
 	 */
 	bindEnvironment(environment) {
-		for (var i = 0; i < Mat01NbProgram.NB_DIRECTIONAL_LIGHTS; i++) {
+		for (var i = 0; i < Mat01Program.NB_DIRECTIONAL_LIGHTS; i++) {
 			this.lightUniforms[i].bind(environment.directionalLights[i]);
 		}
 	}
@@ -98,7 +98,7 @@ export class Mat01NbProgram extends NbProgram {
 
 	/**
 	 * 
-	 * @param {Mat01NbAppearance} appearance 
+	 * @param {Mat01Appearance} appearance 
 	 */
 	bindAppearance(appearance) {
 		this.materialUniform.bind(appearance.material);
@@ -106,7 +106,7 @@ export class Mat01NbProgram extends NbProgram {
 
 
 	/**
-	 * @param {NbView} view 
+	 * @param {SWGL_View} view 
 	 * @param {SWGL_Mesh} model 
 	 */
 	bindModel(view, model) {
@@ -125,8 +125,8 @@ export class Mat01NbProgram extends NbProgram {
 		/* </bind-uniforms> */
 
 		/* <bind-attributes> */
-		model.bindVertexAttributes(NbVertexAttributes.POSITIONS, this.pointAttributeLocation);
-		model.bindVertexAttributes(NbVertexAttributes.NORMALS, this.normalAttributeLocation);
+		model.bindVertexAttributes(VertexAttributes.POSITIONS, this.pointAttributeLocation);
+		model.bindVertexAttributes(VertexAttributes.NORMALS, this.normalAttributeLocation);
 		/* </bind-attributes> */
 
 		/* <bind-elements> */

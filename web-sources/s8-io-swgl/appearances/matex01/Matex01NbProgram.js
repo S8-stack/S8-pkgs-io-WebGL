@@ -1,7 +1,7 @@
 import { SWGL_Renderer } from "../SWGL_Renderer";
 import { SWGL_Mesh } from "../../models/SWGL_Mesh.js";
-import { NbMaterialUniform } from "../../materials/NbMaterialUniform.js";
-import { DirectionalLightNbUniform } from "../../lights/DirectionalNbLightUniform.js";
+import { NbMaterialUniform } from "../../materials/MaterialUniform.js";
+import { DirectionalLightNbUniform } from "../../lights/DirectionalLightUniform.js";
 import { Matex01NbAppearance } from "/s8-ng-geo/nebulae/appearances/matex01/Matex01Appearance.js";
 
 

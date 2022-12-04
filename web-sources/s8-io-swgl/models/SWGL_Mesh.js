@@ -19,10 +19,10 @@ export class SWGL_Mesh extends NeObject {
 	matrix = M4.createIdentity();
 
 	/** @type {boolean[]} vertex attributes enabling flage */
-	isVertexAttributeEnabled = new Array(NbVertexAttributes.INDEX_RANGE);
+	isVertexAttributeEnabled = new Array(VertexAttributes.INDEX_RANGE);
 
-	/** @type {NbVertexAttributes[]} the array of vertex attributes */
-	vertexAttributes = new Array(NbVertexAttributes.INDEX_RANGE);
+	/** @type {VertexAttributes[]} the array of vertex attributes */
+	vertexAttributes = new Array(VertexAttributes.INDEX_RANGE);
 
 
 	/** @type {Uint32Array} indices of elements */
@@ -96,7 +96,7 @@ export class SWGL_Mesh extends NeObject {
 		super();
 
 		// initialize attributes
-		for (let i = 0; i < NbVertexAttributes.INDEX_RANGE; i++) {
+		for (let i = 0; i < VertexAttributes.INDEX_RANGE; i++) {
 			this.isVertexAttributeEnabled[i] = false;
 			this.vertexAttributes[i] = null;
 		}
@@ -139,26 +139,26 @@ export class SWGL_Mesh extends NeObject {
 
 	/** @param {Float32Array} points */
 	S8_set_positions(points) {
-		let index = NbVertexAttributes.POSITIONS;
+		let index = VertexAttributes.POSITIONS;
 		this.isVertexAttributeEnabled[index] = true;
-		this.vertexAttributes[index] = new NbVertexAttributes(3, points);
+		this.vertexAttributes[index] = new VertexAttributes(3, points);
 		this.nVertices = points.length / 3;
 		this.GPU_isLoaded = false;
 	}
 
 	/** @param {Float32Array} normals */
 	S8_set_normals(normals) {
-		let index = NbVertexAttributes.NORMALS;
+		let index = VertexAttributes.NORMALS;
 		this.isVertexAttributeEnabled[index] = true;
-		this.vertexAttributes[index] = new NbVertexAttributes(3, normals);
+		this.vertexAttributes[index] = new VertexAttributes(3, normals);
 		this.GPU_isLoaded = false;
 	}
 
 	/** @param {Float32Array} uTangents */
 	S8_set_uTangents(uTangents) {
-		let index = NbVertexAttributes.U_TANGENTS;
+		let index = VertexAttributes.U_TANGENTS;
 		this.isVertexAttributeEnabled[index] = true;
-		this.vertexAttributes[index] = new NbVertexAttributes(3, uTangents);
+		this.vertexAttributes[index] = new VertexAttributes(3, uTangents);
 		this.GPU_isLoaded = false;
 	}
 
@@ -172,25 +172,25 @@ export class SWGL_Mesh extends NeObject {
 
 	/** @param {Float32Array} texCoords */
 	S8_set_texCoords(texCoords) {
-		let index = NbVertexAttributes.TEX_COORDS;
+		let index = VertexAttributes.TEX_COORDS;
 		this.isVertexAttributeEnabled[index] = true;
-		this.vertexAttributes[index] = new NbVertexAttributes(2, texCoords);
+		this.vertexAttributes[index] = new VertexAttributes(2, texCoords);
 		this.GPU_isLoaded = false;
 	}
 
 	/** @param {Float32Array} colors */
 	S8_set_colors(colors) {
-		let index = NbVertexAttributes.COLORS;
+		let index = VertexAttributes.COLORS;
 		this.isVertexAttributeEnabled[index] = true;
-		this.vertexAttributes[index] = new NbVertexAttributes(4, colors);
+		this.vertexAttributes[index] = new VertexAttributes(4, colors);
 		this.GPU_isLoaded = false;
 	}
 
 	/** @param {Float32Array} colors */
 	S8_set_appCoords(appCoords) {
-		let index = NbVertexAttributes.APP_COORDS;
+		let index = VertexAttributes.APP_COORDS;
 		this.isVertexAttributeEnabled[index] = true;
-		this.vertexAttributes[index] = new NbVertexAttributes(2, appCoords);
+		this.vertexAttributes[index] = new VertexAttributes(2, appCoords);
 		this.GPU_isLoaded = false;
 	}
 
@@ -227,7 +227,7 @@ export class SWGL_Mesh extends NeObject {
 			this.buildMesh();
 
 
-			for (let i = 0; i < NbVertexAttributes.INDEX_RANGE; i++) {
+			for (let i = 0; i < VertexAttributes.INDEX_RANGE; i++) {
 				if (this.isVertexAttributeEnabled[i]) {
 					this.vertexAttributes[i].GPU_load();
 				}
@@ -276,30 +276,12 @@ export class SWGL_Mesh extends NeObject {
 
 	S8_dispose() {
 		if (this.GPU_isLoaded) {
-			if (this.isPointVertexAttributeEnabled) {
-				gl.deleteBuffer(this.pointVertexAttributesBuffer);
+			for(let i= 0; i<VertexAttributes.INDEX_RANGE; i++){
+				if (this.isVertexAttributeEnabled[i]) {
+					this.vertexAttributes[i].GPU_dispose();
+				}	
 			}
-
-			if (this.isNormalVertexAttributeEnabled) {
-				gl.deleteBuffer(this.normalVertexAttributesBuffer);
-			}
-
-			if (this.isUTangentVertexAttributeEnabled) {
-				gl.deleteBuffer(this.uTangentVertexAttributesBuffer);
-			}
-
-			if (this.isVTangentVertexAttributeEnabled) {
-				gl.deleteBuffer(this.vTangentVertexAttibutesBuffer);
-			}
-
-			if (this.isTexCoordVertexAttributeEnabled) {
-				gl.deleteBuffer(this.texCoordVertexAttributesBuffer);
-			}
-
-			if (this.isColorVertexAttributeEnabled) {
-				gl.deleteBuffer(this.colorVertexAttributesBuffer);
-			}
-
+			
 			// delete handler buffer
 			gl.deleteBuffer(this.elementBuffer);
 		}
@@ -314,7 +296,7 @@ export class SWGL_Mesh extends NeObject {
 /**
  * WebGL Shape constructor, methods and utilities
  */
-export class NbVertexAttributes extends NeObject {
+export class VertexAttributes {
 
 
 	static INDEX_RANGE = 16;
@@ -365,7 +347,6 @@ export class NbVertexAttributes extends NeObject {
 	 * 
 	 */
 	constructor(dimension, floatValues) {
-		super();
 		this.dimension = dimension;
 		this.floatValues = floatValues;
 	}

@@ -1,10 +1,10 @@
-import { NbAppearance } from "/s8-ng-geo/nebulae/appearances/NbAppearance.js";
+import { SWGL_Appearance } from "/s8-io-swgl/appearances/SWGL_Appearance.js";
 
 /**
  * CAD_Engine
  * 
  */
-export class StandardNbAppearance extends NbAppearance {
+export class StandardAppearance extends SWGL_Appearance {
 
 	/** default value for shape material -> "Standard" Unity-style shading */
 	glossiness = 0.7;
