@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sources xmlns="http://s8.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://s8.com schema.xsd">
-	<root-local-path>/Users/pc/qx/git/com.s8.sets.nebulae/web-nebulae/</root-local-path>
-	<root-web-path>/nebulae/</root-web-path>
+	<root-local-path>/Users/pc/qx/git/com.s8.io.swgl/web-sources/s8-io-swgl/</root-local-path>
+	<root-web-path>/s8-io-swgl/</root-web-path>
 	<html-filter cache="PRODUCTION" frag-length="1024">
 		<sources>**.html</sources>
 	</html-filter>

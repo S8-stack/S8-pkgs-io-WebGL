@@ -27,7 +27,7 @@ public class SWGL_Mesh extends NeObject {
 	 * 
 	 * @param points
 	 */
-	public void setPositionVertexAttributes(List<SWGL_Vector> points) {
+	public void setPositionVertexAttributes(List<? extends SWGL_Vector> points) {
 		if(points != null) {
 			int nVertices = points.size();
 			float[] buffer = new float[3 * nVertices];
@@ -48,7 +48,7 @@ public class SWGL_Mesh extends NeObject {
 	 * 
 	 * @param normals
 	 */
-	public void setNormalVertexAttributes(List<SWGL_Vector> normals) {
+	public void setNormalVertexAttributes(List<? extends SWGL_Vector> normals) {
 		if(normals != null) {
 			int nVertices = normals.size();
 			float[] buffer = new float[3*nVertices];
@@ -70,7 +70,7 @@ public class SWGL_Mesh extends NeObject {
 	 * 
 	 * @param uTangents
 	 */
-	public void setUTangentVertexAttributes(List<SWGL_Vector> uTangents) {
+	public void setUTangentVertexAttributes(List<? extends SWGL_Vector> uTangents) {
 		if(uTangents != null) {
 			int nVertices = uTangents.size();
 			float[] buffer = new float[3*nVertices];
@@ -91,7 +91,7 @@ public class SWGL_Mesh extends NeObject {
 	 * 
 	 * @param vTangents
 	 */
-	public void setVTangentVertexAttributes(List<SWGL_Vector> vTangents) {
+	public void setVTangentVertexAttributes(List<? extends SWGL_Vector> vTangents) {
 		if(vTangents != null) {
 			int nVertices = vTangents.size();
 			float[] buffer = new float[3*nVertices];
@@ -114,7 +114,7 @@ public class SWGL_Mesh extends NeObject {
 	 * 
 	 * @param texCoords
 	 */
-	public void setTexCoordVertexAttributes(List<SWGL_Vector> texCoords) {
+	public void setTexCoordVertexAttributes(List<? extends SWGL_Vector> texCoords) {
 		if(texCoords != null) {
 			int nVertices = texCoords.size();
 			float[] buffer = new float[2 * nVertices];
@@ -133,7 +133,7 @@ public class SWGL_Mesh extends NeObject {
 	 * 
 	 * @param colors
 	 */
-	public void setColorVertexAttributes(List<SWGL_Vector> colors) {
+	public void setColorVertexAttributes(List<? extends SWGL_Vector> colors) {
 		if(colors != null) {
 			int nVertices = colors.size();
 			float[] buffer = new float[3*nVertices];
@@ -154,7 +154,7 @@ public class SWGL_Mesh extends NeObject {
 	 * 
 	 * @param colors
 	 */
-	public void setAppCoordsAttributes(List<SWGL_Vector> appCoords) {
+	public void setAppCoordsAttributes(List<? extends SWGL_Vector> appCoords) {
 		if(appCoords != null) {
 			int nVertices = appCoords.size();
 			float[] buffer = new float[3*nVertices];
