@@ -1,12 +1,15 @@
 package com.s8.io.swgl.models;
 
-import java.util.List;
-
 import com.s8.io.bohr.neon.core.NeBranch;
 import com.s8.io.bohr.neon.core.NeObject;
 import com.s8.io.swgl.SWGL_Root;
-import com.s8.io.swgl.maths.SWGL_Vector;
 
+
+/**
+ * 
+ * @author pierreconvert
+ *
+ */
 public class SWGL_Mesh extends NeObject {
 
 
@@ -27,19 +30,9 @@ public class SWGL_Mesh extends NeObject {
 	 * 
 	 * @param points
 	 */
-	public void setPositionVertexAttributes(List<? extends SWGL_Vector> points) {
-		if(points != null) {
-			int nVertices = points.size();
-			float[] buffer = new float[3 * nVertices];
-			SWGL_Vector vector;
-			int i = 0;
-			for(int index = 0; index < nVertices; index ++) {
-				vector = points.get(index);
-				buffer[i++] = vector.getXFloat();
-				buffer[i++] = vector.getYFloat();
-				buffer[i++] = vector.getZFloat();
-			}
-			vertex.setFloat32Array("positions", buffer);	
+	public void setPositionVertexAttributes(float[] data) {
+		if(data != null) {
+			vertex.setFloat32Array("positions", data);	
 		}
 	}
 
@@ -48,19 +41,9 @@ public class SWGL_Mesh extends NeObject {
 	 * 
 	 * @param normals
 	 */
-	public void setNormalVertexAttributes(List<? extends SWGL_Vector> normals) {
-		if(normals != null) {
-			int nVertices = normals.size();
-			float[] buffer = new float[3*nVertices];
-			SWGL_Vector vector;
-			int i = 0;
-			for(int index = 0; index < nVertices; index ++) {
-				vector = normals.get(index);
-				buffer[i++] = vector.getXFloat();
-				buffer[i++] = vector.getYFloat();
-				buffer[i++] = vector.getZFloat();
-			}
-			vertex.setFloat32Array("normals", buffer);	
+	public void setNormalVertexAttributes(float[] data) {
+		if(data != null) {
+			vertex.setFloat32Array("normals", data);	
 		}
 	}
 
@@ -70,19 +53,9 @@ public class SWGL_Mesh extends NeObject {
 	 * 
 	 * @param uTangents
 	 */
-	public void setUTangentVertexAttributes(List<? extends SWGL_Vector> uTangents) {
-		if(uTangents != null) {
-			int nVertices = uTangents.size();
-			float[] buffer = new float[3*nVertices];
-			SWGL_Vector vector;
-			int i = 0;
-			for(int index = 0; index < nVertices; index ++) {
-				vector = uTangents.get(index);
-				buffer[i++] = vector.getXFloat();
-				buffer[i++] = vector.getYFloat();
-				buffer[i++] = vector.getZFloat();
-			}
-			vertex.setFloat32Array("uTangents", buffer);	
+	public void setUTangentVertexAttributes(float[] data) {
+		if(data != null) {
+			vertex.setFloat32Array("uTangents", data);	
 		}
 	}
 
@@ -91,21 +64,10 @@ public class SWGL_Mesh extends NeObject {
 	 * 
 	 * @param vTangents
 	 */
-	public void setVTangentVertexAttributes(List<? extends SWGL_Vector> vTangents) {
-		if(vTangents != null) {
-			int nVertices = vTangents.size();
-			float[] buffer = new float[3*nVertices];
-			SWGL_Vector vector;
-			int i = 0;
-			for(int index = 0; index < nVertices; index ++) {
-				vector = vTangents.get(index);
-				buffer[i++] = vector.getXFloat();
-				buffer[i++] = vector.getYFloat();
-				buffer[i++] = vector.getZFloat();
-			}
-			vertex.setFloat32Array("vTangents", buffer);
+	public void setVTangentVertexAttributes(float[] data) {
+		if(data != null) {
+			vertex.setFloat32Array("vTangents", data);
 		}
-
 	}
 
 
@@ -114,18 +76,9 @@ public class SWGL_Mesh extends NeObject {
 	 * 
 	 * @param texCoords
 	 */
-	public void setTexCoordVertexAttributes(List<? extends SWGL_Vector> texCoords) {
-		if(texCoords != null) {
-			int nVertices = texCoords.size();
-			float[] buffer = new float[2 * nVertices];
-			SWGL_Vector vector;
-			int i = 0;
-			for(int index = 0; index < nVertices; index ++) {
-				vector = texCoords.get(index);
-				buffer[i++] = vector.getXFloat();
-				buffer[i++] = vector.getYFloat();
-			}
-			vertex.setFloat32Array("texCoords", buffer);	
+	public void setTexCoordVertexAttributes(float[] data) {
+		if(data != null) {
+			vertex.setFloat32Array("texCoords", data);	
 		}
 	}
 
@@ -133,19 +86,9 @@ public class SWGL_Mesh extends NeObject {
 	 * 
 	 * @param colors
 	 */
-	public void setColorVertexAttributes(List<? extends SWGL_Vector> colors) {
-		if(colors != null) {
-			int nVertices = colors.size();
-			float[] buffer = new float[3*nVertices];
-			SWGL_Vector vector;
-			int i = 0;
-			for(int index = 0; index < nVertices; index ++) {
-				vector = colors.get(index);
-				buffer[i++] = vector.getXFloat();
-				buffer[i++] = vector.getYFloat();
-				buffer[i++] = vector.getZFloat();
-			}
-			vertex.setFloat32Array("colors", buffer);	
+	public void setColorVertexAttributes(float[] data) {
+		if(data != null) {
+			vertex.setFloat32Array("colors", data);	
 		}
 	}
 	
@@ -154,18 +97,9 @@ public class SWGL_Mesh extends NeObject {
 	 * 
 	 * @param colors
 	 */
-	public void setAppCoordsAttributes(List<? extends SWGL_Vector> appCoords) {
-		if(appCoords != null) {
-			int nVertices = appCoords.size();
-			float[] buffer = new float[3*nVertices];
-			SWGL_Vector vector;
-			int i = 0;
-			for(int index = 0; index < nVertices; index ++) {
-				vector = appCoords.get(index);
-				buffer[i++] = vector.getXFloat();
-				buffer[i++] = vector.getYFloat();
-			}
-			vertex.setFloat32Array("appCoords", buffer);	
+	public void setAppCoordsAttributes(float[] data) {
+		if(data != null) {
+			vertex.setFloat32Array("appCoords", data);	
 		}
 	}
 
@@ -175,15 +109,9 @@ public class SWGL_Mesh extends NeObject {
 	 * 
 	 * @param colors
 	 */
-	public void setIndices(int dimension, List<Integer> indices) {
+	public void setIndices(int dimension, long[] data) {
 		vertex.setUInt8("dimension", dimension);
-
-		int n = indices.size();
-		long[] buffer = new long[n];
-		for(int i = 0; i < n; i ++) {
-			buffer[i] = indices.get(i);
-		}
-		vertex.setUInt32Array("indices", buffer);	
+		vertex.setUInt32Array("indices", data);	
 	}
 
 }

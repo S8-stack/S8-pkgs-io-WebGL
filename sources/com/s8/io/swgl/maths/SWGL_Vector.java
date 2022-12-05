@@ -1,49 +1,8 @@
 package com.s8.io.swgl.maths;
 
-public interface SWGL_Vector {
+public class SWGL_Vector {
 
-	
-	
-	/**
-	 * 
-	 * @return
-	 */
-	public float getFloat(int index);
-	
-	
-	/**
-	 * First component. Equivalent to <code>get(0)</code>
-	 * @return
-	 */
-	public float getXFloat();
-	
-	
-	/**
-	 * Coefficient 2. Equivalent to <code>get(1)</code>
-	 * @return
-	 */
-	public float getYFloat();
-	
-	
-	/**
-	 * Coefficient 3. Equivalent to <code>get(2)</code>
-	 * @return
-	 */
-	public float getZFloat();
-	
-	
-	/**
-	 * Coefficient 4. Equivalent to <code>get(3)</code>
-	 * @return
-	 */
-	public float getAFloat();
-	
-	
-	
-	public int getDimension();
-	
-	
-	public float[] toFloatArray();
+
 	
 	
 	/**
