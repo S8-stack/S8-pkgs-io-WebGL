@@ -3,7 +3,7 @@
  * 
  */
 
-import { SWGL_Mesh } from "../SWGL_Mesh";
+import { SWGL_Model } from "../SWGL_Model";
 
 import * as V2 from '../../maths/SWGL_Vector2d';
 import * as V3 from '../../maths/SWGL_Vector3d';
@@ -31,7 +31,7 @@ export class HexahedronNbMeshBuilder {
 
 	/**
 	 * 
-	 * @param {SWGL_Mesh} mesh 
+	 * @param {SWGL_Model} mesh 
 	 * @returns 
 	 */
 	buildSurface(mesh) {
@@ -214,7 +214,7 @@ export class HexahedronNbMeshBuilder {
 
 	/**
 	 * 
-	 * @param {SWGL_Mesh} mesh 
+	 * @param {SWGL_Model} mesh 
 	 */
 	buildWire(mesh) {
 

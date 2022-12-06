@@ -6,7 +6,7 @@ import { NbContext } from './swgl';
 import { NbGear } from './scene/NbGear';
 import { SWGL_Scene } from './scene/SWGL_Scene';
 import { ElementaryNbShGen } from './models/generators/ElementaryNbShGen';
-import { SWGL_Mesh } from './models/SWGL_Mesh';
+import { SWGL_Model } from './models/SWGL_Model';
 import { HexahedronNbMeshBuilder } from './models/primitives/HexahedronNbMeshBuilder';
 
 
@@ -58,7 +58,7 @@ export class NbFullScreenWindow extends S8Orbital {
         meshProps.vertexCapacity = 24;
         meshProps.elementCapacity = 12;
 
-        let cubeMesh = SWGL_Mesh.create(meshProps);
+        let cubeMesh = SWGL_Model.create(meshProps);
         h.buildSurface(cubeMesh);
 
         // build shape generator

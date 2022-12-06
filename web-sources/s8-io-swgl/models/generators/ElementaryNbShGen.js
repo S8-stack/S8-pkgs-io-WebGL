@@ -4,7 +4,7 @@ import { SWGL_Scene } from '../../scene/SWGL_Scene';
 import { NbShGen } from './NbShGen';
 
 import * as M4 from '../../maths/SWGL_Matrix4d';
-import { SWGL_Mesh } from '../SWGL_Mesh';
+import { SWGL_Model } from '../SWGL_Model';
 import { NbShape } from '../NbShape';
 import { NbShapeProperties } from '../NbShapeProperties';
 
@@ -24,7 +24,7 @@ export class ElementaryNbShGen extends NbShGen {
     /** @type {string} */
     appearanceName = null;
 
-    /** @type {SWGL_Mesh} */
+    /** @type {SWGL_Model} */
     mesh = null;
 
     constructor(id) { 

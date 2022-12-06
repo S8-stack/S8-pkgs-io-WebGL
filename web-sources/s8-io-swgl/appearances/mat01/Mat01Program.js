@@ -5,13 +5,15 @@ import { gl } from '/s8-io-swgl/swgl.js';
 import * as M4 from '/s8-io-swgl/maths/SWGL_Matrix4d.js';
 
 
-import { SWGL_Mesh, VertexAttributes } from "/s8-io-swgl/models/SWGL_Mesh.js";
 import { MaterialUniform } from '/s8-io-swgl/materials/MaterialUniform.js';
 import { SWGL_Environment } from '/s8-io-swgl/environment/SWGL_Environment.js';
 import { SWGL_View } from '/s8-io-swgl/view/SWGL_View.js';
 import { SWGL_Program } from "/s8-io-swgl/appearances/SWGL_Program.js";
 import { Mat01Appearance } from "/s8-io-swgl/appearances/mat01/Mat01Appearance.js";
 import { DirectionalLightUniform } from "/s8-io-swgl/lights/DirectionalLightUniform.js";
+
+import { SWGL_Model } from "/s8-io-swgl/models/SWGL_Model.js";
+import { VertexAttributes } from '/s8-io-swgl/models/SWGL_Mesh.js';
 
 
 
@@ -65,8 +67,8 @@ export class Mat01Program extends SWGL_Program {
 		/* </uniforms> */
 
 		/* <attributes> */
-		this.pointAttributeLocation = gl.getAttribLocation(this.handle, "vertex");
-		this.normalAttributeLocation = gl.getAttribLocation(this.handle, "normal");
+		//this.pointAttributeLocation = gl.getAttribLocation(this.handle, "vertex");
+		//this.normalAttributeLocation = gl.getAttribLocation(this.handle, "normal");
 		/* </attributes> */
 	}
 
@@ -79,8 +81,8 @@ export class Mat01Program extends SWGL_Program {
 		gl.useProgram(this.handle);
 
 		/* <enable-attributes> */
-		gl.enableVertexAttribArray(this.pointAttributeLocation);
-		gl.enableVertexAttribArray(this.normalAttributeLocation);
+		gl.enableVertexAttribArray(VertexAttributes.POSITIONS_LOCATION);
+		gl.enableVertexAttribArray(VertexAttributes.NORMALS_LOCATION);
 		/* </enable-attributes> */
 	}
 
@@ -107,7 +109,7 @@ export class Mat01Program extends SWGL_Program {
 
 	/**
 	 * @param {SWGL_View} view 
-	 * @param {SWGL_Mesh} model 
+	 * @param {SWGL_Model} model 
 	 */
 	bindModel(view, model) {
 		/* <matrices> */
@@ -125,20 +127,20 @@ export class Mat01Program extends SWGL_Program {
 		/* </bind-uniforms> */
 
 		/* <bind-attributes> */
-		model.bindVertexAttributes(VertexAttributes.POSITIONS, this.pointAttributeLocation);
-		model.bindVertexAttributes(VertexAttributes.NORMALS, this.normalAttributeLocation);
+		model.mesh.positionVertexAttributes.bind();
+		model.mesh.normalVertexAttributes.bind();
 		/* </bind-attributes> */
 
 		/* <bind-elements> */
-		model.bindElements();
+		model.mesh.elementIndices.bind();
 		/* </bind-elements> */
 	}
 
 
 	disable() {
 		/* <disable-attributes> */
-		gl.disableVertexAttribArray(this.pointAttributeLocation);
-		gl.disableVertexAttribArray(this.normalAttributeLocation);
+		gl.disableVertexAttribArray(VertexAttributes.POSITIONS_LOCATION);
+		gl.disableVertexAttribArray(VertexAttributes.NORMALS_LOCATION);
 		/* </disable-attributes> */
 
 		// unbind shader program

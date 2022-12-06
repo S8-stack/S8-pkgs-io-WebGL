@@ -1,8 +1,5 @@
 
 
-
-import * as M4 from '/s8-io-swgl/maths/SWGL_Matrix4d.js';
-
 import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
 import { gl } from '/s8-io-swgl/swgl.js';
 
@@ -15,79 +12,35 @@ import { gl } from '/s8-io-swgl/swgl.js';
  */
 export class SWGL_Mesh extends NeObject {
 
-	/** @type {Float32Array}  predefine matrix */
-	matrix = M4.createIdentity();
+	/** @type {VertexAttributes} the position vertex attributes */
+	positionVertexAttributes = new VertexAttributes(3, VertexAttributes.POSITIONS_LOCATION);
 
-	/** @type {boolean[]} vertex attributes enabling flage */
-	isVertexAttributeEnabled = new Array(VertexAttributes.INDEX_RANGE);
+	/** @type {VertexAttributes} the position vertex attributes */
+	normalVertexAttributes = new VertexAttributes(3, VertexAttributes.NORMALS_LOCATION);
 
-	/** @type {VertexAttributes[]} the array of vertex attributes */
-	vertexAttributes = new Array(VertexAttributes.INDEX_RANGE);
+	/** @type {VertexAttributes} the position vertex attributes */
+	uTangentVertexAttributes = new VertexAttributes(3, VertexAttributes.U_TANGENTS_LOCATION);
 
+	/** @type {VertexAttributes} the position vertex attributes */
+	vTangentVertexAttributes = new VertexAttributes(3, VertexAttributes.V_TANGENTS_LOCATION);
 
-	/** @type {Uint32Array} indices of elements */
-	indices;
+	/** @type {VertexAttributes} the position vertex attributes */
+	texCoordsVertexAttributes = new VertexAttributes(2, VertexAttributes.TEX_COORDS_LOCATION);
 
-	/** @type {WebGLBuffer}  elements buffer  UNSIGNED_INT (UInt32) REQUIRED !!! */
-	elementBuffer = null;
+	/** @type {VertexAttributes} the position vertex attributes */
+	colorVertexAttributes = new VertexAttributes(4, VertexAttributes.COLORS_LOCATION);
+	
+	/** @type {VertexAttributes} the position vertex attributes */
+	appCoordsVertexAttributes = new VertexAttributes(2, VertexAttributes.APP_COORDS_LOCATION);
+	
 
 	/** number of vertices */
 	nVertices;
 
-
-	/**
-	 * @type {number}
-	 * 
-	 * A GLsizei specifying the number of elements of the bound element array buffer to be rendered. 
-	 * For example, to draw a wireframe triangle with gl.LINES the count should be 2 endpoints 
-	 * per line × 3 lines = 6 elements. However to draw the same wireframe triangle with gl.LINE_STRIP 
-	 * the element array buffer does not repeat the indices for the end of the first line/start of the second 
-	 * line, and end of the second line/start of the third line, so count will be four. 
-	 * To draw the same triangle with gl.LINE_LOOP the element array buffer does not repeat the 
-	 * first/last vertex either so count will be three.
-	 */
-	indexCount;
-
 	/** draw option */
 	drawOption = gl.STATIC_DRAW;
 
-
-	/** @type {boolean} : false if mesh is to be built */
-	isMeshBuilt = false;
-
-	/**
-	 * Transfer to GPU has been initiated
-	 */
-	GPU_isInitiated = false;
-
-
 	GPU_isLoaded = false;
-
-
-	/** Direct: vertex attributes directly set */
-	static DIRECT_MESH_BUILD_MODE = 0;
-
-	/** Pattern: one seed is replaicated and postionned against a matrices array */
-	static PATTERN_MESH_BUILD_MODE = 2;
-
-	/** Blend: multiple seeds are postionned against a single matrix */
-	static PATTERN_MESH_BUILD_MODE = 4;
-
-	/** @type {string} */
-	meshBuildMode = SWGL_Mesh.DIRECT_MESH_BUILD_MODE;
-
-
-	/**
-	 * @type {boolean} true is NbModel is directly part of a renderer pipe, 
-	 * false if intermediary in complex Model construction.
-	 */
-	WebGL_isRendered;
-
-	/** @type {SWGL_Mesh} */
-	seedModel;
-
-	/** seed matrix */
-	seedMatrix;
 
 	/**
 	 * 
@@ -96,10 +49,8 @@ export class SWGL_Mesh extends NeObject {
 		super();
 
 		// initialize attributes
-		for (let i = 0; i < VertexAttributes.INDEX_RANGE; i++) {
-			this.isVertexAttributeEnabled[i] = false;
-			this.vertexAttributes[i] = null;
-		}
+		
+
 	}
 
 	setDrawOption(flag) {
@@ -116,81 +67,60 @@ export class SWGL_Mesh extends NeObject {
 
 
 
-	/** @param {number} */
-	S8_set_meshBuildMode(mode) {
-		this.meshBuildMode = mode;
-	}
+	/** @param {Float32Array} positions */
+	S8_set_positions(positions) {
+		this.positionVertexAttributes.data = positions;
+		this.positionVertexAttributes.isEnabled = true;
 
-
-	buildMesh() {
-		if (!this.isMeshBuilt) {
-			switch (this.meshBuildMode) {
-				case SWGL_Mesh.DIRECT_MESH_BUILD_MODE: /* do nothing, already loaded */ break;
-				case SWGL_Mesh.PATTERN_MESH_BUILD_MODE: throw "Not implemented yet";
-			}
-			this.isMeshBuilt = true;
-		}
-	}
-
-	/** @param {Float32Array} coefficients */
-	S8_set_matrix(coefficients) {
-		this.matrix = coefficients;
-	}
-
-	/** @param {Float32Array} points */
-	S8_set_positions(points) {
-		let index = VertexAttributes.POSITIONS;
-		this.isVertexAttributeEnabled[index] = true;
-		this.vertexAttributes[index] = new VertexAttributes(3, points);
-		this.nVertices = points.length / 3;
+		this.nVertices = positions.length / 3;
 		this.GPU_isLoaded = false;
 	}
 
 	/** @param {Float32Array} normals */
 	S8_set_normals(normals) {
-		let index = VertexAttributes.NORMALS;
-		this.isVertexAttributeEnabled[index] = true;
-		this.vertexAttributes[index] = new VertexAttributes(3, normals);
+		this.normalVertexAttributes.data = normals;
+		this.normalVertexAttributes.isEnabled = true;
+
 		this.GPU_isLoaded = false;
 	}
 
 	/** @param {Float32Array} uTangents */
 	S8_set_uTangents(uTangents) {
-		let index = VertexAttributes.U_TANGENTS;
-		this.isVertexAttributeEnabled[index] = true;
-		this.vertexAttributes[index] = new VertexAttributes(3, uTangents);
+		this.uTangentVertexAttributes.data = uTangents;
+		this.uTangentVertexAttributes.isEnabled = true;
+
 		this.GPU_isLoaded = false;
 	}
 
 	/** @param {Float32Array} vTangents */
 	S8_set_vTangents(vTangents) {
-		let index = NbVertexAttributes.V_TANGENTS;
-		this.isVertexAttributeEnabled[index] = true;
-		this.vertexAttributes[index] = new NbVertexAttributes(3, vTangents);
+		this.vTangentVertexAttributes.data = vTangents;
+		this.vTangentVertexAttributes.isEnabled = true;
+
 		this.GPU_isLoaded = false;
 	}
 
 	/** @param {Float32Array} texCoords */
 	S8_set_texCoords(texCoords) {
-		let index = VertexAttributes.TEX_COORDS;
-		this.isVertexAttributeEnabled[index] = true;
-		this.vertexAttributes[index] = new VertexAttributes(2, texCoords);
+		this.texCoordsVertexAttributes.data = texCoords;
+		this.texCoordsVertexAttributes.isEnabled = true;
+
 		this.GPU_isLoaded = false;
 	}
 
 	/** @param {Float32Array} colors */
 	S8_set_colors(colors) {
-		let index = VertexAttributes.COLORS;
-		this.isVertexAttributeEnabled[index] = true;
-		this.vertexAttributes[index] = new VertexAttributes(4, colors);
+		this.colorVertexAttributes.data = texCoords;
+		this.colorVertexAttributes.isEnabled = true;
+
 		this.GPU_isLoaded = false;
 	}
 
 	/** @param {Float32Array} colors */
 	S8_set_appCoords(appCoords) {
-		let index = VertexAttributes.APP_COORDS;
-		this.isVertexAttributeEnabled[index] = true;
-		this.vertexAttributes[index] = new VertexAttributes(2, appCoords);
+		this.appCoordsVertexAttributes.data = appCoords;
+		this.appCoordsVertexAttributes.isEnabled = true;
+
 		this.GPU_isLoaded = false;
 	}
 
@@ -202,89 +132,71 @@ export class SWGL_Mesh extends NeObject {
 
 	/** @param {Uint32Array} indices */
 	S8_set_indices(indices) {
-		this.indices = indices;
-		this.indexCount = indices.length;
-		this.GPU_isLoaded = false;
+		this.elementIndices = new ElementIndices(indices);
 	}
-
-
-	/**
-	 * 
-	 */
-	S8_render() {
-		this.GPU_initialize();
-	}
-
 
 
 	/** 
 	 * load GPU-side buffers to prepare rendering 
 	 */
-	GPU_initialize() {
-		if (this.WebGL_isRendered && !this.GPU_isLoaded) {
+	load() {
+		if (!this.GPU_isLoaded) {
+			
+			this.positionVertexAttributes.load();
+			this.normalVertexAttributes.load();
+			this.uTangentVertexAttributes.load();
+			this.vTangentVertexAttributes.load();
+			this.texCoordsVertexAttributes.load();
+			this.colorVertexAttributes.load();
+			this.appCoordsVertexAttributes.load();
 
-			/** build mesh before if necessary */
-			this.buildMesh();
-
-
-			for (let i = 0; i < VertexAttributes.INDEX_RANGE; i++) {
-				if (this.isVertexAttributeEnabled[i]) {
-					this.vertexAttributes[i].GPU_load();
-				}
-			}
-
-			// Create buffer handle
-			this.elementBuffer = gl.createBuffer();
-
-			// Bind buffer handle to current buffer
-			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.elementBuffer);
-
-			// bind buffer data
-			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.indices, this.drawOption);
+			// element indices
+			this.elementIndices.load();
 
 			this.GPU_isLoaded = true;
 		}
 	}
 
 
-
-
-	/** @param {number} location */
-	bindVertexAttributes(index, location) {
-		if (!this.isVertexAttributeEnabled[index]) { throw "Attribute is not enabled for index:" + index; }
-		this.vertexAttributes[index].GPU_bind(location);
-	}
-
-	/** */
-	bindElements() {
-
-		// Bind buffer handle to current buffer
-		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.elementBuffer);
-	}
-
 	/** actually launch drawing */
 	draw() {
 		// launch drawing!
 		if (this.dimension == 2) {
-			gl.drawElements(gl.LINES, this.indexCount, gl.UNSIGNED_INT, 0);
+			this.elementIndices.drawLines();
 		}
 		else if (this.dimension == 3) {
-			// launch drawing!
-			gl.drawElements(gl.TRIANGLES, this.indexCount, gl.UNSIGNED_INT, 0);
+			this.elementIndices.drawTriangles();
 		}
 	}
 
-	S8_dispose() {
+
+	/**
+	 * 
+	 */
+	dispose() {
 		if (this.GPU_isLoaded) {
-			for(let i= 0; i<VertexAttributes.INDEX_RANGE; i++){
-				if (this.isVertexAttributeEnabled[i]) {
-					this.vertexAttributes[i].GPU_dispose();
-				}	
-			}
-			
+			this.positionVertexAttributes.dispose();
+			this.normalVertexAttributes.dispose();
+			this.uTangentVertexAttributes.dispose();
+			this.vTangentVertexAttributes.dispose();
+			this.texCoordsVertexAttributes.dispose();
+			this.colorVertexAttributes.dispose();
+			this.appCoordsVertexAttributes.dispose();
+
 			// delete handler buffer
-			gl.deleteBuffer(this.elementBuffer);
+			this.elementIndices.dispose();
+			this.GPU_isLoaded = false;
 		}
+	}
+
+
+	S8_render() { /* do nothing */ }
+
+	/**
+	 * 
+	 */
+	S8_dispose() {
+		this.dispose();
 	}
 
 }
@@ -299,21 +211,15 @@ export class SWGL_Mesh extends NeObject {
 export class VertexAttributes {
 
 
-	static INDEX_RANGE = 16;
+	static INDEX_RANGE = 8;
 
-	static POSITIONS = 0x0;
-
-	static NORMALS = 0x1;
-
-	static U_TANGENTS = 0x2;
-
-	static V_TANGENTS = 0x3;
-
-	static TEX_COORDS = 0x4;
-
-	static COLORS = 0x5;
-
-	static APP_COORDS = 0x6;
+	static POSITIONS_LOCATION = 0x0;
+	static NORMALS_LOCATION = 0x1;
+	static U_TANGENTS_LOCATION = 0x2;
+	static V_TANGENTS_LOCATION = 0x3;
+	static TEX_COORDS_LOCATION = 0x4;
+	static COLORS_LOCATION = 0x5;
+	static APP_COORDS_LOCATION = 0x6;
 
 
 	/** 
@@ -323,41 +229,44 @@ export class VertexAttributes {
 
 
 	/**
-	 * @type {Float32Array} pre-buffering values
-	 */
-	floatValues;
-
-
-	/**
 	 * @type {number} dimension of the unit value inside buffer
 	 */
 	dimension = 3;
+
+
+	/**
+	 * @type {number} location in shader
+	 */
+	location;
+
+
+
+	/**
+	 * @type {Float32Array} pre-buffering values
+	 */
+	data;
+
 
 	/** 
 	 * @type {WebGLBuffer}  vertex attributes : vertex buffer 
 	 */
 	buffer;
 
-	/**
-	 * @type{boolean} is buffer created and loaded into the GPU
-	 */
-	GPU_isLoaded = false;
 
 	/**
 	 * 
 	 */
-	constructor(dimension, floatValues) {
+	constructor(dimension, location) {
 		this.dimension = dimension;
-		this.floatValues = floatValues;
+		this.location = location;
 	}
 
 
 	/** 
 	 * load GPU-side buffers to prepare rendering 
 	 */
-	GPU_load(drawOption = gl.STATIC_DRAW) {
-		if (!this.GPU_isLoaded) {
-
+	load(drawOption = gl.STATIC_DRAW) {
+		if (this.isEnabled) {
 			// Create buffer handle
 			this.buffer = gl.createBuffer();
 
@@ -365,9 +274,7 @@ export class VertexAttributes {
 			gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
 
 			// store data in GPU
-			gl.bufferData(gl.ARRAY_BUFFER, this.floatValues, drawOption);
-
-			this.GPU_isLoaded = true;
+			gl.bufferData(gl.ARRAY_BUFFER, this.data, drawOption);
 		}
 	}
 
@@ -375,19 +282,94 @@ export class VertexAttributes {
 	/** 
 	 * @param {number} location 
 	 */
-	GPU_bind(location) {
+	bind() {
+		if (!this.isEnabled) { throw "Disabled VAO"; }
 		gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer);
-		gl.vertexAttribPointer(location, this.dimension, gl.FLOAT, false, 0, 0);
+		gl.vertexAttribPointer(this.location, this.dimension, gl.FLOAT, false, 0, 0);
 	}
 
 
 	/**
 	 * 
 	 */
-	GPU_dispose() {
-		if (this.GPU_isLoaded) {
+	dispose() {
+		if (this.isEnabled) {
 			gl.deleteBuffer(this.buffer);
-			this.GPU_isLoaded = false;
 		}
 	}
+}
+
+
+
+export class ElementIndices {
+
+	/** @type {Uint32Array} indices of elements */
+	indices;
+
+
+	/**
+	 * @type {number}
+	 * 
+	 * A GLsizei specifying the number of elements of the bound element array buffer to be rendered. 
+	 * For example, to draw a wireframe triangle with gl.LINES the count should be 2 endpoints 
+	 * per line × 3 lines = 6 elements. However to draw the same wireframe triangle with gl.LINE_STRIP 
+	 * the element array buffer does not repeat the indices for the end of the first line/start of the second 
+	 * line, and end of the second line/start of the third line, so count will be four. 
+	 * To draw the same triangle with gl.LINE_LOOP the element array buffer does not repeat the 
+	 * first/last vertex either so count will be three.
+	 */
+	indexCount;
+
+
+
+	/** @type {WebGLBuffer}  elements buffer  UNSIGNED_INT (UInt32) REQUIRED !!! */
+	elementBuffer = null;
+
+
+	/** @param {Uint32Array} indices */
+	constructor(indices) {
+		this.indices = indices;
+		this.indexCount = indices.length;
+	}
+
+
+	load(drawOption = gl.STATIC_DRAW) {
+
+		// Create buffer handle
+		this.elementBuffer = gl.createBuffer();
+
+		// Bind buffer handle to current buffer
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.elementBuffer);
+
+		// bind buffer data
+		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.indices, drawOption);
+	}
+
+
+
+	bind() {
+		// Bind buffer handle to current buffer
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.elementBuffer);
+	}
+
+
+	/** actually launch drawing */
+	drawLines() {
+		// launch drawing!
+		gl.drawElements(gl.LINES, this.indexCount, gl.UNSIGNED_INT, 0);
+	}
+
+	/** actually launch drawing */
+	drawTriangles() {
+		gl.drawElements(gl.TRIANGLES, this.indexCount, gl.UNSIGNED_INT, 0);
+	}
+
+	dispose() {
+		// delete handler buffer
+		gl.deleteBuffer(this.elementBuffer);
+	}
+
+
+
+	
 }

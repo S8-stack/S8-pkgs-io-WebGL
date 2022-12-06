@@ -4,7 +4,7 @@ import { S8Orbital } from '/s8/S8';
 import { SWGL_Appearance } from '../appearances/SWGL_Appearance';
 
 import { NbShGen } from '../models/generators/NbShGen';
-import { SWGL_Mesh } from '../models/SWGL_Mesh';
+import { SWGL_Model } from '../models/SWGL_Model';
 import { NbScene } from '../utilities/demos/NbDemoWindow';
 
 import * as M4 from '../maths/SWGL_Matrix4d';
@@ -33,7 +33,7 @@ export class NbGear extends S8Orbital {
     /** @type {Float32Array} modelMatrix for the model generated */
     modelMatrix = M4.createIdentity();
 
-    /** @type {Map<string, SWGL_Mesh>} */
+    /** @type {Map<string, SWGL_Model>} */
     models = null;
 
     constructor(id){

@@ -2,7 +2,7 @@
 import { gl } from "../../swgl";
 import { SWGL_Environment } from "../../environment/SWGL_Environment";
 import { NbView } from "../../view/SWGL_View";
-import { SWGL_Mesh } from "../../models/SWGL_Mesh";
+import { SWGL_Model } from "../../models/SWGL_Model";
 import { SWGL_Appearance } from "../SWGL_Appearance";
 import { SWGL_Renderer } from "../SWGL_Renderer";
 
@@ -74,7 +74,7 @@ export class ColorNbProgram extends SWGL_Renderer {
 
 	/**
 	 * @param {NbView} view 
-	 * @param {SWGL_Mesh} model 
+	 * @param {SWGL_Model} model 
 	 */
 	bindModel(view, model) {
 		/* <matrices> */

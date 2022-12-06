@@ -153,8 +153,8 @@ export function transformVector4d(m, source, target, sOffset = 0, tOffset = 0) {
  * 
  * @param {Float32Array} m 
  * @param {Float32Array} source 
- * @param {Float32Array} target 
  * @param {number} sOffset 
+ * @param {Float32Array} target 
  * @param {number} tOffset 
  */
 export function transformVector3d(m, source, target, sOffset = 0, tOffset = 0) {
@@ -169,11 +169,11 @@ export function transformVector3d(m, source, target, sOffset = 0, tOffset = 0) {
 
 /**
  * 
- * @param {Float32Array} m 
- * @param {Float32Array} source 
- * @param {Float32Array} target 
- * @param {number} sOffset 
- * @param {number} tOffset 
+ * @param {Float32Array} m matrix (matrices)
+ * @param {Float32Array} source points array
+ * @param {number} sOffset source offset
+ * @param {Float32Array} target points array
+ * @param {number} tOffset target offset
  */
 export function transformPoint3d(m, source, target, sOffset = 0, tOffset = 0) {
 	let x = source[sOffset + 0], y = source[sOffset + 1], z = source[sOffset + 2];

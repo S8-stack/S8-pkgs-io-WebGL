@@ -29,6 +29,10 @@ public class SWGL_Scene extends NeObject {
 		vertex.setObj("environment", environment);
 	}
 	
+	public SWGL_Environment getEnvironment() {
+		return vertex.getObj("environment");
+	}
+	
 	
 	
 	public void setRenderers(List<SWGL_Renderer<?>> renderers) {

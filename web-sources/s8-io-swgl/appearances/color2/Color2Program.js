@@ -7,8 +7,10 @@ import { gl } from "/s8-io-swgl/swgl.js";
 
 import * as M4 from '/s8-io-swgl/maths/SWGL_Matrix4d.js';
 
-import { SWGL_Mesh, VertexAttributes } from "/s8-io-swgl/models/SWGL_Mesh.js";
 import { SWGL_View } from "/s8-io-swgl/view/SWGL_View.js";
+
+import { SWGL_Model } from "/s8-io-swgl/models/SWGL_Model.js";
+import { VertexAttributes } from "/s8-io-swgl/models/SWGL_Mesh.js";
 
 
 /**
@@ -37,7 +39,7 @@ export class Color2Program extends SWGL_Program {
 		/* </uniforms> */
 
 		/* <attributes> */
-		this.pointAttributeLocation = gl.getAttribLocation(this.handle, "vertex");
+		//this.pointAttributeLocation = gl.getAttribLocation(this.handle, "vertex");
 		/* </attributes> */
 	}
 
@@ -50,7 +52,7 @@ export class Color2Program extends SWGL_Program {
 		gl.useProgram(this.handle);
 
 		/* <enable-attributes> */
-		gl.enableVertexAttribArray(this.pointAttributeLocation);
+		gl.enableVertexAttribArray(VertexAttributes.POSITIONS_LOCATION);
 		/* </enable-attributes> */
 	}
 
@@ -76,7 +78,7 @@ export class Color2Program extends SWGL_Program {
 
 	/**
 	 * @param {SWGL_View} view 
-	 * @param {SWGL_Mesh} model 
+	 * @param {SWGL_Model} model 
 	 */
 	bindModel(view, model) {
 		/* <matrices> */
@@ -90,11 +92,11 @@ export class Color2Program extends SWGL_Program {
 		/* </bind-uniforms> */
 
 		/* <bind-attributes> */
-		model.bindVertexAttributes(VertexAttributes.POSITIONS, this.pointAttributeLocation);
+		model.mesh.positionVertexAttributes.bind();
 		/* </bind-attributes> */
 
 		/* <bind-elements> */
-		model.bindElements();
+		model.mesh.elementIndices.bind();
 		/* </bind-elements> */
 	}
 
@@ -102,7 +104,7 @@ export class Color2Program extends SWGL_Program {
 	disable() {
 		
 		/* <disable-attributes> */
-		gl.disableVertexAttribArray(this.pointAttributeLocation);
+		gl.disableVertexAttribArray(VertexAttributes.POSITIONS_LOCATION);
 		/* </disable-attributes> */
 
 		// unbind shader program

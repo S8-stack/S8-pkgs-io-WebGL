@@ -1,7 +1,7 @@
 
 
 import { SWGL_Program } from './SWGL_Program.js';
-import { SWGL_Mesh } from '/s8-io-swgl/models/SWGL_Mesh.js';
+import { SWGL_Model } from '../models/SWGL_Model.js';
 import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
 
 
@@ -17,7 +17,7 @@ export class SWGL_Appearance extends NeObject {
 	program;
 
 	/**
-	 * @type {SWGL_Mesh[]}
+	 * @type {SWGL_Model[]}
 	 */
 	models;
 
@@ -38,7 +38,7 @@ export class SWGL_Appearance extends NeObject {
 
 	/**
 	 * 
-	 * @param {SWGL_Mesh[]} models 
+	 * @param {SWGL_Model[]} models 
 	 */
 	S8_set_models(models) {
 		this.models = models;
@@ -88,17 +88,20 @@ export class SWGL_Appearance extends NeObject {
 		let nModels = this.models.length;
 		for (let i = 0; i < nModels; i++) {
 
-			/** @type {SWGL_Mesh} model */
+			/** @type {SWGL_Model} model */
 			let model = this.models[i];
 
-			if (model.GPU_isLoaded) {
+			// update model (matrix and mesh)
+			model.update();
 
+			if (model.isReady) {
 				// bind model
 				this.program.bindModel(view, model);
 
 				// draw it!
 				model.draw();
 			}
+
 		}
 	}
 }

@@ -1,5 +1,5 @@
 import { SWGL_Renderer } from "../SWGL_Renderer";
-import { SWGL_Mesh } from "../../models/SWGL_Mesh.js";
+import { SWGL_Model } from "../../models/SWGL_Model.js";
 import { NbMaterialUniform } from "../../materials/MaterialUniform.js";
 import { DirectionalLightNbUniform } from "../../lights/DirectionalLightUniform.js";
 import { Matex01NbAppearance } from "/s8-ng-geo/nebulae/appearances/matex01/Matex01Appearance.js";
@@ -92,7 +92,7 @@ export class Matex01NbProgram extends SWGL_Renderer {
 
 	/**
 	 * 
-	 * @param {SWGL_Mesh} model 
+	 * @param {SWGL_Model} model 
 	 */
 	bindModel(model) {
 		/* <matrices> */

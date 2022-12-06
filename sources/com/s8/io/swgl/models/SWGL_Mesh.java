@@ -18,14 +18,6 @@ public class SWGL_Mesh extends NeObject {
 	}
 
 
-
-	/** @param {Float32Array} coefficients */
-	public void setMatrix(float[] affine) {
-		vertex.setFloat32Array("matrix", affine);
-	}
-
-
-
 	/**
 	 * 
 	 * @param points

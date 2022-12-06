@@ -1,4 +1,4 @@
-
+#version 300 es
 
 precision mediump float;
 
@@ -22,7 +22,8 @@ struct Material {
 uniform Material material;
 
 
-varying vec3 interpolatedNormal, eyeVec;
+in vec3 interpolatedNormal, eyeVec;
+out vec4 fragColor;
 
 void main() {
 
@@ -51,5 +52,5 @@ void main() {
 		}
 	}
 
-	gl_FragColor = final_color;
+	fragColor = final_color;
 }

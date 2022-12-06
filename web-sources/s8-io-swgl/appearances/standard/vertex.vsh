@@ -1,6 +1,5 @@
 #version 300 es
 
-
 // shader start here
 uniform mat4 ModelViewProjection_Matrix;
 uniform mat4 Model_Matrix;
