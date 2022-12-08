@@ -34,6 +34,15 @@ export class SWGL_Mesh extends NeObject {
 	appCoordsVertexAttributes = new VertexAttributes(2, VertexAttributes.APP_COORDS_LOCATION);
 	
 
+
+	/**
+	 * @type {ElementIndices}
+	 */
+	elementIndices;
+
+
+
+
 	/** number of vertices */
 	nVertices;
 
@@ -141,7 +150,7 @@ export class SWGL_Mesh extends NeObject {
 	 */
 	load() {
 		if (!this.GPU_isLoaded) {
-			
+
 			this.positionVertexAttributes.load();
 			this.normalVertexAttributes.load();
 			this.uTangentVertexAttributes.load();

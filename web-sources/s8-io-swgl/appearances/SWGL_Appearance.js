@@ -94,7 +94,7 @@ export class SWGL_Appearance extends NeObject {
 			// update model (matrix and mesh)
 			model.update();
 
-			if (model.isReady) {
+			if (model.isMeshDefined) {
 				// bind model
 				this.program.bindModel(view, model);
 

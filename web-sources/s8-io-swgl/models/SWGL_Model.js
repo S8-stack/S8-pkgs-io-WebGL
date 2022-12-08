@@ -21,21 +21,14 @@ export class SWGL_Model extends NeObject {
 	/** @type {Float32Array}  predefine matrix */
 	matrix = M4.createIdentity();
 
-	/** @type {boolean} */
-	hasMatrixUpdater = false;
-
-	matrixUpdater = null;
-
 
 	/**
 	 * @type{boolean}
 	 */
-	isReady = false;
+	isMeshDefined = false;
 
-	/** @type {boolean} */
-	hasMeshUpdater = false;
-
-	meshUpdater = null;
+	/** @type {Array} */
+	udpaters = []; // no updaters
 
 	/** @type {SWGL_Mesh} vertex attributes enabling flage */
 	mesh = null;
@@ -66,35 +59,56 @@ export class SWGL_Model extends NeObject {
 		this.matrix = coefficients;
 	}
 
+
 	/** @param {SWGL_Mesh} mesh */
 	S8_set_mesh(mesh) {
-		if(mesh == null) { throw "SWGL: Forbidden to set null mesh"; }
-		this.mesh = mesh;
-		this.isReady = true;
+		this.setMesh(mesh);
 	}
 
+	/** @param {SWGL_Mesh} mesh */
+	setMesh(mesh){
+		if(mesh == null) { throw "SWGL: Forbidden to set null mesh"; }
+		this.mesh = mesh;
+		this.isMeshDefined = true;
+	}
+
+	/**
+	 * 
+	 * @param {*} matrixUpdater 
+	 */
+	S8_set_updaters(updaters){
+		this.updaters = updaters;
+	}
 	
 
+	/**
+	 * 
+	 */
 	update(){
-		if(this.hasMatrixUpdater && this.matrixUpdater.hasUpdate()){
-			this.matrixUpdater.update(this.matrix);
+
+		/* update */
+		let nUpdaters = this.udpaters.length;
+		for(let i=0; i<nUpdaters; i++){
+			let updater = this.updaters[i];
+			if(updater.hasUpdate()){ updater.update(this); }
 		}
 
-		if(this.hasMeshUpdater && this.meshUpdater.hasUpdate()){
-			
-			// set a new mesh
-			this.S8_set_mesh(this.meshUpdater.update());
-		}
 
-		if(this.isReady) {
-			// load mesh to GPU (if not already done)
+		if(this.isMeshDefined) {
+
+			/* load mesh to GPU (if not already done) */
 			this.mesh.load();
 		}
+
 	}
 
 
 	draw(){
-		if(this.isReady) {
+		if(this.isMeshDefined) {
+
+			/* load mesh to GPU (if not already done) */
+			this.mesh.load();
+
 			// load mesh to GPU (if not already done)
 			this.mesh.draw();
 		}
@@ -102,16 +116,16 @@ export class SWGL_Model extends NeObject {
 
 	S8_render() { /* do nothing */ }
 
+
 	S8_dispose() {
-		if(this.isReady) { 
+		if(this.isMeshDefined) { 
 			this.mesh.dispose(); 
-			this.isReady = false;
+			this.isMeshDefined = false;
 		}
 	}
 
-
-
 }
+
 
 
 
