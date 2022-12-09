@@ -87,7 +87,7 @@ export class SWGL_Model extends NeObject {
 	update(){
 
 		/* update */
-		let nUpdaters = this.udpaters.length;
+		let nUpdaters = this.updaters.length;
 		for(let i=0; i<nUpdaters; i++){
 			let updater = this.updaters[i];
 			if(updater.hasUpdate()){ updater.update(this); }
