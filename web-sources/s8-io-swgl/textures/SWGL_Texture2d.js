@@ -3,7 +3,7 @@
 import { NeObject } from "/s8-io-bohr/neon/NeObject.js";
 import { gl } from "/s8-io-swgl/swgl.js";
 
-export class Texture2d extends NeObject {
+export class SWGL_Texture2d extends NeObject {
 
     /**
      * @type {string}
@@ -14,7 +14,7 @@ export class Texture2d extends NeObject {
     /**
      * @type { WebGLTexture }
      */
-    texture;
+    baseTexture;
 
 
      /**
@@ -32,13 +32,10 @@ export class Texture2d extends NeObject {
 
     S8_set_pathname(pathname) {
         this.pathname = pathname;
-    }
 
-
-    S8_render(){
         if(!this.isInitiated && !this.isInitialized){
             this.isInitiated = true;
-            this.texture = gl.createTexture();
+            this.baseTexture = gl.createTexture();
 
             let image = new Image();
             var _this = this;
@@ -49,12 +46,16 @@ export class Texture2d extends NeObject {
     }
 
 
+    S8_render(){
+    }
+
+
     /**
      * 
      * @param {Image} image 
      */
 	store(image) {
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
+        gl.bindTexture(gl.TEXTURE_2D, this.baseTexture);
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
@@ -63,15 +64,14 @@ export class Texture2d extends NeObject {
         this.isInitialized = true;
 	}
 
-	bind(location, index) {
+	bind(index) {
 		if (this.isInitialized) {
 			gl.activeTexture(gl.TEXTURE0 + index);
-			gl.bindTexture(gl.TEXTURE_2D, this.texture);
-			gl.uniform1i(location, index);
+			gl.bindTexture(gl.TEXTURE_2D, this.baseTexture);
 		}
 	}
 
 	dispose() {
-		gl.deleteTexture(this.texture);
+		gl.deleteTexture(this.baseTexture);
 	}
 }
