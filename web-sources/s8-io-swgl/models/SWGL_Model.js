@@ -28,7 +28,7 @@ export class SWGL_Model extends NeObject {
 	isMeshDefined = false;
 
 	/** @type {Array} */
-	udpaters = []; // no updaters
+	updaters = []; // no updaters
 
 	/** @type {SWGL_Mesh} vertex attributes enabling flage */
 	mesh = null;
