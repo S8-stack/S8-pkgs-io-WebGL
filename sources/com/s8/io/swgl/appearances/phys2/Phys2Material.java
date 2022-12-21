@@ -36,79 +36,29 @@ public class Phys2Material extends NeObject {
 
 
 	public void setColor(int r, int g, int b, float glossiness) {
+		vertex.setUInt8Array("specularColor", new int[] {
+				(int) (glossiness * r),
+				(int) (glossiness * g),
+				(int) (glossiness * b),
+				255
+		});
 		
-		float[] specularComponents = new float[] {
-				glossiness * (float) (r/255.0f),
-				glossiness * (float) (g/255.0f),
-				glossiness * (float) (b/255.0f),
-				1.0f
-		};
-		vertex.setFloat32Array("specularColor", specularComponents);
-
-		float[] diffuseComponents = new float[] {
-				(1.0f - glossiness) * (float) (r/255.0f),
-				(1.0f - glossiness) * (float) (g/255.0f),
-				(1.0f - glossiness) * (float) (b/255.0f),
-				1.0f
-		};
-		vertex.setFloat32Array("diffuseColor", diffuseComponents);
+		vertex.setUInt8Array("diffuseColor", new int[] {
+				(int) ((1.0f - glossiness) * r),
+				(int) ((1.0f - glossiness) * g),
+				(int) ((1.0f - glossiness) * b),
+				255
+		});
 	}
 
 
 
+	/**
+	 * 
+	 * @param value
+	 */
 	public void setRoughness(double value) {
-		vertex.setFloat32("roughness", (float) value);
-	}
-
-
-	public void setSpecularColor(int r, int g, int b) {
-		float[] values = new float[] {
-				(float) (r/255.0f),
-				(float) (g/255.0f),
-				(float) (b/255.0f),
-				1.0f
-		};
-		vertex.setFloat32Array("specularColor", values);
-	}
-	
-	public void setSpecularColor(int r, int g, int b, float scalingFactor) {
-		float[] values = new float[] {
-				(float) (r / 255.0f * scalingFactor),
-				(float) (g / 255.0f * scalingFactor),
-				(float) (b / 255.0f * scalingFactor),
-				1.0f
-		};
-		vertex.setFloat32Array("specularColor", values);
-	}
-
-	public void setSpecularColor(float[] value) {
-		vertex.setFloat32Array("specularColor", value);
-	}
-
-
-	public void setDiffuseColor(int r, int g, int b) {
-		float[] values = new float[] {
-				(float) (r/255.0f),
-				(float) (g/255.0f),
-				(float) (b/255.0f),
-				1.0f
-		};
-		vertex.setFloat32Array("diffuseColor", values);
-	}
-	
-	public void setDiffuseColor(int r, int g, int b, float scalingFactor) {
-		float[] values = new float[] {
-				(float) (r / 255.0f * scalingFactor),
-				(float) (g / 255.0f * scalingFactor),
-				(float) (b / 255.0f * scalingFactor),
-				1.0f
-		};
-		vertex.setFloat32Array("diffuseColor", values);
-	}
-
-
-	public void setDiffuseColor(float[] value) {
-		vertex.setFloat32Array("diffuseColor", value);
+		vertex.setUInt8("roughness", (int) (value / 6.0 * 255));
 	}
 
 
@@ -118,14 +68,62 @@ public class Phys2Material extends NeObject {
 	 * @param g
 	 * @param b
 	 */
-	public void setEmissiveColor(int r, int g, int b) {
-		float[] values = new float[] {
-				(float) (r/255.0f),
-				(float) (g/255.0f),
-				(float) (b/255.0f),
-				1.0f
+	public void setSpecularColor(int r, int g, int b) {
+		vertex.setUInt8Array("specularColor", new int[] { r, g, b, 255});
+	}
+	
+	
+	
+	/**
+	 * 
+	 * @param r
+	 * @param g
+	 * @param b
+	 * @param scalingFactor
+	 */
+	public void setSpecularColor(int r, int g, int b, float scalingFactor) {
+		vertex.setUInt8Array("specularColor", new int[] {
+				(int) (r * scalingFactor),
+				(int) (g * scalingFactor),
+				(int) (b * scalingFactor),
+				255
+		});
+	}
+	
+
+	public void setDiffuseColor(int r, int g, int b) {
+		vertex.setUInt8Array("diffuseColor", new int[] { r, g, b, 255 });
+	}
+	
+	
+	
+	/**
+	 * 
+	 * @param r
+	 * @param g
+	 * @param b
+	 * @param scalingFactor
+	 */
+	public void setDiffuseColor(int r, int g, int b, float scalingFactor) {
+		int[] values = new int[] {
+				(int) (r * scalingFactor),
+				(int) (g * scalingFactor),
+				(int) (b * scalingFactor),
+				255
 		};
-		vertex.setFloat32Array("emissiveColor", values);
+		vertex.setUInt8Array("diffuseColor", values);
+	}
+
+
+
+	/**
+	 * 
+	 * @param r
+	 * @param g
+	 * @param b
+	 */
+	public void setEmissiveColor(int r, int g, int b) {
+		vertex.setUInt8Array("emissiveColor", new int[] { r, g, b, 255 });
 	}
 	
 
@@ -136,13 +134,13 @@ public class Phys2Material extends NeObject {
 	 * @param b
 	 */
 	public void setEmissiveColor(int r, int g, int b, float scalingFactor) {
-		float[] values = new float[] {
-				(float) (r / 255.0f * scalingFactor),
-				(float) (g / 255.0f * scalingFactor),
-				(float) (b / 255.0f * scalingFactor),
-				1.0f
+		int[] values = new int[] {
+				(int) (r * scalingFactor),
+				(int) (g * scalingFactor),
+				(int) (b * scalingFactor),
+				255
 		};
-		vertex.setFloat32Array("emissiveColor", values);
+		vertex.setUInt8Array("emissiveColor", values);
 	}
 
 

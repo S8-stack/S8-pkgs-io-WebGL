@@ -7,24 +7,25 @@ import * as M4 from '/s8-io-swgl/maths/SWGL_Matrix4d.js';
 
 import { SWGL_Environment } from "/s8-io-swgl/environment/SWGL_Environment.js";
 import { SWGL_Program } from "/s8-io-swgl/appearances/SWGL_Program.js";
-import { StandardAppearance } from "/s8-io-swgl/appearances/standard/StandardAppearance.js";
 import { SWGL_View } from "/s8-io-swgl/view/SWGL_View.js";
 
 import { SWGL_Model } from "/s8-io-swgl/models/SWGL_Model.js";
 import { VertexAttributes } from '/s8-io-swgl/models/SWGL_Mesh.js';
-import { Phys2Appearance } from 'appearances/phys2/Phys2Appearance.js';
+import { Phys2Appearance } from '/s8-io-swgl/appearances/phys2/Phys2Appearance.js';
 
 
+export const RADIANCE_TEXTURE_INDEX = 0;
+export const IRRADIANCE_TEXTURE_INDEX = 1;
 
-export const PROPERTIES_TEXTURE_INDEX = 0;
-export const EMISSIVE_COLORS_TEXTURE_INDEX = 1;
-export const DIFFUSE_COLORS_TEXTURE_INDEX = 2;
-export const SPECULAR_COLORS_TEXTURE_INDEX = 3;
+export const PROPERTIES_TEXTURE_INDEX = 2;
+export const EMISSIVE_COLORS_TEXTURE_INDEX = 3;
+export const DIFFUSE_COLORS_TEXTURE_INDEX = 4;
+export const SPECULAR_COLORS_TEXTURE_INDEX = 5;
 
 /**
  * 
  */
-export class StandardProgram extends SWGL_Program {
+export class Phys2Program extends SWGL_Program {
 
 	/**
 	 * 
@@ -46,15 +47,16 @@ export class StandardProgram extends SWGL_Program {
 
 		this.loc_Uniform_radiance = gl.getUniformLocation(this.handle, "radiance");
 		this.loc_Uniform_irradiance = gl.getUniformLocation(this.handle, "irradiance");
+		
 
 		// properties, diffuse, specular
 		this.loc_Uniform_matProperties = gl.getUniformLocation(this.handle, "matProperties");
 		this.loc_Uniform_matEmissiveColors = gl.getUniformLocation(this.handle, "matEmissiveColors");
 		this.loc_Uniform_matDiffuseColors = gl.getUniformLocation(this.handle, "matDiffuseColors");
 		this.loc_Uniform_matSpecularColors = gl.getUniformLocation(this.handle, "matSpecularColors");
+		
 
-		this.loc_Uniform_material_glossiness = gl.getUniformLocation(this.handle, "matGlossiness");
-		this.loc_Uniform_material_roughness = gl.getUniformLocation(this.handle, "matRoughness");
+		//this.loc_Uniform_material_glossiness = gl.getUniformLocation(this.handle, "matGlossiness");
 		/* </uniforms> */
 
 		/* <attributes> */
@@ -78,13 +80,13 @@ export class StandardProgram extends SWGL_Program {
 		gl.enableVertexAttribArray(VertexAttributes.TEX_COORDS_LOCATION);
 		/* </enable-attributes> */
 
+		gl.uniform1i(this.loc_Uniform_radiance, RADIANCE_TEXTURE_INDEX);
+		gl.uniform1i(this.loc_Uniform_irradiance, IRRADIANCE_TEXTURE_INDEX);
 
-		/* <enable-textures> */
 		gl.uniform1i(this.loc_Uniform_matProperties, PROPERTIES_TEXTURE_INDEX);
-		gl.uniform1i(this.loc_Uniform_matDiffuseColors, EMISSIVE_COLORS_TEXTURE_INDEX);
+		gl.uniform1i(this.loc_Uniform_matEmissiveColors, EMISSIVE_COLORS_TEXTURE_INDEX);
 		gl.uniform1i(this.loc_Uniform_matDiffuseColors, DIFFUSE_COLORS_TEXTURE_INDEX);
 		gl.uniform1i(this.loc_Uniform_matSpecularColors, SPECULAR_COLORS_TEXTURE_INDEX);
-		/* </enable-textures> */
 	}
 
 
@@ -95,11 +97,11 @@ export class StandardProgram extends SWGL_Program {
 	 */
 	bindEnvironment(environment) {
 		if (environment.radiance != null) {
-			environment.radiance.bind(this.loc_Uniform_radiance, 0);
+			environment.radiance.bind(RADIANCE_TEXTURE_INDEX);
 		}
 
 		if (environment.irradiance != null) {
-			environment.irradiance.bind(this.loc_Uniform_irradiance, 1);
+			environment.irradiance.bind(IRRADIANCE_TEXTURE_INDEX);
 		}
 	}
 
@@ -110,11 +112,12 @@ export class StandardProgram extends SWGL_Program {
 	 */
 	bindAppearance(appearance) {
 
-		// material
+		/* <bind-textures> */
 		appearance.propsTex.bind(PROPERTIES_TEXTURE_INDEX);
 		appearance.emissiveColorsTex.bind(EMISSIVE_COLORS_TEXTURE_INDEX);
 		appearance.diffuseColorsTex.bind(DIFFUSE_COLORS_TEXTURE_INDEX);
 		appearance.specularColorsTex.bind(SPECULAR_COLORS_TEXTURE_INDEX);
+		/* </bind-textures> */
 	}
 
 

@@ -1,8 +1,9 @@
-import { Phys2dMaterial } from "/s8-io-swgl/appearances/phys2/Phys2Material.js";
-import { gl } from "swgl.js";
-import { SWGL_Texture2d } from "textures/SWGL_Texture2d.js";
+import { gl } from "/s8-io-swgl/swgl.js";
+import { SWGL_Texture2d } from "/s8-io-swgl/textures/SWGL_Texture2d.js";
 import { NeObject } from "/s8-io-bohr/neon/NeObject.js";
 import { SWGL_Appearance } from "/s8-io-swgl/appearances/SWGL_Appearance.js";
+
+import { Phys2Material } from "/s8-io-swgl/appearances/phys2/Phys2Material.js";
 
 
 
@@ -27,7 +28,7 @@ export class Phys2Appearance extends SWGL_Appearance {
 
 
 	/**
-	 * @type {Phys2dMaterial[]}
+	 * @type {Phys2Material[]}
 	 */
 	materials;
 
@@ -60,13 +61,13 @@ export class Phys2Appearance extends SWGL_Appearance {
 	}
 
 	/** 
-	 * @param {Phys2dMaterial[]} materials 
+	 * @param {Phys2Material[]} materials 
 	 */
 	S8_set_materials(materials) {
 		this.materials = materials;
 
 		let nbMaterials = materials.length;
-		if (nbMaterials > MAX_NB_MATERIALS) { throw "error: too many materials"; }
+		if (nbMaterials > MAX_RANGE) { throw "error: too many materials"; }
 
 
 		let n = TEXTURE_NB_SQUARES * TEXTURE_NB_SQUARES * PIXEL_BYTECOUNT;
@@ -97,7 +98,7 @@ export class Phys2Appearance extends SWGL_Appearance {
 			specularColors[offset + 2] = specularColor[2];
 			specularColors[offset + 3] = specularColor[3];
 
-			props[offset + 0] = material.glossiness;
+			props[offset + 0] = 0;
 			props[offset + 1] = material.roughness;
 			props[offset + 2] = 0;
 			props[offset + 3] = 0;
@@ -105,10 +106,10 @@ export class Phys2Appearance extends SWGL_Appearance {
 			offset += 4;
 		}
 
+		this.propsTex.store(props);
 		this.emissiveColorsTex.store(emissiveColors);
 		this.diffuseColorsTex.store(diffuseColors);
 		this.specularColorsTex.store(specularColors);
-		this.propsTex.store(props);
 	}
 
 
@@ -133,37 +134,34 @@ const PIXEL_BYTECOUNT = 4;
 export class Phys2Texture2d {
 
 
+	isInitialized = false;
 
 	/**
 	 * @type { WebGLTexture }
 	 */
-	baseTexture;
+	baseTexture = null;
 
 
 	/**
 	 * @type {number} base dimension
 	 */
-	n;
+	size;
 
 
-	dxOffset;
+	xdOffset;
 
-	dyOffset;
+	ydOffset;
 
 	/**
 	 * 
-	 * @param {*} nSquares 
-	 * @param {*} squareSize 
+	 * @param {size} nSquares
 	 */
-	constructor(n = TEXTURE_SIZE) {
-		this.n = n;
-		this.dxOffset = PIXEL_BYTECOUNT;
-		this.dyOffset = n * PIXEL_BYTECOUNT;
+	constructor(size = TEXTURE_SIZE) {
+		this.size = size;
+		this.xdOffset = PIXEL_BYTECOUNT;
+		this.ydOffset = size * PIXEL_BYTECOUNT;
 	}
 
-	initialize() {
-		this.baseTexture = gl.createTexture();
-	}
 
 
 	/**
@@ -172,18 +170,21 @@ export class Phys2Texture2d {
 	 */
 	store(colorlambda) {
 
+		if(this.baseTexture == null){
+			this.baseTexture = gl.createTexture();
+		}
+
 		gl.bindTexture(gl.TEXTURE_2D, this.baseTexture);
 
 		/* Flips the source data along its vertical axis if true.	*/
-		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+		//gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
-		let pixels = new Uint8Array(this.n * this.n * PIXEL_BYTECOUNT);
+		let pixels = new Uint8Array(this.size * this.size * PIXEL_BYTECOUNT);
 
-		let offset0 = 0;
+		let offset = 0;
 		let index = 0;
-		for (let iy = 0; iy < this.n; iy++) {
-			let offset = offset0;
-			for (let ix = 0; ix < this.n; ix++) {
+		for (let iy = 0; iy < this.size; iy++) {
+			for (let ix = 0; ix < this.size; ix++) {
 
 				let color = colorlambda(index++);
 
@@ -193,32 +194,44 @@ export class Phys2Texture2d {
 				pixels[offset + 2] = color[2];
 				pixels[offset + 3] = color[3];
 
-				offset += this.dxOffset;
+				offset += PIXEL_BYTECOUNT;
 			}
-			offset0 += this.dyOffset;
 		}
+
+
 
 
 		gl.texImage2D(gl.TEXTURE_2D, /* target */
 			0, /* level */
 			gl.RGBA, /* internalformat */
-			width /* width */, height /* height */, 0/* border: always 0 */,
+			this.size, /* width */
+			this.size, /* height */
+			0, /* border: always 0 */
 			gl.RGBA, /* format */
 			gl.UNSIGNED_BYTE, /* type */
 			pixels); /* pixels */
 
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
 		gl.bindTexture(gl.TEXTURE_2D, null);
 		this.isInitialized = true;
 	}
 
 	bind(index) {
-		gl.activeTexture(gl.TEXTURE0 + index);
-		gl.bindTexture(gl.TEXTURE_2D, this.baseTexture);
+		if(this.isInitialized){
+
+			// activate texture unit
+			gl.activeTexture(gl.TEXTURE0 + index);
+
+			// bind texture data (for previously selected texture unit)
+			gl.bindTexture(gl.TEXTURE_2D, this.baseTexture);
+
+		}
 	}
 
 	dispose() {
-		gl.deleteTexture(this.baseTexture);
+		if(this.baseTexture != null){
+			gl.deleteTexture(this.baseTexture);
+		}
 	}
 }

@@ -6,16 +6,16 @@ uniform mat4 Model_Matrix;
 
 uniform vec3 eyePosition;
 
-in vec3 vertex;
-in vec3 normal;
-in vec2 texCoords;
+layout(location = 0) in vec3 vertex;
+layout(location = 1) in vec3 normal;
+layout(location = 4) in vec2 texCoords;
 
 out vec3 fNormal;
 out vec3 fEyeVector;
 
 
 /* flat interpolation for tex coords since only stencil on lib textures (flat keyword required on both .vsh and .fsh) */
-flat out vec2 fTexCoords;
+out vec2 fTexCoords;
 
 
 void main() {

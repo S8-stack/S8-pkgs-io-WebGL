@@ -119,7 +119,7 @@ export class SWGL_Mesh extends NeObject {
 
 	/** @param {Float32Array} colors */
 	S8_set_colors(colors) {
-		this.colorVertexAttributes.data = texCoords;
+		this.colorVertexAttributes.data = colors;
 		this.colorVertexAttributes.isEnabled = true;
 
 		this.GPU_isLoaded = false;
@@ -208,9 +208,29 @@ export class SWGL_Mesh extends NeObject {
 		this.dispose();
 	}
 
+	/**
+	 * 
+	 * @returns {SWGL_Mesh}
+	 */
+	static generateZero(dimension){
+		const mesh = new SWGL_Mesh();
+	
+		// no vertices
+		mesh.S8_set_positions(new Float32Array());
+		mesh.S8_set_normals(new Float32Array());
+		mesh.S8_set_uTangents(new Float32Array());
+		mesh.S8_set_vTangents(new Float32Array());
+		mesh.S8_set_texCoords(new Float32Array());
+		mesh.S8_set_colors(new Float32Array());
+	
+		// no elements
+		mesh.S8_set_dimension(dimension);
+		mesh.S8_set_indices(new Uint32Array());
+	
+		return mesh;
+	}
+
 }
-
-
 
 
 
@@ -382,3 +402,4 @@ export class ElementIndices {
 
 	
 }
+

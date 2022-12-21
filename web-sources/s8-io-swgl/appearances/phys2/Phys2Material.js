@@ -1,7 +1,7 @@
 import { NeObject } from "/s8-io-bohr/neon/NeObject.js";
 
 
-export class Phys2dMaterial extends NeObject {
+export class Phys2Material extends NeObject {
 
 
 	/**
@@ -67,19 +67,19 @@ export class Phys2dMaterial extends NeObject {
 	 * @param{Uint8Array} color
 	 */
 	S8_set_specularColor(color){
-		this.diffuseColor = color;
+		this.specularColor = color;
 	}
 
 
 	/**
-	 * @param{Uint8Array} color
+	 * @param{number} scalar
 	 */
 	S8_set_roughness(scalar){
 		this.roughness = scalar;
 	}
 
-	S8_render();
 
-	S8_dispose();
+	S8_render(){}
+	S8_dispose(){}
 }
 

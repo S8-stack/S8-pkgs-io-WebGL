@@ -32,6 +32,8 @@ export class SWGL_TextureCubeMap extends NeObject {
 
 	isLoaded = false;
 
+	isLoadingInitiated = false;
+
 	/** @type {string} */
 	pathname;
 
@@ -41,6 +43,10 @@ export class SWGL_TextureCubeMap extends NeObject {
 	/** @param {number} */
 	nbLevels;
 
+	/**
+	 * @param {WebGLTexture}
+	 */
+	cubeTexture = null;
 
 	/**
 	 * 
@@ -72,14 +78,14 @@ export class SWGL_TextureCubeMap extends NeObject {
 
 
 	load() {
-		if (!this.isLoaded) {
+		if (!this.isLoadingInitiated) {
 			
 			let _this = this;
 			new TextureCubeMapLoader(this.pathname, this.extension, this.nbLevels, function(faceImages){
 				_this.assemble(faceImages);
 			}).load();
 
-			this.isLoaded = true;
+			this.isLoadingInitiated = true;
 		}
 	}
 
@@ -108,7 +114,6 @@ export class SWGL_TextureCubeMap extends NeObject {
 		gl.texParameteri(gl.TEXTURE_CUBE_MAP, gl.TEXTURE_MAX_LEVEL, this.nbLevels - 1);
 
 
-		gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.cubeTexture);
 		for (let lod = 0; lod < this.nbLevels; lod++) {
 			for (let iFace = 0; iFace < 6; iFace++) {
 				let target = FACE_TARGETS[iFace];
@@ -117,14 +122,16 @@ export class SWGL_TextureCubeMap extends NeObject {
 			}
 		}
 		gl.bindTexture(gl.TEXTURE_CUBE_MAP, null);
-
+		this.isLoaded = true;
 	}
 
 
-	bind(location, index) {
-		gl.activeTexture(gl.TEXTURE0 + index);
-		gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.cubeTexture);
-		gl.uniform1i(location, index);
+	bind(index) {
+		if(this.isLoaded){
+			gl.activeTexture(gl.TEXTURE0 + index);
+			gl.bindTexture(gl.TEXTURE_CUBE_MAP, this.cubeTexture);
+			//gl.uniform1i(location, index);
+		}
 	}
 
 
