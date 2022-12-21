@@ -5,6 +5,7 @@ module com.s8.io.swgl {
 	exports com.s8.io.swgl.appearances;
 	exports com.s8.io.swgl.appearances.color2;
 	exports com.s8.io.swgl.appearances.mat01;
+	exports com.s8.io.swgl.appearances.phys2;
 	exports com.s8.io.swgl.appearances.standard;
 	
 	exports com.s8.io.swgl.environment;

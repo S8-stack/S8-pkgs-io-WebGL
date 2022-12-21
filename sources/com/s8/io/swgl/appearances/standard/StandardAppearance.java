@@ -31,10 +31,33 @@ public class StandardAppearance extends SWGL_Appearance {
 		vertex.setFloat32("roughness", (float) value);
 	}
 	
+	
+	public void setSpecularColor(int r, int g, int b) {
+		float[] values = new float[] {
+				(float) (r/255.0f),
+				(float) (g/255.0f),
+				(float) (b/255.0f),
+				1.0f
+		};
+		vertex.setFloat32Array("specularColor", values);
+	}
+	
 	public void setSpecularColor(float[] value) {
 		vertex.setFloat32Array("specularColor", value);
 	}
 
+	
+	public void setDiffuseColor(int r, int g, int b) {
+		float[] values = new float[] {
+				(float) (r/255.0f),
+				(float) (g/255.0f),
+				(float) (b/255.0f),
+				1.0f
+		};
+		vertex.setFloat32Array("diffuseColor", values);
+	}
+	
+	
 	public void setDiffuseColor(float[] value) {
 		vertex.setFloat32Array("diffuseColor", value);
 	}

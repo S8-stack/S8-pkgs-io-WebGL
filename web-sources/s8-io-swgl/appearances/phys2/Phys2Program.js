@@ -17,8 +17,9 @@ import { Phys2Appearance } from 'appearances/phys2/Phys2Appearance.js';
 
 
 export const PROPERTIES_TEXTURE_INDEX = 0;
-export const DIFFUSE_COLORS_TEXTURE_INDEX = 1;
-export const SPECULAR_COLORS_TEXTURE_INDEX = 2;
+export const EMISSIVE_COLORS_TEXTURE_INDEX = 1;
+export const DIFFUSE_COLORS_TEXTURE_INDEX = 2;
+export const SPECULAR_COLORS_TEXTURE_INDEX = 3;
 
 /**
  * 
@@ -47,14 +48,13 @@ export class StandardProgram extends SWGL_Program {
 		this.loc_Uniform_irradiance = gl.getUniformLocation(this.handle, "irradiance");
 
 		// properties, diffuse, specular
+		this.loc_Uniform_matProperties = gl.getUniformLocation(this.handle, "matProperties");
+		this.loc_Uniform_matEmissiveColors = gl.getUniformLocation(this.handle, "matEmissiveColors");
 		this.loc_Uniform_matDiffuseColors = gl.getUniformLocation(this.handle, "matDiffuseColors");
 		this.loc_Uniform_matSpecularColors = gl.getUniformLocation(this.handle, "matSpecularColors");
-		this.loc_Uniform_matProperties = gl.getUniformLocation(this.handle, "matProperties");
 
 		this.loc_Uniform_material_glossiness = gl.getUniformLocation(this.handle, "matGlossiness");
 		this.loc_Uniform_material_roughness = gl.getUniformLocation(this.handle, "matRoughness");
-		this.loc_Uniform_material_specularColor = gl.getUniformLocation(this.handle, "matSpecularColor");
-		this.loc_Uniform_material_diffuseColor = gl.getUniformLocation(this.handle, "matDiffuseColor");
 		/* </uniforms> */
 
 		/* <attributes> */
@@ -81,6 +81,7 @@ export class StandardProgram extends SWGL_Program {
 
 		/* <enable-textures> */
 		gl.uniform1i(this.loc_Uniform_matProperties, PROPERTIES_TEXTURE_INDEX);
+		gl.uniform1i(this.loc_Uniform_matDiffuseColors, EMISSIVE_COLORS_TEXTURE_INDEX);
 		gl.uniform1i(this.loc_Uniform_matDiffuseColors, DIFFUSE_COLORS_TEXTURE_INDEX);
 		gl.uniform1i(this.loc_Uniform_matSpecularColors, SPECULAR_COLORS_TEXTURE_INDEX);
 		/* </enable-textures> */
@@ -110,9 +111,10 @@ export class StandardProgram extends SWGL_Program {
 	bindAppearance(appearance) {
 
 		// material
-		appearance.matProperties.bind(PROPERTIES_TEXTURE_INDEX);
-		appearance.matDiffuseColors.bind(DIFFUSE_COLORS_TEXTURE_INDEX);
-		appearance.matSpecularColors.bind(SPECULAR_COLORS_TEXTURE_INDEX);
+		appearance.propsTex.bind(PROPERTIES_TEXTURE_INDEX);
+		appearance.emissiveColorsTex.bind(EMISSIVE_COLORS_TEXTURE_INDEX);
+		appearance.diffuseColorsTex.bind(DIFFUSE_COLORS_TEXTURE_INDEX);
+		appearance.specularColorsTex.bind(SPECULAR_COLORS_TEXTURE_INDEX);
 	}
 
 

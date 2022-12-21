@@ -6,6 +6,7 @@ precision highp float;
 uniform samplerCube radiance;
 uniform samplerCube irradiance;
 
+uniform sampler2D matEmissiveColors;
 uniform sampler2D matDiffuseColors;
 uniform sampler2D matSpecularColors;
 uniform sampler2D matProperties;
@@ -24,9 +25,10 @@ void main(void) {
 
 
 	vec4 matProperties = texture(matProperties, fTexCoords);
-	float matGlossiness = matProperties.x;
+	//float matGlossiness = matProperties.x;
 	float matRoughness = matProperties.y;
 
+	vec4 matEmissiveColor = texture(matEmissiveColors, fTexCoords);
 	vec4 matDiffuseColor = texture(matDiffuseColors, fTexCoords);
 	vec4 matSpecularColor = texture(matSpecularColors, fTexCoords);
 	
@@ -38,7 +40,8 @@ void main(void) {
 	vec4 envSpecularColor = textureLod(radiance, sphereTexCoords, matRoughness);
 	vec4 envDiffuseColor = texture(irradiance, rotatedTextureCoord);
 
-	fragColor = matGlossiness * matSpecularColor * envSpecularColor
-		+ (1.0 - matGlossiness) * matDiffuseColor * envDiffuseColor;
+	fragColor = matEmissiveColor 
+				+ matSpecularColor * envSpecularColor
+				+ matDiffuseColor * envDiffuseColor;
 	
 }
