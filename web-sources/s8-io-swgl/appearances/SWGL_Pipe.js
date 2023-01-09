@@ -60,7 +60,7 @@ import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
  * even if several more instructions are needed. There are some cool bit-twiddling tricks you can do to 
  * compute things such as abs(), min(), and max() without branching.
  */
-export class SWGL_Renderer extends NeObject {
+export class SWGL_Pipe extends NeObject {
 
 	/**
 	 * @type {SWGL_Program}

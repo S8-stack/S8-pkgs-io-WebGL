@@ -4,12 +4,12 @@ import { SWGL_Environment } from "../../environment/SWGL_Environment";
 import { NbView } from "../../view/SWGL_View";
 import { SWGL_Model } from "../../models/SWGL_Model";
 import { SWGL_Appearance } from "../SWGL_Appearance";
-import { SWGL_Renderer } from "../SWGL_Renderer";
+import { SWGL_Pipe } from "../SWGL_Pipe";
 
 /**
  * 
  */
-export class ColorNbProgram extends SWGL_Renderer {
+export class ColorNbProgram extends SWGL_Pipe {
 
 
 	/**
