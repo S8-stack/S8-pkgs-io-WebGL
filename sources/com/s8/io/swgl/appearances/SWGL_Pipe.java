@@ -15,7 +15,7 @@ import com.s8.io.swgl.models.SWGL_Model;
  * @author pierreconvert
  *
  */
-public class SWGL_Renderer<A extends SWGL_Appearance> extends NeObject {
+public class SWGL_Pipe<A extends SWGL_Appearance> extends NeObject {
 
 	private Map<String, A> map = new HashMap<String, A>();
 	
@@ -25,8 +25,8 @@ public class SWGL_Renderer<A extends SWGL_Appearance> extends NeObject {
 	 * @param branch
 	 * @param typeName
 	 */
-	public SWGL_Renderer(NeBranch branch) {
-		super(branch, SWGL_Root.WEB+"appearances/SWGL_Renderer");
+	public SWGL_Pipe(NeBranch branch) {
+		super(branch, SWGL_Root.WEB+"appearances/SWGL_Pipe");
 	}
 	
 	

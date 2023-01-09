@@ -5,7 +5,7 @@ import java.util.List;
 import com.s8.io.bohr.neon.core.NeBranch;
 import com.s8.io.bohr.neon.core.NeObject;
 import com.s8.io.swgl.SWGL_Root;
-import com.s8.io.swgl.appearances.SWGL_Renderer;
+import com.s8.io.swgl.appearances.SWGL_Pipe;
 import com.s8.io.swgl.environment.SWGL_Environment;
 
 /**
@@ -35,8 +35,8 @@ public class SWGL_Scene extends NeObject {
 	
 	
 	
-	public void setRenderers(List<SWGL_Renderer<?>> renderers) {
-		vertex.setObjList("renderers", renderers);
+	public void setPipes(List<SWGL_Pipe<?>> pipes) {
+		vertex.setObjList("pipes", pipes);
 	}
 	
 	
@@ -47,7 +47,7 @@ public class SWGL_Scene extends NeObject {
 	 * @param name
 	 * @param appearance
 	 */
-	public void define(String name, SWGL_Renderer<?> prgm) {
+	public void define(String name, SWGL_Pipe<?> prgm) {
 		
 		// appearance
 		vertex.addObjToList("programs", prgm);
