@@ -91,10 +91,11 @@ export class SWGL_Appearance extends NeObject {
 			/** @type {SWGL_Model} model */
 			let model = this.models[i];
 
-			// update model (matrix and mesh)
-			model.update();
+			if (model.isReady) {
 
-			if (model.isMeshDefined) {
+				// model load it!
+				model.load();
+
 				// bind model
 				this.program.bindModel(view, model);
 

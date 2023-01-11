@@ -25,11 +25,9 @@ export class SWGL_Model extends NeObject {
 	/**
 	 * @type{boolean}
 	 */
-	isMeshDefined = false;
+	isReady = false;
 
-	/** @type {Array} */
-	updaters = []; // no updaters
-
+	
 	/** @type {SWGL_Mesh} vertex attributes enabling flage */
 	mesh = null;
 
@@ -62,65 +60,30 @@ export class SWGL_Model extends NeObject {
 
 	/** @param {SWGL_Mesh} mesh */
 	S8_set_mesh(mesh) {
-		this.setMesh(mesh);
-	}
-
-	/** @param {SWGL_Mesh} mesh */
-	setMesh(mesh){
 		if(mesh == null) { throw "SWGL: Forbidden to set null mesh"; }
 		this.mesh = mesh;
-		this.isMeshDefined = true;
+		this.isReady = true;
 	}
 
-	/**
-	 * 
-	 * @param {*} matrixUpdater 
-	 */
-	S8_set_updaters(updaters){
-		this.updaters = updaters;
-	}
-	
 
-	/**
-	 * 
-	 */
-	update(){
-
-		/* update */
-		let nUpdaters = this.updaters.length;
-		for(let i=0; i<nUpdaters; i++){
-			let updater = this.updaters[i];
-			if(updater.hasUpdate()){ updater.update(this); }
-		}
-
-
-		if(this.isMeshDefined) {
-
-			/* load mesh to GPU (if not already done) */
-			this.mesh.load();
-		}
-
+	load(){
+		/* load mesh to GPU (if not already done) */
+		this.mesh.load();
 	}
 
 
 	draw(){
-		if(this.isMeshDefined) {
-
-			/* load mesh to GPU (if not already done) */
-			this.mesh.load();
-
-			// load mesh to GPU (if not already done)
-			this.mesh.draw();
-		}
+		/* trigger draw */
+		this.mesh.draw();
 	}
 
 	S8_render() { /* do nothing */ }
 
 
 	S8_dispose() {
-		if(this.isMeshDefined) { 
+		if(this.isReady) { 
 			this.mesh.dispose(); 
-			this.isMeshDefined = false;
+			this.isReady = false;
 		}
 	}
 

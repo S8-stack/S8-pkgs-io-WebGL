@@ -27,6 +27,7 @@ export class SWGL_Scene extends NeObject {
 
 	/** 
 	 * @type {SWGL_View} the view 
+	 * (Always readily available)
 	 */
 	view;
 

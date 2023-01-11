@@ -157,6 +157,7 @@ export class Phys2Program extends SWGL_Program {
 		/* <disable-attributes> */
 		gl.disableVertexAttribArray(VertexAttributes.POSITIONS_LOCATION);
 		gl.disableVertexAttribArray(VertexAttributes.NORMALS_LOCATION);
+		gl.disableVertexAttribArray(VertexAttributes.TEX_COORDS_LOCATION);
 		/* </disable-attributes> */
 
 		// unbind shader program

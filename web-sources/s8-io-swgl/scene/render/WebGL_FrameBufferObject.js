@@ -11,8 +11,6 @@ function WebGL_FrameBufferObject(width, height, mode=0){
 	this.width = width;
 	this.height = height;
 	this.mode = mode;
-
-	this.initialize();
 }
 
 
