@@ -5,9 +5,9 @@ import java.util.List;
 import com.s8.io.bohr.neon.core.NeBranch;
 import com.s8.io.bohr.neon.core.NeObject;
 import com.s8.io.swgl.SWGL_Root;
-import com.s8.io.swgl.appearances.SWGL_Pipe;
-import com.s8.io.swgl.environment.SWGL_Environment;
-import com.s8.io.swgl.view.SWGL_View;
+import com.s8.io.swgl.scene.environment.SWGL_Environment;
+import com.s8.io.swgl.scene.pipes.SWGL_Pipe;
+import com.s8.io.swgl.scene.view.SWGL_View;
 
 /**
  * 

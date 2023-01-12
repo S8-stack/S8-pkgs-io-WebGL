@@ -1,12 +1,15 @@
 
 
+import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
+
+
 import { gl, SWGL_CONTEXT } from '/s8-io-swgl/swgl.js';
 
-import { SWGL_Environment } from '/s8-io-swgl/environment/SWGL_Environment.js';
-import { SWGL_View } from "/s8-io-swgl/view/SWGL_View.js";
-import { StdViewController } from "../view/StdViewController.js";
-import { SWGL_Pipe } from '../appearances/SWGL_Pipe.js';
-import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
+
+import { SWGL_Environment } from './environment/SWGL_Environment.js';
+import { SWGL_View } from "./view/SWGL_View.js";
+import { SWGL_Pipe } from './pipes/SWGL_Pipe.js';
+
 
 
 /**

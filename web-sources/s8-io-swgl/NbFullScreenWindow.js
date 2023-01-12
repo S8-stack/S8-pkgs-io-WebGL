@@ -5,9 +5,9 @@ import { Mat01NbAppearance } from './appearances/mat01/Mat01Appearance';
 import { NbContext } from './swgl';
 import { NbGear } from './scene/NbGear';
 import { SWGL_Scene } from './scene/SWGL_Scene';
-import { ElementaryNbShGen } from './models/generators/ElementaryNbShGen';
-import { SWGL_Model } from './models/SWGL_Model';
-import { HexahedronNbMeshBuilder } from './models/primitives/HexahedronNbMeshBuilder';
+import { ElementaryNbShGen } from './scene/models/generators/ElementaryNbShGen';
+import { SWGL_Model } from './scene/models/SWGL_Model';
+import { HexahedronNbMeshBuilder } from './scene/models/primitives/HexahedronNbMeshBuilder';
 
 
 S8.import_CSS("/nebulae/nb-style.css");
