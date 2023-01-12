@@ -276,7 +276,16 @@ export class StdViewController {
 	 * 
 	 * @param {SWGL_View} view 
 	 */
-	constructor(view) {
+	constructor() {
+	}
+
+
+
+	/**
+	 * 
+	 * @param {SWGL_View} view 
+	 */
+	linkView(view){
 		this.view = view;
 	}
 

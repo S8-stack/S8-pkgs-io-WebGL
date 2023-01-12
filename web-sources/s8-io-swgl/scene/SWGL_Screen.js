@@ -4,7 +4,7 @@
 import { StdViewController } from '/s8-io-swgl/view/StdViewController.js';
 import { SWGL_Scene } from './SWGL_Scene.js';
 import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
-import { gl } from '/s8-io-swgl/swgl.js';
+import { gl, SWGL_CONTEXT } from '/s8-io-swgl/swgl.js';
 
 
 /**
@@ -16,7 +16,7 @@ export class SWGL_Screen extends NeObject {
 	/**
 	 * @type {SWGL_Scene}
 	 */
-	scene;
+	scene = null;
 
 
 	/**
@@ -34,9 +34,18 @@ export class SWGL_Screen extends NeObject {
 	t_then = 0;
 
 
+	/** @type {Function} */
+	sizeListener;
+
+
 	constructor(){
 		super();
 		this.fpsDisplay = document.querySelector("#fps-display");
+
+		/* listen screen size */
+		let _this = this;
+		this.sizeListener = function(width, height){ _this.resize(width, height); };
+		SWGL_CONTEXT.appendSizeListener(this.sizeListener);
 	}
 
 	start() {
@@ -60,7 +69,8 @@ export class SWGL_Screen extends NeObject {
 			/* <start> */
 
 			// start controller
-			this.controller = new StdViewController(this.scene.view);
+			this.controller = new StdViewController();
+			this.controller.linkView(this.scene.view);
 			this.controller.start();
 
 			// render
@@ -83,7 +93,25 @@ export class SWGL_Screen extends NeObject {
 	}
 
 
-	S8_render() { /* nothing */ }
+
+	/**
+	 * 
+	 * @param {number} width 
+	 * @param {number} height 
+	 */
+	resize(width, height){
+		if(this.scene != null){
+			this.scene.resize(width, height);
+		}
+	}
+
+
+	S8_render() { 
+		if(this.scene != null && this.controller != null){
+			/* re-attach view (in case has been changed) */ 
+			this.controller.linkView(this.scene.view);
+		}
+	}
 
 	/**
 	 * @param {number} t_now render time in ms 

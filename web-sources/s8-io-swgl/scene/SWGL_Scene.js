@@ -29,7 +29,7 @@ export class SWGL_Scene extends NeObject {
 	 * @type {SWGL_View} the view 
 	 * (Always readily available)
 	 */
-	view;
+	view = null;
 
 
 
@@ -69,6 +69,15 @@ export class SWGL_Scene extends NeObject {
 	}
 
 
+	/**
+	 * 
+	 * @param {SWGL_View} view 
+	 */
+	S8_set_view(view) {
+		this.view = view;
+	}
+
+
 	S8_render() {
 		/* do nothing */
 	}
@@ -103,6 +112,20 @@ export class SWGL_Scene extends NeObject {
 		// do a rendering pass to apply changes
 		this.render();
 	}
+
+
+
+	/**
+	 * 
+	 * @param {number} width 
+	 * @param {number} height 
+	 */
+	resize(width, height){
+		if(this.view != null){
+			this.view.resize(width, height);
+		}
+	}
+
 
 
 	/**

@@ -5,6 +5,7 @@ import * as V3 from "/s8-io-swgl/maths/SWGL_Vector3d.js";
 import * as V4 from "/s8-io-swgl/maths/SWGL_Vector4d.js";
 import { SWGL_CONTEXT } from "/s8-io-swgl/swgl.js";
 import { SWGL_Scene } from "/s8-io-swgl/scene/SWGL_Scene.js";
+import { NeObject } from "/s8-io-bohr/neon/NeObject.js";
 
 
 export class NbRay3d {
@@ -20,7 +21,7 @@ export class NbRay3d {
 /**
  * view for the scene
  */
-export class SWGL_View {
+export class SWGL_View extends NeObject {
 
 	/** @type {NbScene} scene */
 	scene;
@@ -64,17 +65,11 @@ export class SWGL_View {
 	/** @type {Float32Array} Projection * View Matrix */
 	matrix_ProjectionView = M4.create();
 
-	/** @type {Function} */
-	sizeListener;
-
 	/**
 	 * @param {SWGL_Scene} scene
 	 */
-	constructor(scene) {
-		this.scene = scene;
-		let _this = this;
-		this.sizeListener = function(width, height){ _this.resize(width, height); };
-		SWGL_CONTEXT.appendSizeListener(this.sizeListener);
+	constructor() {
+		super();
 	}
 
 
@@ -220,7 +215,12 @@ export class SWGL_View {
 	}
 
 
-	dipose(){
+
+	S8_render(){
+		/* nothing */
+	}
+
+	S8_dispose(){
 		SWGL_CONTEXT.removeSizeListener(this.sizeListener);
 	}
 }

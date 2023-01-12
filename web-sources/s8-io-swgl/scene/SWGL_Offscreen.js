@@ -11,7 +11,38 @@ import { StaticViewController } from "view/StaticViewController.js";
 /**
  * 
  */
-export class SWGL_Offscreen extends FrameBufferObject {
+export class SWGL_Offscreen extends NeObject {
+
+
+
+    /**
+     * @type{FrameBufferObject}
+     */
+    fbo = new FrameBufferObject({ filter: gl.LINEAR });
+
+
+    /**
+     * @type{number}
+     */
+    width;
+
+    /**
+     * @type{number}
+     */
+    height;
+
+
+    S8_set_width(size) {
+        this.width = size;
+        this.fbo.resize(this.width, this.height);
+    }
+    
+
+    S8_set_height(size) {
+        this.height = size;
+        this.fbo.resize(this.width, this.height);
+    }
+
 
 
     /**
@@ -20,8 +51,30 @@ export class SWGL_Offscreen extends FrameBufferObject {
     canvas2d = null;
 
     constructor() {
-        super({ filter: gl.LINEAR });
+        super();
+
+
+
+        /* listen screen size */
+		let _this = this;
+		this.sizeListener = function(width, height){ _this.resize(width, height); };
+		SWGL_CONTEXT.appendSizeListener(this.sizeListener);
     }
+
+
+
+
+
+	/**
+	 * 
+	 * @param {number} width 
+	 * @param {number} height 
+	 */
+	resize(width, height){
+		if(this.scene != null){
+			this.scene.resize(width, height);
+		}
+	}
 
 
 
@@ -41,8 +94,9 @@ export class SWGL_Offscreen extends FrameBufferObject {
      */
     render(scene, target) {
 
+        this.initialize();
 
-        this.bindFBO();
+        this.bind();
 
         //this.fbo.bind();
         gl.clearColor(0.0, 0.0, 0.0, 0.0);

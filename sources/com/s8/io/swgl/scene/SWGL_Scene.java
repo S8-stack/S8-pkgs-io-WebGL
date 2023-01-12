@@ -7,6 +7,7 @@ import com.s8.io.bohr.neon.core.NeObject;
 import com.s8.io.swgl.SWGL_Root;
 import com.s8.io.swgl.appearances.SWGL_Pipe;
 import com.s8.io.swgl.environment.SWGL_Environment;
+import com.s8.io.swgl.view.SWGL_View;
 
 /**
  * 
@@ -51,6 +52,11 @@ public class SWGL_Scene extends NeObject {
 		
 		// appearance
 		vertex.addObjToList("programs", prgm);
+	}
+
+
+	public void setView(SWGL_View view) {
+		vertex.setObj("view", view);
 	}
 	
 }

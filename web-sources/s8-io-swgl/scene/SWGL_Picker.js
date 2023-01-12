@@ -1,8 +1,6 @@
 import { gl } from "/s8-io-swgl/swgl.js";
 import { NeObject } from "/s8-io-bohr/neon/NeObject.js";
 import { FrameBufferObject } from "./FrameBufferObject.js";
-import { SWGL_Scene } from "scene/SWGL_Scene.js";
-import { StaticViewController } from "view/StaticViewController.js";
 
 
 
@@ -11,35 +9,54 @@ import { StaticViewController } from "view/StaticViewController.js";
 /**
  * 
  */
-export class SWGL_Picker extends FrameBufferObject {
+export class SWGL_Picker extends NeObject {
+
+
+
+
+    /**
+     * @type{FrameBufferObject}
+     */
+    fbo = new FrameBufferObject({ filter: gl.NEAREST });
 
 
     constructor() {
-        super({ filter: gl.NEAREST });
+        super();
     }
 
 
+	/**
+	 * 
+	 * @param {number} width 
+	 * @param {number} height 
+	 */
+	resize(width, height){
+		// share same view with screen scene -> no required update on scene view
+        this.fbo.resize(width, height);
+	}
 
-    /*
+
     subInitialize() {
+        /* nothing to do here */
     }
-    */
+    
 
 
     /**
      * 
      * @param {*} target 
+     * @returns {number} index of target
      */
-    render(scene, target) {
+    pick(scene, x, y) {
 
-
-        this.bindFBO();
+        /* bind fbo */
+        this.fbo.bind();
 
         //this.fbo.bind();
         gl.clearColor(0.0, 0.0, 0.0, 0.0);
 
         //this.environment.setBackgroundColor();
-        gl.clearStencil(128);
+        //gl.clearStencil(128);
         //this.fbo.unbind();
 
         //Set-up canvas parameters
@@ -47,28 +64,21 @@ export class SWGL_Picker extends FrameBufferObject {
 
         gl.viewport(0, 0, this.width, this.height);
 
-        // gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
-        //OpenGL initialization
-
-        // render scene
-        scene.WebGL_render();
+        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
+       
+        this.render(scene);
 
         // read data out of FBO
-        const data = new Uint8Array(4 * this.width * this.height);
-        gl.readPixels(0, 0, this.width, this.height, gl.RGBA, gl.UNSIGNED_BYTE, data);
+        const data = this.fbo.pickColor(x, y);
 
         gl.clearColor(1.0, 1.0, 1.0, 1.0);
-        this.unbindFBO();
 
-        // Copy the pixels to a 2D canvas
-        let imageData = this.context2d.createImageData(this.width, this.height);
-        imageData.data.set(data);
-        this.context2d.putImageData(imageData, 0, 0);
+        /* unbind fbo */
+        this.fbo.unbind();
 
-        //background-image = 
-        target.style.backgroundImage = "url('" + this.canvas2d.toDataURL() + "')";
-
+        let index = data[0] + data[1] * 256 + data[2] * 65536;
+        return index;
     }
 
 }
