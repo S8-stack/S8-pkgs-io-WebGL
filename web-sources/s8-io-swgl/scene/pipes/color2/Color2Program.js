@@ -23,7 +23,7 @@ export class Color2Program extends SWGL_Program {
 	 * 
 	 */
 	constructor() {
-		super("/s8-io-swgl/scene/pipes/color2");
+		super("/color2");
 	}
 
 

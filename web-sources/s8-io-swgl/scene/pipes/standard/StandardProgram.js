@@ -5,13 +5,13 @@ import { gl } from '/s8-io-swgl/swgl.js';
 
 import * as M4 from '/s8-io-swgl/maths/SWGL_Matrix4d.js';
 
-import { SWGL_Environment } from "/s8-io-swgl/environment/SWGL_Environment.js";
-import { SWGL_Program } from "/s8-io-swgl/appearances/SWGL_Program.js";
-import { StandardAppearance } from "/s8-io-swgl/appearances/standard/StandardAppearance.js";
-import { SWGL_View } from "../../scene/SWGL_View.js";
+import { SWGL_Environment } from "/s8-io-swgl/scene/environment/SWGL_Environment.js";
+import { SWGL_Program } from "../SWGL_Program.js";
+import { StandardAppearance } from "./StandardAppearance.js";
+import { SWGL_View } from "/s8-io-swgl/scene/view/SWGL_View.js";
 
-import { SWGL_Model } from "../../scene/models/SWGL_Model.js";
-import { VertexAttributes } from '../../scene/models/SWGL_Mesh.js';
+import { SWGL_Model } from "/s8-io-swgl/scene/models/SWGL_Model.js";
+import { VertexAttributes } from '/s8-io-swgl/scene/models/SWGL_Mesh.js';
 
 
 /**
@@ -23,7 +23,7 @@ export class StandardProgram extends SWGL_Program {
 	 * 
 	 */
 	constructor() {
-		super("/s8-io-swgl/appearances/standard");
+		super("/standard");
 	}
 
 	/**

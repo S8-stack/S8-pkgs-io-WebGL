@@ -1,10 +1,11 @@
 
-
-
-import { StdViewController } from '../control/StdViewController.js';
-import { SWGL_Scene } from '../scene/SWGL_Scene.js';
 import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
+
 import { gl, SWGL_CONTEXT } from '/s8-io-swgl/swgl.js';
+
+import { SWGL_Picker } from '/s8-io-swgl/render/SWGL_Picker.js';
+import { StdViewController } from '/s8-io-swgl/control/StdViewController.js';
+import { SWGL_Scene } from '/s8-io-swgl/scene/SWGL_Scene.js';
 
 
 /**
@@ -17,6 +18,19 @@ export class SWGL_Screen extends NeObject {
 	 * @type {SWGL_Scene}
 	 */
 	scene = null;
+
+
+	/**
+	 * @type {SWGL_Scene}
+	 */
+	pickingScene = null;
+
+
+
+	/**
+	 * @type {SWGL_Picker}
+	 */
+	picker = new SWGL_Picker();
 
 
 	/**
@@ -34,19 +48,38 @@ export class SWGL_Screen extends NeObject {
 	t_then = 0;
 
 
+
+	isInitialized = false;
+
+
 	/** @type {Function} */
 	sizeListener;
 
 
-	constructor(){
+	constructor() {
 		super();
-		this.fpsDisplay = document.querySelector("#fps-display");
-
-		/* listen screen size */
-		let _this = this;
-		this.sizeListener = function(width, height){ _this.resize(width, height); };
-		SWGL_CONTEXT.appendSizeListener(this.sizeListener);
+		this.fpsDisplay = document.querySelector("#fps-display")
 	}
+
+
+
+	S8_render() {
+		if (this.scene != null && this.controller != null) {
+			/* re-attach view (in case has been changed) */
+			this.controller.link(this);
+		}
+		
+
+		// update
+		if (!this.isInitialized) {
+			/* listen screen size */
+			let _this = this;
+			this.sizeListener = function (width, height) { _this.resize(width, height); };
+			SWGL_CONTEXT.appendSizeListener(this.sizeListener);
+			this.isInitialized = true;
+		}
+	}
+
 
 	start() {
 		if (!this.isRunning) {
@@ -70,7 +103,7 @@ export class SWGL_Screen extends NeObject {
 
 			// start controller
 			this.controller = new StdViewController();
-			this.controller.linkView(this.scene.view);
+			this.controller.link(this);
 			this.controller.start();
 
 			// render
@@ -80,11 +113,11 @@ export class SWGL_Screen extends NeObject {
 		}
 	}
 
-/**
-	* [WebGL_Scene API method]
-	* setPickingCallback allows to specify a behaviour if the event of a picking click.
-	* The shape id is passed to the callback function when a picking click occurs.
-	*/
+	/**
+		* [WebGL_Scene API method]
+		* setPickingCallback allows to specify a behaviour if the event of a picking click.
+		* The shape id is passed to the callback function when a picking click occurs.
+		*/
 	setPickingCallback(callback) {
 		this.picking.callback = callback;
 
@@ -99,19 +132,21 @@ export class SWGL_Screen extends NeObject {
 	 * @param {number} width 
 	 * @param {number} height 
 	 */
-	resize(width, height){
-		if(this.scene != null){
+	resize(width, height) {
+		if (this.scene != null) {
 			this.scene.resize(width, height);
 		}
-	}
 
-
-	S8_render() { 
-		if(this.scene != null && this.controller != null){
-			/* re-attach view (in case has been changed) */ 
-			this.controller.linkView(this.scene.view);
+		if (this.pickingScene != null) {
+			this.pickingScene.resize(width, height);
 		}
+
+
+		// resize picker
+		this.picker.resize(width, height);
 	}
+
+
 
 	/**
 	 * @param {number} t_now render time in ms 
@@ -144,16 +179,25 @@ export class SWGL_Screen extends NeObject {
 	 * 
 	 * @param {SWGL_Scene} scene 
 	 */
-	S8_set_scene(scene){
+	S8_set_scene(scene) {
 		this.scene = scene;
 		this.scene.initialize();
 	}
 
-
-
-	S8_dispose(){
-		if(this.scene){ this.scene.S8_dispose(); }
+	/**
+	 * 
+	 * @param {SWGL_Scene} scene 
+	 */
+	S8_set_pickingScene(scene) {
+		this.pickingScene = scene;
+		this.pickingScene.initialize();
 	}
-	
+
+
+
+	S8_dispose() {
+		if (this.scene) { this.scene.S8_dispose(); }
+	}
+
 }
 

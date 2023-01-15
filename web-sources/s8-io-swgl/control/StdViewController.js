@@ -5,225 +5,19 @@ import * as V3 from "/s8-io-swgl/maths/SWGL_Vector3d.js";
 import { SWGL_CONTEXT } from "/s8-io-swgl/swgl.js";
 
 
-/**
- * 
- */
-class Control {
-
-	/** @type { StdViewController } the view attached to this control */
-	controller;
-
-	constructor(controller) { this.controller = controller; }
-}
-
-
-/**
- * 
- */
-class Rotate extends Control {
-
-	/** @type {number} mouseTrackballSensitity */
-	mouseTrackballSensitity = 0.3;
-
-	/** @type {number} lastMouseX */
-	lastMouseX = 0.0;
-
-	/** @type {number} lastMouseY */
-	lastMouseY = 0.0;
-
-	/** @type {boolean} isMouseDown */
-	isMouseDown = false;
-
-
-	/**
-	 * 
-	 * @param {StdViewController} controller 
-	 */
-	constructor(controller) { super(controller); }
-
-	/**
-	 * @param {*} event 
-	 * @returns {boolean} is taking over
-	 */
-	onMouseDown(event) {
-		this.isMouseDown = true;
-		this.lastMouseX = event.clientX;
-		this.lastMouseY = event.clientY;
-		return true; // taking over
-	}
-
-	/**
-	 * 
-	 * @param {*} event 
-	 * @returns {boolean} is taking over
-	 */
-	onMouseUp() {
-		this.isMouseDown = false;
-		return false; // not taking over
-	}
-
-	/**
-	 * 
-	 * @param {*} event
-	 * @returns {boolean} is taking over
-	 */
-	onMouseWheel() {
-		return false; // not taking over
-	}
-
-	/**
-	 * 
-	 * @param {*} event 
-	 * @returns {boolean} is taking over
-	 */
-	onMouseMove(event) {
-		if (this.isMouseDown) {
-			// TODO implement throttle her
-
-			this.controller.phi -= (event.clientX - this.lastMouseX) * this.mouseTrackballSensitity;
-			this.lastMouseX = event.clientX;
-			this.controller.theta += (event.clientY - this.lastMouseY) * this.mouseTrackballSensitity;
-			this.lastMouseY = event.clientY;
-			if (this.controller.theta > 180.0) {
-				this.controller.theta = 180.0;
-			}
-			if (this.controller.theta < 1.0) {
-				this.controller.theta = 1.0;
-			}
-
-			//log.nodeValue = "phi="+this.phi.toFixed(2)+" theta="+this.theta.toFixed(2)+" r="+this.r.toFixed(2)+"\n";
-			//log.nodeValue+= "x="+event.clientX+" y="+event.clientY+"\n";
-
-			//this.updateView();
-
-			this.controller.refresh();
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	/**
-	 * 
-	 * @param {*} event 
-	 * @returns 
-	 */
-	onKeyDown(event) {
-		return false; // nothing to do 
-	}
-
-	/**
-	 * 
-	 * @param {*} event 
-	 * @returns 
-	 */
-	onKeyUp(event) {
-		return false; // nothing to do 
-	}
-}
+/* controls */
+import { Rotate } from "/s8-io-swgl/control/Rotate.js";
+import { Zoom } from "/s8-io-swgl/control/Zoom.js";
+import { Highlight } from "/s8-io-swgl/control/Highlight.js";
+import { Pick } from "/s8-io-swgl/control/Pick.js";
+import { SWGL_Screen } from "/s8-io-swgl/render/SWGL_Screen.js";
 
 
 
-/**
- * basic mode for zooming
- */
-class Zoom extends Control {
-
-	/** @type {number} mouse wheel sensitivity */
-	mouseWheelSensitivity = 0.8 * 1e-3;
-
-	constructor(view) { super(view); }
-
-	onMouseDown() { return false; }
-	onMouseUp() { return false; }
-	onMouseMove() { return false; /* nothing to do*/ }
-
-	onMouseWheel(event) {
-		this.controller.r += -this.controller.r * event.wheelDelta * this.mouseWheelSensitivity;
-		if (this.controller.r < this.controller.SETTINGS_min_approach_r) {
-			this.controller.r = this.controller.SETTINGS_min_approach_r;
-		}
-		//this.updateView();
-		this.controller.refresh();
-
-		return true;
-	}
-
-	onKeyDown() { return false; }
-	onKeyUp() { return false; }
-};
 
 
 
-export class Highlight extends Control {
 
-	acquiredHoveredObject = null;
-
-	/** @param {NbView} view */
-	constructor(view) { super(view); }
-
-	onMouseDown() {
-		this.terminate(); // cleaning-up
-		return false;
-	}
-
-	onMouseUp() {
-		this.terminate(); // cleaning-up
-		return false;
-	}
-
-	onMouseMove(event) {
-		if (event.shiftKey) {
-			var currentHoveredObject = scene.picking.pick(event.clientX, event.clientY);
-			if (currentHoveredObject != this.acquiredHoveredObject) {
-				var isRenderingRequired = false;
-				if (this.acquiredHoveredObject != null) {
-					this.acquiredHoveredObject.display(0);
-					isRenderingRequired = true;
-				}
-				this.acquiredHoveredObject = currentHoveredObject;
-				if (this.acquiredHoveredObject != null) {
-					this.acquiredHoveredObject.display(1);
-					isRenderingRequired = true;
-				}
-
-				if (isRenderingRequired) {
-					scene.render();
-				}
-			}
-			logNode.innerHTML = "Now hovering " + this.acquiredHoveredObject;
-			return true;
-		}
-		else {
-			this.terminate(); // cleaning-up
-			return false;
-		}
-	}
-
-	onMouseWheel() {
-		this.terminate(); // cleaning-up
-		return false;
-	}
-
-	onKeyDown() {
-		this.terminate(); // cleaning-up
-		return false;
-	}
-
-	onKeyUp() {
-		this.terminate(); // cleaning-up
-		return false;
-	}
-
-	terminate() {
-		if (this.acquiredHoveredObject != null) {
-			this.acquiredHoveredObject.display(0);
-			this.acquiredHoveredObject = null;
-			this.controller.refresh();
-		}
-	}
-}
 
 
 
@@ -253,9 +47,9 @@ const DEG_to_RAD = Math.PI / 180.0;
  */
 export class StdViewController {
 
-	/** @type {SWGL_View} view (Bound by scene) */
-	view;
 
+	/** @type {SWGL_Screen} screen (Bound by screen) */
+	screen;
 
 	/** @type {number} r distance [m] of view vector */
 	r = 20;
@@ -282,10 +76,10 @@ export class StdViewController {
 
 	/**
 	 * 
-	 * @param {SWGL_View} view 
+	 * @param {SWGL_Screen} screen 
 	 */
-	linkView(view){
-		this.view = view;
+	link(screen){
+		this.screen = screen;
 	}
 
 
@@ -298,98 +92,127 @@ export class StdViewController {
 
 		// define modes
 		this.controls = [
-			new Rotate(this),
-			new Zoom(this),
-			new Highlight(this)];
+			new Rotate(), new Zoom(), new Highlight(), new Pick()
+		];
 
-		this.view.updateProjectionMatrix();
-		this.view.updateViewMatrix();
+		// retrieve view
+		const view = this.getView();
+		view.updateProjectionMatrix();
+		view.updateViewMatrix();
 
 		// set default mode
 		this.mode = this.zoomMode;
 
 		let _this = this;
 
+		const n = this.controls.length;
 
-		this.onMouseDown = function (event) {
-			let isCaptured = false, i = 0, n = _this.controls.length;
+		for(let i = 0; i < n; i++) {
+			this.controls[i].link(this);
+		}
+
+
+		this.onMouseDownLambda = function (event) {
+			let isCaptured = false, i = 0;
 			while (!isCaptured && i < n) {
 				isCaptured = _this.controls[i].onMouseDown(event);
 				i++;
 			}
 		};
-		SWGL_CONTEXT.canvasNode.addEventListener('mousedown', this.onMouseDown, false);
+		SWGL_CONTEXT.canvasNode.addEventListener('mousedown', this.onMouseDownLambda, false);
 
 
-		this.onMouseUp = function (event) {
-			let isCaptured = false, i = 0, n = _this.controls.length;
+		this.onMouseUpLambda = function (event) {
+			let isCaptured = false, i = 0;
 			while (!isCaptured && i < n) {
 				isCaptured = _this.controls[i].onMouseUp(event);
 				i++;
 			}
 		};
-		document.addEventListener('mouseup', this.onMouseUp, false);
+		document.addEventListener('mouseup', this.onMouseUpLambda, false);
 
 
-		this.onMouseMove = function (event) {
-			let isCaptured = false, i = 0, n = _this.controls.length;
+		this.onMouseMoveLambda = function (event) {
+			let isCaptured = false, i = 0;
 			while (!isCaptured && i < n) {
 				isCaptured = _this.controls[i].onMouseMove(event);
 				i++;
 			}
 		};
-		document.addEventListener('mousemove', this.onMouseMove, false);
+		document.addEventListener('mousemove', this.onMouseMoveLambda, false);
 
 
-		this.onMouseWheel = function (event) {
-			let isCaptured = false, i = 0, n = _this.controls.length;
+		this.onMouseWheelLambda = function (event) {
+			let isCaptured = false, i = 0;
 			while (!isCaptured && i < n) {
 				isCaptured = _this.controls[i].onMouseWheel(event);
 				i++;
 			}
 		};
-		document.addEventListener('mousewheel', this.onMouseWheel, false);
+		document.addEventListener('mousewheel', this.onMouseWheelLambda, false);
 
 
-		this.onKeyUp = function (event) {
-			let isCaptured = false, i = 0, n = _this.controls.length;
+		this.onKeyUpLambda = function (event) {
+			let isCaptured = false, i = 0;
 			while (!isCaptured && i < n) {
 				isCaptured = _this.controls[i].onKeyUp(event);
 				i++;
 			}
 		};
-		document.addEventListener('keyup', this.onKeyUp, false);
+		document.addEventListener('keyup', this.onKeyUpLambda, false);
 
 
-		this.onKeyDown = function (event) {
-			let isCaptured = false, i = 0, n = _this.controls.length;
-			while (!isCaptured && i < _this.nModes) {
+		this.onKeyDownLambda = function (event) {
+			let isCaptured = false, i = 0;
+			while (!isCaptured && i < n) {
 				isCaptured = _this.controls[i].onKeyDown(event);
 				i++;
 			}
 		};
-		document.addEventListener('keydown', this.onKeyDown, false);
+		document.addEventListener('keydown', this.onKeyDownLambda, false);
+
+
+		this.onClickLambda = function (event) {
+			let isCaptured = false, i = 0;
+			while (!isCaptured && i < n) {
+				isCaptured = _this.controls[i].onClick(event);
+				i++;
+			}
+		};
+		document.addEventListener('click', this.onClickLambda, false);
 
 		// start refresh
 		this.refresh();
 	}
 
+	/**
+	 * 
+	 * @returns {SWGL_View}
+	 */
+	getView(){
+		return this.screen.scene.view;
+	}
 
 	refresh(){
+
+		// retrieve view
+		const view = this.getView();
+
 		// compute new eye position
-		V3.eyeVector(this.r, this.phi * DEG_to_RAD, this.theta * DEG_to_RAD, this.view.eyeVector);
-		this.view.updateViewMatrix();
+		V3.eyeVector(this.r, this.phi * DEG_to_RAD, this.theta * DEG_to_RAD, view.eyeVector);
+		view.updateViewMatrix();
 
 		//this.scene.WebGL_render();
 	}
 
+
 	stop() {
-		SWGL_CONTEXT.canvasNode.removeEventListener('mousedown', this.onMouseDown, false);
-		document.removeEventListener('mouseup', this.onMouseUp, false);
-		document.removeEventListener('mousemove', this.onMouseMove, false);
-		document.removeEventListener('mousewheel', this.onMouseWheel, false);
-		document.removeEventListener('keyup', this.onKeyUp, false);
-		document.removeEventListener('keydown', this.onKeyDown, false);
+		SWGL_CONTEXT.canvasNode.removeEventListener('mousedown', this.onMouseDownLambda, false);
+		document.removeEventListener('mouseup', this.onMouseUpLambda, false);
+		document.removeEventListener('mousemove', this.onMouseMoveLambda, false);
+		document.removeEventListener('mousewheel', this.onMouseWheelLambda, false);
+		document.removeEventListener('keyup', this.onKeyUpLambda, false);
+		document.removeEventListener('keydown', this.onKeyDownLambda, false);
 	}
 };
 

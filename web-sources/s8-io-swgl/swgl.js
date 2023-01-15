@@ -91,6 +91,7 @@ class SWGL_Context {
 	 */
 	appendSizeListener(listener){
 		this.sizeListeners.add(listener);
+		this.resize(); // trigger a resize for update
 	}
 
 	/**

@@ -43,9 +43,7 @@ export class SWGL_Scene extends NeObject {
 	constructor() {
 		super();
 
-		// initialize view and bind scene to view
-		this.view = new SWGL_View(this);
-
+		
 	}
 
 

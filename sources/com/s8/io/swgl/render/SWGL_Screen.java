@@ -26,6 +26,11 @@ public class SWGL_Screen extends NeObject {
 		vertex.setObj("scene", scene);
 	}
 	
+	
+	public void setPickingScene(SWGL_Scene scene) {
+		vertex.setObj("pickingScene", scene);
+	}
+	
 
 	
 }

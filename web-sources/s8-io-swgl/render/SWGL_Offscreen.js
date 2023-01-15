@@ -108,7 +108,10 @@ export class SWGL_Offscreen extends NeObject {
         //Set-up canvas parameters
         gl.enable(gl.DEPTH_TEST);
 
-        gl.viewport(0, 0, this.width, this.height);
+
+        const width = this.fbo.width, height = this.fbo.height;
+
+        //gl.viewport(0, 0, this.width, this.height);
 
         // gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
@@ -118,14 +121,14 @@ export class SWGL_Offscreen extends NeObject {
         scene.WebGL_render();
 
         // read data out of FBO
-        const data = new Uint8Array(4 * this.width * this.height);
-        gl.readPixels(0, 0, this.width, this.height, gl.RGBA, gl.UNSIGNED_BYTE, data);
+        const data = new Uint8Array(4 * width * height);
+        gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, data);
 
         gl.clearColor(1.0, 1.0, 1.0, 1.0);
         this.unbindFBO();
 
         // Copy the pixels to a 2D canvas
-        let imageData = this.context2d.createImageData(this.width, this.height);
+        let imageData = this.context2d.createImageData(width, height);
         imageData.data.set(data);
         this.context2d.putImageData(imageData, 0, 0);
 

@@ -1,4 +1,4 @@
-import { SWGL_Appearance } from "/s8-io-swgl/appearances/SWGL_Appearance.js";
+import { SWGL_Appearance } from "../SWGL_Appearance.js";
 
 /**
  * CAD_Engine

@@ -1,5 +1,5 @@
 
-import { SWGL_DirectionalLight } from "/s8-io-swgl/lights/SWGL_DirectionalLight.js";
+import { SWGL_DirectionalLight } from "./SWGL_DirectionalLight.js";
 import { gl } from "/s8-io-swgl/swgl.js";
 
 
