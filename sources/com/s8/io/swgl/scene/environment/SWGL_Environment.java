@@ -39,7 +39,7 @@ public class SWGL_Environment extends NeObject {
 		double dPhi = Math.PI*1.8/5;
 
 		for(int i=0; i<5; i++){
-			SWGL_DirectionalLight light = new SWGL_DirectionalLight(vertex.branch);
+			SWGL_DirectionalLight light = new SWGL_DirectionalLight(vertex.getBranch());
 			light.setAmbientColor(0.2, 0.2, 0.2, 0.0);
 			light.setDiffuseColor(0.3, 0.3, 0.3, 0.0);
 			light.setSpecularColor(1.0, 1.0, 1.0, 0.0);
@@ -51,7 +51,7 @@ public class SWGL_Environment extends NeObject {
 		dPhi = Math.PI*1.8/3; 
 		for(int i=0; i<3; i++){
 
-			SWGL_DirectionalLight light = new SWGL_DirectionalLight(vertex.branch);
+			SWGL_DirectionalLight light = new SWGL_DirectionalLight(vertex.getBranch());
 			light.setAmbientColor(0.0, 0.0, 0.0, 0.0);
 			light.setDiffuseColor(0.4, 0.4, 0.4, 0.0);
 			light.setSpecularColor(1.0, 1.0, 1.0, 0.0);
