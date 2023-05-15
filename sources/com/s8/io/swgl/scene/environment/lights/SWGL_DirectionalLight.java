@@ -20,19 +20,19 @@ public class SWGL_DirectionalLight extends NeObject {
 	public void setAmbientColor(double... color) {
 		float[] webColor = new float[4];
 		for(int i = 0; i<4; i++) { webColor[i] = (float) color[i]; }
-		vertex.setFloat32Array("ambient", webColor);
+		vertex.setFloat32ArrayField("ambient", webColor);
 	}
 	
 	public void setDiffuseColor(double... color) {
 		float[] webColor = new float[4];
 		for(int i = 0; i<4; i++) { webColor[i] = (float) color[i]; }
-		vertex.setFloat32Array("diffuse", webColor);
+		vertex.setFloat32ArrayField("diffuse", webColor);
 	}
 	
 	public void setSpecularColor(double... color) {
 		float[] webColor = new float[4];
 		for(int i = 0; i<4; i++) { webColor[i] = (float) color[i]; }
-		vertex.setFloat32Array("specular", webColor);
+		vertex.setFloat32ArrayField("specular", webColor);
 	}
 	
 	/**
@@ -40,7 +40,7 @@ public class SWGL_DirectionalLight extends NeObject {
 	 * @param vector
 	 */
 	public void setDirectionVector(float[] vector) {
-		vertex.setFloat32Array("direction", vector);
+		vertex.setFloat32ArrayField("direction", vector);
 	}
 	
 }

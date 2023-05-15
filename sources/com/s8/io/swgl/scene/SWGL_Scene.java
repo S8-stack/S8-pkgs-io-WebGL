@@ -27,17 +27,17 @@ public class SWGL_Scene extends NeObject {
 	
 	
 	public void setEnvironment(SWGL_Environment environment) {
-		vertex.setObj("environment", environment);
+		vertex.setObjectField("environment", environment);
 	}
 	
 	public SWGL_Environment getEnvironment() {
-		return vertex.getObj("environment");
+		return vertex.getObjectField("environment");
 	}
 	
 	
 	
 	public void setPipes(List<SWGL_Pipe<?>> pipes) {
-		vertex.setObjList("pipes", pipes);
+		vertex.setObjectListField("pipes", pipes);
 	}
 	
 	
@@ -56,7 +56,7 @@ public class SWGL_Scene extends NeObject {
 
 
 	public void setView(SWGL_View view) {
-		vertex.setObj("view", view);
+		vertex.setObjectField("view", view);
 	}
 	
 }

@@ -28,7 +28,7 @@ public class SWGL_Environment extends NeObject {
 	 * @param lights
 	 */
 	public void setDirectionalLights(List<SWGL_DirectionalLight> lights) {
-		vertex.setObjList("directionalLights", lights);
+		vertex.setObjectListField("directionalLights", lights);
 	}
 
 
@@ -75,10 +75,10 @@ public class SWGL_Environment extends NeObject {
 
 
 	public void setRadiance(SWGL_TextureCubeMap cubeMap) {
-		vertex.setObj("radiance", cubeMap);
+		vertex.setObjectField("radiance", cubeMap);
 	}
 	
 	public void setIrradiance(SWGL_TextureCubeMap cubeMap) {
-		vertex.setObj("irradiance", cubeMap);
+		vertex.setObjectField("irradiance", cubeMap);
 	}
 }

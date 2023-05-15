@@ -17,16 +17,16 @@ public class SWGL_TextureCubeMap extends NeObject {
 
 
 	public void setPathname(String pathname) {
-		vertex.setStringUTF8("pathname", pathname);
+		vertex.setStringUTF8Field("pathname", pathname);
 	}
 	
 	public void setExtension(String extension) {
-		vertex.setStringUTF8("extension", extension);
+		vertex.setStringUTF8Field("extension", extension);
 	}
 	
 	
 	public void setNbOfLevels(int n) {
-		vertex.setUInt8("nbLevels", n);
+		vertex.setUInt8Field("nbLevels", n);
 	}
 	
 	

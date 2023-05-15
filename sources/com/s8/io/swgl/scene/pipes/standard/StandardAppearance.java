@@ -24,11 +24,11 @@ public class StandardAppearance extends SWGL_Appearance {
 	
 	
 	public void setGlossiness(double value) {
-		vertex.setFloat32("glossiness", (float) value);
+		vertex.setFloat32Field("glossiness", (float) value);
 	}
 	
 	public void setRoughness(double value) {
-		vertex.setFloat32("roughness", (float) value);
+		vertex.setFloat32Field("roughness", (float) value);
 	}
 	
 	
@@ -39,11 +39,11 @@ public class StandardAppearance extends SWGL_Appearance {
 				(float) (b/255.0f),
 				1.0f
 		};
-		vertex.setFloat32Array("specularColor", values);
+		vertex.setFloat32ArrayField("specularColor", values);
 	}
 	
 	public void setSpecularColor(float[] value) {
-		vertex.setFloat32Array("specularColor", value);
+		vertex.setFloat32ArrayField("specularColor", value);
 	}
 
 	
@@ -54,17 +54,17 @@ public class StandardAppearance extends SWGL_Appearance {
 				(float) (b/255.0f),
 				1.0f
 		};
-		vertex.setFloat32Array("diffuseColor", values);
+		vertex.setFloat32ArrayField("diffuseColor", values);
 	}
 	
 	
 	public void setDiffuseColor(float[] value) {
-		vertex.setFloat32Array("diffuseColor", value);
+		vertex.setFloat32ArrayField("diffuseColor", value);
 	}
 	
 	
 	public void setAmbientColor(float[] value) {
-		vertex.setFloat32Array("ambientColor", value);
+		vertex.setFloat32ArrayField("ambientColor", value);
 	}
 	
 	

@@ -24,7 +24,7 @@ public class SWGL_Mesh extends NeObject {
 	 */
 	public void setPositionVertexAttributes(float[] data) {
 		if(data != null) {
-			vertex.setFloat32Array("positions", data);	
+			vertex.setFloat32ArrayField("positions", data);	
 		}
 	}
 
@@ -35,7 +35,7 @@ public class SWGL_Mesh extends NeObject {
 	 */
 	public void setNormalVertexAttributes(float[] data) {
 		if(data != null) {
-			vertex.setFloat32Array("normals", data);	
+			vertex.setFloat32ArrayField("normals", data);	
 		}
 	}
 
@@ -47,7 +47,7 @@ public class SWGL_Mesh extends NeObject {
 	 */
 	public void setUTangentVertexAttributes(float[] data) {
 		if(data != null) {
-			vertex.setFloat32Array("uTangents", data);	
+			vertex.setFloat32ArrayField("uTangents", data);	
 		}
 	}
 
@@ -58,7 +58,7 @@ public class SWGL_Mesh extends NeObject {
 	 */
 	public void setVTangentVertexAttributes(float[] data) {
 		if(data != null) {
-			vertex.setFloat32Array("vTangents", data);
+			vertex.setFloat32ArrayField("vTangents", data);
 		}
 	}
 
@@ -70,7 +70,7 @@ public class SWGL_Mesh extends NeObject {
 	 */
 	public void setTexCoordVertexAttributes(float[] data) {
 		if(data != null) {
-			vertex.setFloat32Array("texCoords", data);	
+			vertex.setFloat32ArrayField("texCoords", data);	
 		}
 	}
 
@@ -80,7 +80,7 @@ public class SWGL_Mesh extends NeObject {
 	 */
 	public void setColorVertexAttributes(float[] data) {
 		if(data != null) {
-			vertex.setFloat32Array("colors", data);	
+			vertex.setFloat32ArrayField("colors", data);	
 		}
 	}
 	
@@ -91,7 +91,7 @@ public class SWGL_Mesh extends NeObject {
 	 */
 	public void setAppCoordsAttributes(float[] data) {
 		if(data != null) {
-			vertex.setFloat32Array("appCoords", data);	
+			vertex.setFloat32ArrayField("appCoords", data);	
 		}
 	}
 
@@ -102,8 +102,8 @@ public class SWGL_Mesh extends NeObject {
 	 * @param colors
 	 */
 	public void setIndices(int dimension, long[] data) {
-		vertex.setUInt8("dimension", dimension);
-		vertex.setUInt32Array("indices", data);	
+		vertex.setUInt8Field("dimension", dimension);
+		vertex.setUInt32ArrayField("indices", data);	
 	}
 
 }

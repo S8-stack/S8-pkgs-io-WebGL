@@ -27,7 +27,7 @@ public abstract class SWGL_Appearance extends NeObject {
 	
 	
 	public void setModels(List<SWGL_Model> models) {
-		vertex.setObjList("models", models);
+		vertex.setObjectListField("models", models);
 	}
 	
 	/**

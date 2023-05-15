@@ -29,7 +29,7 @@ public class Phys2Appearance extends SWGL_Appearance {
 	 * @param texture
 	 */
 	public void setMatProperties(SWGL_Texture2d texture) {
-		vertex.setObj("matProperties", texture);
+		vertex.setObjectField("matProperties", texture);
 	}
 
 
@@ -38,7 +38,7 @@ public class Phys2Appearance extends SWGL_Appearance {
 	 * @param texture
 	 */
 	public void setMatDiffuseColors(SWGL_Texture2d texture) {
-		vertex.setObj("matDiffuseColors", texture);
+		vertex.setObjectField("matDiffuseColors", texture);
 	}
 
 
@@ -47,7 +47,7 @@ public class Phys2Appearance extends SWGL_Appearance {
 	 * @param texture
 	 */
 	public void setMatSpecularColors(SWGL_Texture2d texture) {
-		vertex.setObj("matSpecularColors", texture);
+		vertex.setObjectField("matSpecularColors", texture);
 	}
 
 

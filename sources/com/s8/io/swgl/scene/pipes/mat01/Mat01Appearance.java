@@ -30,7 +30,7 @@ public class Mat01Appearance extends SWGL_Appearance {
 	 * @param material
 	 */
 	public void setMaterial(SWGL_Material material) {
-		vertex.setObj("material", material);
+		vertex.setObjectField("material", material);
 	}
 	
 

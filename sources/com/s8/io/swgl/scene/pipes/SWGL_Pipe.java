@@ -35,7 +35,7 @@ public class SWGL_Pipe<A extends SWGL_Appearance> extends NeObject {
 	 * @param program
 	 */
 	public void setProgram(SWGL_Program program) {
-		vertex.setObj("program", program);
+		vertex.setObjectField("program", program);
 	}
 	
 
@@ -44,7 +44,7 @@ public class SWGL_Pipe<A extends SWGL_Appearance> extends NeObject {
 	 * @param appearances
 	 */
 	public void setAppearances(ArrayList<A> appearances) {
-		vertex.setObjList("appearances", appearances);
+		vertex.setObjectListField("appearances", appearances);
 	}
 	
 	/**
