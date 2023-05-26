@@ -1,4 +1,4 @@
-import { S8 } from "/s8-io-bohr/atom/S8.js";
+import { S8 } from "/s8-io-bohr-atom/S8.js";
 import { gl } from "/s8-io-swgl/swgl.js";
 
 /**

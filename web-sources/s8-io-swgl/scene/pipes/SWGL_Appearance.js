@@ -2,7 +2,7 @@
 
 import { SWGL_Model } from '/s8-io-swgl/scene/models/SWGL_Model.js';
 import { SWGL_Program } from './SWGL_Program.js';
-import { NeObject } from '/s8-io-bohr/neon/NeObject.js';
+import { NeObject } from '/s8-io-bohr-neon/NeObject.js';
 
 
 

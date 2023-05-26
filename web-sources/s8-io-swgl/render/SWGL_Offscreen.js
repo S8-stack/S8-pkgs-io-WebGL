@@ -1,5 +1,5 @@
 import { gl } from "/s8-io-swgl/swgl.js";
-import { NeObject } from "/s8-io-bohr/neon/NeObject.js";
+import { NeObject } from "/s8-io-bohr-neon/NeObject.js";
 import { FrameBufferObject } from "./FrameBufferObject.js";
 import { SWGL_Scene } from "scene/SWGL_Scene.js";
 import { StaticViewController } from "control/StaticViewController.js";
