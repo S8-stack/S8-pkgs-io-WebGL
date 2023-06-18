@@ -166,11 +166,13 @@ export class SWGL_Screen extends NeObject {
 
 
 		// FPS computations
+		/*
 		t_now *= 0.001; // convert to seconds
 		let deltaTime = t_now - this.t_then;  // compute time since last frame
 		this.t_then = t_now; // remember time for next frame
 		let fps = 1 / deltaTime; // compute frames per second
 		this.fpsDisplay.textContent = fps.toFixed(1); // update fps display
+		*/
 	}
 
 
