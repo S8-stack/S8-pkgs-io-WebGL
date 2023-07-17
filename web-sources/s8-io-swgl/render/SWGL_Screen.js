@@ -196,6 +196,10 @@ export class SWGL_Screen extends NeObject {
 	}
 
 
+	S8_unfocus(){
+		/* do nothing */
+	}
+
 
 	S8_dispose() {
 		if (this.scene) { this.scene.S8_dispose(); }
