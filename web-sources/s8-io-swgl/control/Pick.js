@@ -32,10 +32,6 @@ export class Pick extends Control {
             console.log(color);
             return true; // captured
         }
-        else {
-            S8.branch.loseFocus();
-            return false;
-        }
     }
 
 

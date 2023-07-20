@@ -10,6 +10,7 @@ export class Control {
 	/** @type { StdViewController } the view attached to this control */
 	controller;
 
+
 	constructor() { 
     }
 

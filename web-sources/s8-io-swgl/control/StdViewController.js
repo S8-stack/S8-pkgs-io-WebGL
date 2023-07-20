@@ -11,6 +11,7 @@ import { Zoom } from "/s8-io-swgl/control/Zoom.js";
 import { Highlight } from "/s8-io-swgl/control/Highlight.js";
 import { Pick } from "/s8-io-swgl/control/Pick.js";
 import { SWGL_Screen } from "/s8-io-swgl/render/SWGL_Screen.js";
+import { S8 } from "/s8-io-bohr-atom/S8.js";
 
 
 
@@ -64,6 +65,11 @@ export class StdViewController {
 	SETTINGS_min_approach_r = 0.2;
 
 
+	/**
+	 * @type{boolean} activate / deactivate the controller
+	 */
+	isActive = false;
+
 
 	/**
 	 * 
@@ -78,7 +84,7 @@ export class StdViewController {
 	 * 
 	 * @param {SWGL_Screen} screen 
 	 */
-	link(screen){
+	link(screen) {
 		this.screen = screen;
 	}
 
@@ -107,77 +113,94 @@ export class StdViewController {
 
 		const n = this.controls.length;
 
-		for(let i = 0; i < n; i++) {
+		for (let i = 0; i < n; i++) {
 			this.controls[i].link(this);
 		}
 
 
 		this.onMouseDownLambda = function (event) {
-			let isCaptured = false, i = 0;
-			while (!isCaptured && i < n) {
-				isCaptured = _this.controls[i].onMouseDown(event);
-				i++;
+			if (_this.isActive) {
+				let isCaptured = false, i = 0;
+				while (!isCaptured && i < n) {
+					isCaptured = _this.controls[i].onMouseDown(event);
+					i++;
+				}
 			}
 		};
 		SWGL_CONTEXT.canvasNode.addEventListener('mousedown', this.onMouseDownLambda, false);
 
 
 		this.onMouseUpLambda = function (event) {
-			let isCaptured = false, i = 0;
-			while (!isCaptured && i < n) {
-				isCaptured = _this.controls[i].onMouseUp(event);
-				i++;
+			if (_this.isActive) {
+				let isCaptured = false, i = 0;
+				while (!isCaptured && i < n) {
+					isCaptured = _this.controls[i].onMouseUp(event);
+					i++;
+				}
 			}
 		};
 		document.addEventListener('mouseup', this.onMouseUpLambda, false);
 
 
 		this.onMouseMoveLambda = function (event) {
-			let isCaptured = false, i = 0;
-			while (!isCaptured && i < n) {
-				isCaptured = _this.controls[i].onMouseMove(event);
-				i++;
+			if (_this.isActive) {
+				let isCaptured = false, i = 0;
+				while (!isCaptured && i < n) {
+					isCaptured = _this.controls[i].onMouseMove(event);
+					i++;
+				}
 			}
 		};
 		document.addEventListener('mousemove', this.onMouseMoveLambda, false);
 
 
 		this.onMouseWheelLambda = function (event) {
-			let isCaptured = false, i = 0;
-			while (!isCaptured && i < n) {
-				isCaptured = _this.controls[i].onMouseWheel(event);
-				i++;
+			if (_this.isActive) {
+				let isCaptured = false, i = 0;
+				while (!isCaptured && i < n) {
+					isCaptured = _this.controls[i].onMouseWheel(event);
+					i++;
+				}
 			}
 		};
 		document.addEventListener('mousewheel', this.onMouseWheelLambda, false);
 
 
 		this.onKeyUpLambda = function (event) {
-			let isCaptured = false, i = 0;
-			while (!isCaptured && i < n) {
-				isCaptured = _this.controls[i].onKeyUp(event);
-				i++;
+			if (_this.isActive) {
+				let isCaptured = false, i = 0;
+				while (!isCaptured && i < n) {
+					isCaptured = _this.controls[i].onKeyUp(event);
+					i++;
+				}
 			}
 		};
 		document.addEventListener('keyup', this.onKeyUpLambda, false);
 
 
 		this.onKeyDownLambda = function (event) {
-			let isCaptured = false, i = 0;
-			while (!isCaptured && i < n) {
-				isCaptured = _this.controls[i].onKeyDown(event);
-				i++;
+			if (_this.isActive) {
+				let isCaptured = false, i = 0;
+				while (!isCaptured && i < n) {
+					isCaptured = _this.controls[i].onKeyDown(event);
+					i++;
+				}
 			}
 		};
 		document.addEventListener('keydown', this.onKeyDownLambda, false);
 
 
 		this.onClickLambda = function (event) {
+			if (!_this.isActive) { 
+				_this.activate();
+			};
+			
 			let isCaptured = false, i = 0;
-			while (!isCaptured && i < n) {
-				isCaptured = _this.controls[i].onClick(event);
-				i++;
-			}
+				while (!isCaptured && i < n) {
+					isCaptured = _this.controls[i].onClick(event);
+					i++;
+				}
+			
 		};
 		document.addEventListener('click', this.onClickLambda, false);
 
@@ -189,11 +212,23 @@ export class StdViewController {
 	 * 
 	 * @returns {SWGL_View}
 	 */
-	getView(){
+	getView() {
 		return this.screen.scene.view;
 	}
 
-	refresh(){
+
+	activate() {
+		this.isActive = true;
+		S8.branch.setFocusOn(this.screen);
+	}
+
+
+	deactivate() {
+		this.isActive = false;
+	}
+
+
+	refresh() {
 
 		// retrieve view
 		const view = this.getView();

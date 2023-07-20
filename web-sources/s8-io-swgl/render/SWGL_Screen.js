@@ -34,7 +34,7 @@ export class SWGL_Screen extends NeObject {
 
 
 	/**
-	 * @type {ViewController} the centralized controller
+	 * @type {StdViewController} the centralized controller
 	 */
 	controller = null;
 
@@ -197,7 +197,7 @@ export class SWGL_Screen extends NeObject {
 
 
 	S8_unfocus(){
-		/* do nothing */
+		this.controller.deactivate();
 	}
 
 
