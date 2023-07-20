@@ -21,14 +21,14 @@ public class SWGL_Model extends NeObject {
 
 	/** @param {Float32Array} coefficients */
 	public void setMatrix(float[] affine) {
-		vertex.setFloat32ArrayField("matrix", affine);
+		vertex.fields().setFloat32ArrayField("matrix", affine);
 	}
 	
 	
 
 	/** @param {Float32Array} coefficients */
 	public void setMesh(SWGL_Mesh mesh) {
-		vertex.setObjectField("mesh", mesh);
+		vertex.fields().setObjectField("mesh", mesh);
 	}
 
 

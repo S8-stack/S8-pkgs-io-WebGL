@@ -17,7 +17,7 @@ public class SWGL_Texture2d extends NeObject {
 
 
 	public void setPathname(String pathname) {
-		vertex.setStringUTF8Field("pathname", pathname);
+		vertex.fields().setStringUTF8Field("pathname", pathname);
 	}
 	
 }
