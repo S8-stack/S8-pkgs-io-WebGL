@@ -3,21 +3,21 @@ package com.s8.io.swgl.scene.environment;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.s8.io.bohr.neon.core.NeBranch;
-import com.s8.io.bohr.neon.core.NeObject;
+import com.s8.api.objects.web.WebS8Object;
+import com.s8.api.objects.web.WebS8Session;
 import com.s8.io.swgl.SWGL_Root;
 import com.s8.io.swgl.maths.SWGL_Vector;
 import com.s8.io.swgl.scene.environment.lights.SWGL_DirectionalLight;
 
 
-public class SWGL_Environment extends NeObject {
+public class SWGL_Environment extends WebS8Object {
 
 
 	/**
 	 * 
 	 * @param branch
 	 */
-	public SWGL_Environment(NeBranch branch) {
+	public SWGL_Environment(WebS8Session branch) {
 		super(branch, SWGL_Root.WEB+"scene/environment/SWGL_Environment");
 	}
 
@@ -39,7 +39,7 @@ public class SWGL_Environment extends NeObject {
 		double dPhi = Math.PI*1.8/5;
 
 		for(int i=0; i<5; i++){
-			SWGL_DirectionalLight light = new SWGL_DirectionalLight(vertex.getBranch());
+			SWGL_DirectionalLight light = new SWGL_DirectionalLight(vertex.getSession());
 			light.setAmbientColor(0.2, 0.2, 0.2, 0.0);
 			light.setDiffuseColor(0.3, 0.3, 0.3, 0.0);
 			light.setSpecularColor(1.0, 1.0, 1.0, 0.0);
@@ -51,7 +51,7 @@ public class SWGL_Environment extends NeObject {
 		dPhi = Math.PI*1.8/3; 
 		for(int i=0; i<3; i++){
 
-			SWGL_DirectionalLight light = new SWGL_DirectionalLight(vertex.getBranch());
+			SWGL_DirectionalLight light = new SWGL_DirectionalLight(vertex.getSession());
 			light.setAmbientColor(0.0, 0.0, 0.0, 0.0);
 			light.setDiffuseColor(0.4, 0.4, 0.4, 0.0);
 			light.setSpecularColor(1.0, 1.0, 1.0, 0.0);

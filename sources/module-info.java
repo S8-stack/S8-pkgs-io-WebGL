@@ -31,6 +31,6 @@ module com.s8.io.swgl {
 	
 	
 	
-	requires transitive com.s8.io.bohr.neon;
+	requires transitive com.s8.api;
 	
 }

@@ -1,7 +1,7 @@
 package com.s8.io.swgl.scene.pipes;
 
-import com.s8.io.bohr.neon.core.NeBranch;
-import com.s8.io.bohr.neon.core.NeObject;
+import com.s8.api.objects.web.WebS8Object;
+import com.s8.api.objects.web.WebS8Session;
 
 
 /**
@@ -9,7 +9,7 @@ import com.s8.io.bohr.neon.core.NeObject;
  * @author pierreconvert
  *
  */
-public class SWGL_Program extends NeObject {
+public class SWGL_Program extends WebS8Object {
 
 	
 	/**
@@ -17,7 +17,7 @@ public class SWGL_Program extends NeObject {
 	 * @param branch
 	 * @param typeName
 	 */
-	public SWGL_Program(NeBranch branch, String typeName) {
+	public SWGL_Program(WebS8Session branch, String typeName) {
 		super(branch, typeName);
 	}
 	

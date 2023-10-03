@@ -1,17 +1,17 @@
 package com.s8.io.swgl.scene.environment;
 
-import com.s8.io.bohr.neon.core.NeBranch;
-import com.s8.io.bohr.neon.core.NeObject;
+import com.s8.api.objects.web.WebS8Object;
+import com.s8.api.objects.web.WebS8Session;
 import com.s8.io.swgl.SWGL_Root;
 
-public class SWGL_TextureCubeMap extends NeObject {
+public class SWGL_TextureCubeMap extends WebS8Object {
 
 
 	/**
 	 * 
 	 * @param branch
 	 */
-	public SWGL_TextureCubeMap(NeBranch branch) {
+	public SWGL_TextureCubeMap(WebS8Session branch) {
 		super(branch, SWGL_Root.WEB+"scene/environment/SWGL_TextureCubeMap");
 	}
 
