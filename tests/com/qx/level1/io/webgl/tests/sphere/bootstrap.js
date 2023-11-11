@@ -3,7 +3,7 @@
 /**
  * local session
  */
-var session = new Qx_Session();
+
 session.udpate = function(){};
 session.prompt_login = function(content, callbackSucceed, callbackFailed){
 	var username = "toto";

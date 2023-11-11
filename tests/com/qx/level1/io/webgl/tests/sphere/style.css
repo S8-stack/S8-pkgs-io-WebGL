@@ -65,8 +65,8 @@ html {
 	padding-top: 20px;
 	/* dimensions */
 	width: 740px;
-	height: auto;
-	zIndex = 1;
+	height: auto; 
+	/*zIndex = 1;*/
 }
 
 .dP table {
@@ -128,9 +128,11 @@ div.grey:hover {
 }
 
 /* While being clicked */
+/*
 div.grey:active {
 	-webkit-box-shadow: 0 2px 6px black;
 }
+*/
 
 select.grey {
 	background: transparent;
