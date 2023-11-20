@@ -2,8 +2,8 @@ package com.s8.pkgs.io.swgl.scene.pipes;
 
 import java.util.List;
 
-import com.s8.api.objects.web.WebS8Object;
-import com.s8.api.objects.web.WebS8Session;
+import com.s8.api.objects.web.S8WebFrontObject;
+import com.s8.api.objects.web.S8WebFront;
 import com.s8.pkgs.io.swgl.scene.models.SWGL_Model;
 
 
@@ -12,7 +12,7 @@ import com.s8.pkgs.io.swgl.scene.models.SWGL_Model;
  * @author pierreconvert
  *
  */
-public abstract class SWGL_Appearance extends WebS8Object {
+public abstract class SWGL_Appearance extends S8WebFrontObject {
 	
 
 	/**
@@ -20,7 +20,7 @@ public abstract class SWGL_Appearance extends WebS8Object {
 	 * @param branch
 	 * @param typeName
 	 */
-	public SWGL_Appearance(WebS8Session branch, String typeName) {
+	public SWGL_Appearance(S8WebFront branch, String typeName) {
 		super(branch, typeName);
 	}
 	

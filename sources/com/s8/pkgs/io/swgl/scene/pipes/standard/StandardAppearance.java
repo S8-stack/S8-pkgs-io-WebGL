@@ -1,6 +1,6 @@
 package com.s8.pkgs.io.swgl.scene.pipes.standard;
 
-import com.s8.api.objects.web.WebS8Session;
+import com.s8.api.objects.web.S8WebFront;
 import com.s8.pkgs.io.swgl.SWGL_Root;
 import com.s8.pkgs.io.swgl.scene.pipes.SWGL_Appearance;
 
@@ -18,7 +18,7 @@ public class StandardAppearance extends SWGL_Appearance {
 	 * @param branch
 	 * @param typeName
 	 */
-	public StandardAppearance(WebS8Session branch) {
+	public StandardAppearance(S8WebFront branch) {
 		super(branch, SWGL_Root.WEB+"scene/pipes/standard/StandardAppearance");
 	}
 	

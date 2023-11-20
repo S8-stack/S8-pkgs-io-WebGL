@@ -1,6 +1,6 @@
 package com.s8.pkgs.io.swgl.scene.pipes.picking;
 
-import com.s8.api.objects.web.WebS8Session;
+import com.s8.api.objects.web.S8WebFront;
 import com.s8.pkgs.io.swgl.SWGL_Root;
 import com.s8.pkgs.io.swgl.scene.pipes.SWGL_Program;
 
@@ -18,7 +18,7 @@ public class PickingProgram extends SWGL_Program {
 	 * @param branch
 	 * @param typeName
 	 */
-	public PickingProgram(WebS8Session branch) {
+	public PickingProgram(S8WebFront branch) {
 		super(branch, SWGL_Root.WEB+"scene/pipes/picking/PickingProgram");
 	}
 	

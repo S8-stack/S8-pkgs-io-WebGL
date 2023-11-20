@@ -1,6 +1,6 @@
 package com.s8.pkgs.io.swgl.scene.pipes.mat01;
 
-import com.s8.api.objects.web.WebS8Session;
+import com.s8.api.objects.web.S8WebFront;
 import com.s8.pkgs.io.swgl.SWGL_Root;
 import com.s8.pkgs.io.swgl.material.SWGL_Material;
 import com.s8.pkgs.io.swgl.scene.pipes.SWGL_Appearance;
@@ -19,7 +19,7 @@ public class Mat01Appearance extends SWGL_Appearance {
 	 * @param branch
 	 * @param typeName
 	 */
-	public Mat01Appearance(WebS8Session branch) {
+	public Mat01Appearance(S8WebFront branch) {
 		super(branch, SWGL_Root.WEB+"scene/pipes/mat01/Mat01Appearance");
 	}
 	

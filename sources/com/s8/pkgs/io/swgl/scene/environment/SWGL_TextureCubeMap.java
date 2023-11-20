@@ -1,17 +1,17 @@
 package com.s8.pkgs.io.swgl.scene.environment;
 
-import com.s8.api.objects.web.WebS8Object;
-import com.s8.api.objects.web.WebS8Session;
+import com.s8.api.objects.web.S8WebFrontObject;
+import com.s8.api.objects.web.S8WebFront;
 import com.s8.pkgs.io.swgl.SWGL_Root;
 
-public class SWGL_TextureCubeMap extends WebS8Object {
+public class SWGL_TextureCubeMap extends S8WebFrontObject {
 
 
 	/**
 	 * 
 	 * @param branch
 	 */
-	public SWGL_TextureCubeMap(WebS8Session branch) {
+	public SWGL_TextureCubeMap(S8WebFront branch) {
 		super(branch, SWGL_Root.WEB+"scene/environment/SWGL_TextureCubeMap");
 	}
 

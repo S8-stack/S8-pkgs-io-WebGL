@@ -1,7 +1,7 @@
 package com.s8.pkgs.io.swgl.scene.pipes.phys2;
 
-import com.s8.api.objects.web.WebS8Object;
-import com.s8.api.objects.web.WebS8Session;
+import com.s8.api.objects.web.S8WebFrontObject;
+import com.s8.api.objects.web.S8WebFront;
 import com.s8.pkgs.io.swgl.SWGL_Root;
 
 
@@ -10,7 +10,7 @@ import com.s8.pkgs.io.swgl.SWGL_Root;
  * @author pierreconvert
  *
  */
-public class Phys2Material extends WebS8Object {
+public class Phys2Material extends S8WebFrontObject {
 
 
 	/**
@@ -18,7 +18,7 @@ public class Phys2Material extends WebS8Object {
 	 * @param branch
 	 * @param typeName
 	 */
-	public Phys2Material(WebS8Session branch) {
+	public Phys2Material(S8WebFront branch) {
 		super(branch, SWGL_Root.WEB+"scene/pipes/phys2/Phys2Material");
 	}
 	
@@ -28,7 +28,7 @@ public class Phys2Material extends WebS8Object {
 	 * @param branch
 	 * @param typeName
 	 */
-	public Phys2Material(WebS8Session branch, String typeName) {
+	public Phys2Material(S8WebFront branch, String typeName) {
 		super(branch, typeName);
 	}
 	
