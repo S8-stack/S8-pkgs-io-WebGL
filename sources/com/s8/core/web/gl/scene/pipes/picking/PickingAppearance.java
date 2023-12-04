@@ -1,0 +1,26 @@
+package com.s8.core.web.gl.scene.pipes.picking;
+
+import com.s8.api.web.S8WebFront;
+import com.s8.core.web.gl.SWGL_Root;
+import com.s8.core.web.gl.scene.pipes.SWGL_Appearance;
+
+
+/**
+ * 
+ * @author pierreconvert
+ *
+ */
+public class PickingAppearance extends SWGL_Appearance {
+
+
+	/**
+	 * 
+	 * @param branch
+	 * @param typeName
+	 */
+	public PickingAppearance(S8WebFront branch) {
+		super(branch, SWGL_Root.WEB+"scene/pipes/picking/PickingAppearance");
+	}
+
+
+}
