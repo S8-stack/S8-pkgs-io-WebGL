@@ -2,9 +2,9 @@
 
 import { NeObject } from "/s8-core-io-bohr-neon/NeObject.js";
 
-import { gl } from "/s8-pkgs-io-swgl/swgl.js";
+import { gl } from "/S8-pkgs-io-WebGL/swgl.js";
 import { FrameBufferObject } from "./FrameBufferObject.js";
-import { SWGL_Scene } from "/s8-pkgs-io-swgl/scene/SWGL_Scene.js";
+import { SWGL_Scene } from "/S8-pkgs-io-WebGL/scene/SWGL_Scene.js";
 
 
 

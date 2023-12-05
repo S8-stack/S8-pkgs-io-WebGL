@@ -1,17 +1,17 @@
 
 
 
-import { gl } from '/s8-pkgs-io-swgl/swgl.js';
+import { gl } from '/S8-pkgs-io-WebGL/swgl.js';
 
-import * as M4 from '/s8-pkgs-io-swgl/maths/SWGL_Matrix4d.js';
+import * as M4 from '/S8-pkgs-io-WebGL/maths/SWGL_Matrix4d.js';
 
-import { SWGL_Environment } from "/s8-pkgs-io-swgl/scene/environment/SWGL_Environment.js";
+import { SWGL_Environment } from "/S8-pkgs-io-WebGL/scene/environment/SWGL_Environment.js";
 import { SWGL_Program } from "../SWGL_Program.js";
 import { StandardAppearance } from "./StandardAppearance.js";
-import { SWGL_View } from "/s8-pkgs-io-swgl/scene/view/SWGL_View.js";
+import { SWGL_View } from "/S8-pkgs-io-WebGL/scene/view/SWGL_View.js";
 
-import { SWGL_Model } from "/s8-pkgs-io-swgl/scene/models/SWGL_Model.js";
-import { VertexAttributes } from '/s8-pkgs-io-swgl/scene/models/SWGL_Mesh.js';
+import { SWGL_Model } from "/S8-pkgs-io-WebGL/scene/models/SWGL_Model.js";
+import { VertexAttributes } from '/S8-pkgs-io-WebGL/scene/models/SWGL_Mesh.js';
 
 
 /**

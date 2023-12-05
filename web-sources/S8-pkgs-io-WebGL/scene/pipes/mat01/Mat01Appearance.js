@@ -1,4 +1,4 @@
-import { SWGL_Material } from "/s8-pkgs-io-swgl/materials/SWGL_Material.js";
+import { SWGL_Material } from "/S8-pkgs-io-WebGL/materials/SWGL_Material.js";
 import { SWGL_Appearance } from "../SWGL_Appearance.js";
 
 

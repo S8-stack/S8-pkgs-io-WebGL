@@ -1,10 +1,10 @@
 
 import { NeObject } from '/s8-core-io-bohr-neon/NeObject.js';
 
-import { gl } from '/s8-pkgs-io-swgl/swgl.js';
+import { gl } from '/S8-pkgs-io-WebGL/swgl.js';
 
-import * as M4 from '/s8-pkgs-io-swgl/maths/SWGL_Matrix4d.js';
-import * as V3 from '/s8-pkgs-io-swgl/maths/SWGL_Vector3d.js';
+import * as M4 from '/S8-pkgs-io-WebGL/maths/SWGL_Matrix4d.js';
+import * as V3 from '/S8-pkgs-io-WebGL/maths/SWGL_Vector3d.js';
 
 
 export class SWGL_DirectionalLight extends NeObject {

@@ -2,7 +2,7 @@
 import { NeObject } from "/s8-core-io-bohr-neon/NeObject.js";
 
 import { Shader } from "./Shader.js";
-import { gl } from "/s8-pkgs-io-swgl/swgl.js";
+import { gl } from "/S8-pkgs-io-WebGL/swgl.js";
 
 
 export class SWGL_Program extends NeObject {
@@ -66,7 +66,7 @@ export class SWGL_Program extends NeObject {
         super(); // S8Object
 
         // pathname
-        this.pathname = "/s8-pkgs-io-swgl/scene/pipes" + pathname;
+        this.pathname = "/S8-pkgs-io-WebGL/scene/pipes" + pathname;
         this.vertexShader = new Shader(this.pathname, "vertex");
         this.fragmentShader = new Shader(this.pathname, "fragment");
 

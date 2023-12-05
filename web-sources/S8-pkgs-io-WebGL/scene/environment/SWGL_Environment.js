@@ -1,13 +1,13 @@
 
 import { NeObject } from '/s8-core-io-bohr-neon/NeObject.js';
 
-import { gl } from '/s8-pkgs-io-swgl/swgl.js';
+import { gl } from '/S8-pkgs-io-WebGL/swgl.js';
 
-import * as V3 from '/s8-pkgs-io-swgl/maths/SWGL_Vector3d.js';
+import * as V3 from '/S8-pkgs-io-WebGL/maths/SWGL_Vector3d.js';
 
 import { SWGL_DirectionalLight } from './lights/SWGL_DirectionalLight.js';
 import { SWGL_TextureCubeMap } from './SWGL_TextureCubeMap.js';
-import { SWGL_View } from '/s8-pkgs-io-swgl/scene/view/SWGL_View.js';
+import { SWGL_View } from '/S8-pkgs-io-WebGL/scene/view/SWGL_View.js';
 
 
 

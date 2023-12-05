@@ -1,11 +1,11 @@
 
 import { NeObject } from '/s8-core-io-bohr-neon/NeObject.js';
 
-import { gl, SWGL_CONTEXT } from '/s8-pkgs-io-swgl/swgl.js';
+import { gl, SWGL_CONTEXT } from '/S8-pkgs-io-WebGL/swgl.js';
 
-import { SWGL_Picker } from '/s8-pkgs-io-swgl/render/SWGL_Picker.js';
-import { StdViewController } from '/s8-pkgs-io-swgl/control/StdViewController.js';
-import { SWGL_Scene } from '/s8-pkgs-io-swgl/scene/SWGL_Scene.js';
+import { SWGL_Picker } from '/S8-pkgs-io-WebGL/render/SWGL_Picker.js';
+import { StdViewController } from '/S8-pkgs-io-WebGL/control/StdViewController.js';
+import { SWGL_Scene } from '/S8-pkgs-io-WebGL/scene/SWGL_Scene.js';
 
 
 /**

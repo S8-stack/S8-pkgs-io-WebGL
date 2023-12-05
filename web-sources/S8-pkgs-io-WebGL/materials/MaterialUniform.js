@@ -1,5 +1,5 @@
 import { SWGL_Material } from "./SWGL_Material.js";
-import { gl } from "/s8-pkgs-io-swgl/swgl.js";
+import { gl } from "/S8-pkgs-io-WebGL/swgl.js";
 
 
 /**

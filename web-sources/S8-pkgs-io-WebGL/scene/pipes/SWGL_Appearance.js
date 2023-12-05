@@ -3,7 +3,7 @@
 import { NeObject } from '/s8-core-io-bohr-neon/NeObject.js';
 
 
-import { SWGL_Model } from '/s8-pkgs-io-swgl/scene/models/SWGL_Model.js';
+import { SWGL_Model } from '/S8-pkgs-io-WebGL/scene/models/SWGL_Model.js';
 import { SWGL_Program } from './SWGL_Program.js';
 
 

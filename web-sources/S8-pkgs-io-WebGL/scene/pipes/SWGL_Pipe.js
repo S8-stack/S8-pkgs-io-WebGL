@@ -3,8 +3,8 @@
 import { NeObject } from '/s8-core-io-bohr-neon/NeObject.js';
 
 
-import { SWGL_View } from '/s8-pkgs-io-swgl/scene/view/SWGL_View.js';
-import { SWGL_Environment } from '/s8-pkgs-io-swgl/scene/environment/SWGL_Environment.js';
+import { SWGL_View } from '/S8-pkgs-io-WebGL/scene/view/SWGL_View.js';
+import { SWGL_Environment } from '/S8-pkgs-io-WebGL/scene/environment/SWGL_Environment.js';
 
 import { SWGL_Appearance } from './SWGL_Appearance.js';
 import { SWGL_Program } from './SWGL_Program.js';

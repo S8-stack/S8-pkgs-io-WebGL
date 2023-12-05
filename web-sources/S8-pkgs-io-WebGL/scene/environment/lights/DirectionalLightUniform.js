@@ -1,6 +1,6 @@
 
 import { SWGL_DirectionalLight } from "./SWGL_DirectionalLight.js";
-import { gl } from "/s8-pkgs-io-swgl/swgl.js";
+import { gl } from "/S8-pkgs-io-WebGL/swgl.js";
 
 
 /**
