@@ -2,7 +2,7 @@ package com.s8.pkgs.io.webgl.scene.environment.lights;
 
 import com.s8.api.web.S8WebFront;
 import com.s8.api.web.S8WebFrontObject;
-import com.s8.pkgs.io.webgl.WebGL_Root;
+import com.s8.pkgs.io.webgl.WebSources;
 
 
 /**
@@ -13,7 +13,7 @@ import com.s8.pkgs.io.webgl.WebGL_Root;
 public class SWGL_DirectionalLight extends S8WebFrontObject {
 
 	public SWGL_DirectionalLight(S8WebFront branch) {
-		super(branch, WebGL_Root.WEB+"scene/environment/lights/SWGL_DirectionalLight");
+		super(branch, WebSources.ROOT+"scene/environment/lights/SWGL_DirectionalLight");
 	}
 
 	

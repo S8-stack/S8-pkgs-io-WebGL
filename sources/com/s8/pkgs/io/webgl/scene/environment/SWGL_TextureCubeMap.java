@@ -2,7 +2,7 @@ package com.s8.pkgs.io.webgl.scene.environment;
 
 import com.s8.api.web.S8WebFront;
 import com.s8.api.web.S8WebFrontObject;
-import com.s8.pkgs.io.webgl.WebGL_Root;
+import com.s8.pkgs.io.webgl.WebSources;
 
 public class SWGL_TextureCubeMap extends S8WebFrontObject {
 
@@ -12,7 +12,7 @@ public class SWGL_TextureCubeMap extends S8WebFrontObject {
 	 * @param branch
 	 */
 	public SWGL_TextureCubeMap(S8WebFront branch) {
-		super(branch, WebGL_Root.WEB+"scene/environment/SWGL_TextureCubeMap");
+		super(branch, WebSources.ROOT + "scene/environment/SWGL_TextureCubeMap");
 	}
 
 

@@ -1,7 +1,7 @@
 package com.s8.pkgs.io.webgl.scene.pipes.mat01;
 
 import com.s8.api.web.S8WebFront;
-import com.s8.pkgs.io.webgl.WebGL_Root;
+import com.s8.pkgs.io.webgl.WebSources;
 import com.s8.pkgs.io.webgl.material.WebGL_Material;
 import com.s8.pkgs.io.webgl.scene.pipes.SWGL_Appearance;
 
@@ -20,7 +20,7 @@ public class Mat01Appearance extends SWGL_Appearance {
 	 * @param typeName
 	 */
 	public Mat01Appearance(S8WebFront branch) {
-		super(branch, WebGL_Root.WEB+"scene/pipes/mat01/Mat01Appearance");
+		super(branch, WebSources.ROOT+"scene/pipes/mat01/Mat01Appearance");
 	}
 	
 	

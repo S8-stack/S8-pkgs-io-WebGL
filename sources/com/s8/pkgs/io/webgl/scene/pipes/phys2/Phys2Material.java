@@ -2,7 +2,7 @@ package com.s8.pkgs.io.webgl.scene.pipes.phys2;
 
 import com.s8.api.web.S8WebFront;
 import com.s8.api.web.S8WebFrontObject;
-import com.s8.pkgs.io.webgl.WebGL_Root;
+import com.s8.pkgs.io.webgl.WebSources;
 
 
 /**
@@ -19,7 +19,7 @@ public class Phys2Material extends S8WebFrontObject {
 	 * @param typeName
 	 */
 	public Phys2Material(S8WebFront branch) {
-		super(branch, WebGL_Root.WEB+"scene/pipes/phys2/Phys2Material");
+		super(branch, WebSources.ROOT+"scene/pipes/phys2/Phys2Material");
 	}
 	
 	

@@ -2,18 +2,18 @@
 import { S8 } from "/s8-core-io-bohr-atom/S8.js";
 
 
-import { SWGL_View } from "/s8-pkgs-io-swgl/scene/view/SWGL_View.js";
+import { SWGL_View } from "/S8-pkgs-io-WebGL/scene/view/SWGL_View.js";
 
-import * as V3 from "/s8-pkgs-io-swgl/maths/SWGL_Vector3d.js";
-import { SWGL_CONTEXT } from "/s8-pkgs-io-swgl/swgl.js";
+import * as V3 from "/S8-pkgs-io-WebGL/maths/SWGL_Vector3d.js";
+import { SWGL_CONTEXT } from "/S8-pkgs-io-WebGL/swgl.js";
 
 
 /* controls */
-import { Rotate } from "/s8-pkgs-io-swgl/control/Rotate.js";
-import { Zoom } from "/s8-pkgs-io-swgl/control/Zoom.js";
-import { Highlight } from "/s8-pkgs-io-swgl/control/Highlight.js";
-import { Pick } from "/s8-pkgs-io-swgl/control/Pick.js";
-import { SWGL_Screen } from "/s8-pkgs-io-swgl/render/SWGL_Screen.js";
+import { Rotate } from "/S8-pkgs-io-WebGL/control/Rotate.js";
+import { Zoom } from "/S8-pkgs-io-WebGL/control/Zoom.js";
+import { Highlight } from "/S8-pkgs-io-WebGL/control/Highlight.js";
+import { Pick } from "/S8-pkgs-io-WebGL/control/Pick.js";
+import { SWGL_Screen } from "/S8-pkgs-io-WebGL/render/SWGL_Screen.js";
 
 
 

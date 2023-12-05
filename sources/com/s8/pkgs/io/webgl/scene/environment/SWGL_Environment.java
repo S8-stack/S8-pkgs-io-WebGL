@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.s8.api.web.S8WebFront;
 import com.s8.api.web.S8WebFrontObject;
-import com.s8.pkgs.io.webgl.WebGL_Root;
+import com.s8.pkgs.io.webgl.WebSources;
 import com.s8.pkgs.io.webgl.maths.WebGL_VectorUtilities;
 import com.s8.pkgs.io.webgl.scene.environment.lights.SWGL_DirectionalLight;
 
@@ -18,7 +18,7 @@ public class SWGL_Environment extends S8WebFrontObject {
 	 * @param branch
 	 */
 	public SWGL_Environment(S8WebFront branch) {
-		super(branch, WebGL_Root.WEB+"scene/environment/SWGL_Environment");
+		super(branch, WebSources.ROOT + "scene/environment/SWGL_Environment");
 	}
 
 

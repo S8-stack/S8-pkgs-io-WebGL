@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.s8.api.web.S8WebFront;
 import com.s8.api.web.S8WebFrontObject;
-import com.s8.pkgs.io.webgl.WebGL_Root;
+import com.s8.pkgs.io.webgl.WebSources;
 import com.s8.pkgs.io.webgl.scene.models.SWGL_Model;
 
 
@@ -26,7 +26,7 @@ public class SWGL_Pipe<A extends SWGL_Appearance> extends S8WebFrontObject {
 	 * @param typeName
 	 */
 	public SWGL_Pipe(S8WebFront branch) {
-		super(branch, WebGL_Root.WEB+"scene/pipes/SWGL_Pipe");
+		super(branch, WebSources.ROOT+"scene/pipes/SWGL_Pipe");
 	}
 	
 	

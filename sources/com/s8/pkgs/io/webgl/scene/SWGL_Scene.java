@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.s8.api.web.S8WebFront;
 import com.s8.api.web.S8WebFrontObject;
-import com.s8.pkgs.io.webgl.WebGL_Root;
+import com.s8.pkgs.io.webgl.WebSources;
 import com.s8.pkgs.io.webgl.scene.environment.SWGL_Environment;
 import com.s8.pkgs.io.webgl.scene.pipes.SWGL_Pipe;
 import com.s8.pkgs.io.webgl.scene.view.SWGL_View;
@@ -22,7 +22,7 @@ public class SWGL_Scene extends S8WebFrontObject {
 	 * @param branch
 	 */
 	public SWGL_Scene(S8WebFront branch) {
-		super(branch, WebGL_Root.WEB+"scene/SWGL_Scene");
+		super(branch, WebSources.ROOT+"scene/SWGL_Scene");
 	}
 	
 	

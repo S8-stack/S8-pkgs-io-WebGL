@@ -2,7 +2,7 @@ package com.s8.pkgs.io.webgl.scene.models;
 
 import com.s8.api.web.S8WebFront;
 import com.s8.api.web.S8WebFrontObject;
-import com.s8.pkgs.io.webgl.WebGL_Root;
+import com.s8.pkgs.io.webgl.WebSources;
 
 
 /**
@@ -14,7 +14,7 @@ public class SWGL_Model extends S8WebFrontObject {
 
 
 	public SWGL_Model(S8WebFront branch) {
-		super(branch, WebGL_Root.WEB+"scene/models/SWGL_Model");
+		super(branch, WebSources.ROOT + "scene/models/SWGL_Model");
 	}
 
 

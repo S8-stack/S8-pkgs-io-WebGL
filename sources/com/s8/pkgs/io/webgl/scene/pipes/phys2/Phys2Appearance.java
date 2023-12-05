@@ -1,7 +1,7 @@
 package com.s8.pkgs.io.webgl.scene.pipes.phys2;
 
 import com.s8.api.web.S8WebFront;
-import com.s8.pkgs.io.webgl.WebGL_Root;
+import com.s8.pkgs.io.webgl.WebSources;
 import com.s8.pkgs.io.webgl.scene.pipes.SWGL_Appearance;
 import com.s8.pkgs.io.webgl.utilities.SWGL_Texture2d;
 
@@ -20,7 +20,7 @@ public class Phys2Appearance extends SWGL_Appearance {
 	 * @param typeName
 	 */
 	public Phys2Appearance(S8WebFront branch) {
-		super(branch, WebGL_Root.WEB+"scene/pipes/phys2/Phys2Appearance");
+		super(branch, WebSources.ROOT+"scene/pipes/phys2/Phys2Appearance");
 	}
 
 
