@@ -1,7 +1,7 @@
 
 
 
-import { NeObject } from '/s8-core-io-bohr-neon/NeObject.js';
+import { NeObject } from '/S8-core-bohr-neon/NeObject.js';
 
 import * as M4 from '/S8-pkgs-io-WebGL/maths/SWGL_Matrix4d.js';
 

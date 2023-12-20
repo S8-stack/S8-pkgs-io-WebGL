@@ -1,5 +1,5 @@
 import { SWGL_Material } from "../../materials/SWGL_Material.js";
-import { NbAppearance } from "/s8-ng-geo/nebulae/appearances/NbAppearance.js";
+import { NbAppearance } from "/S8-ng-geo/nebulae/appearances/NbAppearance.js";
 
 
 

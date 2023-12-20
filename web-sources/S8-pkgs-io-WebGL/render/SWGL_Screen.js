@@ -1,5 +1,5 @@
 
-import { NeObject } from '/s8-core-io-bohr-neon/NeObject.js';
+import { NeObject } from '/S8-core-bohr-neon/NeObject.js';
 
 import { gl, SWGL_CONTEXT } from '/S8-pkgs-io-WebGL/swgl.js';
 

@@ -2,7 +2,7 @@ import { SWGL_Pipe } from "../SWGL_Pipe";
 import { SWGL_Model } from "../../scene/models/SWGL_Model.js";
 import { NbMaterialUniform } from "../../materials/MaterialUniform.js";
 import { DirectionalLightNbUniform } from "../../lights/DirectionalLightUniform.js";
-import { Matex01NbAppearance } from "/s8-ng-geo/nebulae/appearances/matex01/Matex01Appearance.js";
+import { Matex01NbAppearance } from "/S8-ng-geo/nebulae/appearances/matex01/Matex01Appearance.js";
 
 
 /**

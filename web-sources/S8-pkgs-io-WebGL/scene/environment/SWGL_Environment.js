@@ -1,5 +1,5 @@
 
-import { NeObject } from '/s8-core-io-bohr-neon/NeObject.js';
+import { NeObject } from '/S8-core-bohr-neon/NeObject.js';
 
 import { gl } from '/S8-pkgs-io-WebGL/swgl.js';
 
@@ -147,7 +147,7 @@ export class SWGL_Environment extends NeObject {
         }
     
             // environment
-        let rootPathname = "/s8-io-swgl/assets/skycube/std3";
+        let rootPathname = "/S8-io-swgl/assets/skycube/std3";
         environment.radiance = SWGL_TextureCubeMap.create(rootPathname+"/radiance/face", ".png", 8);
         environment.irradiance = SWGL_TextureCubeMap.create(rootPathname+"/irradiance/face", ".png", 1);
     
