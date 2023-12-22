@@ -1,6 +1,6 @@
 
-import { S8 } from "/S8-core-bohr-atom/S8.js";
 
+import { S8 } from "/S8-api/S8Context.js";
 
 import { SWGL_View } from "/S8-pkgs-io-WebGL/scene/view/SWGL_View.js";
 
@@ -220,7 +220,7 @@ export class StdViewController {
 
 	activate() {
 		this.isActive = true;
-		S8.branch.setFocusOn(this.screen);
+		S8.page.setFocusOn(this.screen);
 	}
 
 

@@ -1,4 +1,5 @@
-import { S8 } from "/S8-core-bohr-atom/S8.js";
+
+import { S8 } from "/S8-api/S8Context.js";
 import { gl } from "/S8-pkgs-io-WebGL/swgl.js";
 
 /**
@@ -70,7 +71,7 @@ export class Shader {
 			this.isInitiated = true;
 			let _this = this;
 
-			S8.sendRequest_HTTP2_GET(this.pathname, "text",
+			S8.server.sendRequest_HTTP2_GET(this.pathname, "text",
 				function (source) {
 					_this.compile(source, onBuilt);
 				});
