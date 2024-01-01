@@ -21,14 +21,14 @@ public class SWGL_Model extends S8WebFrontObject {
 
 	/** @param {Float32Array} coefficients */
 	public void setMatrix(float[] affine) {
-		vertex.fields().setFloat32ArrayField("matrix", affine);
+		vertex.outbound().setFloat32ArrayField("matrix", affine);
 	}
 	
 	
 
 	/** @param {Float32Array} coefficients */
 	public void setMesh(SWGL_Mesh mesh) {
-		vertex.fields().setObjectField("mesh", mesh);
+		vertex.outbound().setObjectField("mesh", mesh);
 	}
 
 

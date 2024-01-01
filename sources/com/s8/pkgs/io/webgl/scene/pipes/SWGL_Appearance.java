@@ -27,24 +27,12 @@ public abstract class SWGL_Appearance extends S8WebFrontObject {
 	
 	
 	public void setModels(List<SWGL_Model> models) {
-		vertex.fields().setObjectListField("models", models);
+		vertex.outbound().setObjectListField("models", models);
 	}
 	
-	/**
-	 * 
-	 * @param model
-	 */
-	public void appendModel(SWGL_Model model) {
-		vertex.fields().addObjToList("models", model);
+	public void setModel(SWGL_Model model) {
+		vertex.outbound().setObjectListField("models", new SWGL_Model[] { model });
 	}
 	
 	
-	/**
-	 * 
-	 * @param model
-	 */
-	public void remove(SWGL_Model model) {
-		vertex.fields().removeObjFromList("models", model);
-	}
-
 }

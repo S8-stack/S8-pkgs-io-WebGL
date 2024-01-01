@@ -17,7 +17,7 @@ public class SWGL_Texture2d extends S8WebFrontObject {
 
 
 	public void setPathname(String pathname) {
-		vertex.fields().setStringUTF8Field("pathname", pathname);
+		vertex.outbound().setStringUTF8Field("pathname", pathname);
 	}
 	
 }

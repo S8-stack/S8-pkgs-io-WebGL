@@ -30,7 +30,7 @@ public class Color2Appearance extends SWGL_Appearance {
 	 * @param material
 	 */
 	public void setColor(double... color) {
-		vertex.fields().setFloat32ArrayField("color", SWGL_Utilities.toFloatArray(color));
+		vertex.outbound().setFloat32ArrayField("color", SWGL_Utilities.toFloatArray(color));
 	}
 	
 

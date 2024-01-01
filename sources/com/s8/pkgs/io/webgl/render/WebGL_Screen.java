@@ -23,12 +23,12 @@ public class WebGL_Screen extends S8WebFrontObject {
 	
 	
 	public void setScene(SWGL_Scene scene) {
-		vertex.fields().setObjectField("scene", scene);
+		vertex.outbound().setObjectField("scene", scene);
 	}
 	
 	
 	public void setPickingScene(SWGL_Scene scene) {
-		vertex.fields().setObjectField("pickingScene", scene);
+		vertex.outbound().setObjectField("pickingScene", scene);
 	}
 	
 

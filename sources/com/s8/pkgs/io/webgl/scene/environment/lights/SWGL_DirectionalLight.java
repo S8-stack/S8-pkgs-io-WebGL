@@ -20,19 +20,19 @@ public class SWGL_DirectionalLight extends S8WebFrontObject {
 	public void setAmbientColor(double... color) {
 		float[] webColor = new float[4];
 		for(int i = 0; i<4; i++) { webColor[i] = (float) color[i]; }
-		vertex.fields().setFloat32ArrayField("ambient", webColor);
+		vertex.outbound().setFloat32ArrayField("ambient", webColor);
 	}
 	
 	public void setDiffuseColor(double... color) {
 		float[] webColor = new float[4];
 		for(int i = 0; i<4; i++) { webColor[i] = (float) color[i]; }
-		vertex.fields().setFloat32ArrayField("diffuse", webColor);
+		vertex.outbound().setFloat32ArrayField("diffuse", webColor);
 	}
 	
 	public void setSpecularColor(double... color) {
 		float[] webColor = new float[4];
 		for(int i = 0; i<4; i++) { webColor[i] = (float) color[i]; }
-		vertex.fields().setFloat32ArrayField("specular", webColor);
+		vertex.outbound().setFloat32ArrayField("specular", webColor);
 	}
 	
 	/**
@@ -40,7 +40,7 @@ public class SWGL_DirectionalLight extends S8WebFrontObject {
 	 * @param vector
 	 */
 	public void setDirectionVector(float[] vector) {
-		vertex.fields().setFloat32ArrayField("direction", vector);
+		vertex.outbound().setFloat32ArrayField("direction", vector);
 	}
 	
 }

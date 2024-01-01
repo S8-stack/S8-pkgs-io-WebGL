@@ -36,14 +36,14 @@ public class Phys2Material extends S8WebFrontObject {
 
 
 	public void setColor(int r, int g, int b, float glossiness) {
-		vertex.fields().setUInt8ArrayField("specularColor", new int[] {
+		vertex.outbound().setUInt8ArrayField("specularColor", new int[] {
 				(int) (glossiness * r),
 				(int) (glossiness * g),
 				(int) (glossiness * b),
 				255
 		});
 		
-		vertex.fields().setUInt8ArrayField("diffuseColor", new int[] {
+		vertex.outbound().setUInt8ArrayField("diffuseColor", new int[] {
 				(int) ((1.0f - glossiness) * r),
 				(int) ((1.0f - glossiness) * g),
 				(int) ((1.0f - glossiness) * b),
@@ -58,7 +58,7 @@ public class Phys2Material extends S8WebFrontObject {
 	 * @param value
 	 */
 	public void setRoughness(double value) {
-		vertex.fields().setUInt8Field("roughness", (int) (value / 6.0 * 255));
+		vertex.outbound().setUInt8Field("roughness", (int) (value / 6.0 * 255));
 	}
 
 
@@ -69,7 +69,7 @@ public class Phys2Material extends S8WebFrontObject {
 	 * @param b
 	 */
 	public void setSpecularColor(int r, int g, int b) {
-		vertex.fields().setUInt8ArrayField("specularColor", new int[] { r, g, b, 255});
+		vertex.outbound().setUInt8ArrayField("specularColor", new int[] { r, g, b, 255});
 	}
 	
 	
@@ -82,7 +82,7 @@ public class Phys2Material extends S8WebFrontObject {
 	 * @param scalingFactor
 	 */
 	public void setSpecularColor(int r, int g, int b, float scalingFactor) {
-		vertex.fields().setUInt8ArrayField("specularColor", new int[] {
+		vertex.outbound().setUInt8ArrayField("specularColor", new int[] {
 				(int) (r * scalingFactor),
 				(int) (g * scalingFactor),
 				(int) (b * scalingFactor),
@@ -92,7 +92,7 @@ public class Phys2Material extends S8WebFrontObject {
 	
 
 	public void setDiffuseColor(int r, int g, int b) {
-		vertex.fields().setUInt8ArrayField("diffuseColor", new int[] { r, g, b, 255 });
+		vertex.outbound().setUInt8ArrayField("diffuseColor", new int[] { r, g, b, 255 });
 	}
 	
 	
@@ -111,7 +111,7 @@ public class Phys2Material extends S8WebFrontObject {
 				(int) (b * scalingFactor),
 				255
 		};
-		vertex.fields().setUInt8ArrayField("diffuseColor", values);
+		vertex.outbound().setUInt8ArrayField("diffuseColor", values);
 	}
 
 
@@ -123,7 +123,7 @@ public class Phys2Material extends S8WebFrontObject {
 	 * @param b
 	 */
 	public void setEmissiveColor(int r, int g, int b) {
-		vertex.fields().setUInt8ArrayField("emissiveColor", new int[] { r, g, b, 255 });
+		vertex.outbound().setUInt8ArrayField("emissiveColor", new int[] { r, g, b, 255 });
 	}
 	
 
@@ -140,7 +140,7 @@ public class Phys2Material extends S8WebFrontObject {
 				(int) (b * scalingFactor),
 				255
 		};
-		vertex.fields().setUInt8ArrayField("emissiveColor", values);
+		vertex.outbound().setUInt8ArrayField("emissiveColor", values);
 	}
 
 
@@ -149,7 +149,7 @@ public class Phys2Material extends S8WebFrontObject {
 	 * @param value
 	 */
 	public void setEmissiveColor(float[] value) {
-		vertex.fields().setFloat32ArrayField("emissiveColor", value);
+		vertex.outbound().setFloat32ArrayField("emissiveColor", value);
 	}
 
 

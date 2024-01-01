@@ -24,7 +24,7 @@ public class SWGL_Mesh extends S8WebFrontObject {
 	 */
 	public void setPositionVertexAttributes(float[] data) {
 		if(data != null) {
-			vertex.fields().setFloat32ArrayField("positions", data);	
+			vertex.outbound().setFloat32ArrayField("positions", data);	
 		}
 	}
 
@@ -35,7 +35,7 @@ public class SWGL_Mesh extends S8WebFrontObject {
 	 */
 	public void setNormalVertexAttributes(float[] data) {
 		if(data != null) {
-			vertex.fields().setFloat32ArrayField("normals", data);	
+			vertex.outbound().setFloat32ArrayField("normals", data);	
 		}
 	}
 
@@ -47,7 +47,7 @@ public class SWGL_Mesh extends S8WebFrontObject {
 	 */
 	public void setUTangentVertexAttributes(float[] data) {
 		if(data != null) {
-			vertex.fields().setFloat32ArrayField("uTangents", data);	
+			vertex.outbound().setFloat32ArrayField("uTangents", data);	
 		}
 	}
 
@@ -58,7 +58,7 @@ public class SWGL_Mesh extends S8WebFrontObject {
 	 */
 	public void setVTangentVertexAttributes(float[] data) {
 		if(data != null) {
-			vertex.fields().setFloat32ArrayField("vTangents", data);
+			vertex.outbound().setFloat32ArrayField("vTangents", data);
 		}
 	}
 
@@ -70,7 +70,7 @@ public class SWGL_Mesh extends S8WebFrontObject {
 	 */
 	public void setTexCoordVertexAttributes(float[] data) {
 		if(data != null) {
-			vertex.fields().setFloat32ArrayField("texCoords", data);	
+			vertex.outbound().setFloat32ArrayField("texCoords", data);	
 		}
 	}
 
@@ -80,7 +80,7 @@ public class SWGL_Mesh extends S8WebFrontObject {
 	 */
 	public void setColorVertexAttributes(float[] data) {
 		if(data != null) {
-			vertex.fields().setFloat32ArrayField("colors", data);	
+			vertex.outbound().setFloat32ArrayField("colors", data);	
 		}
 	}
 	
@@ -91,7 +91,7 @@ public class SWGL_Mesh extends S8WebFrontObject {
 	 */
 	public void setAppCoordsAttributes(float[] data) {
 		if(data != null) {
-			vertex.fields().setFloat32ArrayField("appCoords", data);	
+			vertex.outbound().setFloat32ArrayField("appCoords", data);	
 		}
 	}
 
@@ -102,8 +102,8 @@ public class SWGL_Mesh extends S8WebFrontObject {
 	 * @param colors
 	 */
 	public void setIndices(int dimension, long[] data) {
-		vertex.fields().setUInt8Field("dimension", dimension);
-		vertex.fields().setUInt32ArrayField("indices", data);	
+		vertex.outbound().setUInt8Field("dimension", dimension);
+		vertex.outbound().setUInt32ArrayField("indices", data);	
 	}
 
 }

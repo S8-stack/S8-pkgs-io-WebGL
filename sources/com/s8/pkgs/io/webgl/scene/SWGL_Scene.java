@@ -27,36 +27,17 @@ public class SWGL_Scene extends S8WebFrontObject {
 	
 	
 	public void setEnvironment(SWGL_Environment environment) {
-		vertex.fields().setObjectField("environment", environment);
+		vertex.outbound().setObjectField("environment", environment);
 	}
-	
-	public SWGL_Environment getEnvironment() {
-		return vertex.fields().getObjectField("environment");
-	}
-	
 	
 	
 	public void setPipes(List<SWGL_Pipe<?>> pipes) {
-		vertex.fields().setObjectListField("pipes", pipes);
+		vertex.outbound().setObjectListField("pipes", pipes);
 	}
 	
-	
-
-	
-	/**
-	 * 
-	 * @param name
-	 * @param appearance
-	 */
-	public void define(String name, SWGL_Pipe<?> prgm) {
-		
-		// appearance
-		vertex.fields().addObjToList("programs", prgm);
-	}
-
 
 	public void setView(SWGL_View view) {
-		vertex.fields().setObjectField("view", view);
+		vertex.outbound().setObjectField("view", view);
 	}
 	
 }

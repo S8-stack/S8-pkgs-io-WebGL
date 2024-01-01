@@ -30,7 +30,7 @@ public class Mat01Appearance extends SWGL_Appearance {
 	 * @param material
 	 */
 	public void setMaterial(WebGL_Material material) {
-		vertex.fields().setObjectField("material", material);
+		vertex.outbound().setObjectField("material", material);
 	}
 	
 

@@ -17,16 +17,16 @@ public class SWGL_TextureCubeMap extends S8WebFrontObject {
 
 
 	public void setPathname(String pathname) {
-		vertex.fields().setStringUTF8Field("pathname", pathname);
+		vertex.outbound().setStringUTF8Field("pathname", pathname);
 	}
 	
 	public void setExtension(String extension) {
-		vertex.fields().setStringUTF8Field("extension", extension);
+		vertex.outbound().setStringUTF8Field("extension", extension);
 	}
 	
 	
 	public void setNbOfLevels(int n) {
-		vertex.fields().setUInt8Field("nbLevels", n);
+		vertex.outbound().setUInt8Field("nbLevels", n);
 	}
 	
 	

@@ -35,7 +35,7 @@ public class SWGL_Pipe<A extends SWGL_Appearance> extends S8WebFrontObject {
 	 * @param program
 	 */
 	public void setProgram(SWGL_Program program) {
-		vertex.fields().setObjectField("program", program);
+		vertex.outbound().setObjectField("program", program);
 	}
 	
 
@@ -44,16 +44,19 @@ public class SWGL_Pipe<A extends SWGL_Appearance> extends S8WebFrontObject {
 	 * @param appearances
 	 */
 	public void setAppearances(ArrayList<A> appearances) {
-		vertex.fields().setObjectListField("appearances", appearances);
+		vertex.outbound().setObjectListField("appearances", appearances);
 	}
 	
-	/**
-	 * 
-	 * @param appearance
-	 */
-	public void appendAppearance(A appearance) {
-		vertex.fields().addObjToList("appearances", appearance);
+	public void setAppearances(A[] appearances) {
+		vertex.outbound().setObjectListField("appearances", appearances);
 	}
+	
+
+	public void setAppearance(A appearance) {
+		vertex.outbound().setObjectListField("appearances", appearance);
+	}
+	
+	
 	
 	
 	
@@ -73,9 +76,13 @@ public class SWGL_Pipe<A extends SWGL_Appearance> extends S8WebFrontObject {
 		map.put(name, appearance);
 		
 		// appearance
-		vertex.fields().addObjToList("appearances", appearance);
+		ArrayList<A> list = new ArrayList<>();
+		list.add(appearance);
+		vertex.outbound().setObjectListField("appearances", list);
+		
 	}
-	
+
+
 	
 	
 

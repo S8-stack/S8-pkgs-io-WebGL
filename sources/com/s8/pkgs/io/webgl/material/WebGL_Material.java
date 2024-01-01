@@ -20,15 +20,15 @@ public class WebGL_Material extends S8WebFrontObject {
 
 	
 	public void setAmbientColor(double... color) {
-		vertex.fields().setFloat32ArrayField("ambient", SWGL_Utilities.toFloatArray(color));
+		vertex.outbound().setFloat32ArrayField("ambient", SWGL_Utilities.toFloatArray(color));
 	}
 	
 	public void setDiffuseColor(double... color) {
-		vertex.fields().setFloat32ArrayField("diffuse", SWGL_Utilities.toFloatArray(color));
+		vertex.outbound().setFloat32ArrayField("diffuse", SWGL_Utilities.toFloatArray(color));
 	}
 	
 	public void setSpecularColor(double... color) {
-		vertex.fields().setFloat32ArrayField("specular", SWGL_Utilities.toFloatArray(color));
+		vertex.outbound().setFloat32ArrayField("specular", SWGL_Utilities.toFloatArray(color));
 	}
 	
 	/**
@@ -36,7 +36,7 @@ public class WebGL_Material extends S8WebFrontObject {
 	 * @param vector
 	 */
 	public void setShininess(double value) {
-		vertex.fields().setFloat32Field("shininess", (float) value);
+		vertex.outbound().setFloat32Field("shininess", (float) value);
 	}
 	
 }

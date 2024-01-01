@@ -28,7 +28,7 @@ public class SWGL_Environment extends S8WebFrontObject {
 	 * @param lights
 	 */
 	public void setDirectionalLights(List<SWGL_DirectionalLight> lights) {
-		vertex.fields().setObjectListField("directionalLights", lights);
+		vertex.outbound().setObjectListField("directionalLights", lights);
 	}
 
 
@@ -75,10 +75,10 @@ public class SWGL_Environment extends S8WebFrontObject {
 
 
 	public void setRadiance(SWGL_TextureCubeMap cubeMap) {
-		vertex.fields().setObjectField("radiance", cubeMap);
+		vertex.outbound().setObjectField("radiance", cubeMap);
 	}
 	
 	public void setIrradiance(SWGL_TextureCubeMap cubeMap) {
-		vertex.fields().setObjectField("irradiance", cubeMap);
+		vertex.outbound().setObjectField("irradiance", cubeMap);
 	}
 }
