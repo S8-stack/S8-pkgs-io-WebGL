@@ -2,6 +2,7 @@ package com.s8.pkgs.io.webgl.scene.pipes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.s8.api.web.S8WebFront;
@@ -43,7 +44,7 @@ public class SWGL_Pipe<A extends SWGL_Appearance> extends S8WebFrontObject {
 	 * 
 	 * @param appearances
 	 */
-	public void setAppearances(ArrayList<A> appearances) {
+	public void setAppearances(List<A> appearances) {
 		vertex.outbound().setObjectListField("appearances", appearances);
 	}
 	
