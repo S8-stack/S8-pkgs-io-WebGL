@@ -18,19 +18,19 @@ public class Phys2Material extends S8WebFrontObject {
 	 * @param branch
 	 * @param typeName
 	 */
-	public Phys2Material(S8WebFront branch) {
-		super(branch, WebSources.ROOT+"scene/pipes/phys2/Phys2Material");
+	public Phys2Material(S8WebFront branch, String typeName) {
+		super(branch, typeName);
 	}
-	
 	
 	/**
 	 * 
 	 * @param branch
 	 * @param typeName
 	 */
-	public Phys2Material(S8WebFront branch, String typeName) {
-		super(branch, typeName);
+	public Phys2Material(S8WebFront branch) {
+		super(branch, WebSources.ROOT+"scene/pipes/phys2/Phys2Material");
 	}
+	
 	
 	
 
