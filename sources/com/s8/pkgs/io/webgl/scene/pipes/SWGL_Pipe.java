@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.s8.api.web.S8WebFront;
-import com.s8.api.web.S8WebFrontObject;
+import com.s8.api.web.S8WebObject;
 import com.s8.pkgs.io.webgl.WebSources;
 import com.s8.pkgs.io.webgl.scene.models.SWGL_Model;
 
@@ -16,7 +16,7 @@ import com.s8.pkgs.io.webgl.scene.models.SWGL_Model;
  * @author pierreconvert
  *
  */
-public class SWGL_Pipe<A extends SWGL_Appearance> extends S8WebFrontObject {
+public class SWGL_Pipe<A extends SWGL_Appearance> extends S8WebObject {
 
 	private Map<String, A> map = new HashMap<String, A>();
 	

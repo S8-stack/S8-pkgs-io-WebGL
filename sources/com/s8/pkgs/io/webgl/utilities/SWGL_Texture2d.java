@@ -1,10 +1,10 @@
 package com.s8.pkgs.io.webgl.utilities;
 
 import com.s8.api.web.S8WebFront;
-import com.s8.api.web.S8WebFrontObject;
+import com.s8.api.web.S8WebObject;
 import com.s8.pkgs.io.webgl.WebSources;
 
-public class SWGL_Texture2d extends S8WebFrontObject {
+public class SWGL_Texture2d extends S8WebObject {
 
 
 	/**

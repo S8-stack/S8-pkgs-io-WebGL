@@ -2,7 +2,7 @@ package com.s8.pkgs.io.webgl.material;
 
 
 import com.s8.api.web.S8WebFront;
-import com.s8.api.web.S8WebFrontObject;
+import com.s8.api.web.S8WebObject;
 import com.s8.pkgs.io.webgl.WebSources;
 import com.s8.pkgs.io.webgl.utilities.SWGL_Utilities;
 
@@ -12,7 +12,7 @@ import com.s8.pkgs.io.webgl.utilities.SWGL_Utilities;
  * @author pierreconvert
  *
  */
-public class WebGL_Material extends S8WebFrontObject {
+public class WebGL_Material extends S8WebObject {
 
 	public WebGL_Material(S8WebFront branch) {
 		super(branch, WebSources.ROOT + "materials/SWGL_Material");

@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.s8.api.web.S8WebFront;
-import com.s8.api.web.S8WebFrontObject;
+import com.s8.api.web.S8WebObject;
 import com.s8.pkgs.io.webgl.WebSources;
 import com.s8.pkgs.io.webgl.maths.WebGL_VectorUtilities;
 import com.s8.pkgs.io.webgl.scene.environment.lights.SWGL_DirectionalLight;
 
 
-public class SWGL_Environment extends S8WebFrontObject {
+public class SWGL_Environment extends S8WebObject {
 
 
 	/**

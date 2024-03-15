@@ -1,7 +1,7 @@
 package com.s8.pkgs.io.webgl.render;
 
 import com.s8.api.web.S8WebFront;
-import com.s8.api.web.S8WebFrontObject;
+import com.s8.api.web.S8WebObject;
 import com.s8.pkgs.io.webgl.WebSources;
 import com.s8.pkgs.io.webgl.scene.SWGL_Scene;
 
@@ -10,7 +10,7 @@ import com.s8.pkgs.io.webgl.scene.SWGL_Scene;
  * @author pierreconvert
  *
  */
-public class WebGL_Screen extends S8WebFrontObject {
+public class WebGL_Screen extends S8WebObject {
 
 	
 	/**
