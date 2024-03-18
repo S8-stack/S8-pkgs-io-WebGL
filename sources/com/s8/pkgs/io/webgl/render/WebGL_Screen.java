@@ -31,6 +31,14 @@ public class WebGL_Screen extends S8WebObject {
 		vertex.outbound().setObjectField("pickingScene", scene);
 	}
 	
+	public void setClearColor(int red, int green, int blue, int alpha) {
+		setClearColor(new int[] { red, green, blue, alpha });
+	}
+	
+	public void setClearColor(int[] color) {
+		vertex.outbound().setUInt8ArrayField("clearColor", color);
+	}
+	
 
 	
 }
