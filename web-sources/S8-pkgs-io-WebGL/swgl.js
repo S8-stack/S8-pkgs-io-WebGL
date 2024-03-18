@@ -64,7 +64,7 @@ class SWGL_Context {
 
 			/* Initialize with default HD params, resized later with actual parameters */
 			this.gl.viewport(0, 0, 1920, 1080);
-			
+
 			/*
 			var ext = gl.getExtension("OES_element_index_uint");
 			if(ext==null){
@@ -89,16 +89,15 @@ class SWGL_Context {
 	 * 
 	 * @param {Fuction} listener 
 	 */
-	appendSizeListener(listener){
+	appendSizeListener(listener) {
 		this.sizeListeners.add(listener);
-		this.resize(); // trigger a resize for update
 	}
 
 	/**
 	 * 
 	 * @param {Fuction} listener 
 	 */
-	removeSizeListener(listener){
+	removeSizeListener(listener) {
 		this.sizeListeners.delete(listener);
 	}
 
@@ -118,39 +117,45 @@ class SWGL_Context {
 
 	/**
 	 * 
-	 * @param {number} width
-	 * @param {number} height
+	 * @param {number} containerWidth
+	 * @param {number} containerHeight
 	 */
-	resize(width, height) {
+	resize(containerWidth, containerHeight) {
 
-		this.abstractWidth = width;
-		this.abstractHeight = height;
-		
-// set viewport parameters
-/* this.gl.viewportWidth = width; */
-/* this.gl.viewportHeight = height; */
-		
-		
+		//this.abstractWidth = containerWidth;
+		//this.abstractHeight = containerHeight;
+
+		// set viewport parameters
+		/* this.gl.viewportWidth = width; */
+		/* this.gl.viewportHeight = height; */
+
+
 		/* device pixel ratio */
 		let pixelRatio = window.devicePixelRatio || SWGL_Context.VIEWPORT_OVERSAMPLING_FACTOR;
 
 		// resize canavs drawing buffer
-		let drawingBufferWidth = Math.round(pixelRatio * width);
-		let drawingBufferHeight = Math.round(pixelRatio * height);
+		let drawingBufferWidth = Math.round(pixelRatio * containerWidth);
+		let drawingBufferHeight = Math.round(pixelRatio * containerHeight);
 
 		// resize canvas
+		
 		this.canvasNode.width = drawingBufferWidth;
 		this.canvasNode.height = drawingBufferHeight;
+		
 
 		// and set viewport accordingly
 		this.gl.viewport(0, 0, drawingBufferWidth, drawingBufferHeight);
 
-	// resize DOM node as well
-		this.canvasNode.style.width = `${width}px`;
-		this.canvasNode.style.height = `${height}px`;
+		// resize DOM node as well
+		
+		/*
+		this.canvasNode.style.width = `${containerWidth}px`;
+		this.canvasNode.style.height = `${containerHeight}px`;
+		*/
+		
 
 		// broadcast
-		this.sizeListeners.forEach(listener => listener(width, height));
+		this.sizeListeners.forEach(listener => listener(containerWidth, containerHeight));
 	}
 
 

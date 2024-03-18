@@ -55,6 +55,8 @@ export class SWGL_Screen extends NeObject {
 	/** @type {Function} */
 	sizeListener;
 
+	/** @type {number[]} */
+	clearColor = [1.0, 1.0, 1.0, 1.0];
 
 	constructor() {
 		super();
@@ -154,7 +156,7 @@ export class SWGL_Screen extends NeObject {
 	WebGL_render(t_now) {
 
 		// gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-		gl.clearColor(1.0, 1.0, 1.0, 1.0);
+		gl.clearColor(this.clearColor[0], this.clearColor[1], this.clearColor[2], this.clearColor[3]);
 		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
 
 		// render pipes
@@ -193,6 +195,16 @@ export class SWGL_Screen extends NeObject {
 	S8_set_pickingScene(scene) {
 		this.pickingScene = scene;
 		this.pickingScene.initialize();
+	}
+
+
+	/**
+	 * 
+	 * @param {number[]} color 
+	 */
+	S8_set_clearColor(color) {
+		this.clearColor = new Array(4);
+		for(let i = 0; i<4; i++) { this.clearColor[i] = color[i] / 255.0; }
 	}
 
 
