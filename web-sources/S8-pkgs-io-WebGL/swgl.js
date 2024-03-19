@@ -60,7 +60,11 @@ class SWGL_Context {
 			/**
 			 * {}
 			 */
-			this.gl = this.canvasNode.getContext("webgl2", { stencil: true });
+			this.gl = this.canvasNode.getContext("webgl2", {
+				stencil: true,
+				alpha: true,
+				premultipliedAlpha: false  // Ask for non-premultiplied alpha 
+			});
 
 			/* Initialize with default HD params, resized later with actual parameters */
 			this.gl.viewport(0, 0, 1920, 1080);
@@ -108,8 +112,15 @@ class SWGL_Context {
 			//OpenGL initialization
 			gl.clearStencil(128);
 
-			//Set-up canvas parameters
+			/* Set-up canvas parameters */
 			gl.enable(gl.DEPTH_TEST);
+
+			/* enabled blending parameters */
+
+			// Turn on rendering to alpha
+			gl.colorMask(true, true, true, true);
+			gl.enable(gl.BLEND);
+			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
 			this.isInitialized = true;
 		}
@@ -138,21 +149,21 @@ class SWGL_Context {
 		let drawingBufferHeight = Math.round(pixelRatio * containerHeight);
 
 		// resize canvas
-		
+
 		this.canvasNode.width = drawingBufferWidth;
 		this.canvasNode.height = drawingBufferHeight;
-		
+
 
 		// and set viewport accordingly
 		this.gl.viewport(0, 0, drawingBufferWidth, drawingBufferHeight);
 
 		// resize DOM node as well
-		
+
 		/*
 		this.canvasNode.style.width = `${containerWidth}px`;
 		this.canvasNode.style.height = `${containerHeight}px`;
 		*/
-		
+
 
 		// broadcast
 		this.sizeListeners.forEach(listener => listener(containerWidth, containerHeight));

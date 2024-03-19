@@ -61,15 +61,17 @@ public class Phys2Material extends S8WebObject {
 		vertex.outbound().setUInt8Field("roughness", (int) (value / 6.0 * 255));
 	}
 
-
+	
+	
 	/**
 	 * 
 	 * @param r
 	 * @param g
 	 * @param b
+	 * @param scalingFactor
 	 */
-	public void setSpecularColor(int r, int g, int b) {
-		vertex.outbound().setUInt8ArrayField("specularColor", new int[] { r, g, b, 255});
+	public void setSpecularColor(int[] color) {
+		vertex.outbound().setUInt8ArrayField("specularColor", color);
 	}
 	
 	
@@ -81,37 +83,8 @@ public class Phys2Material extends S8WebObject {
 	 * @param b
 	 * @param scalingFactor
 	 */
-	public void setSpecularColor(int r, int g, int b, float scalingFactor) {
-		vertex.outbound().setUInt8ArrayField("specularColor", new int[] {
-				(int) (r * scalingFactor),
-				(int) (g * scalingFactor),
-				(int) (b * scalingFactor),
-				255
-		});
-	}
-	
-
-	public void setDiffuseColor(int r, int g, int b) {
-		vertex.outbound().setUInt8ArrayField("diffuseColor", new int[] { r, g, b, 255 });
-	}
-	
-	
-	
-	/**
-	 * 
-	 * @param r
-	 * @param g
-	 * @param b
-	 * @param scalingFactor
-	 */
-	public void setDiffuseColor(int r, int g, int b, float scalingFactor) {
-		int[] values = new int[] {
-				(int) (r * scalingFactor),
-				(int) (g * scalingFactor),
-				(int) (b * scalingFactor),
-				255
-		};
-		vertex.outbound().setUInt8ArrayField("diffuseColor", values);
+	public void setDiffuseColor(int[] color) {
+		vertex.outbound().setUInt8ArrayField("diffuseColor", color);
 	}
 
 
@@ -122,35 +95,9 @@ public class Phys2Material extends S8WebObject {
 	 * @param g
 	 * @param b
 	 */
-	public void setEmissiveColor(int r, int g, int b) {
-		vertex.outbound().setUInt8ArrayField("emissiveColor", new int[] { r, g, b, 255 });
+	public void setEmissiveColor(int[] color) {
+		vertex.outbound().setUInt8ArrayField("emissiveColor", color);
 	}
 	
-
-	/**
-	 * 
-	 * @param r
-	 * @param g
-	 * @param b
-	 */
-	public void setEmissiveColor(int r, int g, int b, float scalingFactor) {
-		int[] values = new int[] {
-				(int) (r * scalingFactor),
-				(int) (g * scalingFactor),
-				(int) (b * scalingFactor),
-				255
-		};
-		vertex.outbound().setUInt8ArrayField("emissiveColor", values);
-	}
-
-
-	/**
-	 * 
-	 * @param value
-	 */
-	public void setEmissiveColor(float[] value) {
-		vertex.outbound().setFloat32ArrayField("emissiveColor", value);
-	}
-
 
 }
