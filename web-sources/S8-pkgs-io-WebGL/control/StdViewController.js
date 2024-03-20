@@ -118,7 +118,10 @@ export class StdViewController {
 			this.controls[i].link(this);
 		}
 
+		const targetNode = SWGL_CONTEXT.canvasNode;
 
+
+		/** @param{Event} event */
 		this.onMouseDownLambda = function (event) {
 			if (_this.isActive) {
 				let isCaptured = false, i = 0;
@@ -127,10 +130,11 @@ export class StdViewController {
 					i++;
 				}
 			}
+			event.stopPropagation();
 		};
-		SWGL_CONTEXT.canvasNode.addEventListener('mousedown', this.onMouseDownLambda, false);
+		targetNode.addEventListener('mousedown', this.onMouseDownLambda, false);
 
-
+		/** @param{Event} event */
 		this.onMouseUpLambda = function (event) {
 			if (_this.isActive) {
 				let isCaptured = false, i = 0;
@@ -139,10 +143,11 @@ export class StdViewController {
 					i++;
 				}
 			}
+			event.stopPropagation();
 		};
-		document.addEventListener('mouseup', this.onMouseUpLambda, false);
+		targetNode.addEventListener('mouseup', this.onMouseUpLambda, false);
 
-
+		/** @param{Event} event */
 		this.onMouseMoveLambda = function (event) {
 			if (_this.isActive) {
 				let isCaptured = false, i = 0;
@@ -151,10 +156,11 @@ export class StdViewController {
 					i++;
 				}
 			}
+			event.stopPropagation();
 		};
-		document.addEventListener('mousemove', this.onMouseMoveLambda, false);
+		targetNode.addEventListener('mousemove', this.onMouseMoveLambda, false);
 
-
+		/** @param{Event} event */
 		this.onMouseWheelLambda = function (event) {
 			if (_this.isActive) {
 				let isCaptured = false, i = 0;
@@ -163,10 +169,16 @@ export class StdViewController {
 					i++;
 				}
 			}
+			event.preventDefault();
+			event.stopPropagation();
+			return false;
 		};
-		document.addEventListener('mousewheel', this.onMouseWheelLambda, false);
+		/* option {passive: false} on the event listener. 
+		This is actually because we have to tell browsers that, eventually, 
+		we might call preventDefault and cancel the default behavior. */
+		targetNode.addEventListener('wheel', this.onMouseWheelLambda, { passive: false });
 
-
+		/** @param{Event} event */
 		this.onKeyUpLambda = function (event) {
 			if (_this.isActive) {
 				let isCaptured = false, i = 0;
@@ -175,10 +187,12 @@ export class StdViewController {
 					i++;
 				}
 			}
+			event.stopPropagation();
 		};
-		document.addEventListener('keyup', this.onKeyUpLambda, false);
+		targetNode.addEventListener('keyup', this.onKeyUpLambda, false);
 
 
+		/** @param{Event} event */
 		this.onKeyDownLambda = function (event) {
 			if (_this.isActive) {
 				let isCaptured = false, i = 0;
@@ -187,23 +201,42 @@ export class StdViewController {
 					i++;
 				}
 			}
+			event.stopPropagation();
 		};
-		document.addEventListener('keydown', this.onKeyDownLambda, false);
+		targetNode.addEventListener('keydown', this.onKeyDownLambda, false);
 
-
+		/** @param{Event} event */
 		this.onClickLambda = function (event) {
-			if (!_this.isActive) { 
+			if (!_this.isActive) {
 				_this.activate();
 			};
-			
+
 			let isCaptured = false, i = 0;
-				while (!isCaptured && i < n) {
-					isCaptured = _this.controls[i].onClick(event);
-					i++;
-				}
-			
+			while (!isCaptured && i < n) {
+				isCaptured = _this.controls[i].onClick(event);
+				i++;
+			}
+			event.stopPropagation();
 		};
-		document.addEventListener('click', this.onClickLambda, false);
+		targetNode.addEventListener('click', this.onClickLambda, false);
+
+
+		/*
+		targetNode.addEventListener('scroll', function(event){
+			event.stopPropagation();
+		}, false);
+		*/
+
+		/*
+		targetNode.addEventListener('DOMMouseScroll', function(event){
+			event.stopPropagation();
+		}, false);
+		*/
+
+
+
+
+
 
 		// start refresh
 		this.refresh();
@@ -229,13 +262,13 @@ export class StdViewController {
 	}
 
 
-	setEyeVector(r, theta, phi){
+	setEyeVector(r, theta, phi) {
 		this.r = r;
 		this.theta = theta;
 		this.phi = phi;
 	}
 
-	
+
 	refresh() {
 
 		// retrieve view
@@ -250,12 +283,13 @@ export class StdViewController {
 
 
 	stop() {
-		SWGL_CONTEXT.canvasNode.removeEventListener('mousedown', this.onMouseDownLambda, false);
-		document.removeEventListener('mouseup', this.onMouseUpLambda, false);
-		document.removeEventListener('mousemove', this.onMouseMoveLambda, false);
-		document.removeEventListener('mousewheel', this.onMouseWheelLambda, false);
-		document.removeEventListener('keyup', this.onKeyUpLambda, false);
-		document.removeEventListener('keydown', this.onKeyDownLambda, false);
+		const targetNode = SWGL_CONTEXT.canvasNode;
+		targetNode.removeEventListener('mousedown', this.onMouseDownLambda, false);
+		targetNode.removeEventListener('mouseup', this.onMouseUpLambda, false);
+		targetNode.removeEventListener('mousemove', this.onMouseMoveLambda, false);
+		targetNode.removeEventListener('mousewheel', this.onMouseWheelLambda, false);
+		targetNode.removeEventListener('keyup', this.onKeyUpLambda, false);
+		targetNode.removeEventListener('keydown', this.onKeyDownLambda, false);
 	}
 };
 
