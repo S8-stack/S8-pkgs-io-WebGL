@@ -229,6 +229,13 @@ export class StdViewController {
 	}
 
 
+	setEyeVector(r, theta, phi){
+		this.r = r;
+		this.theta = theta;
+		this.phi = phi;
+	}
+
+	
 	refresh() {
 
 		// retrieve view

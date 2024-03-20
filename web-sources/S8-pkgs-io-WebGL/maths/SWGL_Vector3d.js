@@ -164,7 +164,7 @@ export function spherical_radial(r, phi, theta, target) {
  */
  export function eyeVector(r, phi, theta, target) {
 	let s = Math.sin(theta);
-	target[0] = -r * Math.cos(phi) * s;
-	target[1] = -r * Math.sin(phi) * s;
-	target[2] = -r * Math.cos(theta);
+	target[0] = r * Math.cos(phi) * s;
+	target[1] = r * Math.sin(phi) * s;
+	target[2] = r * Math.cos(theta);
 }

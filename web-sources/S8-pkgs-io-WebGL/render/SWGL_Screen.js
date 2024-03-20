@@ -60,7 +60,10 @@ export class SWGL_Screen extends NeObject {
 
 	constructor() {
 		super();
-		this.fpsDisplay = document.querySelector("#fps-display")
+		this.fpsDisplay = document.querySelector("#fps-display");
+
+		/* initialize controller */
+		this.controller = new StdViewController();
 	}
 
 
@@ -102,9 +105,7 @@ export class SWGL_Screen extends NeObject {
 			//this.picking = new WebGL_PickingModule(this);
 
 			/* <start> */
-
 			// start controller
-			this.controller = new StdViewController();
 			this.controller.link(this);
 			this.controller.start();
 
@@ -205,6 +206,18 @@ export class SWGL_Screen extends NeObject {
 	S8_set_clearColor(color) {
 		this.clearColor = new Array(4);
 		for(let i = 0; i<4; i++) { this.clearColor[i] = color[i] / 255.0; }
+	}
+
+	/**
+	 * 
+	 * @param {number[]} params 
+	 */
+	S8_set_eyeVector(params){
+		this.controller.setEyeVector(
+			params[0], /* r */
+			params[1], /* theta */
+			params[2] /* phi */
+		)
 	}
 
 

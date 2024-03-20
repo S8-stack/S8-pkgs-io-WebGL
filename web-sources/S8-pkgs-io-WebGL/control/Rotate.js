@@ -69,7 +69,7 @@ export class Rotate extends Control {
 
 			this.controller.phi -= (event.clientX - this.lastMouseX) * this.mouseTrackballSensitity;
 			this.lastMouseX = event.clientX;
-			this.controller.theta += (event.clientY - this.lastMouseY) * this.mouseTrackballSensitity;
+			this.controller.theta -= (event.clientY - this.lastMouseY) * this.mouseTrackballSensitity;
 			this.lastMouseY = event.clientY;
 			if (this.controller.theta > 180.0) {
 				this.controller.theta = 180.0;

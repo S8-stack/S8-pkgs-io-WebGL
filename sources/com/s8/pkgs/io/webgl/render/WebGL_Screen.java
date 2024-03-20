@@ -39,6 +39,11 @@ public class WebGL_Screen extends S8WebObject {
 		vertex.outbound().setUInt8ArrayField("clearColor", color);
 	}
 	
+	
+	public void setEyeVector(double r, double theta, double phi) {
+		vertex.outbound().setFloat32ArrayField("eyeVector", new float[] {
+				(float) r, (float) theta, (float) phi });
+	}
 
 	
 }
