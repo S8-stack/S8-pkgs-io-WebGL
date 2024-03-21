@@ -162,16 +162,18 @@ export class StdViewController {
 
 		/** @param{Event} event */
 		this.onMouseWheelLambda = function (event) {
-			if (_this.isActive) {
-				let isCaptured = false, i = 0;
-				while (!isCaptured && i < n) {
-					isCaptured = _this.controls[i].onMouseWheel(event);
-					i++;
+			if(event.ctrlKey){
+				if (_this.isActive) {
+					let isCaptured = false, i = 0;
+					while (!isCaptured && i < n) {
+						isCaptured = _this.controls[i].onMouseWheel(event);
+						i++;
+					}
 				}
+				event.preventDefault();
+				event.stopPropagation();
+				return false;
 			}
-			event.preventDefault();
-			event.stopPropagation();
-			return false;
 		};
 		/* option {passive: false} on the event listener. 
 		This is actually because we have to tell browsers that, eventually, 
