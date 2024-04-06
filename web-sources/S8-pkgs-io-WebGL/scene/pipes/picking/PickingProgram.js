@@ -10,7 +10,7 @@ import { SWGL_Program } from "../SWGL_Program.js";
 import { SWGL_View } from "/S8-pkgs-io-WebGL/scene/view/SWGL_View.js";
 
 import { SWGL_Model } from "/S8-pkgs-io-WebGL/scene/models/SWGL_Model.js";
-import { VertexAttributes } from '/S8-pkgs-io-WebGL/scene/models/SWGL_Mesh.js';
+import { VertexAttributesShaderLayout } from '/S8-pkgs-io-WebGL/scene/models/SWGL_Mesh.js';
 import { PickingAppearance } from './PickingAppearance.js';
 
 
@@ -53,8 +53,8 @@ export class PickingProgram extends SWGL_Program {
 		gl.useProgram(this.handle);
 
 		/* <enable-attributes> */
-		gl.enableVertexAttribArray(VertexAttributes.POSITIONS_LOCATION);
-		gl.enableVertexAttribArray(VertexAttributes.COLORS_LOCATION);
+		gl.enableVertexAttribArray(VertexAttributesShaderLayout.POSITIONS_LOCATION);
+		gl.enableVertexAttribArray(VertexAttributesShaderLayout.COLORS_LOCATION);
 		/* </enable-attributes> */
 
 	}

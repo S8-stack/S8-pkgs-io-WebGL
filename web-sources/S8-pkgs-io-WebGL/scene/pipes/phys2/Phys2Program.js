@@ -10,7 +10,7 @@ import { SWGL_Program } from "../SWGL_Program.js";
 import { SWGL_View } from "/S8-pkgs-io-WebGL/scene/view/SWGL_View.js";
 
 import { SWGL_Model } from "/S8-pkgs-io-WebGL/scene/models/SWGL_Model.js";
-import { VertexAttributes } from '/S8-pkgs-io-WebGL/scene/models/SWGL_Mesh.js';
+import { VertexAttributesShaderLayout } from '/S8-pkgs-io-WebGL/scene/models/SWGL_Mesh.js';
 import { Phys2Appearance } from './Phys2Appearance.js';
 
 
@@ -75,9 +75,9 @@ export class Phys2Program extends SWGL_Program {
 
 
 		/* <enable-attributes> */
-		gl.enableVertexAttribArray(VertexAttributes.POSITIONS_LOCATION);
-		gl.enableVertexAttribArray(VertexAttributes.NORMALS_LOCATION);
-		gl.enableVertexAttribArray(VertexAttributes.TEX_COORDS_LOCATION);
+		gl.enableVertexAttribArray(VertexAttributesShaderLayout.POSITIONS_LOCATION);
+		gl.enableVertexAttribArray(VertexAttributesShaderLayout.NORMALS_LOCATION);
+		gl.enableVertexAttribArray(VertexAttributesShaderLayout.TEX_COORDS_LOCATION);
 		/* </enable-attributes> */
 
 		gl.uniform1i(this.loc_Uniform_radiance, RADIANCE_TEXTURE_INDEX);
@@ -155,9 +155,9 @@ export class Phys2Program extends SWGL_Program {
 	disable() {
 
 		/* <disable-attributes> */
-		gl.disableVertexAttribArray(VertexAttributes.POSITIONS_LOCATION);
-		gl.disableVertexAttribArray(VertexAttributes.NORMALS_LOCATION);
-		gl.disableVertexAttribArray(VertexAttributes.TEX_COORDS_LOCATION);
+		gl.disableVertexAttribArray(VertexAttributesShaderLayout.POSITIONS_LOCATION);
+		gl.disableVertexAttribArray(VertexAttributesShaderLayout.NORMALS_LOCATION);
+		gl.disableVertexAttribArray(VertexAttributesShaderLayout.TEX_COORDS_LOCATION);
 		/* </disable-attributes> */
 
 		// unbind shader program

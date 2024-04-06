@@ -3,6 +3,7 @@ import { SWGL_Model } from "../../scene/models/SWGL_Model.js";
 import { NbMaterialUniform } from "../../materials/MaterialUniform.js";
 import { DirectionalLightNbUniform } from "../../lights/DirectionalLightUniform.js";
 import { Matex01NbAppearance } from "/S8-ng-geo/nebulae/appearances/matex01/Matex01Appearance.js";
+import { VertexAttributesShaderLayout } from "scene/models/SWGL_Mesh.js";
 
 
 /**
@@ -65,9 +66,9 @@ export class Matex01NbProgram extends SWGL_Pipe {
 		gl.useProgram(this.handle);
 
 		/* <enable-attributes> */
-		gl.enableVertexAttribArray(this.pointAttributeLocation);
-		gl.enableVertexAttribArray(this.normalAttributeLocation);
-		gl.enableVertexAttribArray(this.texCoordAttributeLocation);
+		gl.enableVertexAttribArray(VertexAttributesShaderLayout.POSITIONS_LOCATION);
+		gl.enableVertexAttribArray(VertexAttributesShaderLayout.NORMALS_LOCATION);
+		gl.enableVertexAttribArray(VertexAttributesShaderLayout.TEX_COORDS_LOCATION);
 		/* </enable-attributes> */
 	}
 

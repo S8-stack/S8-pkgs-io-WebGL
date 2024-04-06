@@ -10,7 +10,7 @@ import * as M4 from '/S8-pkgs-io-WebGL/maths/SWGL_Matrix4d.js';
 import { SWGL_View } from "/S8-pkgs-io-WebGL/scene/view/SWGL_View.js";
 
 import { SWGL_Model } from "/S8-pkgs-io-WebGL/scene/models/SWGL_Model.js";
-import { VertexAttributes } from "/S8-pkgs-io-WebGL/scene/models/SWGL_Mesh.js";
+import { VertexAttributesShaderLayout } from "/S8-pkgs-io-WebGL/scene/models/SWGL_Mesh.js";
 
 
 /**
@@ -52,7 +52,7 @@ export class Color2Program extends SWGL_Program {
 		gl.useProgram(this.handle);
 
 		/* <enable-attributes> */
-		gl.enableVertexAttribArray(VertexAttributes.POSITIONS_LOCATION);
+		gl.enableVertexAttribArray(VertexAttributesShaderLayout.POSITIONS_LOCATION);
 		/* </enable-attributes> */
 	}
 
@@ -104,7 +104,7 @@ export class Color2Program extends SWGL_Program {
 	disable() {
 		
 		/* <disable-attributes> */
-		gl.disableVertexAttribArray(VertexAttributes.POSITIONS_LOCATION);
+		gl.disableVertexAttribArray(VertexAttributesShaderLayout.POSITIONS_LOCATION);
 		/* </disable-attributes> */
 
 		// unbind shader program

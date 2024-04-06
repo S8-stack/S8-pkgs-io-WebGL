@@ -6,6 +6,15 @@ import { gl } from '/S8-pkgs-io-WebGL/swgl.js';
 
 
 
+export const VertexAttributesShaderLayout = {
+	POSITIONS_LOCATION: 0x0,
+	NORMALS_LOCATION: 0x1,
+	U_TANGENTS_LOCATION : 0x2,
+	V_TANGENTS_LOCATION : 0x3,
+	TEX_COORDS_LOCATION : 0x4,
+	COLORS_LOCATION : 0x5
+};
+
 
 
 /**
@@ -14,25 +23,22 @@ import { gl } from '/S8-pkgs-io-WebGL/swgl.js';
 export class SWGL_Mesh extends NeObject {
 
 	/** @type {VertexAttributes} the position vertex attributes */
-	positionVertexAttributes = new VertexAttributes(3, VertexAttributes.POSITIONS_LOCATION);
+	positionVertexAttributes;
 
 	/** @type {VertexAttributes} the position vertex attributes */
-	normalVertexAttributes = new VertexAttributes(3, VertexAttributes.NORMALS_LOCATION);
+	normalVertexAttributes;
 
 	/** @type {VertexAttributes} the position vertex attributes */
-	uTangentVertexAttributes = new VertexAttributes(3, VertexAttributes.U_TANGENTS_LOCATION);
+	uTangentVertexAttributes;
 
 	/** @type {VertexAttributes} the position vertex attributes */
-	vTangentVertexAttributes = new VertexAttributes(3, VertexAttributes.V_TANGENTS_LOCATION);
+	vTangentVertexAttributes;
 
 	/** @type {VertexAttributes} the position vertex attributes */
-	texCoordsVertexAttributes = new VertexAttributes(2, VertexAttributes.TEX_COORDS_LOCATION);
+	texCoordsVertexAttributes;
 
 	/** @type {VertexAttributes} the position vertex attributes */
-	colorVertexAttributes = new VertexAttributes(4, VertexAttributes.COLORS_LOCATION);
-	
-	/** @type {VertexAttributes} the position vertex attributes */
-	appCoordsVertexAttributes = new VertexAttributes(2, VertexAttributes.APP_COORDS_LOCATION);
+	colorVertexAttributes;
 	
 
 
@@ -79,6 +85,7 @@ export class SWGL_Mesh extends NeObject {
 
 	/** @param {Float32Array} positions */
 	S8_set_positions(positions) {
+		this.positionVertexAttributes = new VertexAttributes(3, VertexAttributesShaderLayout.POSITIONS_LOCATION);
 		this.positionVertexAttributes.data = positions;
 		this.positionVertexAttributes.isEnabled = true;
 
@@ -88,6 +95,7 @@ export class SWGL_Mesh extends NeObject {
 
 	/** @param {Float32Array} normals */
 	S8_set_normals(normals) {
+		this.normalVertexAttributes = new VertexAttributes(3, VertexAttributesShaderLayout.NORMALS_LOCATION);
 		this.normalVertexAttributes.data = normals;
 		this.normalVertexAttributes.isEnabled = true;
 
@@ -96,6 +104,7 @@ export class SWGL_Mesh extends NeObject {
 
 	/** @param {Float32Array} uTangents */
 	S8_set_uTangents(uTangents) {
+		this.uTangentVertexAttributes = new VertexAttributes(3, VertexAttributesShaderLayout.U_TANGENTS_LOCATION);
 		this.uTangentVertexAttributes.data = uTangents;
 		this.uTangentVertexAttributes.isEnabled = true;
 
@@ -104,6 +113,7 @@ export class SWGL_Mesh extends NeObject {
 
 	/** @param {Float32Array} vTangents */
 	S8_set_vTangents(vTangents) {
+		this.vTangentVertexAttributes = new VertexAttributes(3, VertexAttributesShaderLayout.V_TANGENTS_LOCATION);
 		this.vTangentVertexAttributes.data = vTangents;
 		this.vTangentVertexAttributes.isEnabled = true;
 
@@ -112,6 +122,7 @@ export class SWGL_Mesh extends NeObject {
 
 	/** @param {Float32Array} texCoords */
 	S8_set_texCoords(texCoords) {
+		this.texCoordsVertexAttributes = new VertexAttributes(2, VertexAttributesShaderLayout.TEX_COORDS_LOCATION);
 		this.texCoordsVertexAttributes.data = texCoords;
 		this.texCoordsVertexAttributes.isEnabled = true;
 
@@ -120,19 +131,13 @@ export class SWGL_Mesh extends NeObject {
 
 	/** @param {Float32Array} colors */
 	S8_set_colors(colors) {
+		this.colorVertexAttributes = new VertexAttributes(4, VertexAttributesShaderLayout.COLORS_LOCATION);
 		this.colorVertexAttributes.data = colors;
 		this.colorVertexAttributes.isEnabled = true;
 
 		this.GPU_isLoaded = false;
 	}
 
-	/** @param {Float32Array} colors */
-	S8_set_appCoords(appCoords) {
-		this.appCoordsVertexAttributes.data = appCoords;
-		this.appCoordsVertexAttributes.isEnabled = true;
-
-		this.GPU_isLoaded = false;
-	}
 
 	/** @param {number} dim */
 	S8_set_dimension(dim) {
@@ -152,13 +157,12 @@ export class SWGL_Mesh extends NeObject {
 	load() {
 		if (!this.GPU_isLoaded) {
 
-			this.positionVertexAttributes.load();
-			this.normalVertexAttributes.load();
-			this.uTangentVertexAttributes.load();
-			this.vTangentVertexAttributes.load();
-			this.texCoordsVertexAttributes.load();
-			this.colorVertexAttributes.load();
-			this.appCoordsVertexAttributes.load();
+			if(this.positionVertexAttributes){ this.positionVertexAttributes.load(); }
+			if(this.normalVertexAttributes){ this.normalVertexAttributes.load(); }
+			if(this.uTangentVertexAttributes){ this.uTangentVertexAttributes.load(); }
+			if(this.vTangentVertexAttributes){ this.vTangentVertexAttributes.load(); }
+			if(this.texCoordsVertexAttributes){ this.texCoordsVertexAttributes.load(); }
+			if(this.colorVertexAttributes){ this.colorVertexAttributes.load(); }
 
 			// element indices
 			this.elementIndices.load();
@@ -185,13 +189,14 @@ export class SWGL_Mesh extends NeObject {
 	 */
 	dispose() {
 		if (this.GPU_isLoaded) {
-			this.positionVertexAttributes.dispose();
-			this.normalVertexAttributes.dispose();
-			this.uTangentVertexAttributes.dispose();
-			this.vTangentVertexAttributes.dispose();
-			this.texCoordsVertexAttributes.dispose();
-			this.colorVertexAttributes.dispose();
-			this.appCoordsVertexAttributes.dispose();
+
+			if(this.positionVertexAttributes){ this.positionVertexAttributes.dispose(); }
+			if(this.normalVertexAttributes){ this.normalVertexAttributes.dispose(); }
+			if(this.uTangentVertexAttributes){ this.uTangentVertexAttributes.dispose(); }
+			if(this.vTangentVertexAttributes){ this.vTangentVertexAttributes.dispose(); }
+			if(this.texCoordsVertexAttributes){ this.texCoordsVertexAttributes.dispose(); }
+			if(this.colorVertexAttributes){ this.colorVertexAttributes.dispose(); }
+
 
 			// delete handler buffer
 			this.elementIndices.dispose();
@@ -238,18 +243,12 @@ export class SWGL_Mesh extends NeObject {
 /**
  * WebGL Shape constructor, methods and utilities
  */
-export class VertexAttributes {
+class VertexAttributes {
 
 
 	static INDEX_RANGE = 8;
 
-	static POSITIONS_LOCATION = 0x0;
-	static NORMALS_LOCATION = 0x1;
-	static U_TANGENTS_LOCATION = 0x2;
-	static V_TANGENTS_LOCATION = 0x3;
-	static TEX_COORDS_LOCATION = 0x4;
-	static COLORS_LOCATION = 0x5;
-	static APP_COORDS_LOCATION = 0x6;
+	
 
 
 	/** 
@@ -331,7 +330,7 @@ export class VertexAttributes {
 
 
 
-export class ElementIndices {
+class ElementIndices {
 
 	/** @type {Uint32Array} indices of elements */
 	indices;

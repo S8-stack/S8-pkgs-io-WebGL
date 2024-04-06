@@ -11,7 +11,7 @@ import { StandardAppearance } from "./StandardAppearance.js";
 import { SWGL_View } from "/S8-pkgs-io-WebGL/scene/view/SWGL_View.js";
 
 import { SWGL_Model } from "/S8-pkgs-io-WebGL/scene/models/SWGL_Model.js";
-import { VertexAttributes } from '/S8-pkgs-io-WebGL/scene/models/SWGL_Mesh.js';
+import { VertexAttributesShaderLayout } from '/S8-pkgs-io-WebGL/scene/models/SWGL_Mesh.js';
 
 
 /**
@@ -61,8 +61,8 @@ export class StandardProgram extends SWGL_Program {
 		gl.useProgram(this.handle);
 
 		/* <enable-attributes> */
-		gl.enableVertexAttribArray(VertexAttributes.POSITIONS_LOCATION);
-		gl.enableVertexAttribArray(VertexAttributes.NORMALS_LOCATION);
+		gl.enableVertexAttribArray(VertexAttributesShaderLayout.POSITIONS_LOCATION);
+		gl.enableVertexAttribArray(VertexAttributesShaderLayout.NORMALS_LOCATION);
 		/* </enable-attributes> */
 	}
 
