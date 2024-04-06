@@ -17,15 +17,30 @@ export class SWGL_Picker extends NeObject {
 
 
     /**
+     * HTML node width
      * @type {number}
      */
-    width = 0;
+    htmlWidth = 0;
 
 
     /**
+     * HTML node height
      * @type {number}
      */
-    height = 0;
+    htmlHeight = 0;
+
+    /**
+     * WebGL (gl) Canvas width
+     * @type {number}
+     */
+    glWidth = 0;
+
+
+      /**
+       * WebGL (gl) Canvas width
+       * @type {number}
+    */
+    glHeight = 0;
 
 
 
@@ -63,6 +78,8 @@ export class SWGL_Picker extends NeObject {
     isInitialized = false;
 
 
+    DEBUG_isFramebufferDisplayed = true;
+
 
     constructor() {
         super();
@@ -77,7 +94,7 @@ export class SWGL_Picker extends NeObject {
      * @param {number} y 
      * @returns {Uint8Array}
      */
-    pick(scene, x, y, debug = false) {
+    pick(scene, x, y) {
 
         /**
          * Bind the underlying FBO
@@ -88,12 +105,12 @@ export class SWGL_Picker extends NeObject {
 
         // bind buffer
         gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+        
 
         // You also need to set the viewport by calling gl.viewport whenever you switch framebuffers.
-        gl.viewport(0, 0, this.width, this.height);
-
-       
-
+        /* EDIT : we don't change the viewport */
+        gl.viewport(0, 0, this.glWidth, this.glHeight);
+        
         //this.environment.setBackgroundColor();
         //gl.clearStencil(128);
         //this.fbo.unbind();
@@ -113,32 +130,36 @@ export class SWGL_Picker extends NeObject {
         /* render */
         scene.WebGL_render();
 
-        if (debug) {
+        if (this.DEBUG_isFramebufferDisplayed) {
 
-
-            let width = this.width;
-            let height = this.height;
 
 
             // read data out of FBO
-            const debugData = new Uint8Array(4 * width * height);
-            gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, debugData);
+            const debugData = new Uint8Array(4 * this.glWidth * this.glHeight);
+            gl.readPixels(0, 0, this.glWidth, this.glHeight, gl.RGBA, gl.UNSIGNED_BYTE, debugData);
 
             // Create a 2D canvas to store the result
             let canvas2d = document.createElement("canvas");
-            canvas2d.width = width;
-            canvas2d.height = height;
+            canvas2d.width = this.glWidth;
+            canvas2d.height = this.glHeight;
             let context2d = canvas2d.getContext('2d');
 
             // Copy the pixels to a 2D canvas
-            let imageData = context2d.createImageData(width, height);
+            let imageData = context2d.createImageData(this.glWidth, this.glHeight);
             imageData.data.set(debugData);
             context2d.putImageData(imageData, 0, 0);
 
             //background-image = 
             let target = document.getElementById("framebuffer-display");
+            if(!target){
+                target = document.createElement("div");
+                target.id = "framebuffer-display";
+                document.getElementById("xenon-page-layer-popover").appendChild(target);
+            }
+            target.style = `position: absolute; top: 5vh; left: 5vw; 
+            width: 25vw; height: 25vh; 
+            background-size: contain; background-repeat: no-repeat;`;
             target.style.backgroundImage = "url('" + canvas2d.toDataURL("image/png") + "')";
-
         }
 
 
@@ -158,9 +179,10 @@ export class SWGL_Picker extends NeObject {
         gl.bindFramebuffer(gl.FRAMEBUFFER, null);
 
         /* That includes putting it back when setting things back to the canvas */
+        /* EDIT:  we don't change the viewport anymore
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-
-
+        */
+        gl.viewport(0, 0, this.glWidth, this.glHeight);
 
 
         let index = data[0] + data[1] * 256 + data[2] * 65536;
@@ -181,8 +203,8 @@ export class SWGL_Picker extends NeObject {
         // dispose previous buffers (if already built)
         this.dispose();
 
-        this.width = width;
-        this.height = height;
+        this.htmlWidth = width;
+        this.htmlHeight = height;
     }
 
 
@@ -195,8 +217,29 @@ export class SWGL_Picker extends NeObject {
          */
     initialize() {
 
-        if (!this.isInitialized) {
+        /*  gl.getParameter(gl.VIEWPORT);
+            e.g. Int32Array[0, 0, 640, 480]
+        */
+        //const glViewport = gl.getParameter(gl.VIEWPORT);
 
+        
+        
+
+
+        const width = gl.drawingBufferWidth;
+        if(width != this.glWidth){
+            this.glWidth = width;
+            this.isInitialized = false;
+        }
+
+        const height = gl.drawingBufferHeight;
+        if(height != this.glHeight){
+            this.glHeight = height;
+            this.isInitialized = false;
+        }
+
+
+        if (!this.isInitialized) {
 
             /*
              * 	Build Frame Buffer Object
@@ -220,7 +263,7 @@ export class SWGL_Picker extends NeObject {
             gl.bindTexture(gl.TEXTURE_2D, this.tex);
 
             /* create the texture in the GPU */
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this.width, this.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this.glWidth, this.glHeight, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
 
             /* set texture parameters */
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
@@ -247,7 +290,7 @@ export class SWGL_Picker extends NeObject {
             gl.bindRenderbuffer(gl.RENDERBUFFER, this.rbo);
 
             /* create the render buffer in the GPU */
-            gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, this.width, this.height);
+            gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, this.glWidth, this.glHeight);
 
             /* unbind the render buffer */
             gl.bindRenderbuffer(gl.RENDERBUFFER, null);
@@ -302,7 +345,7 @@ export class SWGL_Picker extends NeObject {
     /**
      * 
      * @param {number} x screen position 
-     * @param {*} y screen position
+     * @param {number} y screen position
      * @returns {Uint8Array} picked color
      */
     pickColor(x, y) {
@@ -310,8 +353,13 @@ export class SWGL_Picker extends NeObject {
         // read
         let data = new Uint8Array(4);
 
+        const rect = gl.canvas.getBoundingClientRect();
+       
+        let xScene = (x - rect.left) * this.glWidth / rect.width;
+        let yScene = (rect.height - (y - rect.top)) * this.glHeight / rect.height;
+
         //var pickedColor = new Uint8Array(4); 
-        gl.readPixels(x, this.height - y, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, data);
+        gl.readPixels(xScene, yScene, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, data);
 
         return data;
     }

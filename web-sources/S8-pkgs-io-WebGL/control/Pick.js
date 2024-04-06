@@ -25,7 +25,7 @@ export class Pick extends Control {
             /**
              * 
              */
-            let color = picker.pick(pickingScene, x, y, false);
+            let color = picker.pick(pickingScene, x, y);
     
             console.log(color);
             return true; // captured

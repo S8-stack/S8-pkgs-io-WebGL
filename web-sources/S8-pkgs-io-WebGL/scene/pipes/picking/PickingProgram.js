@@ -110,8 +110,8 @@ export class PickingProgram extends SWGL_Program {
 	disable() {
 
 		/* <disable-attributes> */
-		gl.disableVertexAttribArray(VertexAttributes.POSITIONS_LOCATION);
-		gl.disableVertexAttribArray(VertexAttributes.COLORS_LOCATION);
+		gl.disableVertexAttribArray(VertexAttributesShaderLayout.POSITIONS_LOCATION);
+		gl.disableVertexAttribArray(VertexAttributesShaderLayout.COLORS_LOCATION);
 		/* </disable-attributes> */
 
 		// unbind shader program
