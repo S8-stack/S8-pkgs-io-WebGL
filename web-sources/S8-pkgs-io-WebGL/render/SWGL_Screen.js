@@ -1,17 +1,18 @@
 
-import { NeObject } from '/S8-core-bohr-neon/NeObject.js';
+
+import { S8Object } from '/S8-api/S8Object.js';
 
 import { gl, SWGL_CONTEXT } from '/S8-pkgs-io-WebGL/swgl.js';
 
-import { SWGL_Picker } from '/S8-pkgs-io-WebGL/render/SWGL_Picker.js';
 import { StdViewController } from '/S8-pkgs-io-WebGL/control/StdViewController.js';
 import { SWGL_Scene } from '/S8-pkgs-io-WebGL/scene/SWGL_Scene.js';
+import { StdPicker } from './StdPicker.js';
 
 
 /**
  * 
  */
-export class SWGL_Screen extends NeObject {
+export class SWGL_Screen extends S8Object {
 
 
 	/**
@@ -21,16 +22,9 @@ export class SWGL_Screen extends NeObject {
 
 
 	/**
-	 * @type {SWGL_Scene}
+	 * @type {StdPicker}
 	 */
-	pickingScene = null;
-
-
-
-	/**
-	 * @type {SWGL_Picker}
-	 */
-	picker = new SWGL_Picker();
+	picker;
 
 
 	/**
@@ -64,6 +58,8 @@ export class SWGL_Screen extends NeObject {
 
 		/* initialize controller */
 		this.controller = new StdViewController();
+
+		this.picker = new StdPicker(this);
 	}
 
 
@@ -122,10 +118,8 @@ export class SWGL_Screen extends NeObject {
 		* The shape id is passed to the callback function when a picking click occurs.
 		*/
 	setPickingCallback(callback) {
-		this.picking.callback = callback;
+		this.picker.callback = callback;
 
-		// do a rendering pass to apply changes
-		this.render();
 	}
 
 
@@ -194,8 +188,7 @@ export class SWGL_Screen extends NeObject {
 	 * @param {SWGL_Scene} scene 
 	 */
 	S8_set_pickingScene(scene) {
-		this.pickingScene = scene;
-		this.pickingScene.initialize();
+		this.picker.setScene(scene);
 	}
 
 

@@ -1,11 +1,7 @@
 
 
-import { NeObject } from "/S8-core-bohr-neon/NeObject.js";
-
 import { gl } from "/S8-pkgs-io-WebGL/swgl.js";
-import { FrameBufferObject } from "./FrameBufferObject.js";
 import { SWGL_Scene } from "/S8-pkgs-io-WebGL/scene/SWGL_Scene.js";
-
 
 
 
@@ -13,8 +9,14 @@ import { SWGL_Scene } from "/S8-pkgs-io-WebGL/scene/SWGL_Scene.js";
 /**
  * 
  */
-export class SWGL_Picker extends NeObject {
+export class StdPicker {
 
+
+
+    /**
+     * @type{SWGL_Scene}
+     */
+    scene = null;
 
     /**
      * HTML node width
@@ -36,10 +38,10 @@ export class SWGL_Picker extends NeObject {
     glWidth = 0;
 
 
-      /**
-       * WebGL (gl) Canvas width
-       * @type {number}
-    */
+    /**
+     * WebGL (gl) Canvas width
+     * @type {number}
+  */
     glHeight = 0;
 
 
@@ -70,127 +72,141 @@ export class SWGL_Picker extends NeObject {
     rbo;
 
 
-
-
     /**
      * @type {boolean}
      */
     isInitialized = false;
 
 
-    DEBUG_isFramebufferDisplayed = true;
+    DEBUG_isFramebufferDisplayed = false;
 
 
+    /**
+     * 
+     * @param {Function} index 
+     */
+    onPickedCallback = function(index){ console.log("Element #"+index+" has been picked."); };
+
+
+  /**
+   * 
+   */
     constructor() {
-        super();
     }
 
 
 
     /**
      * 
-     * @param {SWGL_Scene} scene 
      * @param {number} x 
      * @param {number} y 
      * @returns {Uint8Array}
      */
-    pick(scene, x, y) {
+    pick(x, y) {
 
-        /**
-         * Bind the underlying FBO
-         */
-
-        /* initialize if not already done */
-        this.initialize();
-
-        // bind buffer
-        gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
-        
-
-        // You also need to set the viewport by calling gl.viewport whenever you switch framebuffers.
-        /* EDIT : we don't change the viewport */
-        gl.viewport(0, 0, this.glWidth, this.glHeight);
-        
-        //this.environment.setBackgroundColor();
-        //gl.clearStencil(128);
-        //this.fbo.unbind();
-
-        //Set-up canvas parameters
-        gl.enable(gl.DEPTH_TEST);
-
-        //gl.viewport(0, 0, this.width, this.height);
-
-         //this.fbo.bind();
-        gl.clearColor(0.0, 0.0, 0.0, 1.0);
-
-        //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+        if (this.scene) {
 
 
-        /* render */
-        scene.WebGL_render();
+            /**
+             * Bind the underlying FBO
+             */
 
-        if (this.DEBUG_isFramebufferDisplayed) {
+            /* initialize if not already done */
+            this.initialize();
+
+            // bind buffer
+            gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+
+
+            // You also need to set the viewport by calling gl.viewport whenever you switch framebuffers.
+            /* EDIT : we don't change the viewport */
+            gl.viewport(0, 0, this.glWidth, this.glHeight);
+
+            //this.environment.setBackgroundColor();
+            //gl.clearStencil(128);
+            //this.fbo.unbind();
+
+            //Set-up canvas parameters
+            gl.enable(gl.DEPTH_TEST);
+
+            //gl.viewport(0, 0, this.width, this.height);
+
+            //this.fbo.bind();
+            gl.clearColor(0.0, 0.0, 0.0, 1.0);
+
+            //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+
+
+            /* render */
+            this.scene.WebGL_render();
+
+            if (this.DEBUG_isFramebufferDisplayed) {
+
+                // read data out of FBO
+                const debugData = new Uint8Array(4 * this.glWidth * this.glHeight);
+                gl.readPixels(0, 0, this.glWidth, this.glHeight, gl.RGBA, gl.UNSIGNED_BYTE, debugData);
+
+                // Create a 2D canvas to store the result
+                let canvas2d = document.createElement("canvas");
+                canvas2d.width = this.glWidth;
+                canvas2d.height = this.glHeight;
+                let context2d = canvas2d.getContext('2d');
+
+                // Copy the pixels to a 2D canvas
+                let imageData = context2d.createImageData(this.glWidth, this.glHeight);
+                imageData.data.set(debugData);
+                context2d.putImageData(imageData, 0, 0);
+
+                //background-image = 
+                let target = document.getElementById("framebuffer-display");
+                if (!target) {
+                    target = document.createElement("div");
+                    target.id = "framebuffer-display";
+                    document.getElementById("xenon-page-layer-popover").appendChild(target);
+                }
+                target.style = `position: absolute; top: 5vh; left: 5vw; 
+            width: 25vw; height: 25vh; 
+            background-size: contain; background-repeat: no-repeat;`;
+                target.style.backgroundImage = "url('" + canvas2d.toDataURL("image/png") + "')";
+            }
+
+
 
 
 
             // read data out of FBO
-            const debugData = new Uint8Array(4 * this.glWidth * this.glHeight);
-            gl.readPixels(0, 0, this.glWidth, this.glHeight, gl.RGBA, gl.UNSIGNED_BYTE, debugData);
+            const data = this.pickColor(x, y);
 
-            // Create a 2D canvas to store the result
-            let canvas2d = document.createElement("canvas");
-            canvas2d.width = this.glWidth;
-            canvas2d.height = this.glHeight;
-            let context2d = canvas2d.getContext('2d');
+            gl.clearColor(1.0, 1.0, 1.0, 1.0);
 
-            // Copy the pixels to a 2D canvas
-            let imageData = context2d.createImageData(this.glWidth, this.glHeight);
-            imageData.data.set(debugData);
-            context2d.putImageData(imageData, 0, 0);
 
-            //background-image = 
-            let target = document.getElementById("framebuffer-display");
-            if(!target){
-                target = document.createElement("div");
-                target.id = "framebuffer-display";
-                document.getElementById("xenon-page-layer-popover").appendChild(target);
-            }
-            target.style = `position: absolute; top: 5vh; left: 5vw; 
-            width: 25vw; height: 25vh; 
-            background-size: contain; background-repeat: no-repeat;`;
-            target.style.backgroundImage = "url('" + canvas2d.toDataURL("image/png") + "')";
+            /**
+             * Unbind the underlying FBO
+             */
+            /* return to the default frame buffer */
+            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+            /* That includes putting it back when setting things back to the canvas */
+            /* EDIT:  we don't change the viewport anymore
+            gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+            */
+            gl.viewport(0, 0, this.glWidth, this.glHeight);
+
+            const index = data[0] + data[1] * 256 + data[2] * 65536;
+
+            this.onPickedCallback(index);
         }
-
-
-
-
-
-        // read data out of FBO
-        const data = this.pickColor(x, y);
-
-        gl.clearColor(1.0, 1.0, 1.0, 1.0);
-
-
-        /**
-         * Unbind the underlying FBO
-         */
-        /* return to the default frame buffer */
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-
-        /* That includes putting it back when setting things back to the canvas */
-        /* EDIT:  we don't change the viewport anymore
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-        */
-        gl.viewport(0, 0, this.glWidth, this.glHeight);
-
-
-        let index = data[0] + data[1] * 256 + data[2] * 65536;
-        return index;
     }
 
 
-
+    /**
+     * 
+     * @param {SWGL_Scene} scene 
+     */
+    setScene(scene) {
+        this.scene = scene;
+    }
 
 
     /**
@@ -222,18 +238,14 @@ export class SWGL_Picker extends NeObject {
         */
         //const glViewport = gl.getParameter(gl.VIEWPORT);
 
-        
-        
-
-
         const width = gl.drawingBufferWidth;
-        if(width != this.glWidth){
+        if (width != this.glWidth) {
             this.glWidth = width;
             this.isInitialized = false;
         }
 
         const height = gl.drawingBufferHeight;
-        if(height != this.glHeight){
+        if (height != this.glHeight) {
             this.glHeight = height;
             this.isInitialized = false;
         }
@@ -279,9 +291,9 @@ export class SWGL_Picker extends NeObject {
             gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.tex, 0);
 
 
-              /*
-             * Build DEPTH_ATTACHMENT of Frame Buffer Object
-             */
+            /*
+           * Build DEPTH_ATTACHMENT of Frame Buffer Object
+           */
 
             /* create a renderbuffer object for the depth buffer */
             this.rbo = gl.createRenderbuffer();
@@ -354,7 +366,7 @@ export class SWGL_Picker extends NeObject {
         let data = new Uint8Array(4);
 
         const rect = gl.canvas.getBoundingClientRect();
-       
+
         let xScene = (x - rect.left) * this.glWidth / rect.width;
         let yScene = (rect.height - (y - rect.top)) * this.glHeight / rect.height;
 

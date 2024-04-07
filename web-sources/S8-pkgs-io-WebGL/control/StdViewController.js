@@ -9,16 +9,7 @@ import { SWGL_CONTEXT } from "/S8-pkgs-io-WebGL/swgl.js";
 
 
 /* controls */
-import { Rotate } from "/S8-pkgs-io-WebGL/control/Rotate.js";
-import { Zoom } from "/S8-pkgs-io-WebGL/control/Zoom.js";
-import { Highlight } from "/S8-pkgs-io-WebGL/control/Highlight.js";
-import { Pick } from "/S8-pkgs-io-WebGL/control/Pick.js";
 import { SWGL_Screen } from "/S8-pkgs-io-WebGL/render/SWGL_Screen.js";
-
-
-
-
-
 
 
 
@@ -44,6 +35,7 @@ import { SWGL_Screen } from "/S8-pkgs-io-WebGL/render/SWGL_Screen.js";
 
 
 const DEG_to_RAD = Math.PI / 180.0;
+
 /**
  * 
  */
@@ -64,6 +56,13 @@ export class StdViewController {
 
 	/** @type {number} min radius */
 	SETTINGS_min_approach_r = 0.2;
+
+
+
+	/**
+	 * @type{Control[]}
+	 */
+	controls;
 
 
 	/**
@@ -296,3 +295,299 @@ export class StdViewController {
 };
 
 
+
+
+
+/**
+ * 
+ */
+export class Control {
+
+	/** @type { StdViewController } the view attached to this control */
+	controller;
+
+
+	constructor() { 
+    }
+
+
+    link(controller){ this.controller = controller; }
+
+    onMouseDown() {
+		/* to be overridden */
+		return false;
+	}
+
+	onMouseUp() {
+		/* to be overridden */
+		return false;
+	}
+
+	onMouseMove(event) {
+		/* to be overridden */
+		return false;
+	}
+
+	onMouseWheel() {
+		/* to be overridden */
+		return false;
+	}
+
+	onKeyDown() {
+		/* to be overridden */
+		return false;
+	}
+
+	onKeyUp() {
+		/* to be overridden */
+		return false;
+	}
+
+    onClick() {
+		/* to be overridden */
+		return false;
+	}
+
+}
+
+
+
+export class Pick extends Control {
+
+    constructor(){  super(); }
+
+    onClick(event){
+        if (event.shiftKey) {
+            const pickingScene = this.controller.screen.pickingScene;
+
+
+            /**
+             * @type{StdPicker}
+             */
+            const picker = this.controller.screen.picker;
+    
+    
+            const x = event.clientX;
+            const y = event.clientY;
+           
+            /** picker has its own callback*/
+            picker.pick(x, y);
+
+            return true; // captured
+        }
+    }
+}
+
+
+
+
+
+/**
+ * 
+ */
+export class Rotate extends Control {
+
+	/** @type {number} mouseTrackballSensitity */
+	mouseTrackballSensitity = 0.3;
+
+	/** @type {number} lastMouseX */
+	lastMouseX = 0.0;
+
+	/** @type {number} lastMouseY */
+	lastMouseY = 0.0;
+
+	/** @type {boolean} isMouseDown */
+	isMouseDown = false;
+
+	constructor() { super(); }
+
+	/**
+	 * @param {*} event 
+	 * @returns {boolean} is taking over
+	 */
+	onMouseDown(event) {
+		this.isMouseDown = true;
+		this.lastMouseX = event.clientX;
+		this.lastMouseY = event.clientY;
+		return true; // taking over
+	}
+
+	/**
+	 * 
+	 * @param {*} event 
+	 * @returns {boolean} is taking over
+	 */
+	onMouseUp() {
+		this.isMouseDown = false;
+		return false; // not taking over
+	}
+
+	/**
+	 * 
+	 * @param {*} event
+	 * @returns {boolean} is taking over
+	 */
+	onMouseWheel() {
+		return false; // not taking over
+	}
+
+	/**
+	 * 
+	 * @param {*} event 
+	 * @returns {boolean} is taking over
+	 */
+	onMouseMove(event) {
+		if (this.isMouseDown) {
+			// TODO implement throttle her
+
+			this.controller.phi -= (event.clientX - this.lastMouseX) * this.mouseTrackballSensitity;
+			this.lastMouseX = event.clientX;
+			this.controller.theta -= (event.clientY - this.lastMouseY) * this.mouseTrackballSensitity;
+			this.lastMouseY = event.clientY;
+			if (this.controller.theta > 180.0) {
+				this.controller.theta = 180.0;
+			}
+			if (this.controller.theta < 1.0) {
+				this.controller.theta = 1.0;
+			}
+
+			//log.nodeValue = "phi="+this.phi.toFixed(2)+" theta="+this.theta.toFixed(2)+" r="+this.r.toFixed(2)+"\n";
+			//log.nodeValue+= "x="+event.clientX+" y="+event.clientY+"\n";
+
+			//this.updateView();
+
+			this.controller.refresh();
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	/**
+	 * 
+	 * @param {*} event 
+	 * @returns 
+	 */
+	onKeyDown(event) {
+		return false; // nothing to do 
+	}
+
+	/**
+	 * 
+	 * @param {*} event 
+	 * @returns 
+	 */
+	onKeyUp(event) {
+		return false; // nothing to do 
+	}
+}
+
+
+
+export class Highlight extends Control {
+
+	acquiredHoveredObject = null;
+
+	
+	constructor() { 
+        super(); 
+    }
+
+	onMouseDown() {
+		this.terminate(); // cleaning-up
+		return false;
+	}
+
+	onMouseUp() {
+		this.terminate(); // cleaning-up
+		return false;
+	}
+
+	onMouseMove(event) {
+        /*
+		if (event.shiftKey) {
+           
+			var currentHoveredObject = scene.picking.pick(event.clientX, event.clientY);
+			if (currentHoveredObject != this.acquiredHoveredObject) {
+				var isRenderingRequired = false;
+				if (this.acquiredHoveredObject != null) {
+					this.acquiredHoveredObject.display(0);
+					isRenderingRequired = true;
+				}
+				this.acquiredHoveredObject = currentHoveredObject;
+				if (this.acquiredHoveredObject != null) {
+					this.acquiredHoveredObject.display(1);
+					isRenderingRequired = true;
+				}
+
+				if (isRenderingRequired) {
+					scene.render();
+				}
+			}
+			logNode.innerHTML = "Now hovering " + this.acquiredHoveredObject;
+			return true;
+		}
+		else {
+			this.terminate(); // cleaning-up
+			return false;
+		}
+        */
+       return false;
+	}
+
+	onMouseWheel() {
+		this.terminate(); // cleaning-up
+		return false;
+	}
+
+	onKeyDown() {
+		this.terminate(); // cleaning-up
+		return false;
+	}
+
+	onKeyUp() {
+		this.terminate(); // cleaning-up
+		return false;
+	}
+
+	terminate() {
+		if (this.acquiredHoveredObject != null) {
+			this.acquiredHoveredObject.display(0);
+			this.acquiredHoveredObject = null;
+			this.controller.refresh();
+		}
+	}
+}
+
+
+
+
+/**
+ * basic mode for zooming
+ */
+export class Zoom extends Control {
+
+	/** @type {number} mouse wheel sensitivity */
+	mouseWheelSensitivity = 0.8 * 1e-3;
+
+	constructor() { super(); }
+
+	onMouseDown() { return false; }
+	onMouseUp() { return false; }
+	onMouseMove() { return false; /* nothing to do*/ }
+
+	onMouseWheel(event) {
+		this.controller.r += -this.controller.r * event.wheelDelta * this.mouseWheelSensitivity;
+		if (this.controller.r < this.controller.SETTINGS_min_approach_r) {
+			this.controller.r = this.controller.SETTINGS_min_approach_r;
+		}
+		//this.updateView();
+		this.controller.refresh();
+
+		return true;
+	}
+
+	onKeyDown() { return false; }
+	onKeyUp() { return false; }
+};
