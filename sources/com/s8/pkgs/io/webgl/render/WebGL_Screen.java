@@ -31,18 +31,17 @@ public class WebGL_Screen extends S8WebObject {
 		vertex.outbound().setObjectField("pickingScene", scene);
 	}
 	
-	public void setClearColor(int red, int green, int blue, int alpha) {
-		setClearColor(new int[] { red, green, blue, alpha });
+	public void setClearColor_RGBA_UInt8(int red, int green, int blue, int alpha) {
+		setClearColor_RGBA_UInt8(new int[] { red, green, blue, alpha });
 	}
 	
-	public void setClearColor(int[] color) {
-		vertex.outbound().setUInt8ArrayField("clearColor", color);
+	public void setClearColor_RGBA_UInt8(int[] color) {
+		vertex.outbound().setUInt8ArrayField("clearColor_RGBA_UInt8", color);
 	}
 	
 	
-	public void setEyeVector(double r, double theta, double phi) {
-		vertex.outbound().setFloat32ArrayField("eyeVector", new float[] {
-				(float) r, (float) theta, (float) phi });
+	public void setSphericEyeVector(double r, double theta, double phi) {
+		vertex.outbound().setFloat32ArrayField("sphericEyeVector", new float[] { (float) r, (float) theta, (float) phi });
 	}
 
 	

@@ -195,20 +195,20 @@ export class SWGL_Screen extends S8Object {
 	 * 
 	 * @param {number[]} color 
 	 */
-	S8_set_clearColor(color) {
+	S8_set_clearColor_RGBA_UInt8(color) {
 		this.clearColor = new Array(4);
 		for(let i = 0; i<4; i++) { this.clearColor[i] = color[i] / 255.0; }
 	}
 
 	/**
 	 * 
-	 * @param {number[]} params 
+	 * @param {number[]} coordinates 
 	 */
-	S8_set_eyeVector(params){
-		this.controller.setEyeVector(
-			params[0], /* r */
-			params[1], /* theta */
-			params[2] /* phi */
+	S8_set_sphericEyeVector(coordinates){
+		this.controller.setSphericEyeVector(
+			coordinates[0], /* r */
+			coordinates[1], /* theta */
+			coordinates[2] /* phi */
 		)
 	}
 

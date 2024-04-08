@@ -263,7 +263,8 @@ export class StdViewController {
 	}
 
 
-	setEyeVector(r, theta, phi) {
+	
+	setSphericEyeVector(r, theta, phi) {
 		this.r = r;
 		this.theta = theta;
 		this.phi = phi;
