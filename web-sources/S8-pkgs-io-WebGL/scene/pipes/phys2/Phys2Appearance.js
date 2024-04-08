@@ -62,14 +62,14 @@ export class Phys2Appearance extends SWGL_Appearance {
 	/** 
 	 * @param {Phys2Material[]} materials 
 	 */
-	S8_set_materials(materials) {
+	setMaterials(materials) {
 		this.materials = materials;
 
 		let nbMaterials = materials.length;
 		if (nbMaterials > MAX_RANGE) { throw "error: too many materials"; }
 
 
-		let n = TEXTURE_NB_SQUARES * TEXTURE_NB_SQUARES * PIXEL_BYTECOUNT;
+		let n = TEXTURE_SIZE * TEXTURE_SIZE * PIXEL_BYTECOUNT;
 		let emissiveColors = new Uint8Array(n);
 		let diffuseColors = new Uint8Array(n);
 		let specularColors = new Uint8Array(n);
@@ -77,39 +77,61 @@ export class Phys2Appearance extends SWGL_Appearance {
 
 		let offset = 0;
 		for (let i = 0; i < nbMaterials; i++) {
-			let material = materials[i];
+			const material = materials[i];
 
+			/* emissive */
 			let emissiveColor = material.emissiveColor;
 			emissiveColors[offset + 0] = emissiveColor[0];
 			emissiveColors[offset + 1] = emissiveColor[1];
 			emissiveColors[offset + 2] = emissiveColor[2];
 			emissiveColors[offset + 3] = emissiveColor[3];
 
+			/* diffuse */
 			let diffuseColor = material.diffuseColor;
 			diffuseColors[offset + 0] = diffuseColor[0];
 			diffuseColors[offset + 1] = diffuseColor[1];
 			diffuseColors[offset + 2] = diffuseColor[2];
 			diffuseColors[offset + 3] = diffuseColor[3];
 
+			/* specular */
 			let specularColor = material.specularColor;
 			specularColors[offset + 0] = specularColor[0];
 			specularColors[offset + 1] = specularColor[1];
 			specularColors[offset + 2] = specularColor[2];
 			specularColors[offset + 3] = specularColor[3];
 
-			props[offset + 0] = 0;
-			props[offset + 1] = material.roughness;
+			/* props */
+			props[offset + 0] = material.roughness;
+			props[offset + 1] = 0;
 			props[offset + 2] = 0;
 			props[offset + 3] = 0;
 
 			offset += 4;
 		}
 
-		this.propsTex.store(props);
-		this.emissiveColorsTex.store(emissiveColors);
-		this.diffuseColorsTex.store(diffuseColors);
-		this.specularColorsTex.store(specularColors);
+		
+		this.emissiveColorsTex.setData(emissiveColors);
+		this.diffuseColorsTex.setData(diffuseColors);
+		this.specularColorsTex.setData(specularColors);
+		this.propsTex.setData(props);
 	}
+
+
+	 /**
+     * 
+     * @param {number} x tex-coords xCoordinate
+     * @param {number} y tex-coords yCoordinate
+     * @param {Phys2Material} material 
+     */
+	setMaterial(x, y, material) {
+        this.emissiveColorsTex.setSubData(x, y, material.emissiveColor);
+        this.diffuseColorsTex.setSubData(x, y, material.diffuseColor);
+        this.specularColorsTex.setSubData(x, y, material.specularColor);
+
+        const props = new Uint8Array(4);
+        props[0] = material.roughness;
+        this.propsTex.setSubData(x, y, props);
+    }
 
 
 	S8_render() {
@@ -162,6 +184,39 @@ export class Phys2Texture2d {
 	}
 
 
+	/**
+	 * 
+	 * @param {Uint8Array} data 
+	 */
+	setData(pixels){
+
+		/* create if does not exist yet */
+		if (this.baseTexture == null) { this.baseTexture = gl.createTexture(); }
+
+		/* bind */
+		gl.bindTexture(gl.TEXTURE_2D, this.baseTexture);
+
+		/* push data */
+		gl.texImage2D(gl.TEXTURE_2D, /* target */
+			0, /* level */
+			gl.RGBA, /* internalformat */
+			this.size, /* width */
+			this.size, /* height */
+			0, /* border: always 0 */
+			gl.RGBA, /* format */
+			gl.UNSIGNED_BYTE, /* type */
+			pixels); /* pixels */
+
+		/* settings */
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+
+		/* unbind */
+		gl.bindTexture(gl.TEXTURE_2D, null);
+		this.isInitialized = true;
+	}
+
+
 
 	/**
 	 * 
@@ -169,7 +224,7 @@ export class Phys2Texture2d {
 	 */
 	store(colorlambda) {
 
-		if(this.baseTexture == null){
+		if (this.baseTexture == null) {
 			this.baseTexture = gl.createTexture();
 		}
 
@@ -216,8 +271,37 @@ export class Phys2Texture2d {
 		this.isInitialized = true;
 	}
 
+
+
+	/**
+	 * 
+	 * @param {number} x 
+	 * @param {number} y 
+	 * @param {Uint8Array} pixel 
+	 */
+	setSubData(x, y, pixel) {
+		if (this.baseTexture) {
+
+			/* bind texture */
+			gl.bindTexture(gl.TEXTURE_2D, this.baseTexture);
+
+			/* change pixel */
+			gl.texSubImage2D(gl.TEXTURE_2D, /* target */
+				0, /* level */
+				x, y, 1, 1,
+				gl.RGBA, /* format */
+				gl.UNSIGNED_BYTE, /* type */
+				pixel); /* pixels */
+
+			/* unbind texture */
+			gl.bindTexture(gl.TEXTURE_2D, null);
+		}
+	}
+
+
+
 	bind(index) {
-		if(this.isInitialized){
+		if (this.isInitialized) {
 
 			// activate texture unit
 			gl.activeTexture(gl.TEXTURE0 + index);
@@ -229,7 +313,7 @@ export class Phys2Texture2d {
 	}
 
 	dispose() {
-		if(this.baseTexture != null){
+		if (this.baseTexture != null) {
 			gl.deleteTexture(this.baseTexture);
 		}
 	}

@@ -81,5 +81,31 @@ export class Phys2Material extends NeObject {
 
 	S8_render(){}
 	S8_dispose(){}
+
+
+
+
+	static createGlow0(){
+		const material = new Phys2Material();
+
+		function toArrayUint8(red, green, blue, alpha){
+			const array = new Uint8Array(4);
+			array[0] = red;
+			array[1] = green;
+			array[2] = blue;
+			array[3] = alpha;
+			return array;
+		}
+		
+		material.emissiveColor = toArrayUint8(128, 128, 0, 255);
+		material.diffuseColor = toArrayUint8(128, 128, 0, 255);
+		material.specularColor = toArrayUint8(200, 200, 200, 255);
+		material.glossiness = 0.5;
+		material.roughness = 2.5;
+		
+		return material;
+	}
+
 }
+
 
