@@ -10,7 +10,7 @@ import { StdPicker } from './StdPicker.js';
 
 
 /**
- * 
+ * screen
  */
 export class SWGL_Screen extends S8Object {
 
@@ -117,9 +117,8 @@ export class SWGL_Screen extends S8Object {
 		* setPickingCallback allows to specify a behaviour if the event of a picking click.
 		* The shape id is passed to the callback function when a picking click occurs.
 		*/
-	setPickingCallback(callback) {
-		this.picker.callback = callback;
-
+	setOnPickedCallback(callback) {
+		this.picker.onPickedCallback = callback;
 	}
 
 

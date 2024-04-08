@@ -74,6 +74,20 @@ export class SWGL_DirectionalLight extends NeObject {
 	}
 
 
+	/**
+	 * 
+	 * @param {number} phi 
+	 * @param {number} theta 
+	 */
+	setSphericalDirection(phi, theta){
+		const vector = new Float32Array(3);
+		vector[0] = Math.cos(phi) * Math.sin(theta);
+		vector[1] = Math.sin(phi) * Math.sin(theta);
+		vector[2] = Math.cos(theta);
+		this.direction = vector;
+	}
+	
+
 	S8_render(){
 		// nothing to do here
 	}

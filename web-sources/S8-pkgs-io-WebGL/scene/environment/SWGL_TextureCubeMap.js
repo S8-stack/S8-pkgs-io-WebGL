@@ -136,6 +136,10 @@ export class SWGL_TextureCubeMap extends NeObject {
 	}
 
 
+	S8_dispose() {
+	}
+
+
 	/**
 	 * For initializing
 	 * @param {string} pathname 
@@ -144,7 +148,7 @@ export class SWGL_TextureCubeMap extends NeObject {
 	 * @returns 
 	 */
 	static create(pathname, extension, nbLevels) {
-		let cubeMap = new SWGL_TextureCubeMap("PRESET");
+		let cubeMap = new SWGL_TextureCubeMap();
 		cubeMap.pathname = pathname;
 		cubeMap.extension = extension;
 		cubeMap.nbLevels = nbLevels;
@@ -152,9 +156,6 @@ export class SWGL_TextureCubeMap extends NeObject {
 		return cubeMap;
 	}
 
-
-	S8_dispose() {
-	}
 
 }
 

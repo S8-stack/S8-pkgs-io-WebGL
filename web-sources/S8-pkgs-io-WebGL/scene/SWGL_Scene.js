@@ -42,8 +42,6 @@ export class SWGL_Scene extends NeObject {
 
 	constructor() {
 		super();
-
-		
 	}
 
 
