@@ -72,25 +72,20 @@ export class StdPicker {
     rbo;
 
 
-    /**
-     * @type {boolean}
-     */
+    /** @type {boolean} */
     isInitialized = false;
+
+    /** @type {boolean} */
+    isRendered = false;
 
 
     DEBUG_isFramebufferDisplayed = false;
 
 
+
     /**
      * 
-     * @param {Function} index 
      */
-    onPickedCallback = function(index){ console.log("Element #"+index+" has been picked."); };
-
-
-  /**
-   * 
-   */
     constructor() {
     }
 
@@ -98,25 +93,43 @@ export class StdPicker {
 
     /**
      * 
-     * @param {number} x 
-     * @param {number} y 
-     * @returns {Uint8Array}
+     * @param {number} x tex coord
+     * @param {number} y tex coord
+     * @returns {number}
      */
     pick(x, y) {
 
-        if (this.scene) {
+        /* render if not already done */
+        this.render();
+
+        // bind buffer
+        gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+
+        // read data out of FBO
+        const data = this.pickColor(x, y);
+
+        /** Unbind the underlying FBO */
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+
+        const index = data[0] + data[1] * 256 + data[2] * 65536;
+
+        return index;
+
+    }
 
 
-            /**
-             * Bind the underlying FBO
-             */
+    clear() {
+        this.isRendered = false;
+    }
+
+    render() {
+        if (!this.isRendered) {
 
             /* initialize if not already done */
             this.initialize();
 
-            // bind buffer
+            /** Bind the underlying FBO */
             gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
-
 
             // You also need to set the viewport by calling gl.viewport whenever you switch framebuffers.
             /* EDIT : we don't change the viewport */
@@ -139,7 +152,9 @@ export class StdPicker {
 
 
             /* render */
-            this.scene.WebGL_render();
+            if (this.scene) {
+                this.scene.WebGL_render();
+            }
 
             if (this.DEBUG_isFramebufferDisplayed) {
 
@@ -172,15 +187,6 @@ export class StdPicker {
             }
 
 
-
-
-
-            // read data out of FBO
-            const data = this.pickColor(x, y);
-
-            gl.clearColor(1.0, 1.0, 1.0, 1.0);
-
-
             /**
              * Unbind the underlying FBO
              */
@@ -193,9 +199,7 @@ export class StdPicker {
             */
             gl.viewport(0, 0, this.glWidth, this.glHeight);
 
-            const index = data[0] + data[1] * 256 + data[2] * 65536;
-
-            this.onPickedCallback(index);
+            this.isRendered = true;
         }
     }
 

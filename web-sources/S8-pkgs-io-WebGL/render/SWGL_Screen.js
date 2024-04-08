@@ -118,7 +118,7 @@ export class SWGL_Screen extends S8Object {
 		* The shape id is passed to the callback function when a picking click occurs.
 		*/
 	setOnPickedCallback(callback) {
-		this.picker.onPickedCallback = callback;
+		this.picker.onPickFaceCallback = callback;
 	}
 
 

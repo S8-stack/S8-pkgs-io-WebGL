@@ -10,6 +10,7 @@ import { SWGL_CONTEXT } from "/S8-pkgs-io-WebGL/swgl.js";
 
 /* controls */
 import { SWGL_Screen } from "/S8-pkgs-io-WebGL/render/SWGL_Screen.js";
+import { StdPicker } from "/S8-pkgs-io-WebGL/render/StdPicker.js";
 
 
 
@@ -71,6 +72,22 @@ export class StdViewController {
 	isActive = false;
 
 
+
+	/**
+	 * 
+	 * @param {Function} index 
+	 */
+	onPickFaceCallback = function (index) { console.log("Element #" + index + " has been picked."); };
+
+
+	/**
+	 * 
+	 * @param {Function} index 
+	 */
+	onHoverFaceCallback = function (index) { console.log("Element #" + index + " has been hovered."); };
+
+
+
 	/**
 	 * 
 	 * @param {SWGL_View} view 
@@ -101,6 +118,12 @@ export class StdViewController {
 			new Rotate(), new Zoom(), new Highlight(), new Pick()
 		];
 
+		/* link */
+		const _this = this;
+		const n = this.controls.length;
+		for (let i = 0; i < n; i++) { this.controls[i].link(this); }
+
+
 		// retrieve view
 		const view = this.getView();
 		view.updateProjectionMatrix();
@@ -109,25 +132,16 @@ export class StdViewController {
 		// set default mode
 		this.mode = this.zoomMode;
 
-		let _this = this;
-
-		const n = this.controls.length;
-
-		for (let i = 0; i < n; i++) {
-			this.controls[i].link(this);
-		}
-
 		const targetNode = SWGL_CONTEXT.canvasNode;
 
 
 		/** @param{Event} event */
 		this.onMouseDownLambda = function (event) {
-			if (_this.isActive) {
-				let isCaptured = false, i = 0;
-				while (!isCaptured && i < n) {
-					isCaptured = _this.controls[i].onMouseDown(event);
-					i++;
-				}
+			_this.activate();
+			let isCaptured = false, i = 0;
+			while (!isCaptured && i < n) {
+				isCaptured = _this.controls[i].onMouseDown(event);
+				i++;
 			}
 			event.stopPropagation();
 		};
@@ -135,40 +149,40 @@ export class StdViewController {
 
 		/** @param{Event} event */
 		this.onMouseUpLambda = function (event) {
-			if (_this.isActive) {
-				let isCaptured = false, i = 0;
-				while (!isCaptured && i < n) {
-					isCaptured = _this.controls[i].onMouseUp(event);
-					i++;
-				}
+			_this.activate();
+			let isCaptured = false, i = 0;
+			while (!isCaptured && i < n) {
+				isCaptured = _this.controls[i].onMouseUp(event);
+				i++;
 			}
+
 			event.stopPropagation();
 		};
 		targetNode.addEventListener('mouseup', this.onMouseUpLambda, false);
 
 		/** @param{Event} event */
 		this.onMouseMoveLambda = function (event) {
-			if (_this.isActive) {
-				let isCaptured = false, i = 0;
-				while (!isCaptured && i < n) {
-					isCaptured = _this.controls[i].onMouseMove(event);
-					i++;
-				}
+			_this.activate();
+			let isCaptured = false, i = 0;
+			while (!isCaptured && i < n) {
+				isCaptured = _this.controls[i].onMouseMove(event);
+				i++;
 			}
+
 			event.stopPropagation();
 		};
 		targetNode.addEventListener('mousemove', this.onMouseMoveLambda, false);
 
 		/** @param{Event} event */
 		this.onMouseWheelLambda = function (event) {
-			if(event.ctrlKey){
-				if (_this.isActive) {
-					let isCaptured = false, i = 0;
-					while (!isCaptured && i < n) {
-						isCaptured = _this.controls[i].onMouseWheel(event);
-						i++;
-					}
+			if (event.ctrlKey) {
+				_this.activate();
+				let isCaptured = false, i = 0;
+				while (!isCaptured && i < n) {
+					isCaptured = _this.controls[i].onMouseWheel(event);
+					i++;
 				}
+
 				event.preventDefault();
 				event.stopPropagation();
 				return false;
@@ -208,9 +222,7 @@ export class StdViewController {
 
 		/** @param{Event} event */
 		this.onClickLambda = function (event) {
-			if (!_this.isActive) {
-				_this.activate();
-			};
+			_this.activate();
 
 			let isCaptured = false, i = 0;
 			while (!isCaptured && i < n) {
@@ -253,8 +265,10 @@ export class StdViewController {
 
 
 	activate() {
-		this.isActive = true;
-		S8.page.setFocusOn(this.screen);
+		if (!this.isActive) {
+			this.isActive = true;
+			S8.page.setFocusOn(this.screen);
+		}
 	}
 
 
@@ -263,7 +277,7 @@ export class StdViewController {
 	}
 
 
-	
+
 	setSphericEyeVector(r, theta, phi) {
 		this.r = r;
 		this.theta = theta;
@@ -308,13 +322,13 @@ export class Control {
 	controller;
 
 
-	constructor() { 
-    }
+	constructor() {
+	}
 
 
-    link(controller){ this.controller = controller; }
+	link(controller) { this.controller = controller; }
 
-    onMouseDown() {
+	onMouseDown() {
 		/* to be overridden */
 		return false;
 	}
@@ -344,7 +358,7 @@ export class Control {
 		return false;
 	}
 
-    onClick() {
+	onClick() {
 		/* to be overridden */
 		return false;
 	}
@@ -355,28 +369,62 @@ export class Control {
 
 export class Pick extends Control {
 
-    constructor(){  super(); }
+	isClickEngaged = false;
 
-    onClick(event){
-        if (event.shiftKey) {
-            const pickingScene = this.controller.screen.pickingScene;
+	constructor() { super(); }
 
 
-            /**
-             * @type{StdPicker}
-             */
-            const picker = this.controller.screen.picker;
-    
-    
-            const x = event.clientX;
-            const y = event.clientY;
-           
-            /** picker has its own callback*/
-            picker.pick(x, y);
+	onMouseDown(event) {
+		this.isClickEngaged = true;
+		return true; // let flow
+	}
 
-            return true; // captured
-        }
-    }
+	onMouseMove(event) {
+
+		/** @type{StdPicker} */
+		const picker = this.controller.screen.picker;
+
+
+		const x = event.clientX;
+		const y = event.clientY;
+
+		/** picker has its own callback*/
+		const index = picker.pick(x, y);
+
+		this.controller.onHoverFaceCallback(index);
+
+
+		this.isClickEngaged = false;
+		return false; // let flow
+	}
+
+	/**
+	 * 
+	 * @param {*} event 
+	 * @returns {boolean} is taking over
+	 */
+	onMouseUp(event) {
+		if (this.isClickEngaged) {
+			this.isClickEngaged = false; /* clear*/
+
+
+			const x = event.clientX;
+			const y = event.clientY;
+
+			/** picker has its own callback*/
+			const index = this.controller.screen.picker.pick(x, y);
+			this.controller.onPickFaceCallback(index);
+
+			return true; // captured
+		}
+		else {
+			return false; // not taking over
+		}
+	}
+
+	onClick() {
+		return false;
+	}
 }
 
 
@@ -410,7 +458,7 @@ export class Rotate extends Control {
 		this.isMouseDown = true;
 		this.lastMouseX = event.clientX;
 		this.lastMouseY = event.clientY;
-		return true; // taking over
+		return false; /* let flow */
 	}
 
 	/**
@@ -457,12 +505,13 @@ export class Rotate extends Control {
 
 			//this.updateView();
 
+			this.controller.screen.picker.clear();
+
 			this.controller.refresh();
-			return true;
+
+
 		}
-		else {
-			return false;
-		}
+		return false;
 	}
 
 	/**
@@ -490,10 +539,10 @@ export class Highlight extends Control {
 
 	acquiredHoveredObject = null;
 
-	
-	constructor() { 
-        super(); 
-    }
+
+	constructor() {
+		super();
+	}
 
 	onMouseDown() {
 		this.terminate(); // cleaning-up
@@ -506,9 +555,9 @@ export class Highlight extends Control {
 	}
 
 	onMouseMove(event) {
-        /*
+		/*
 		if (event.shiftKey) {
-           
+		   
 			var currentHoveredObject = scene.picking.pick(event.clientX, event.clientY);
 			if (currentHoveredObject != this.acquiredHoveredObject) {
 				var isRenderingRequired = false;
@@ -533,8 +582,8 @@ export class Highlight extends Control {
 			this.terminate(); // cleaning-up
 			return false;
 		}
-        */
-       return false;
+		*/
+		return false;
 	}
 
 	onMouseWheel() {
@@ -584,6 +633,9 @@ export class Zoom extends Control {
 			this.controller.r = this.controller.SETTINGS_min_approach_r;
 		}
 		//this.updateView();
+
+		this.controller.screen.picker.clear();
+
 		this.controller.refresh();
 
 		return true;

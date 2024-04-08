@@ -11,6 +11,20 @@ import com.s8.pkgs.io.webgl.WebSources;
  *
  */
 public class Phys2Material extends S8WebObject {
+	
+	
+	public static Phys2Material create(S8WebFront front,
+			int[] emissiveColor,
+			int[] diffuseColor,
+			int[] specularColor,
+			double roughness) {
+		Phys2Material material = new Phys2Material(front);
+		material.setEmissiveColor(emissiveColor);
+		material.setDiffuseColor(diffuseColor);
+		material.setSpecularColor(specularColor);
+		material.setRoughness(roughness);
+		return material;
+	}
 
 
 	/**
@@ -60,6 +74,8 @@ public class Phys2Material extends S8WebObject {
 	public void setRoughness(double value) {
 		vertex.outbound().setUInt8Field("roughness", (int) (value / 6.0 * 255));
 	}
+	
+	
 
 	
 	
