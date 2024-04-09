@@ -245,12 +245,14 @@ export class StdPicker {
         const width = gl.drawingBufferWidth;
         if (width != this.glWidth) {
             this.glWidth = width;
+            this.dispose();
             this.isInitialized = false;
         }
 
         const height = gl.drawingBufferHeight;
         if (height != this.glHeight) {
             this.glHeight = height;
+            this.dispose();
             this.isInitialized = false;
         }
 
@@ -390,6 +392,7 @@ export class StdPicker {
             gl.deleteRenderbuffer(this.rbo);
             gl.deleteFramebuffer(this.fbo);
             this.isInitialized = false;
+            this.isRendered = false;
         }
     }
 
