@@ -47,11 +47,6 @@ class SWGL_Context {
 	abstractHeight;
 
 
-	/**
-	 * @type {Set<Function>}
-	 */
-	sizeListeners = new Set();
-
 
 	constructor() {
 		this.canvasNode = document.createElement("canvas");
@@ -106,74 +101,12 @@ class SWGL_Context {
 	}
 
 
-	initialize() {
-		if (!this.isInitialized) {
-
-			//OpenGL initialization
-			gl.clearStencil(128);
-
-			/* Set-up canvas parameters */
-			gl.enable(gl.DEPTH_TEST);
-
-			/* enabled blending parameters */
-
-			// Turn on rendering to alpha
-			gl.colorMask(true, true, true, true);
-			gl.enable(gl.BLEND);
-			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-
-			this.isInitialized = true;
-		}
-	}
-
-	/**
-	 * 
-	 * @param {number} containerWidth
-	 * @param {number} containerHeight
-	 */
-	resize(containerWidth, containerHeight) {
-
-		//this.abstractWidth = containerWidth;
-		//this.abstractHeight = containerHeight;
-
-		// set viewport parameters
-		/* this.gl.viewportWidth = width; */
-		/* this.gl.viewportHeight = height; */
-
-
-		/* device pixel ratio */
-		let pixelRatio = window.devicePixelRatio || SWGL_Context.VIEWPORT_OVERSAMPLING_FACTOR;
-
-		// resize canavs drawing buffer
-		let drawingBufferWidth = Math.round(pixelRatio * containerWidth);
-		let drawingBufferHeight = Math.round(pixelRatio * containerHeight);
-
-		// resize canvas
-
-		this.canvasNode.width = drawingBufferWidth;
-		this.canvasNode.height = drawingBufferHeight;
-
-
-		// and set viewport accordingly
-		this.gl.viewport(0, 0, drawingBufferWidth, drawingBufferHeight);
-
-		// resize DOM node as well
-
-		/*
-		this.canvasNode.style.width = `${containerWidth}px`;
-		this.canvasNode.style.height = `${containerHeight}px`;
-		*/
-
-
-		// broadcast
-		this.sizeListeners.forEach(listener => listener(containerWidth, containerHeight));
-	}
 
 
 }
 
 
-export const SWGL_CONTEXT = new SWGL_Context();
+//export const SWGL_CONTEXT = new SWGL_Context();
 
 
 
@@ -182,5 +115,13 @@ export const SWGL_CONTEXT = new SWGL_Context();
  * @type {WebGL2RenderingContext}
  * Root context
  */
-export const gl = SWGL_CONTEXT.gl;
+//export const gl = SWGL_CONTEXT.gl;
+
+
+/**
+ * alias for rendering context
+ */
+export const GL = WebGL2RenderingContext;
+
+
 

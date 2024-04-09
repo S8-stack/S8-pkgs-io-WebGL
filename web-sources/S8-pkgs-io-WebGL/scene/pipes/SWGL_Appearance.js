@@ -1,7 +1,5 @@
 
-
-import { NeObject } from '/S8-core-bohr-neon/NeObject.js';
-
+import { S8Object } from '/S8-api/S8Object.js';
 
 import { SWGL_Model } from '/S8-pkgs-io-WebGL/scene/models/SWGL_Model.js';
 import { SWGL_Program } from './SWGL_Program.js';
@@ -11,7 +9,7 @@ import { SWGL_Program } from './SWGL_Program.js';
 /**
  * appearance
  */
-export class SWGL_Appearance extends NeObject {
+export class SWGL_Appearance extends S8Object {
 
 	/**
 	 * @type {SWGL_Program}
@@ -28,6 +26,15 @@ export class SWGL_Appearance extends NeObject {
 	 * @type {boolean}
 	 */
 	GPU_isLoaded = false;
+
+		/**
+	 * @type{Function[]} array of update functions
+	 */
+		updates = new Array();
+	
+		/** @type{boolean} */
+		hasUpdates = false;
+	
 
 	/**
 	 * To be overridden...
@@ -82,29 +89,47 @@ export class SWGL_Appearance extends NeObject {
 	}
 
 
+
+	pushUpdate(updateFunc){
+		this.updates.push(updateFunc);
+		this.hasUpdates = true;
+	}
+
+
 	/**
+	 * @param{WebGL2RenderingContext} gl
 	 * @param {NbView} view
 	 * 
 	 */
-	WebGL_render(view) {
-		let nModels = this.models.length;
-		for (let i = 0; i < nModels; i++) {
+	WebGL_render(gl, view) {
 
-			/** @type {SWGL_Model} model */
-			let model = this.models[i];
+		/* first run updates */
+		if(this.hasUpdates){
+			let updateFunc;
+			while((updateFunc = this.updates.shift()) != null){ updateFunc(gl); }
+			this.hasUpdates = false;
+		}
+
+		let nModels = this.models.length;
+
+		/** @type {SWGL_Model} model */
+		let model;
+
+		for (let i = 0; i < nModels; i++) {	
+
+			model = this.models[i];
 
 			if (model.isReady) {
 
-				// model load it!
-				model.load();
+				/* model load it! */
+				model.load(gl);
 
-				// bind model
-				this.program.bindModel(view, model);
+				/* bind model */
+				this.program.bindModel(gl, view, model);
 
-				// draw it!
-				model.draw();
+				/* draw it! */
+				model.draw(gl);
 			}
-
 		}
 	}
 }

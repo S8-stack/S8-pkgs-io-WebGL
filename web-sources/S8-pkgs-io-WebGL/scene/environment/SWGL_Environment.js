@@ -1,8 +1,6 @@
 
 import { NeObject } from '/S8-core-bohr-neon/NeObject.js';
 
-import { gl } from '/S8-pkgs-io-WebGL/swgl.js';
-
 import * as V3 from '/S8-pkgs-io-WebGL/maths/SWGL_Vector3d.js';
 
 import { SWGL_DirectionalLight } from './lights/SWGL_DirectionalLight.js';
@@ -80,6 +78,16 @@ export class SWGL_Environment extends NeObject {
         this.irradiance = cubeMap;
     }
 
+
+
+    /**
+     * 
+     * @param {WebGL2RenderingContext} gl 
+     */
+    load(gl){
+        if(this.radiance){ this.radiance.load(gl); }
+        if(this.irradiance){ this.irradiance.load(gl); }
+    }
 
     /**
     * Normalize vector 

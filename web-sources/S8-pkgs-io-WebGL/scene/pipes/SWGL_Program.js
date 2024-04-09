@@ -1,11 +1,24 @@
 
-import { NeObject } from "/S8-core-bohr-neon/NeObject.js";
+import { S8Object } from "/S8-api/S8Object.js";
 
 import { Shader } from "./Shader.js";
-import { gl } from "/S8-pkgs-io-WebGL/swgl.js";
+import { SWGL_Appearance } from "/S8-pkgs-io-WebGL/scene/pipes/SWGL_Appearance.js";
+import { SWGL_Environment } from "/S8-pkgs-io-WebGL/scene/environment/SWGL_Environment.js";
 
 
-export class SWGL_Program extends NeObject {
+
+export const VertexAttributesShaderLayout = {
+	POSITIONS_LOCATION: 0x0,
+	NORMALS_LOCATION: 0x1,
+	U_TANGENTS_LOCATION : 0x2,
+	V_TANGENTS_LOCATION : 0x3,
+	TEX_COORDS_LOCATION : 0x4,
+	COLORS_LOCATION : 0x5
+};
+
+
+
+export class SWGL_Program extends S8Object {
 
     /**
      * 
@@ -76,8 +89,9 @@ export class SWGL_Program extends NeObject {
 
     /**
      * To be overidden
+     * @param{WebGL2RenderingContext} gl
      */
-    enable() {
+    enable(gl) {
         // bind shader program
         gl.useProgram(this.handle);
 
@@ -94,27 +108,30 @@ export class SWGL_Program extends NeObject {
 
     /**
      * 
-     * @param {*} environment 
+     * @param {WebGL2RenderingContext} gl 
+     * @param {SWGL_Environment} environment 
      */
-    bindEnvironment(environment) {
-        // environment
+    bindEnvironment(gl, environment) {
+        console.log("Method("+gl+", "+environment+") to be overridden:");
     }
 
 
     /**
      * 
-     * @param {NbAppearance} appearance 
+     * @param {WebGL2RenderingContext} gl
+     * @param {SWGL_Appearance} appearance 
      */
-    bindAppearance(appearance) {
-        // nothing to do...
+    bindAppearance(gl, appearance) {
+        console.log("Method("+gl+", "+appearance+") to be overridden:");
     }
 
     /**
      * Example only : to be overridden
+     * @param {WebGL2RenderingContext} gl 
      * @param {NbView} view 
      * @param {NbModel} model 
      */
-    bindModel(view, model) {
+    bindModel(gl, view, model) {
         /* <matrices> */
         // re-compute everything...
         let matrix_Model = model.matrix;
@@ -146,7 +163,11 @@ export class SWGL_Program extends NeObject {
     }
 
 
-    disable() {
+    /**
+     * 
+     * @param {WebGL2RenderingContext} gl 
+     */
+    disable(gl) {
 
         /* <disable-attributes> */
         gl.disableVertexAttribArray(this.pointAttributeLocation);
@@ -171,10 +192,10 @@ export class SWGL_Program extends NeObject {
     /* <build-section> */
 
     /**
-     * 
+	 * @param {WebGL2RenderingContext} gl
      * @param {Function} onCompiled 
      */
-    compile(onCompiled) {
+    compile(gl, onCompiled) {
         if (!this.isCompiled && !this.isInitiated) {
 
             // lock preventing any further call to this method
@@ -185,20 +206,21 @@ export class SWGL_Program extends NeObject {
                 if (!_this.isCompiled
                     && _this.vertexShader.isBuilt
                     && _this.fragmentShader.isBuilt) {
-                    _this.finalizeCompilation(onCompiled);
+                    _this.finalizeCompilation(gl, onCompiled);
                 }
             }
-            this.vertexShader.build(onShadersBuilt);
-            this.fragmentShader.build(onShadersBuilt);
+            this.vertexShader.build(gl, onShadersBuilt);
+            this.fragmentShader.build(gl, onShadersBuilt);
         }
     }
 
 
 
     /**
-     * Linking of uniforms and attributes (to be overriden)
+     * Linking of uniforms and attributes (to be overriden) 
+     * @param {WebGL2RenderingContext} gl
      */
-    link() {
+    link(gl) {
 
         /* <uniforms> */
         this.loc_Uniform_matrix_MVP = gl.getUniformLocation(this.handle, "ModelViewProjection_Matrix");
@@ -219,9 +241,10 @@ export class SWGL_Program extends NeObject {
 
     /**
      * 
+	 * @param {WebGL2RenderingContext} gl
      * @param {Function} onCompiled 
      */
-    finalizeCompilation(onCompiled) {
+    finalizeCompilation(gl, onCompiled) {
         if (!this.isCompiled) {
 
             // Create shader program
@@ -249,7 +272,7 @@ export class SWGL_Program extends NeObject {
             */
 
             // linking of uniforms and attributes
-            this.link();
+            this.link(gl);
 
             // program is ready to render!
             this.isCompiled = true;
@@ -262,14 +285,27 @@ export class SWGL_Program extends NeObject {
     }
 
 
-    /* dispose program-related disposable */
-    S8_dispose() {
-        this.fragmentShader.dispose();
-        this.vertexShader.dispose();
+    
+	
+
+
+    /** Dispose program-related disposable 
+     * @param {WebGL2RenderingContext} gl
+    */
+    dispose(gl) {
+        this.fragmentShader.dispose(gl);
+        this.vertexShader.dispose(gl);
 
         // finally delete program
         gl.glDeleteProgram(this.handle);
     }
     /* </dispose-section> */
+
+
+
+    /* dispose program-related disposable */
+    S8_dispose() {
+       /* nothing to do */
+    }
 
 }

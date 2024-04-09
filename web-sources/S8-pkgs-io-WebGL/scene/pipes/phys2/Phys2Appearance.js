@@ -1,5 +1,5 @@
 
-import { gl } from "/S8-pkgs-io-WebGL/swgl.js";
+import { GL } from "/S8-pkgs-io-WebGL/swgl.js";
 
 import { SWGL_Appearance } from "../SWGL_Appearance.js";
 import { Phys2Material } from "./Phys2Material.js";
@@ -52,6 +52,8 @@ export class Phys2Appearance extends SWGL_Appearance {
 	propsTex = new Phys2Texture2d(TEXTURE_SIZE);
 
 
+
+
 	/**
 	 * 
 	 */
@@ -59,79 +61,87 @@ export class Phys2Appearance extends SWGL_Appearance {
 		super();
 	}
 
+
 	/** 
 	 * @param {Phys2Material[]} materials 
 	 */
 	setMaterials(materials) {
-		this.materials = materials;
+		const _this = this;
+		this.pushUpdate(function (gl) {
 
-		let nbMaterials = materials.length;
-		if (nbMaterials > MAX_RANGE) { throw "error: too many materials"; }
+			//this.materials = materials;
+
+			let nbMaterials = materials.length;
+			if (nbMaterials > MAX_RANGE) { throw "error: too many materials"; }
 
 
-		let n = TEXTURE_SIZE * TEXTURE_SIZE * PIXEL_BYTECOUNT;
-		let emissiveColors = new Uint8Array(n);
-		let diffuseColors = new Uint8Array(n);
-		let specularColors = new Uint8Array(n);
-		let props = new Uint8Array(n);
+			let n = TEXTURE_SIZE * TEXTURE_SIZE * PIXEL_BYTECOUNT;
+			let emissiveColors = new Uint8Array(n);
+			let diffuseColors = new Uint8Array(n);
+			let specularColors = new Uint8Array(n);
+			let props = new Uint8Array(n);
 
-		let offset = 0;
-		for (let i = 0; i < nbMaterials; i++) {
-			const material = materials[i];
+			let offset = 0;
+			for (let i = 0; i < nbMaterials; i++) {
+				const material = materials[i];
 
-			/* emissive */
-			let emissiveColor = material.emissiveColor;
-			emissiveColors[offset + 0] = emissiveColor[0];
-			emissiveColors[offset + 1] = emissiveColor[1];
-			emissiveColors[offset + 2] = emissiveColor[2];
-			emissiveColors[offset + 3] = emissiveColor[3];
+				/* emissive */
+				let emissiveColor = material.emissiveColor;
+				emissiveColors[offset + 0] = emissiveColor[0];
+				emissiveColors[offset + 1] = emissiveColor[1];
+				emissiveColors[offset + 2] = emissiveColor[2];
+				emissiveColors[offset + 3] = emissiveColor[3];
 
-			/* diffuse */
-			let diffuseColor = material.diffuseColor;
-			diffuseColors[offset + 0] = diffuseColor[0];
-			diffuseColors[offset + 1] = diffuseColor[1];
-			diffuseColors[offset + 2] = diffuseColor[2];
-			diffuseColors[offset + 3] = diffuseColor[3];
+				/* diffuse */
+				let diffuseColor = material.diffuseColor;
+				diffuseColors[offset + 0] = diffuseColor[0];
+				diffuseColors[offset + 1] = diffuseColor[1];
+				diffuseColors[offset + 2] = diffuseColor[2];
+				diffuseColors[offset + 3] = diffuseColor[3];
 
-			/* specular */
-			let specularColor = material.specularColor;
-			specularColors[offset + 0] = specularColor[0];
-			specularColors[offset + 1] = specularColor[1];
-			specularColors[offset + 2] = specularColor[2];
-			specularColors[offset + 3] = specularColor[3];
+				/* specular */
+				let specularColor = material.specularColor;
+				specularColors[offset + 0] = specularColor[0];
+				specularColors[offset + 1] = specularColor[1];
+				specularColors[offset + 2] = specularColor[2];
+				specularColors[offset + 3] = specularColor[3];
 
-			/* props */
-			props[offset + 0] = material.roughness;
-			props[offset + 1] = 0;
-			props[offset + 2] = 0;
-			props[offset + 3] = 0;
+				/* props */
+				props[offset + 0] = material.roughness;
+				props[offset + 1] = 0;
+				props[offset + 2] = 0;
+				props[offset + 3] = 0;
 
-			offset += 4;
-		}
+				offset += 4;
+			}
 
-		
-		this.emissiveColorsTex.setData(emissiveColors);
-		this.diffuseColorsTex.setData(diffuseColors);
-		this.specularColorsTex.setData(specularColors);
-		this.propsTex.setData(props);
+
+			_this.emissiveColorsTex.setData(gl, emissiveColors);
+			_this.diffuseColorsTex.setData(gl, diffuseColors);
+			_this.specularColorsTex.setData(gl, specularColors);
+			_this.propsTex.setData(gl, props);
+		});
 	}
 
 
-	 /**
-     * 
-     * @param {number} x tex-coords xCoordinate
-     * @param {number} y tex-coords yCoordinate
-     * @param {Phys2Material} material 
-     */
+	/**
+	* 
+	* @param {number} x tex-coords xCoordinate
+	* @param {number} y tex-coords yCoordinate
+	* @param {Phys2Material} material 
+	*/
 	setMaterial(x, y, material) {
-        this.emissiveColorsTex.setSubData(x, y, material.emissiveColor);
-        this.diffuseColorsTex.setSubData(x, y, material.diffuseColor);
-        this.specularColorsTex.setSubData(x, y, material.specularColor);
-
-        const props = new Uint8Array(4);
-        props[0] = material.roughness;
-        this.propsTex.setSubData(x, y, props);
-    }
+		const _this = this;
+		this.pushUpdate(function(gl){
+			_this.emissiveColorsTex.setSubData(gl, x, y, material.emissiveColor);
+			_this.diffuseColorsTex.setSubData(gl, x, y, material.diffuseColor);
+			_this.specularColorsTex.setSubData(gl, x, y, material.specularColor);
+	
+			const props = new Uint8Array(4);
+			props[0] = material.roughness;
+			_this.propsTex.setSubData(gl, x, y, props);
+		});
+	}
 
 
 	S8_render() {
@@ -186,9 +196,10 @@ export class Phys2Texture2d {
 
 	/**
 	 * 
+	 * @param{WebGL2RenderingContext} gl
 	 * @param {Uint8Array} data 
 	 */
-	setData(pixels){
+	setData(gl, pixels) {
 
 		/* create if does not exist yet */
 		if (this.baseTexture == null) { this.baseTexture = gl.createTexture(); }
@@ -220,9 +231,10 @@ export class Phys2Texture2d {
 
 	/**
 	 * 
+	 * @param{WebGL2RenderingContext} gl
 	 * @param {Object} must have a getColor returning a float[4]
 	 */
-	store(colorlambda) {
+	store(gl, colorlambda) {
 
 		if (this.baseTexture == null) {
 			this.baseTexture = gl.createTexture();
@@ -274,12 +286,12 @@ export class Phys2Texture2d {
 
 
 	/**
-	 * 
+	 * @param{WebGL2RenderingContext} gl
 	 * @param {number} x 
 	 * @param {number} y 
 	 * @param {Uint8Array} pixel 
 	 */
-	setSubData(x, y, pixel) {
+	setSubData(gl, x, y, pixel) {
 		if (this.baseTexture) {
 
 			/* bind texture */
@@ -300,19 +312,28 @@ export class Phys2Texture2d {
 
 
 
-	bind(index) {
+	/**
+	 * 
+	 * @param {WebGL2RenderingContext} gl 
+	 * @param {*} index 
+	 */
+	bind(gl, index) {
 		if (this.isInitialized) {
 
 			// activate texture unit
-			gl.activeTexture(gl.TEXTURE0 + index);
+			gl.activeTexture(GL.TEXTURE0 + index);
 
 			// bind texture data (for previously selected texture unit)
-			gl.bindTexture(gl.TEXTURE_2D, this.baseTexture);
+			gl.bindTexture(GL.TEXTURE_2D, this.baseTexture);
 
 		}
 	}
 
-	dispose() {
+	/**
+	 * 
+	 * @param{WebGL2RenderingContext} gl
+	 */
+	dispose(gl) {
 		if (this.baseTexture != null) {
 			gl.deleteTexture(this.baseTexture);
 		}

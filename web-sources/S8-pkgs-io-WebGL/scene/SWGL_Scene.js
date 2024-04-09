@@ -3,9 +3,6 @@
 import { NeObject } from '/S8-core-bohr-neon/NeObject.js';
 
 
-import { gl, SWGL_CONTEXT } from '/S8-pkgs-io-WebGL/swgl.js';
-
-
 import { SWGL_Environment } from './environment/SWGL_Environment.js';
 import { SWGL_View } from "./view/SWGL_View.js";
 import { SWGL_Pipe } from './pipes/SWGL_Pipe.js';
@@ -17,6 +14,7 @@ import { SWGL_Pipe } from './pipes/SWGL_Pipe.js';
  */
 export class SWGL_Scene extends NeObject {
 
+
 	/** 
 	 * @type {SWGL_Pipe[]} the rendering pipes (performance-section) 
 	 */
@@ -27,14 +25,11 @@ export class SWGL_Scene extends NeObject {
 	 */
 	environment = new SWGL_Environment();
 
-
 	/** 
 	 * @type {SWGL_View} the view 
 	 * (Always readily available)
 	 */
 	view = null;
-
-
 
 
 	isInitialized = false;
@@ -84,12 +79,24 @@ export class SWGL_Scene extends NeObject {
 
 	/**
 	 * 
+	 * @param {WebGL2RenderingContext} gl 
 	 */
-	initialize() {
+	initialize(gl) {
 		if (!this.isInitialized) {
 
-			// initialize context
-			SWGL_CONTEXT.initialize();
+				//OpenGL initialization
+			gl.clearStencil(128);
+	
+				/* Set-up canvas parameters */
+				gl.enable(gl.DEPTH_TEST);
+	
+				/* enabled blending parameters */
+	
+				// Turn on rendering to alpha
+				gl.colorMask(true, true, true, true);
+				gl.enable(gl.BLEND);
+				gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+	
 
 			// environment
 			this.environment.view = this.view;
@@ -127,10 +134,15 @@ export class SWGL_Scene extends NeObject {
 
 
 
-	/**
-	 * 
-	 */
-	WebGL_render() {
+	
+	/** @param {WebGL2RenderingContext} gl */
+	WebGL_render(gl) {
+
+		/* initialize if not already done */
+		this.initialize(gl);
+
+		/* load environment if necessary */
+		this.environment.load(gl);
 
 		// unbind picking fbo if active
 		//this.picking.unbind();
@@ -145,7 +157,7 @@ export class SWGL_Scene extends NeObject {
 		for (let i = 0; i < nPipes; i++) {
 
 			// run render pipe
-			this.pipes[i].WebGL_render(this.environment, this.view);
+			this.pipes[i].WebGL_render(gl, this.environment, this.view);
 		}
 	}
 

@@ -1,7 +1,6 @@
 
 import { NeObject } from '/S8-core-bohr-neon/NeObject.js';
 
-import { gl } from '/S8-pkgs-io-WebGL/swgl.js';
 
 import * as M4 from '/S8-pkgs-io-WebGL/maths/SWGL_Matrix4d.js';
 import * as V3 from '/S8-pkgs-io-WebGL/maths/SWGL_Vector3d.js';
@@ -101,7 +100,13 @@ export class SWGL_DirectionalLight extends NeObject {
 		M4.transformVector3d(matrix_View, this.direction, this.inWorldDirection);	
 	}
 	
-	bind(handle){
+
+	/**
+	 * 
+	 * @param {WebGL2RenderingContext} gl 
+	 * @param {*} handle 
+	 */
+	bind(gl, handle){
 		gl.uniform4fv(handle.loc_Uniform_light_ambient, this.ambient);
 		gl.uniform4fv(handle.loc_Uniform_light_diffuse, this.diffuse);
 		gl.uniform4fv(handle.loc_Uniform_light_specular, this.specular);

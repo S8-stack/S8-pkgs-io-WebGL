@@ -1,6 +1,6 @@
 
 import { S8 } from "/S8-api/S8Context.js";
-import { gl } from "/S8-pkgs-io-WebGL/swgl.js";
+import { GL } from "/S8-pkgs-io-WebGL/swgl.js";
 
 /**
  * 
@@ -53,18 +53,18 @@ export class Shader {
 
 	getWebGLShaderType() {
 		switch (this.type) {
-			case "vertex": return gl.VERTEX_SHADER;
-			case "fragment": return gl.FRAGMENT_SHADER;
+			case "vertex": return GL.VERTEX_SHADER;
+			case "fragment": return GL.FRAGMENT_SHADER;
 			default: throw "Type can only be one of : {vertex, fragment}";
 		}
 	}
 
 
 	/**
-	 * 
+	 * @param {WebGL2RenderingContext} gl
 	 * @param {*} onBuilt 
 	 */
-	build(onBuilt) {
+	build(gl, onBuilt) {
 		if (!this.isInitiated) {
 
 			// lock build access
@@ -73,7 +73,7 @@ export class Shader {
 
 			S8.server.sendRequest_HTTP2_GET(this.pathname, "text",
 				function (source) {
-					_this.compile(source, onBuilt);
+					_this.compile(gl, source, onBuilt);
 				});
 		}
 	}
@@ -81,10 +81,11 @@ export class Shader {
 
 	/**
 	 * 
+	 * @param {WebGL2RenderingContext} gl
 	 * @param {string} source 
 	 * @param {Function} onBuilt 
 	 */
-	compile(source, onBuilt) {
+	compile(gl, source, onBuilt) {
 
 		// Create shader
 		this.handle = gl.createShader(this.getWebGLShaderType());
@@ -115,8 +116,9 @@ export class Shader {
 
 	/**  
 	 * Dispose the shader 
+	 * @param {WebGL2RenderingContext} gl
 	 */
-	dispose() {
+	dispose(gl) {
 		gl.deleteShader(this.handle);
 	}
 

@@ -5,11 +5,10 @@ import { S8 } from "/S8-api/S8Context.js";
 import { SWGL_View } from "/S8-pkgs-io-WebGL/scene/view/SWGL_View.js";
 
 import * as V3 from "/S8-pkgs-io-WebGL/maths/SWGL_Vector3d.js";
-import { SWGL_CONTEXT } from "/S8-pkgs-io-WebGL/swgl.js";
 
 
 /* controls */
-import { SWGL_Screen } from "/S8-pkgs-io-WebGL/render/SWGL_Screen.js";
+import { SWGL_Screen } from "/S8-pkgs-io-WebGL/SWGL_Screen.js";
 import { StdPicker } from "/S8-pkgs-io-WebGL/render/StdPicker.js";
 
 
@@ -42,6 +41,11 @@ const DEG_to_RAD = Math.PI / 180.0;
  */
 export class StdViewController {
 
+
+	/**
+	 * @type{HTMLCanvasElement}
+	 */
+	targetNode;
 
 	/** @type {SWGL_Screen} screen (Bound by screen) */
 	screen;
@@ -90,9 +94,10 @@ export class StdViewController {
 
 	/**
 	 * 
-	 * @param {SWGL_View} view 
+	 * @param {HTMLCanvasElement} targetNode 
 	 */
-	constructor() {
+	constructor(targetNode) {
+		this.targetNode = targetNode;
 	}
 
 
@@ -108,7 +113,7 @@ export class StdViewController {
 
 	/**
 	 * 
-	 * @param {NbView} view 
+	 * @param {} view 
 	 */
 	start() {
 
@@ -132,7 +137,7 @@ export class StdViewController {
 		// set default mode
 		this.mode = this.zoomMode;
 
-		const targetNode = SWGL_CONTEXT.canvasNode;
+		
 
 
 		/** @param{Event} event */
@@ -145,7 +150,7 @@ export class StdViewController {
 			}
 			event.stopPropagation();
 		};
-		targetNode.addEventListener('mousedown', this.onMouseDownLambda, false);
+		this.targetNode.addEventListener('mousedown', this.onMouseDownLambda, false);
 
 		/** @param{Event} event */
 		this.onMouseUpLambda = function (event) {
@@ -158,7 +163,7 @@ export class StdViewController {
 
 			event.stopPropagation();
 		};
-		targetNode.addEventListener('mouseup', this.onMouseUpLambda, false);
+		this.targetNode.addEventListener('mouseup', this.onMouseUpLambda, false);
 
 		/** @param{Event} event */
 		this.onMouseMoveLambda = function (event) {
@@ -171,7 +176,7 @@ export class StdViewController {
 
 			event.stopPropagation();
 		};
-		targetNode.addEventListener('mousemove', this.onMouseMoveLambda, false);
+		this.targetNode.addEventListener('mousemove', this.onMouseMoveLambda, false);
 
 		/** @param{Event} event */
 		this.onMouseWheelLambda = function (event) {
@@ -191,7 +196,7 @@ export class StdViewController {
 		/* option {passive: false} on the event listener. 
 		This is actually because we have to tell browsers that, eventually, 
 		we might call preventDefault and cancel the default behavior. */
-		targetNode.addEventListener('wheel', this.onMouseWheelLambda, { passive: false });
+		this.targetNode.addEventListener('wheel', this.onMouseWheelLambda, { passive: false });
 
 		/** @param{Event} event */
 		this.onKeyUpLambda = function (event) {
@@ -204,7 +209,7 @@ export class StdViewController {
 			}
 			event.stopPropagation();
 		};
-		targetNode.addEventListener('keyup', this.onKeyUpLambda, false);
+		this.targetNode.addEventListener('keyup', this.onKeyUpLambda, false);
 
 
 		/** @param{Event} event */
@@ -218,7 +223,7 @@ export class StdViewController {
 			}
 			event.stopPropagation();
 		};
-		targetNode.addEventListener('keydown', this.onKeyDownLambda, false);
+		this.targetNode.addEventListener('keydown', this.onKeyDownLambda, false);
 
 		/** @param{Event} event */
 		this.onClickLambda = function (event) {
@@ -231,7 +236,7 @@ export class StdViewController {
 			}
 			event.stopPropagation();
 		};
-		targetNode.addEventListener('click', this.onClickLambda, false);
+		this.targetNode.addEventListener('click', this.onClickLambda, false);
 
 
 		/*
@@ -245,12 +250,6 @@ export class StdViewController {
 			event.stopPropagation();
 		}, false);
 		*/
-
-
-
-
-
-
 		// start refresh
 		this.refresh();
 	}
@@ -282,6 +281,7 @@ export class StdViewController {
 		this.r = r;
 		this.theta = theta;
 		this.phi = phi;
+		this.refresh();
 	}
 
 

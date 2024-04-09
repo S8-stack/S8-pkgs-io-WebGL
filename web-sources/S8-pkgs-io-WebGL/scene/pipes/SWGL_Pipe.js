@@ -1,7 +1,5 @@
 
-
-import { NeObject } from '/S8-core-bohr-neon/NeObject.js';
-
+import { S8Object } from '/S8-api/S8Object.js';
 
 import { SWGL_View } from '/S8-pkgs-io-WebGL/scene/view/SWGL_View.js';
 import { SWGL_Environment } from '/S8-pkgs-io-WebGL/scene/environment/SWGL_Environment.js';
@@ -10,6 +8,15 @@ import { SWGL_Appearance } from './SWGL_Appearance.js';
 import { SWGL_Program } from './SWGL_Program.js';
 
 
+
+
+
+
+const NOT_INITIATED_STATE = 0;
+
+const BUILDING_STATE = 1;
+
+const READY_STATE = 2;
 
 
 
@@ -61,7 +68,7 @@ import { SWGL_Program } from './SWGL_Program.js';
  * even if several more instructions are needed. There are some cool bit-twiddling tricks you can do to 
  * compute things such as abs(), min(), and max() without branching.
  */
-export class SWGL_Pipe extends NeObject {
+export class SWGL_Pipe extends S8Object {
 
 	/**
 	 * @type {SWGL_Program}
@@ -73,15 +80,18 @@ export class SWGL_Pipe extends NeObject {
 	 */
 	appearances = new Array();
 
+
+
 	/**
-	 * @type {boolean}
+	 * @type {number}
+	 * 0 : 
 	 */
-	isReady = false;
+	state = NOT_INITIATED_STATE;
 
 
 	constructor() {
 		super(); // S8Object
-		
+
 		// pass index for rendering sort (default is 1)
 		this.pass = 1;
 
@@ -106,14 +116,8 @@ export class SWGL_Pipe extends NeObject {
 	 * 
 	 * @param {SWGL_Program} program 
 	 */
-	S8_set_program(program){
+	S8_set_program(program) {
 		this.program = program;
-
-		// compile (if not already done)
-		let _this = this;
-		this.program.compile(function(){ 
-			_this.isReady = true; 
-		});
 	}
 
 
@@ -123,39 +127,45 @@ export class SWGL_Pipe extends NeObject {
 	S8_set_appearances(appearances) {
 		this.appearances = appearances;
 
-		if(this.appearances!=null){ 
+		if (this.appearances != null) {
 			this.appearances.forEach(appearance => {
-			
+
 				// link
 				appearance.program = this.program;
-	
+
 				// initialize (skip if already done)
 				appearance.GPU_initialize();
-	
+
 			});
 		}
 	}
 
-	S8_render(){
-		/* nothing to do */
-	}
 
 
 	/**
 		 * 
+		 * @param {WebGL2RenderingContext} gl 
 		 * @param {SWGL_Environment} environment 
 		 * @param {SWGL_View} view 
 		 */
-	WebGL_render(environment, view) {
-		if(this.isReady) {
+	WebGL_render(gl, environment, view) {
+		if (this.state == NOT_INITIATED_STATE) {
+			// compile (if not already done)
+			let _this = this;
+			this.program.compile(gl, function () {
+				_this.state = READY_STATE;
+			});
+			this.state = BUILDING_STATE;
+		}
+		else if (this.state == READY_STATE) {
 
 			// enable program
-			this.program.enable();
+			this.program.enable(gl);
 
 			/**
 			 * 
 			 */
-			this.program.bindEnvironment(environment);
+			this.program.bindEnvironment(gl, environment);
 
 			// render appearnce
 			let nAppearances = this.appearances.length;
@@ -167,31 +177,23 @@ export class SWGL_Pipe extends NeObject {
 
 				if (appearance.GPU_isLoaded) {
 					// bind appearance
-					this.program.bindAppearance(appearance);
+					this.program.bindAppearance(gl, appearance);
 
 					// render the appearance
-					appearance.WebGL_render(view);
+					appearance.WebGL_render(gl, view);
 				}
 			}
 
 			// disable program
-			this.program.disable();
+			this.program.disable(gl);
 		}
 	}
 
 
-	S8_dispose(){
-		
-	}
-	
+
+	S8_render() { /* nothing to do */ }
+
+	S8_dispose() { }
+
 };
-
-
-
-
-
-
-
-
-
 

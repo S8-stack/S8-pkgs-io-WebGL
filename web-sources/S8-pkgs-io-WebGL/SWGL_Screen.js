@@ -2,11 +2,11 @@
 
 import { S8Object } from '/S8-api/S8Object.js';
 
-import { gl, SWGL_CONTEXT } from '/S8-pkgs-io-WebGL/swgl.js';
+import { GL } from '/S8-pkgs-io-WebGL/swgl.js';
 
 import { StdViewController } from '/S8-pkgs-io-WebGL/control/StdViewController.js';
 import { SWGL_Scene } from '/S8-pkgs-io-WebGL/scene/SWGL_Scene.js';
-import { StdPicker } from './StdPicker.js';
+import { StdPicker } from './render/StdPicker.js';
 
 
 /**
@@ -14,6 +14,12 @@ import { StdPicker } from './StdPicker.js';
  */
 export class SWGL_Screen extends S8Object {
 
+
+	/** @type {HTMLCanvasElement} */
+	canvasNode;
+
+	/** @type{WebGL2RenderingContext} */
+	gl;
 
 	/**
 	 * @type {SWGL_Scene}
@@ -52,14 +58,51 @@ export class SWGL_Screen extends S8Object {
 	/** @type {number[]} */
 	clearColor = [1.0, 1.0, 1.0, 1.0];
 
+
+
+	/**
+	 * @type {Set<Function>}
+	 */
+	sizeListeners = new Set();
+
 	constructor() {
 		super();
+
+
+		this.canvasNode = document.createElement("canvas");
+
+		try {
+			/**
+			 * {}
+			 */
+			this.gl = this.canvasNode.getContext("webgl2", {
+				stencil: true,
+				alpha: true,
+				premultipliedAlpha: false  // Ask for non-premultiplied alpha 
+			});
+
+			/* Initialize with default HD params, resized later with actual parameters */
+			this.gl.viewport(0, 0, 1920, 1080);
+
+			/*
+			var ext = gl.getExtension("OES_element_index_uint");
+			if(ext==null){
+				alert("Do not support OES UINT");
+			}
+			 */
+
+		} catch (e) {
+			alert("Could not initialise WebGL, sorry :-(" + e);
+		}
+
+
 		this.fpsDisplay = document.querySelector("#fps-display");
 
 		/* initialize controller */
-		this.controller = new StdViewController();
+		this.controller = new StdViewController(this.canvasNode);
 
-		this.picker = new StdPicker(this);
+		/* picker */
+		this.picker = new StdPicker(this.gl);
 	}
 
 
@@ -72,13 +115,15 @@ export class SWGL_Screen extends S8Object {
 		
 
 		// update
+		/*
 		if (!this.isInitialized) {
-			/* listen screen size */
+			// listen screen size 
 			let _this = this;
 			this.sizeListener = function (width, height) { _this.resize(width, height); };
 			SWGL_CONTEXT.appendSizeListener(this.sizeListener);
 			this.isInitialized = true;
 		}
+		*/
 	}
 
 
@@ -90,7 +135,7 @@ export class SWGL_Screen extends S8Object {
 			this.totalRenderingTime = 0;
 			this.nbRenderings = 0;
 
-			this.scene.initialize();
+			this.scene.initialize(this.gl);
 
 			// <initialize rendering>
 
@@ -123,38 +168,20 @@ export class SWGL_Screen extends S8Object {
 
 
 
-	/**
-	 * 
-	 * @param {number} width 
-	 * @param {number} height 
-	 */
-	resize(width, height) {
-		if (this.scene != null) {
-			this.scene.resize(width, height);
-		}
-
-		if (this.pickingScene != null) {
-			this.pickingScene.resize(width, height);
-		}
-
-
-		// resize picker
-		this.picker.resize(width, height);
-	}
-
-
 
 	/**
 	 * @param {number} t_now render time in ms 
 	 */
 	WebGL_render(t_now) {
 
+		const gl = this.gl;
+
 		// gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		gl.clearColor(this.clearColor[0], this.clearColor[1], this.clearColor[2], this.clearColor[3]);
-		gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT | gl.STENCIL_BUFFER_BIT);
+		gl.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT | GL.STENCIL_BUFFER_BIT);
 
 		// render pipes
-		this.scene.WebGL_render();
+		this.scene.WebGL_render(gl);
 
 		// Recommended pattern for frame animation
 		let _this = this;
@@ -179,7 +206,6 @@ export class SWGL_Screen extends S8Object {
 	 */
 	S8_set_scene(scene) {
 		this.scene = scene;
-		this.scene.initialize();
 	}
 
 	/**
@@ -209,7 +235,8 @@ export class SWGL_Screen extends S8Object {
 			coordinates[0], /* r */
 			coordinates[1], /* theta */
 			coordinates[2] /* phi */
-		)
+		);
+		this.WebGL_render(0);
 	}
 
 
@@ -221,6 +248,47 @@ export class SWGL_Screen extends S8Object {
 	S8_dispose() {
 		if (this.scene) { this.scene.S8_dispose(); }
 	}
+
+
+
+	/**
+	 * 
+	 */
+	static VIEWPORT_OVERSAMPLING_FACTOR = 1.4;
+
+
+	/**
+	 * 
+	 * @param {number} width 
+	 * @param {number} height 
+	 */
+	resize(width, height) {
+
+
+		/* device pixel ratio */
+		let pixelRatio = window.devicePixelRatio || SWGL_Screen.VIEWPORT_OVERSAMPLING_FACTOR;
+
+		// resize canavs drawing buffer
+		let drawingBufferWidth = Math.round(pixelRatio * width);
+		let drawingBufferHeight = Math.round(pixelRatio * height);
+
+		// resize canvas
+		this.canvasNode.width = drawingBufferWidth;
+		this.canvasNode.height = drawingBufferHeight;
+
+		// and set viewport accordingly
+		this.gl.viewport(0, 0, drawingBufferWidth, drawingBufferHeight);
+      
+	  if (this.isVerbose) {
+		  console.log(`WebGL Canvas dimensions are now: width = ${this.canvasWidth}, height = ${this.canvasHeight}`);
+	  }
+
+		if (this.scene != null) { this.scene.resize(width, height); }
+
+		// resize picker
+		this.picker.resize(width, height);
+	}
+
 
 }
 

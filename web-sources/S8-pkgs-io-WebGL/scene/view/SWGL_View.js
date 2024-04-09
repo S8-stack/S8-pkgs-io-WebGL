@@ -6,7 +6,6 @@ import * as M4 from "/S8-pkgs-io-WebGL/maths/SWGL_Matrix4d.js";
 import * as V3 from "/S8-pkgs-io-WebGL/maths/SWGL_Vector3d.js";
 import * as V4 from "/S8-pkgs-io-WebGL/maths/SWGL_Vector4d.js";
 
-import { SWGL_CONTEXT } from "/S8-pkgs-io-WebGL/swgl.js";
 import { SWGL_Scene } from "/S8-pkgs-io-WebGL/scene/SWGL_Scene.js";
 
 
@@ -223,7 +222,7 @@ export class SWGL_View extends NeObject {
 	}
 
 	S8_dispose(){
-		SWGL_CONTEXT.removeSizeListener(this.sizeListener);
+		/* do nothing */
 	}
 }
 

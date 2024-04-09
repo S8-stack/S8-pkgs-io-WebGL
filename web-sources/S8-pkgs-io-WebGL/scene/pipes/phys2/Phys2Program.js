@@ -1,16 +1,14 @@
 
 
 
-import { gl } from '/S8-pkgs-io-WebGL/swgl.js';
 
 import * as M4 from '/S8-pkgs-io-WebGL/maths/SWGL_Matrix4d.js';
 
 import { SWGL_Environment } from "/S8-pkgs-io-WebGL/scene/environment/SWGL_Environment.js";
-import { SWGL_Program } from "../SWGL_Program.js";
+import { SWGL_Program, VertexAttributesShaderLayout } from "../SWGL_Program.js";
 import { SWGL_View } from "/S8-pkgs-io-WebGL/scene/view/SWGL_View.js";
 
 import { SWGL_Model } from "/S8-pkgs-io-WebGL/scene/models/SWGL_Model.js";
-import { VertexAttributesShaderLayout } from '/S8-pkgs-io-WebGL/scene/models/SWGL_Mesh.js';
 import { Phys2Appearance } from './Phys2Appearance.js';
 
 
@@ -35,9 +33,9 @@ export class Phys2Program extends SWGL_Program {
 	}
 
 	/**
-	 * Linking of uniforms and attributes (to be overriden)
+	 * @param{WebGL2RenderingContext} gl
 	 */
-	link() {
+	link(gl) {
 
 		/* <uniforms> */
 		this.loc_Uniform_matrix_MVP = gl.getUniformLocation(this.handle, "ModelViewProjection_Matrix");
@@ -67,9 +65,9 @@ export class Phys2Program extends SWGL_Program {
 
 
 	/**
-	 * To be overidden
+	 * @param{WebGL2RenderingContext} gl
 	 */
-	enable() {
+	enable(gl) {
 		// bind shader program
 		gl.useProgram(this.handle);
 
@@ -93,40 +91,43 @@ export class Phys2Program extends SWGL_Program {
 
 	/**
 	 * 
+	 * @param {WebGL2RenderingContext} gl 
 	 * @param {SWGL_Environment} environment 
 	 */
-	bindEnvironment(environment) {
+	bindEnvironment(gl, environment) {
 		if (environment.radiance != null) {
-			environment.radiance.bind(RADIANCE_TEXTURE_INDEX);
+			environment.radiance.bind(gl, RADIANCE_TEXTURE_INDEX);
 		}
 
 		if (environment.irradiance != null) {
-			environment.irradiance.bind(IRRADIANCE_TEXTURE_INDEX);
+			environment.irradiance.bind(gl, IRRADIANCE_TEXTURE_INDEX);
 		}
 	}
 
 
 	/**
 	 * 
+	 * @param {WebGL2RenderingContext} gl 
 	 * @param {Phys2Appearance} appearance 
 	 */
-	bindAppearance(appearance) {
+	bindAppearance(gl, appearance) {
 
 		/* <bind-textures> */
-		appearance.propsTex.bind(PROPERTIES_TEXTURE_INDEX);
-		appearance.emissiveColorsTex.bind(EMISSIVE_COLORS_TEXTURE_INDEX);
-		appearance.diffuseColorsTex.bind(DIFFUSE_COLORS_TEXTURE_INDEX);
-		appearance.specularColorsTex.bind(SPECULAR_COLORS_TEXTURE_INDEX);
+		appearance.propsTex.bind(gl, PROPERTIES_TEXTURE_INDEX);
+		appearance.emissiveColorsTex.bind(gl, EMISSIVE_COLORS_TEXTURE_INDEX);
+		appearance.diffuseColorsTex.bind(gl, DIFFUSE_COLORS_TEXTURE_INDEX);
+		appearance.specularColorsTex.bind(gl, SPECULAR_COLORS_TEXTURE_INDEX);
 		/* </bind-textures> */
 	}
 
 
 
 	/**
+	 * @param{WebGL2RenderingContext} gl
 	 * @param {SWGL_View} view 
 	 * @param {SWGL_Model} model 
 	 */
-	bindModel(view, model) {
+	bindModel(gl, view, model) {
 		/* <matrices> */
 		// re-compute everything...
 		let matrix_Model = model.matrix;
@@ -140,19 +141,22 @@ export class Phys2Program extends SWGL_Program {
 		/* </bind-uniforms> */
 
 		/* <bind-attributes> */
-		model.mesh.positionVertexAttributes.bind();
-		model.mesh.normalVertexAttributes.bind();
-		model.mesh.texCoordsVertexAttributes.bind();
+		model.positionVertexAttributes.bind(gl);
+		model.normalVertexAttributes.bind(gl);
+		model.texCoordsVertexAttributes.bind(gl);
 		/* </bind-attributes> */
 
 		/* <bind-elements> */
-		model.mesh.elementIndices.bind();
+		model.elementIndices.bind(gl);
 		/* </bind-elements> */
 	}
 
 
 
-	disable() {
+	/**
+	 * @param{WebGL2RenderingContext} gl
+	 */
+	disable(gl) {
 
 		/* <disable-attributes> */
 		gl.disableVertexAttribArray(VertexAttributesShaderLayout.POSITIONS_LOCATION);

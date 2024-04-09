@@ -1,8 +1,7 @@
-package com.s8.pkgs.io.webgl.render;
+package com.s8.pkgs.io.webgl;
 
 import com.s8.api.web.S8WebFront;
 import com.s8.api.web.S8WebObject;
-import com.s8.pkgs.io.webgl.WebSources;
 import com.s8.pkgs.io.webgl.scene.SWGL_Scene;
 
 /**
@@ -18,7 +17,7 @@ public class WebGL_Screen extends S8WebObject {
 	 * @param branch
 	 */
 	public WebGL_Screen(S8WebFront branch) {
-		super(branch, WebSources.ROOT + "render/SWGL_Screen");
+		super(branch, WebSources.ROOT + "SWGL_Screen");
 	}
 	
 	

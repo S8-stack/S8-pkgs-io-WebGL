@@ -1,7 +1,7 @@
-import { NeObject } from "/S8-core-bohr-neon/NeObject.js";
+import { S8Object } from "/S8-api/S8Object.js";
 
 
-export class Phys2Material extends NeObject {
+export class Phys2Material extends S8Object {
 
 
 	/**

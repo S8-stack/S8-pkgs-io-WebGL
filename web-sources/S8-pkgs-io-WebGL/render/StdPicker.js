@@ -1,6 +1,6 @@
 
 
-import { gl } from "/S8-pkgs-io-WebGL/swgl.js";
+import { GL } from "/S8-pkgs-io-WebGL/swgl.js";
 import { SWGL_Scene } from "/S8-pkgs-io-WebGL/scene/SWGL_Scene.js";
 
 
@@ -11,6 +11,12 @@ import { SWGL_Scene } from "/S8-pkgs-io-WebGL/scene/SWGL_Scene.js";
  */
 export class StdPicker {
 
+
+
+    /**
+     * @type{WebGL2RenderingContext}
+     */
+    gl;
 
 
     /**
@@ -49,7 +55,7 @@ export class StdPicker {
     /**
      * 
      */
-    props = { filter: gl.LINEAR };
+    props = { filter: GL.LINEAR };
 
 
 
@@ -84,32 +90,46 @@ export class StdPicker {
 
 
     /**
-     * 
+     * @param {WebGL2RenderingContext} gl 
      */
-    constructor() {
+    constructor(gl) {
+        this.gl = gl;
     }
 
 
 
     /**
      * 
-     * @param {number} x tex coord
-     * @param {number} y tex coord
+     * @param {number} xScreen screen position 
+     * @param {number} yScreen screen position
+     * 
      * @returns {number}
      */
-    pick(x, y) {
+    pick(xScreen, yScreen) {
 
         /* render if not already done */
         this.render();
 
+        const gl = this.gl;
+
         // bind buffer
-        gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+        gl.bindFramebuffer(GL.FRAMEBUFFER, this.fbo);
 
         // read data out of FBO
-        const data = this.pickColor(x, y);
+        const data = new Uint8Array(4);
+
+        const rect = gl.canvas.getBoundingClientRect();
+
+        let xTexCoord = (xScreen - rect.left) * this.glWidth / rect.width;
+        let yTexCoord = (rect.height - (yScreen - rect.top)) * this.glHeight / rect.height;
+
+        //var pickedColor = new Uint8Array(4); 
+        gl.readPixels(xTexCoord, yTexCoord, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, data);
+
+
 
         /** Unbind the underlying FBO */
-        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        gl.bindFramebuffer(GL.FRAMEBUFFER, null);
 
         const index = data[0] + data[1] * 256 + data[2] * 65536;
 
@@ -124,12 +144,13 @@ export class StdPicker {
 
     render() {
         if (!this.isRendered) {
+            const gl = this.gl;
 
             /* initialize if not already done */
             this.initialize();
 
             /** Bind the underlying FBO */
-            gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbo);
+            gl.bindFramebuffer(GL.FRAMEBUFFER, this.fbo);
 
             // You also need to set the viewport by calling gl.viewport whenever you switch framebuffers.
             /* EDIT : we don't change the viewport */
@@ -140,7 +161,7 @@ export class StdPicker {
             //this.fbo.unbind();
 
             //Set-up canvas parameters
-            gl.enable(gl.DEPTH_TEST);
+            gl.enable(GL.DEPTH_TEST);
 
             //gl.viewport(0, 0, this.width, this.height);
 
@@ -148,12 +169,12 @@ export class StdPicker {
             gl.clearColor(0.0, 0.0, 0.0, 1.0);
 
             //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-            gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+            gl.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT);
 
 
             /* render */
             if (this.scene) {
-                this.scene.WebGL_render();
+                this.scene.WebGL_render(gl);
             }
 
             if (this.DEBUG_isFramebufferDisplayed) {
@@ -191,7 +212,7 @@ export class StdPicker {
              * Unbind the underlying FBO
              */
             /* return to the default frame buffer */
-            gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+            gl.bindFramebuffer(GL.FRAMEBUFFER, null);
 
             /* That includes putting it back when setting things back to the canvas */
             /* EDIT:  we don't change the viewport anymore
@@ -222,6 +243,7 @@ export class StdPicker {
 
         // dispose previous buffers (if already built)
         this.dispose();
+        if (this.scene) { this.scene.resize(width, height); }
 
         this.htmlWidth = width;
         this.htmlHeight = height;
@@ -236,6 +258,8 @@ export class StdPicker {
                 // offset rendering style -> gl.LINEAR);
          */
     initialize() {
+
+        const gl = this.gl;
 
         /*  gl.getParameter(gl.VIEWPORT);
             e.g. Int32Array[0, 0, 640, 480]
@@ -360,34 +384,13 @@ export class StdPicker {
 
 
 
-    /**
-     * 
-     * @param {number} x screen position 
-     * @param {number} y screen position
-     * @returns {Uint8Array} picked color
-     */
-    pickColor(x, y) {
-
-        // read
-        let data = new Uint8Array(4);
-
-        const rect = gl.canvas.getBoundingClientRect();
-
-        let xScene = (x - rect.left) * this.glWidth / rect.width;
-        let yScene = (rect.height - (y - rect.top)) * this.glHeight / rect.height;
-
-        //var pickedColor = new Uint8Array(4); 
-        gl.readPixels(xScene, yScene, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, data);
-
-        return data;
-    }
-
 
 
 
 
     dispose() {
         if (this.isInitialized) {
+            const gl = this.gl;
             gl.deleteTexture(this.tex);
             gl.deleteRenderbuffer(this.rbo);
             gl.deleteFramebuffer(this.fbo);
