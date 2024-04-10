@@ -15,6 +15,10 @@ import { SWGL_Pipe } from './pipes/SWGL_Pipe.js';
 export class SWGL_Scene extends NeObject {
 
 
+	/** @type{WebGL2RenderingContext} */
+	gl;
+
+
 	/** 
 	 * @type {SWGL_Pipe[]} the rendering pipes (performance-section) 
 	 */
@@ -40,10 +44,6 @@ export class SWGL_Scene extends NeObject {
 	}
 
 
-
-	activate() {
-
-	}
 
 	/**
 	 * 
@@ -81,22 +81,23 @@ export class SWGL_Scene extends NeObject {
 	 * 
 	 * @param {WebGL2RenderingContext} gl 
 	 */
-	initialize(gl) {
+	initialize() {
 		if (!this.isInitialized) {
 
-				//OpenGL initialization
+			const gl = this.gl;
+
+			//OpenGL initialization
 			gl.clearStencil(128);
-	
-				/* Set-up canvas parameters */
-				gl.enable(gl.DEPTH_TEST);
-	
-				/* enabled blending parameters */
-	
-				// Turn on rendering to alpha
-				gl.colorMask(true, true, true, true);
-				gl.enable(gl.BLEND);
-				gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-	
+
+			/* Set-up canvas parameters */
+			gl.enable(gl.DEPTH_TEST);
+
+			/* enabled blending parameters */
+
+			// Turn on rendering to alpha
+			gl.colorMask(true, true, true, true);
+			gl.enable(gl.BLEND);
+			gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
 			// environment
 			this.environment.view = this.view;
@@ -126,23 +127,32 @@ export class SWGL_Scene extends NeObject {
 	 * @param {number} width 
 	 * @param {number} height 
 	 */
-	resize(width, height){
-		if(this.view != null){
+	resize(width, height) {
+		if (this.view != null) {
 			this.view.resize(width, height);
 		}
 	}
 
+	/**
+		 * 
+		 * @param {WebGL2RenderingContext} gl 
+		 */
+	WebGL_relink(gl) {
+		this.gl = gl;
+		if (this.environment) { this.environment.WebGL_relink(gl); }
+		let nPipes = this.pipes.length;
+		for (let i = 0; i < nPipes; i++) { this.pipes[i].WebGL_relink(gl); }
+	}
 
 
-	
 	/** @param {WebGL2RenderingContext} gl */
-	WebGL_render(gl) {
+	WebGL_render() {
 
 		/* initialize if not already done */
-		this.initialize(gl);
+		this.initialize();
 
 		/* load environment if necessary */
-		this.environment.load(gl);
+		this.environment.load();
 
 		// unbind picking fbo if active
 		//this.picking.unbind();
@@ -157,7 +167,7 @@ export class SWGL_Scene extends NeObject {
 		for (let i = 0; i < nPipes; i++) {
 
 			// run render pipe
-			this.pipes[i].WebGL_render(gl, this.environment, this.view);
+			this.pipes[i].WebGL_render(this.environment, this.view);
 		}
 	}
 

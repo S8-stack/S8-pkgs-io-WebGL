@@ -31,6 +31,12 @@ const FACE_SUFFIXES = [
 export class SWGL_TextureCubeMap extends NeObject {
 
 
+	/**
+	 * @type{WebGL2RenderingContext} gl
+	 */
+	gl;
+
+
 	isLoaded = false;
 
 	isLoadingInitiated = false;
@@ -73,21 +79,24 @@ export class SWGL_TextureCubeMap extends NeObject {
 		this.nbLevels = nbLevels;
 	}
 
+
+	/** @param{WebGL2RenderingContext} gl */
+	WebGL_relink(gl){ this.gl = gl; }
+
 	S8_render() {
-		this.load();
+		
 	}
 
 
 	/**
 	 * 
-	 * @param {WebGL2RenderingContext} gl 
 	 */
-	load(gl) {
+	load() {
 		if (!this.isLoaded && !this.isLoadingInitiated) {
 			
 			let _this = this;
 			new TextureCubeMapLoader(this.pathname, this.extension, this.nbLevels, function(faceImages){
-				_this.assemble(gl, faceImages);
+				_this.assemble(faceImages);
 			}).load();
 
 			this.isLoadingInitiated = true;
@@ -96,10 +105,10 @@ export class SWGL_TextureCubeMap extends NeObject {
 
 
 	/**
-	 * @param {WebGL2RenderingContext} gl
 	 * @param {Image[]} faceImages 
 	 */
-	assemble(gl, faceImages){
+	assemble(faceImages){
+		const gl = this.gl;
 		this.cubeTexture = gl.createTexture();
 		gl.bindTexture(GL.TEXTURE_CUBE_MAP, this.cubeTexture);
 
@@ -135,7 +144,8 @@ export class SWGL_TextureCubeMap extends NeObject {
 	 * @param {WebGL2RenderingContext} gl 
 	 * @param {*} index 
 	 */
-	bind(gl, index) {
+	bind(index) {
+		const gl = this.gl;
 		if(this.isLoaded){
 			gl.activeTexture(GL.TEXTURE0 + index);
 			gl.bindTexture(GL.TEXTURE_CUBE_MAP, this.cubeTexture);

@@ -26,14 +26,13 @@ export class Color2Program extends SWGL_Program {
 
 	/**
 	 * Linking of uniforms and attributes
-	 * @param{WebGL2RenderingContext} gl
 	 */
-	link(gl){
+	link(){
 
 		/* <uniforms> */
-		this.loc_Uniform_matrix_MVP = gl.getUniformLocation(this.handle, "ModelViewProjection_Matrix");
+		this.loc_Uniform_matrix_MVP = this.gl.getUniformLocation(this.handle, "ModelViewProjection_Matrix");
 
-		this.loc_Uniform_color = gl.getUniformLocation(this.handle, `color`);
+		this.loc_Uniform_color = this.gl.getUniformLocation(this.handle, `color`);
 		/* </uniforms> */
 
 		/* <attributes> */
@@ -45,12 +44,12 @@ export class Color2Program extends SWGL_Program {
 	/**
 	 * @param{WebGL2RenderingContext} gl
 	 */
-	enable(gl) {
+	enable() {
 		// bind shader program
-		gl.useProgram(this.handle);
+		this.gl.useProgram(this.handle);
 
 		/* <enable-attributes> */
-		gl.enableVertexAttribArray(VertexAttributesShaderLayout.POSITIONS_LOCATION);
+		this.gl.enableVertexAttribArray(VertexAttributesShaderLayout.POSITIONS_LOCATION);
 		/* </enable-attributes> */
 	}
 
@@ -66,9 +65,9 @@ export class Color2Program extends SWGL_Program {
 	 * @param{WebGL2RenderingContext} gl
 	 * @param {Color2Appearance} appearance 
 	 */
-	bindAppearance(gl, appearance) {
+	bindAppearance(appearance) {
 		// material
-		gl.uniform4fv(this.loc_Uniform_color, appearance.color);
+		this.gl.uniform4fv(this.loc_Uniform_color, appearance.color);
 	}
 	
 
@@ -77,7 +76,10 @@ export class Color2Program extends SWGL_Program {
 	 * @param {SWGL_View} view 
 	 * @param {SWGL_Model} model 
 	 */
-	bindModel(gl, view, model) {
+	bindModel(view, model) {
+
+		const gl = this.gl;
+		
 		/* <matrices> */
 		// re-compute everything...
 		let matrix_Model = model.matrix;
@@ -102,14 +104,16 @@ export class Color2Program extends SWGL_Program {
 	 * 
 	 * @param{WebGL2RenderingContext} gl
 	*/
-	disable(gl) {
+	disable() {
+
+		
 		
 		/* <disable-attributes> */
-		gl.disableVertexAttribArray(VertexAttributesShaderLayout.POSITIONS_LOCATION);
+		this.gl.disableVertexAttribArray(VertexAttributesShaderLayout.POSITIONS_LOCATION);
 		/* </disable-attributes> */
 
 		// unbind shader program
-		gl.useProgram(null);
+		this.gl.useProgram(null);
 	}
 	
 }

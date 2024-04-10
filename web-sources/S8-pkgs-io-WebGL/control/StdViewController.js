@@ -41,14 +41,14 @@ const DEG_to_RAD = Math.PI / 180.0;
  */
 export class StdViewController {
 
+	/** @type {SWGL_Screen} screen */
+	screen;
 
 	/**
 	 * @type{HTMLCanvasElement}
 	 */
 	targetNode;
 
-	/** @type {SWGL_Screen} screen (Bound by screen) */
-	screen;
 
 	/** @type {number} r distance [m] of view vector */
 	r = 20;
@@ -94,10 +94,11 @@ export class StdViewController {
 
 	/**
 	 * 
-	 * @param {HTMLCanvasElement} targetNode 
+	 * @param {SWGL_Screen} screen 
 	 */
-	constructor(targetNode) {
-		this.targetNode = targetNode;
+	constructor(screen) {
+		this.screen = screen;
+		this.targetNode = screen.canvasNode;
 	}
 
 
@@ -321,12 +322,22 @@ export class Control {
 	/** @type { StdViewController } the view attached to this control */
 	controller;
 
+	/** @type { SWGL_Screen } the view attached to this control */
+	screen;
+
 
 	constructor() {
 	}
 
 
-	link(controller) { this.controller = controller; }
+	/**
+	 * 
+	 * @param {StdViewController} controller 
+	 */
+	link(controller) { 
+		this.controller = controller;
+		this.screen = controller.screen;
+	}
 
 	onMouseDown() {
 		/* to be overridden */
@@ -392,8 +403,7 @@ export class Pick extends Control {
 		const index = picker.pick(x, y);
 
 		this.controller.onHoverFaceCallback(index);
-
-
+		this.screen.notifyUpdates();
 		this.isClickEngaged = false;
 		return false; // let flow
 	}
@@ -414,7 +424,7 @@ export class Pick extends Control {
 			/** picker has its own callback*/
 			const index = this.controller.screen.picker.pick(x, y);
 			this.controller.onPickFaceCallback(index);
-
+			this.screen.notifyUpdates();
 			return true; // captured
 		}
 		else {
@@ -509,7 +519,7 @@ export class Rotate extends Control {
 
 			this.controller.refresh();
 
-
+			this.screen.notifyUpdates();
 		}
 		return false;
 	}
@@ -637,7 +647,7 @@ export class Zoom extends Control {
 		this.controller.screen.picker.clear();
 
 		this.controller.refresh();
-
+		this.screen.notifyUpdates();
 		return true;
 	}
 

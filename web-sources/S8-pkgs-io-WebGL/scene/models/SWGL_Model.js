@@ -19,6 +19,9 @@ import { VertexAttributesShaderLayout as ShLayout } from '/S8-pkgs-io-WebGL/scen
 export class SWGL_Model extends NeObject {
 
 
+	/** @type{WebGL2RenderingContext} */
+	gl;
+
 
 	/** @type {Float32Array}  predefine matrix */
 	matrix = M4.createIdentity();
@@ -98,11 +101,20 @@ dimension;
 	}
 
 
-	/**
-	 * 
+
+		/**
 	 * @param {WebGL2RenderingContext} gl 
 	 */
-	load(gl) {
+		WebGL_relink(gl){
+			this.gl = gl;
+		}
+
+
+	/**
+	 * load data from mesh
+	 */
+	load() {
+		const gl = this.gl
 		if (!this.GPU_isLoaded) {
 
 			/* load mesh to GPU (if not already done) */
@@ -150,9 +162,9 @@ dimension;
 
 	/**
 	 * Actually launch drawing 
-	 * @param {WebGL2RenderingContext} gl 
 	 */
-	draw(gl) {
+	draw() {
+		const gl = this.gl;
 		// launch drawing!
 		if (this.dimension == 2) {
 			this.elementIndices.drawLines(gl);
@@ -168,7 +180,7 @@ dimension;
 
 	S8_dispose() {
 		if (this.isReady) {
-			this.mesh.dispose();
+			this.dispose();
 			this.isReady = false;
 		}
 	}
@@ -179,7 +191,8 @@ dimension;
 	 * 
 	 * @param {WebGL2RenderingContext} gl 
 	 */
-	dispose(gl) {
+	dispose() {
+		const gl = this.gl;
 		if (this.GPU_isLoaded) {
 			if (this.positionVertexAttributes) { this.positionVertexAttributes.dispose(gl); }
 			if (this.normalVertexAttributes) { this.normalVertexAttributes.dispose(gl); }

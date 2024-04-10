@@ -89,11 +89,19 @@ export class StdPicker {
 
 
 
+   
+    constructor() {
+    }
+
+
+
     /**
+     * 
      * @param {WebGL2RenderingContext} gl 
      */
-    constructor(gl) {
+    WebGL_relink(gl){
         this.gl = gl;
+        this.scene.WebGL_relink(gl);
     }
 
 

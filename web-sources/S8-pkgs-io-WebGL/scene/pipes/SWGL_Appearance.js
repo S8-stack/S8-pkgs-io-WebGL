@@ -12,6 +12,11 @@ import { SWGL_Program } from './SWGL_Program.js';
 export class SWGL_Appearance extends S8Object {
 
 	/**
+	 * @type{WebGL2RenderingContext}
+	 */
+	gl;
+
+	/**
 	 * @type {SWGL_Program}
 	 */
 	program;
@@ -27,14 +32,14 @@ export class SWGL_Appearance extends S8Object {
 	 */
 	GPU_isLoaded = false;
 
-		/**
-	 * @type{Function[]} array of update functions
-	 */
-		updates = new Array();
-	
-		/** @type{boolean} */
-		hasUpdates = false;
-	
+	/**
+ * @type{Function[]} array of update functions
+ */
+	updates = new Array();
+
+	/** @type{boolean} */
+	hasUpdates = false;
+
 
 	/**
 	 * To be overridden...
@@ -67,6 +72,19 @@ export class SWGL_Appearance extends S8Object {
 		this.GPU_initialize();
 	}
 
+
+	/**
+ * @param {WebGL2RenderingContext} gl 
+ */
+	WebGL_relink(gl) {
+		this.gl = gl;
+		if (this.program) { this.program.WebGL_relink(gl); }
+		let nModels = this.models.length;
+		for (let i = 0; i < nModels; i++) { this.models[i].WebGL_relink(gl); }
+	}
+
+
+
 	/**
 	 * 
 	 */
@@ -90,7 +108,7 @@ export class SWGL_Appearance extends S8Object {
 
 
 
-	pushUpdate(updateFunc){
+	pushUpdate(updateFunc) {
 		this.updates.push(updateFunc);
 		this.hasUpdates = true;
 	}
@@ -101,34 +119,28 @@ export class SWGL_Appearance extends S8Object {
 	 * @param {NbView} view
 	 * 
 	 */
-	WebGL_render(gl, view) {
+	WebGL_render(view) {
 
 		/* first run updates */
-		if(this.hasUpdates){
-			let updateFunc;
-			while((updateFunc = this.updates.shift()) != null){ updateFunc(gl); }
-			this.hasUpdates = false;
-		}
-
 		let nModels = this.models.length;
 
 		/** @type {SWGL_Model} model */
 		let model;
 
-		for (let i = 0; i < nModels; i++) {	
+		for (let i = 0; i < nModels; i++) {
 
 			model = this.models[i];
 
 			if (model.isReady) {
 
 				/* model load it! */
-				model.load(gl);
+				model.load();
 
 				/* bind model */
-				this.program.bindModel(gl, view, model);
+				this.program.bindModel(view, model);
 
 				/* draw it! */
-				model.draw(gl);
+				model.draw();
 			}
 		}
 	}

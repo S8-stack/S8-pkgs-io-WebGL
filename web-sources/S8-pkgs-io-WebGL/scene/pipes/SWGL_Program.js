@@ -4,6 +4,7 @@ import { S8Object } from "/S8-api/S8Object.js";
 import { Shader } from "./Shader.js";
 import { SWGL_Appearance } from "/S8-pkgs-io-WebGL/scene/pipes/SWGL_Appearance.js";
 import { SWGL_Environment } from "/S8-pkgs-io-WebGL/scene/environment/SWGL_Environment.js";
+import { GL } from "/S8-pkgs-io-WebGL/swgl.js";
 
 
 
@@ -19,6 +20,12 @@ export const VertexAttributesShaderLayout = {
 
 
 export class SWGL_Program extends S8Object {
+
+
+    /**
+     * @type{WebGL2RenderingContext}
+     */
+    gl;
 
     /**
      * 
@@ -85,13 +92,23 @@ export class SWGL_Program extends S8Object {
 
     }
 
+    /**
+	 * @param {WebGL2RenderingContext} gl 
+	 */
+	WebGL_relink(gl){
+		this.gl = gl;
+		this.vertexShader.WebGL_relink(gl);
+        this.fragmentShader.WebGL_relink(gl);
+	}
+
 
 
     /**
      * To be overidden
      * @param{WebGL2RenderingContext} gl
      */
-    enable(gl) {
+    enable() { 
+        const gl = this.gl;
         // bind shader program
         gl.useProgram(this.handle);
 
@@ -108,30 +125,28 @@ export class SWGL_Program extends S8Object {
 
     /**
      * 
-     * @param {WebGL2RenderingContext} gl 
      * @param {SWGL_Environment} environment 
      */
-    bindEnvironment(gl, environment) {
-        console.log("Method("+gl+", "+environment+") to be overridden:");
+    bindEnvironment(environment) {
+        console.log("Method("+environment+") to be overridden:");
     }
 
 
     /**
      * 
-     * @param {WebGL2RenderingContext} gl
      * @param {SWGL_Appearance} appearance 
      */
-    bindAppearance(gl, appearance) {
-        console.log("Method("+gl+", "+appearance+") to be overridden:");
+    bindAppearance(appearance) {
+        console.log("Method("+appearance+") to be overridden:");
     }
 
     /**
      * Example only : to be overridden
-     * @param {WebGL2RenderingContext} gl 
      * @param {NbView} view 
      * @param {NbModel} model 
      */
-    bindModel(gl, view, model) {
+    bindModel(view, model) {
+        const gl = this.gl;
         /* <matrices> */
         // re-compute everything...
         let matrix_Model = model.matrix;
@@ -167,7 +182,8 @@ export class SWGL_Program extends S8Object {
      * 
      * @param {WebGL2RenderingContext} gl 
      */
-    disable(gl) {
+    disable() {
+        const gl = this.gl;
 
         /* <disable-attributes> */
         gl.disableVertexAttribArray(this.pointAttributeLocation);
@@ -195,7 +211,8 @@ export class SWGL_Program extends S8Object {
 	 * @param {WebGL2RenderingContext} gl
      * @param {Function} onCompiled 
      */
-    compile(gl, onCompiled) {
+    compile(onCompiled) {
+        const gl = this.gl;
         if (!this.isCompiled && !this.isInitiated) {
 
             // lock preventing any further call to this method
@@ -206,11 +223,11 @@ export class SWGL_Program extends S8Object {
                 if (!_this.isCompiled
                     && _this.vertexShader.isBuilt
                     && _this.fragmentShader.isBuilt) {
-                    _this.finalizeCompilation(gl, onCompiled);
+                    _this.finalizeCompilation(onCompiled);
                 }
             }
-            this.vertexShader.build(gl, onShadersBuilt);
-            this.fragmentShader.build(gl, onShadersBuilt);
+            this.vertexShader.build(onShadersBuilt);
+            this.fragmentShader.build(onShadersBuilt);
         }
     }
 
@@ -220,7 +237,9 @@ export class SWGL_Program extends S8Object {
      * Linking of uniforms and attributes (to be overriden) 
      * @param {WebGL2RenderingContext} gl
      */
-    link(gl) {
+    link() {
+
+        const gl = this.gl;
 
         /* <uniforms> */
         this.loc_Uniform_matrix_MVP = gl.getUniformLocation(this.handle, "ModelViewProjection_Matrix");
@@ -244,7 +263,9 @@ export class SWGL_Program extends S8Object {
 	 * @param {WebGL2RenderingContext} gl
      * @param {Function} onCompiled 
      */
-    finalizeCompilation(gl, onCompiled) {
+    finalizeCompilation(onCompiled) {
+        const gl = this.gl;
+
         if (!this.isCompiled) {
 
             // Create shader program
@@ -258,7 +279,7 @@ export class SWGL_Program extends S8Object {
 
             // Link shader program
             gl.linkProgram(this.handle);
-            if (!gl.getProgramParameter(this.handle, gl.LINK_STATUS)) {
+            if (!gl.getProgramParameter(this.handle, GL.LINK_STATUS)) {
                 alert("Could not initialise shaders : linking problem");
             }
 
@@ -272,7 +293,7 @@ export class SWGL_Program extends S8Object {
             */
 
             // linking of uniforms and attributes
-            this.link(gl);
+            this.link();
 
             // program is ready to render!
             this.isCompiled = true;

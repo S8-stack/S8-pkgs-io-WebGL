@@ -66,9 +66,8 @@ export class Phys2Appearance extends SWGL_Appearance {
 	 * @param {Phys2Material[]} materials 
 	 */
 	setMaterials(materials) {
-		const _this = this;
-		this.pushUpdate(function (gl) {
 
+			console.log("[Phys2App] setMaterials");
 			//this.materials = materials;
 
 			let nbMaterials = materials.length;
@@ -116,11 +115,12 @@ export class Phys2Appearance extends SWGL_Appearance {
 			}
 
 
-			_this.emissiveColorsTex.setData(gl, emissiveColors);
-			_this.diffuseColorsTex.setData(gl, diffuseColors);
-			_this.specularColorsTex.setData(gl, specularColors);
-			_this.propsTex.setData(gl, props);
-		});
+			const gl = this.gl;
+			this.emissiveColorsTex.setData(gl, emissiveColors);
+			this.diffuseColorsTex.setData(gl, diffuseColors);
+			this.specularColorsTex.setData(gl, specularColors);
+			this.propsTex.setData(gl, props);
+
 	}
 
 
@@ -131,16 +131,19 @@ export class Phys2Appearance extends SWGL_Appearance {
 	* @param {Phys2Material} material 
 	*/
 	setMaterial(x, y, material) {
-		const _this = this;
-		this.pushUpdate(function(gl){
-			_this.emissiveColorsTex.setSubData(gl, x, y, material.emissiveColor);
-			_this.diffuseColorsTex.setSubData(gl, x, y, material.diffuseColor);
-			_this.specularColorsTex.setSubData(gl, x, y, material.specularColor);
-	
+		
+			console.log("[Phys2App] start setting Material");
 			const props = new Uint8Array(4);
 			props[0] = material.roughness;
-			_this.propsTex.setSubData(gl, x, y, props);
-		});
+			
+
+			const gl = this.gl;
+			this.emissiveColorsTex.setSubData(gl, x, y, material.emissiveColor);
+			this.diffuseColorsTex.setSubData(gl, x, y, material.diffuseColor);
+			this.specularColorsTex.setSubData(gl, x, y, material.specularColor);
+			this.propsTex.setSubData(gl, x, y, props);
+			console.log("[Phys2App] end setting Material");
+		
 	}
 
 

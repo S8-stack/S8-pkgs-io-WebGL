@@ -47,10 +47,14 @@ export class SWGL_Screen extends S8Object {
 	 */
 	t_then = 0;
 
-
-
 	isInitialized = false;
 
+
+	/** @type{boolean} has updates to be rendered */
+	hasUpdates = false;
+
+	/** @type{number} frames to be rendered before pausing rendering */
+	frameCount = 8;
 
 	/** @type {Function} */
 	sizeListener;
@@ -64,6 +68,14 @@ export class SWGL_Screen extends S8Object {
 	 * @type {Set<Function>}
 	 */
 	sizeListeners = new Set();
+
+
+	static IDLE_STATE = 0;
+
+	static RENDERING_STATE = 2;
+
+	/** @type{number} */
+	state = SWGL_Screen.IDLE_STATE;
 
 	constructor() {
 		super();
@@ -99,12 +111,18 @@ export class SWGL_Screen extends S8Object {
 		this.fpsDisplay = document.querySelector("#fps-display");
 
 		/* initialize controller */
-		this.controller = new StdViewController(this.canvasNode);
+		this.controller = new StdViewController(this);
 
 		/* picker */
-		this.picker = new StdPicker(this.gl);
+		this.picker = new StdPicker();
 	}
 
+
+
+	WebGL_relink(){
+		this.scene.WebGL_relink(this.gl);
+		this.picker.WebGL_relink(this.gl);
+	}
 
 
 	S8_render() {
@@ -113,6 +131,7 @@ export class SWGL_Screen extends S8Object {
 			this.controller.link(this);
 		}
 		
+		this.notifyUpdates();
 
 		// update
 		/*
@@ -157,6 +176,21 @@ export class SWGL_Screen extends S8Object {
 		}
 	}
 
+
+	/**
+	 * 
+	 */
+	notifyUpdates(){
+		/* set new value for frame count */
+		this.frameCount = 8;
+
+		/* trigger render */
+		if(this.state == SWGL_Screen.IDLE_STATE){
+			this.WebGL_render();	
+		}
+		//else{ console.log("notifyUpdates() discarded "+this.state); }
+	}
+
 	/**
 		* [WebGL_Scene API method]
 		* setPickingCallback allows to specify a behaviour if the event of a picking click.
@@ -174,19 +208,38 @@ export class SWGL_Screen extends S8Object {
 	 */
 	WebGL_render(t_now) {
 
+		//console.log("WebGL_render #"+this.frameCount);
+		this.state = SWGL_Screen.RENDERING_STATE;
+
 		const gl = this.gl;
 
 		// gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 		gl.clearColor(this.clearColor[0], this.clearColor[1], this.clearColor[2], this.clearColor[3]);
 		gl.clear(GL.COLOR_BUFFER_BIT | GL.DEPTH_BUFFER_BIT | GL.STENCIL_BUFFER_BIT);
+		
 
 		// render pipes
 		this.scene.WebGL_render(gl);
 
-		// Recommended pattern for frame animation
-		let _this = this;
-		window.requestAnimationFrame(function (t) { _this.WebGL_render(t); });
+		/* one frame has been rendered */
+		this.frameCount--;
 
+		// Recommended pattern for frame animation
+		
+		
+		if(this.frameCount > 0){
+			
+			const _this = this;
+			window.requestAnimationFrame(function (t) { _this.WebGL_render(t); });
+		
+		}
+		else{
+			//back to idle state 
+			this.state = SWGL_Screen.IDLE_STATE;
+		}
+		
+		
+		
 
 		// FPS computations
 		/*
@@ -222,7 +275,7 @@ export class SWGL_Screen extends S8Object {
 	 * @param {number[]} color 
 	 */
 	S8_set_clearColor_RGBA_UInt8(color) {
-		this.clearColor = new Array(4);
+		this.clearColor = new Float32Array(4);
 		for(let i = 0; i<4; i++) { this.clearColor[i] = color[i] / 255.0; }
 	}
 
@@ -236,7 +289,6 @@ export class SWGL_Screen extends S8Object {
 			coordinates[1], /* theta */
 			coordinates[2] /* phi */
 		);
-		this.WebGL_render(0);
 	}
 
 

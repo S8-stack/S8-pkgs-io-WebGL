@@ -29,7 +29,8 @@ export class PickingProgram extends SWGL_Program {
 	 * @param{WebGL2RenderingContext} gl
 	 * Linking of uniforms and attributes (to be overriden)
 	 */
-	link(gl) {
+	link() {
+		const gl = this.gl;
 
 		/* <uniforms> */
 		this.loc_Uniform_matrix_MVP = gl.getUniformLocation(this.handle, "ModelViewProjection_Matrix");
@@ -48,7 +49,9 @@ export class PickingProgram extends SWGL_Program {
 	 * @param{WebGL2RenderingContext} gl
 	 * To be overidden
 	 */
-	enable(gl) {
+	enable() {
+		const gl = this.gl;
+		
 		// bind shader program
 		gl.useProgram(this.handle);
 
@@ -85,7 +88,9 @@ export class PickingProgram extends SWGL_Program {
 	 * @param {SWGL_View} view 
 	 * @param {SWGL_Model} model 
 	 */
-	bindModel(gl, view, model) {
+	bindModel(view, model) {
+		const gl = this.gl;
+
 		/* <matrices> */
 		// re-compute everything...
 		let matrix_Model = model.matrix;
@@ -112,7 +117,8 @@ export class PickingProgram extends SWGL_Program {
 	 * 
 	 * @param {WebGL2RenderingContext} gl 
 	 */
-	disable(gl) {
+	disable() {
+		const gl = this.gl;
 
 		/* <disable-attributes> */
 		gl.disableVertexAttribArray(VertexAttributesShaderLayout.POSITIONS_LOCATION);

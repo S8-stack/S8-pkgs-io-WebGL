@@ -70,6 +70,10 @@ const READY_STATE = 2;
  */
 export class SWGL_Pipe extends S8Object {
 
+
+	/** @type{WebGL2RenderingContext} */
+	gl;
+
 	/**
 	 * @type {SWGL_Program}
 	 */
@@ -143,16 +147,27 @@ export class SWGL_Pipe extends S8Object {
 
 
 	/**
+	 * @param {WebGL2RenderingContext} gl 
+	 */
+	WebGL_relink(gl){
+		this.gl = gl;
+		if(this.program){ this.program.WebGL_relink(gl); }
+		let nAppearances = this.appearances.length;
+		for (let i = 0; i < nAppearances; i++) { this.appearances[i].WebGL_relink(gl); }
+	}
+
+
+	/**
 		 * 
-		 * @param {WebGL2RenderingContext} gl 
+		
 		 * @param {SWGL_Environment} environment 
 		 * @param {SWGL_View} view 
 		 */
-	WebGL_render(gl, environment, view) {
+	WebGL_render(environment, view) {
 		if (this.state == NOT_INITIATED_STATE) {
 			// compile (if not already done)
 			let _this = this;
-			this.program.compile(gl, function () {
+			this.program.compile(function () {
 				_this.state = READY_STATE;
 			});
 			this.state = BUILDING_STATE;
@@ -160,12 +175,12 @@ export class SWGL_Pipe extends S8Object {
 		else if (this.state == READY_STATE) {
 
 			// enable program
-			this.program.enable(gl);
+			this.program.enable();
 
 			/**
 			 * 
 			 */
-			this.program.bindEnvironment(gl, environment);
+			this.program.bindEnvironment(environment);
 
 			// render appearnce
 			let nAppearances = this.appearances.length;
@@ -177,15 +192,15 @@ export class SWGL_Pipe extends S8Object {
 
 				if (appearance.GPU_isLoaded) {
 					// bind appearance
-					this.program.bindAppearance(gl, appearance);
+					this.program.bindAppearance(appearance);
 
 					// render the appearance
-					appearance.WebGL_render(gl, view);
+					appearance.WebGL_render(view);
 				}
 			}
 
 			// disable program
-			this.program.disable(gl);
+			this.program.disable();
 		}
 	}
 

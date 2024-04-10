@@ -35,7 +35,9 @@ export class Phys2Program extends SWGL_Program {
 	/**
 	 * @param{WebGL2RenderingContext} gl
 	 */
-	link(gl) {
+	link() {
+
+		const gl = this.gl;
 
 		/* <uniforms> */
 		this.loc_Uniform_matrix_MVP = gl.getUniformLocation(this.handle, "ModelViewProjection_Matrix");
@@ -65,9 +67,11 @@ export class Phys2Program extends SWGL_Program {
 
 
 	/**
-	 * @param{WebGL2RenderingContext} gl
 	 */
-	enable(gl) {
+	enable() {
+
+		const gl = this.gl;
+
 		// bind shader program
 		gl.useProgram(this.handle);
 
@@ -94,23 +98,26 @@ export class Phys2Program extends SWGL_Program {
 	 * @param {WebGL2RenderingContext} gl 
 	 * @param {SWGL_Environment} environment 
 	 */
-	bindEnvironment(gl, environment) {
+	bindEnvironment(environment) {
+		const gl = this.gl;
+
 		if (environment.radiance != null) {
-			environment.radiance.bind(gl, RADIANCE_TEXTURE_INDEX);
+			environment.radiance.bind(RADIANCE_TEXTURE_INDEX);
 		}
 
 		if (environment.irradiance != null) {
-			environment.irradiance.bind(gl, IRRADIANCE_TEXTURE_INDEX);
+			environment.irradiance.bind(IRRADIANCE_TEXTURE_INDEX);
 		}
 	}
 
 
 	/**
 	 * 
-	 * @param {WebGL2RenderingContext} gl 
 	 * @param {Phys2Appearance} appearance 
 	 */
-	bindAppearance(gl, appearance) {
+	bindAppearance(appearance) {
+
+		const gl = this.gl;
 
 		/* <bind-textures> */
 		appearance.propsTex.bind(gl, PROPERTIES_TEXTURE_INDEX);
@@ -123,11 +130,12 @@ export class Phys2Program extends SWGL_Program {
 
 
 	/**
-	 * @param{WebGL2RenderingContext} gl
 	 * @param {SWGL_View} view 
 	 * @param {SWGL_Model} model 
 	 */
-	bindModel(gl, view, model) {
+	bindModel(view, model) {
+		const gl = this.gl;
+
 		/* <matrices> */
 		// re-compute everything...
 		let matrix_Model = model.matrix;
@@ -156,7 +164,9 @@ export class Phys2Program extends SWGL_Program {
 	/**
 	 * @param{WebGL2RenderingContext} gl
 	 */
-	disable(gl) {
+	disable() {
+
+		const gl = this.gl;
 
 		/* <disable-attributes> */
 		gl.disableVertexAttribArray(VertexAttributesShaderLayout.POSITIONS_LOCATION);

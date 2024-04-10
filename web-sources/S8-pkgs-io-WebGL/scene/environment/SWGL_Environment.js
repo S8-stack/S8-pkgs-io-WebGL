@@ -16,6 +16,10 @@ import { SWGL_View } from '/S8-pkgs-io-WebGL/scene/view/SWGL_View.js';
 export class SWGL_Environment extends NeObject {
 
 
+    /** @type{WebGL2RenderingContext} gl */
+    gl;
+
+
     /** @type {SWGL_View} (Bound by scene) */
     view;
 
@@ -79,15 +83,18 @@ export class SWGL_Environment extends NeObject {
     }
 
 
+    WebGL_relink(gl){
+		this.gl = gl;
+        if(this.radiance){ this.radiance.WebGL_relink(gl); }
+        if(this.irradiance){ this.irradiance.WebGL_relink(gl); }
+	}
 
-    /**
-     * 
-     * @param {WebGL2RenderingContext} gl 
-     */
-    load(gl){
-        if(this.radiance){ this.radiance.load(gl); }
-        if(this.irradiance){ this.irradiance.load(gl); }
+  
+    load(){
+        if(this.radiance){ this.radiance.load(); }
+        if(this.irradiance){ this.irradiance.load(); }
     }
+
 
     /**
     * Normalize vector 
