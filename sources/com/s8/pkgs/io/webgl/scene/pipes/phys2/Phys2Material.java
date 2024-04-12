@@ -38,11 +38,11 @@ public class Phys2Material extends S8WebObject {
 	
 	/**
 	 * 
-	 * @param branch
+	 * @param front
 	 * @param typeName
 	 */
-	public Phys2Material(S8WebFront branch) {
-		super(branch, WebSources.ROOT+"scene/pipes/phys2/Phys2Material");
+	public Phys2Material(S8WebFront front) {
+		super(front, WebSources.ROOT+"scene/pipes/phys2/Phys2Material");
 	}
 	
 	

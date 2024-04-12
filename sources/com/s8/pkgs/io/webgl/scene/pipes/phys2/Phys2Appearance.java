@@ -16,11 +16,11 @@ public class Phys2Appearance extends SWGL_Appearance {
 
 	/**
 	 * 
-	 * @param branch
+	 * @param front
 	 * @param typeName
 	 */
-	public Phys2Appearance(S8WebFront branch) {
-		super(branch, WebSources.ROOT+"scene/pipes/phys2/Phys2Appearance");
+	public Phys2Appearance(S8WebFront front) {
+		super(front, WebSources.ROOT+"scene/pipes/phys2/Phys2Appearance");
 	}
 
 
