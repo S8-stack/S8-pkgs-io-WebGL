@@ -6,6 +6,8 @@
 module com.s8.pkgs.io.webgl {
 	
 
+	exports com.s8.pkgs.io.webgl;
+	
 	exports com.s8.pkgs.io.webgl.material;
 	exports com.s8.pkgs.io.webgl.maths;
 
